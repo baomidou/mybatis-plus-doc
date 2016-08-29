@@ -1,9 +1,8 @@
 <p align="center">
   <a href="https://github.com/baomidou/mybatis-plus">
-    <img src="https://raw.githubusercontent.com/baomidou/logo/master/logo-mybatis-plus-mini.png">
+    <img src="https://raw.githubusercontent.com/baomidou/logo/master/mybatis-plus-logo.png">
   </a>
 </p>
-<p align="center"><b>Mybatis-Plus</b></p>
 <p align="center">为简化开发工作、提高生产率而生</p>
 
 # Introduction
