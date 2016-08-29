@@ -25,10 +25,10 @@ Mybatis-Plus 是 `Mybatis` 的增强工具包，只做增强不做改变，为�
 
 ``` bash
 # clone this repo
-git clone https://github.com/baomidou/mybatis-plus-cn-doc.git
+git clone https://github.com/baomidou/mybatis-plus-doc.git
 
 # cd into project
-cd mybatis-plus-cn-doc/
+cd mybatis-plus-doc/
 
 # install gitbook-cli
 npm install gitbook-cli -g
