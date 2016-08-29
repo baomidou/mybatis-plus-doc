@@ -1,11 +1,9 @@
 {
-  "links": {
-    "sharing": {
-      "all": null,
-      "facebook": null,
-      "google": null,
-      "twitter": true,
-      "weibo": true
-    }
+  "title": "Mybatis-Plus Documentation",
+  "description": "Mybatis-Plus Documentation",
+  "author": "D.Yang",
+  "language": "zh",
+  "plugins": [],
+  "pluginsConfig": {
   }
 }
