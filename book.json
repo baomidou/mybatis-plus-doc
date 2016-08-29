@@ -1,0 +1,11 @@
+{
+  "links": {
+    "sharing": {
+      "all": null,
+      "facebook": null,
+      "google": null,
+      "twitter": true,
+      "weibo": true
+    }
+  }
+}
