@@ -32,7 +32,7 @@ npm install gitbook-cli -g
 # init gitbook
 gitbook install
 
-# run on the serve
+# run as serve
 gitbook serve
 
 ```
