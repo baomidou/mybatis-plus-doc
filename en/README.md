@@ -4,19 +4,14 @@
   </a>
 </p>
 <p align="center">Born To Simplify Development</p>
-<p align="center">
-  <a href="https://yangyang0507.gitbooks.io/mybatis-plus-doc/content/zh/">
-    <b>中文</b>
-  </a>
-   |
-  <a href="https://yangyang0507.gitbooks.io/mybatis-plus-doc/content/en/">
-    <b>English</b>
-  </a>
-</p>
 
 ## Introduction
 
 Mybatis-Plus 是 `Mybatis` 的增强工具包，只做增强不做改变，为简化开发工作、提高生产率而生。
+
+## Online Document
+<a href="https://yangyang0507.gitbooks.io/mybatis-plus-doc/content/zh/">Chinese</a> |
+<a href="https://yangyang0507.gitbooks.io/mybatis-plus-doc/content/en/">English</a>
 
 ## Help & Improve
 

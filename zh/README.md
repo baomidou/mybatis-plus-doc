@@ -4,15 +4,6 @@
   </a>
 </p>
 <p align="center">为简化开发工作、提高生产率而生</p>
-<p align="center">
-  <a href="https://yangyang0507.gitbooks.io/mybatis-plus-doc/content/zh/">
-    <b>中文</b>
-  </a>
-   |
-  <a href="https://yangyang0507.gitbooks.io/mybatis-plus-doc/content/en/">
-    <b>English</b>
-  </a>
-</p>
 
 ## 简介
 
@@ -23,6 +14,10 @@ Mybatis-Plus 是 `Mybatis` 的增强工具包，只做增强不做改变，为�
 优点：
 + 最少依赖：仅仅依赖`Mybatis`以及`Mybatis-Spring`
 + 自动生成代码：包含自动生成代码类，能够快速生成Mybatis对应的xml、mapper、entity、service、serviceimpl层代码
+
+## 在线阅读文档
+<a href="https://yangyang0507.gitbooks.io/mybatis-plus-doc/content/zh/">Chinese</a> |
+<a href="https://yangyang0507.gitbooks.io/mybatis-plus-doc/content/en/">English</a>
 
 ## 文档修订
 
