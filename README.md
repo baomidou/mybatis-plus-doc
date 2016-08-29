@@ -5,7 +5,7 @@
 </p>
 <p align="center">为简化开发工作、提高生产率而生</p>
 
-# 简介
+## 简介
 
 Mybatis-Plus 是 `Mybatis` 的增强工具包，只做增强不做改变，为简化开发工作、提高生产率而生。
 
@@ -15,7 +15,7 @@ Mybatis-Plus 是 `Mybatis` 的增强工具包，只做增强不做改变，为�
 + 最少依赖：仅仅依赖`Mybatis`以及`Mybatis-Spring`
 + 自动生成代码：包含自动生成代码类，能够快速生成Mybatis对应的xml、mapper、entity、service、serviceimpl层代码
 
-# 文档修订
+## 文档修订
 
 > 欢迎各路好汉一起来完善文档，我们期待你的PR！
 
