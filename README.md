@@ -5,7 +5,7 @@
 </p>
 <p align="center">为简化开发工作、提高生产率而生</p>
 
-# Introduction
+# 简介
 
 Mybatis-Plus 是 `Mybatis` 的增强工具包，只做增强不做改变，为简化开发工作、提高生产率而生。
 
@@ -14,3 +14,25 @@ Mybatis-Plus 是 `Mybatis` 的增强工具包，只做增强不做改变，为�
 优点：
 + 最少依赖：仅仅依赖`Mybatis`以及`Mybatis-Spring`
 + 自动生成代码：包含自动生成代码类，能够快速生成Mybatis对应的xml、mapper、entity、service、serviceimpl层代码
+
+# 文档修订
+
+> 欢迎各路好汉一起来完善文档，我们期待你的PR！
+
+``` bash
+# clone this repo
+git clone https://github.com/baomidou/mybatis-plus-cn-doc.git
+
+# cd into project
+cd mybatis-plus-cn-doc/
+
+# install gitbook-cli
+npm install gitbook-cli -g
+
+# init gitbook
+gitbook install
+
+# run on the serve
+gitbook serve
+
+```
