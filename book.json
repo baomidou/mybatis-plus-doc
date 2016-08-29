@@ -2,8 +2,14 @@
   "title": "Mybatis-Plus Documentation",
   "description": "Mybatis-Plus Documentation",
   "author": "D.Yang",
-  "language": "zh",
-  "plugins": [],
+  "plugins": [
+    "back-to-top-button",
+    "forkmegithub"
+  ],
   "pluginsConfig": {
+    "forkmegithub": {
+      "url": "https://github.com/baomidou/mybatis-plus",
+      "color": "red"
+    }
   }
 }
