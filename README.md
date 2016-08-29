@@ -4,6 +4,14 @@
   </a>
 </p>
 <p align="center">为简化开发工作、提高生产率而生</p>
+<p align="center">
+  <a href="https://yangyang0507.gitbooks.io/mybatis-plus-doc/content/zh/">
+    <b>中文文档</b>
+  </a>
+  <a href="https://yangyang0507.gitbooks.io/mybatis-plus-doc/content/en/">
+    <b>English Doc</b>
+  </a>
+</p>
 
 ## 简介
 
