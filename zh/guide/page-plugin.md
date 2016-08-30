@@ -46,7 +46,7 @@ List<User> selectUserList(Pagination page, Integer state);
 * UserServiceImpl.java 调用翻页方法，需要 page.setRecords 回传给页面
 
 ```java
-public Page<T> selectUserPage(Page<T> page, Integer state) {
+public Page<User> selectUserPage(Page<User> page, Integer state) {
 	page.setRecords(baseMapper.selectUserList(page, state));
 	return page;
 }
