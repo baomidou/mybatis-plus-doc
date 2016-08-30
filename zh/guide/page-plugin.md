@@ -53,7 +53,7 @@ public Page<T> selectUserPage(Page<T> page, Integer state) {
 ```
 
 
-* UserMapper.xml 等同于编写一个排序 list 查询，mybatis-plus 自动替你分页
+* UserMapper.xml 等同于编写一个普通 list 查询，mybatis-plus 自动替你分页
 
 ```xml
 <select id="selectUserList" resultType="User">
