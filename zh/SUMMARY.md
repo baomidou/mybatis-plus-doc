@@ -4,7 +4,7 @@
   * [Mybatis-Plus优点](intro/advantage.md)
   * [LOGO故事和愿景](intro/logo.md)
   * [构架原理](intro/framework.md)
-* [依赖说明](dependency/dependency.md)
+  * [依赖说明](intro/dependency.md)
 * 如何集成
   * [SpringMVC方式](install/spring-mvc.md)
   * [SpringBoot方式](install/spring-boot.md)
@@ -20,4 +20,4 @@
   * [表公共字段自定义填充](guide/auto-fill.md)
   * [注入自定义公共方法SQL](guide/sql-injector.md)
   * [mapper.xml 热加载配置使用](guide/hot-loading.md)
-* [常见问题](question/question.md)
+* [常见问题](faq/question.md)
