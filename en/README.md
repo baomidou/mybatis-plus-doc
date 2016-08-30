@@ -7,7 +7,7 @@
 
 ## Introduction
 
-Mybatis-Plus 是 `Mybatis` 的增强工具包，只做增强不做改变，为简化开发工作、提高生产率而生。
+Mybatis-Plus is an enhanced toolkit of `Mybatis` to simplify the operation of CURD.
 
 ## Online Document
 <a href="https://yangyang0507.gitbooks.io/mybatis-plus-doc/content/zh/">Chinese</a> |
