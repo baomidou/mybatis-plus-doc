@@ -41,6 +41,7 @@ public interface UserMapper extends AutoMapper<User> {
 ```
 
 * 最后一步注入启动
+
 ```xml
 <!-- MyBatis SqlSessionFactoryBean 配置 -->
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
