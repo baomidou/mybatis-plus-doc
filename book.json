@@ -2,14 +2,28 @@
   "title": "Mybatis-Plus Documentation",
   "description": "Mybatis-Plus Documentation",
   "author": "D.Yang",
+  "language": "zh-hans",
   "plugins": [
+    "edit-link",
+    "codeblock-filename",
     "back-to-top-button",
     "forkmegithub"
   ],
   "pluginsConfig": {
+    "sharing": {
+      "weibo": true,
+      "facebook": true,
+      "twitter": true,
+      "google": false,
+      "instapaper": false
+    },
     "forkmegithub": {
       "url": "https://github.com/baomidou/mybatis-plus",
       "color": "red"
+    },
+    "edit-link": {
+      "base": "https://github.com/baomidou/mybatis-plus-doc/edit/master",
+      "label": "Edit This Page"
     }
   }
 }
