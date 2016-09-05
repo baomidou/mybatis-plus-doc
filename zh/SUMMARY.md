@@ -9,7 +9,7 @@
   * [SpringMVC方式](install/spring-mvc.md)
   * [SpringBoot方式](install/spring-boot.md)
   * [普通Jar包方式](install/custom-jar.md)
-* [如何使用](guild/README.md)
+* [如何使用](guide/README.md)
   * [代码生成](guide/generator-code.md)
   * [通用Mapper和Service](guide/base-mapper.md)
   * [查询条件构造器EntityWrapper](guide/entity-wrapper.md)
