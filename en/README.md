@@ -11,7 +11,7 @@ Mybatis-Plus is an enhanced toolkit of `Mybatis` to simplify the operation of CU
 
 # Online Document
 
-[Chinese](https://yangyang0507.gitbooks.io/mybatis-plus-doc/content/zh/) | [English](https://yangyang0507.gitbooks.io/mybatis-plus-doc/content/en/)
+[中文](http://mp.baomidou.com/zh/) | [English](http://mp.baomidou.com/en/)
 
 # Help & Improve
 

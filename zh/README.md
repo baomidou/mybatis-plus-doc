@@ -28,7 +28,7 @@ Mybatis-Plus 是 `Mybatis` 的最得力的助手，只做增强不做改变，�
 
 # 在线阅读文档
 
-[中文](https://yangyang0507.gitbooks.io/mybatis-plus-doc/content/zh/) | [English](https://yangyang0507.gitbooks.io/mybatis-plus-doc/content/en/)
+[中文](http://mp.baomidou.com/zh/) | [English](http://mp.baomidou.com/en/)
 
 # 文档修订
 
