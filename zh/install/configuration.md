@@ -20,9 +20,9 @@
     <property name="plugins">
         <array>
             <!-- 分页插件配置 -->
-          <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
-                <property name="dialectType" value="mysql" />
-          </bean>
+	          <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
+	                <property name="dialectType" value="mysql" />
+	          </bean>
         </array>
     </property>
     <!-- Oracle需要添加该项 -->
