@@ -13,6 +13,7 @@
     "-lunr",
     "search-jieba",
     "edit-link",
+    "toc",
     "forkmegithub",
     "back-to-top-button",
     "sitemap"
@@ -35,6 +36,10 @@
     "edit-link": {
       "base": "https://github.com/baomidou/mybatis-plus-doc/edit/master",
       "label": "Edit This Page"
+    },
+    "toc": {
+      "addClass": true,
+      "className": "toc"
     }
   }
 }
