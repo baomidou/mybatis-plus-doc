@@ -10,6 +10,7 @@
     "gitbook": true
   },
   "plugins": [
+    "-comment",
     "-lunr",
     "search-jieba",
     "-highlight",
