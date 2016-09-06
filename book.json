@@ -12,11 +12,16 @@
   "plugins": [
     "-lunr",
     "search-jieba",
+    "-highlight",
+    "prism",
     "edit-link",
-    "toc",
     "forkmegithub",
     "back-to-top-button",
-    "sitemap"
+    "codeblock-filename",
+    "sitemap",
+    "splitter",
+    "toggle-chapters",
+    "tbfed-pagefooter"
   ],
   "pluginsConfig": {
     "sharing": {
@@ -37,9 +42,10 @@
       "base": "https://github.com/baomidou/mybatis-plus-doc/edit/master",
       "label": "Edit This Page"
     },
-    "toc": {
-      "addClass": true,
-      "className": "toc"
+    "tbfed-pagefooter": {
+      "copyright": "&copy baomidou team",
+      "modify_label": "Last Modify:",
+      "modify_format": "YYYY-MM-DD HH:mm:ss"
     }
   }
 }
