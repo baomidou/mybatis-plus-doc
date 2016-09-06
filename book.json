@@ -7,9 +7,11 @@
     "-lunr",
     "search-jieba",
     "edit-link",
+    "forkmegithub",
     "codeblock-filename",
     "back-to-top-button",
-    "forkmegithub"
+    "baidu",
+    "sitemap",
   ],
   "pluginsConfig": {
     "sharing": {
@@ -19,6 +21,9 @@
       "google": false,
       "instapaper": false
     },
+    "sitemap": {
+      "hostname": "http://mp.baomidou.com/"
+    },
     "forkmegithub": {
       "url": "https://github.com/baomidou/mybatis-plus",
       "color": "red"
@@ -26,6 +31,9 @@
     "edit-link": {
       "base": "https://github.com/baomidou/mybatis-plus-doc/edit/master",
       "label": "Edit This Page"
+    },
+    "baidu": {
+      "token": "b051ec2910ce5c29c448002ff86d975c"
     }
   }
 }
