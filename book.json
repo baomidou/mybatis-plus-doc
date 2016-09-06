@@ -3,6 +3,14 @@
   "description": "Mybatis-Plus Documentation",
   "author": "D.Yang",
   "language": "zh-hans",
+  "links": {
+    "sidebar": {
+      "Home": "https://github.com/baomidou",
+      "English Doc":"http://mp.baomidou.com/en/",
+      "中文文档": "http://mp.baomidou.com/zh/"
+    },
+    "gitbook": true
+  },
   "plugins": [
     "-lunr",
     "search-jieba",
