@@ -10,7 +10,6 @@
     "gitbook": true
   },
   "plugins": [
-    "-comment",
     "-lunr",
     "search-jieba",
     "-highlight",
@@ -18,7 +17,6 @@
     "edit-link",
     "forkmegithub",
     "back-to-top-button",
-    "codeblock-filename",
     "sitemap",
     "splitter",
     "toggle-chapters",
@@ -45,7 +43,7 @@
     },
     "tbfed-pagefooter": {
       "copyright": "&copy baomidou team",
-      "modify_label": "Last Modify:",
+      "modify_label": "last modify:",
       "modify_format": "YYYY-MM-DD HH:mm:ss"
     }
   }

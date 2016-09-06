@@ -6,7 +6,7 @@
 
 参数相关的配置，详见[ConfigGenerator](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/generator/ConfigGenerator.java)类
 
-!FILENAME saveDir
+> **saveDir**
 
 ```
 类型：String
@@ -14,7 +14,7 @@
 备注：无
 ```
 
-!FILENAME entityPackage
+> **entityPackage**
 
 ```
 类型：String
@@ -22,7 +22,7 @@
 备注：无
 ```
 
-!FILENAME mapperPackage
+> **mapperPackage**
 
 ```
 类型：String
@@ -30,7 +30,7 @@
 备注：无
 ```
 
-!FILENAME xmlPackage
+> **xmlPackage**
 
 ```
 类型：String
@@ -38,7 +38,7 @@
 备注：默认为Mapper目录下的xml文件夹
 ```
 
-!FILENAME servicePackage
+> **servicePackage**
 
 ```
 类型：String
@@ -46,7 +46,7 @@
 备注：无
 ```
 
-!FILENAME serviceImplPackage
+> **serviceImplPackage**
 
 ```
 类型：String
@@ -54,7 +54,7 @@
 备注：默认为Service目录下的impl文件夹
 ```
 
-!FILENAME superService
+> **superService**
 
 ```
 类型：String
@@ -62,7 +62,7 @@
 备注：通过该项，你可以自定义Service层的父类，实现自定义通用方法。若无需求，不用配置。
 ```
 
-!FILENAME superServiceImpl
+> **superServiceImpl**
 
 ```
 类型：String
@@ -70,7 +70,7 @@
 备注：同上
 ```
 
-!FILENAME mapperName
+> **mapperName**
 
 ```
 类型：String
@@ -78,7 +78,7 @@
 备注：采用"%s"做占位符，默认为"%sMapper"，生成后为FooMapper.java
 ```
 
-!FILENAME mapperXMLName
+> **mapperXMLName**
 
 ```
 类型：String
@@ -86,7 +86,7 @@
 备注：采用"%s"做占位符，默认为"%sMapper"，生成后为FooMapper.xml
 ```
 
-!FILENAME serviceName
+> **serviceName**
 
 ```
 类型：String
@@ -94,7 +94,7 @@
 备注：采用"%s"做占位符，默认为"I%sService"，生成后为IFooService.java
 ```
 
-!FILENAME serviceImplName
+> **serviceImplName**
 
 ```
 类型：String
@@ -102,7 +102,7 @@
 备注：采用"%s"做占位符，默认为"%sServiceImpl"，生成后为FooServiceImpl.java
 ```
 
-!FILENAME tableNames
+> **tableNames**
 
 ```
 类型：String[]
@@ -110,7 +110,7 @@
 备注：若为空就直接指定所有表，格式为逗号分割
 ```
 
-!FILENAME fileOverride
+> **fileOverride**
 
 ```
 类型：boolean
@@ -118,7 +118,7 @@
 备注：true为覆盖，false为不覆盖
 ```
 
-!FILENAME dbPrefix
+> **dbPrefix**
 
 ```
 类型：boolean
@@ -126,7 +126,7 @@
 备注：例如`mp_user`生成实体类，false 为 MpUser.java , true 为 User.java
 ```
 
-!FILENAME dbColumnUnderline
+> **dbColumnUnderline**
 
 ```
 类型：boolean
@@ -134,7 +134,7 @@
 备注：
 ```
 
-!FILENAME dbDriverName
+> **dbDriverName**
 
 ```
 类型：String
@@ -142,7 +142,7 @@
 备注：如com.mysql.jdbc.Driver
 ```
 
-!FILENAME dbUser
+> **dbUser**
 
 ```
 类型：String
@@ -150,7 +150,7 @@
 备注：无
 ```
 
-!FILENAME dbPassword
+> **dbPassword**
 
 ```
 类型：String
@@ -158,7 +158,7 @@
 备注：无
 ```
 
-!FILENAME dbUrl
+> **dbUrl**
 
 ```
 类型：String
@@ -166,7 +166,7 @@
 备注：无
 ```
 
-!FILENAME idType
+> **idType**
 
 ```
 类型：boolean
