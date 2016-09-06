@@ -4,6 +4,8 @@
   "author": "D.Yang",
   "language": "zh-hans",
   "plugins": [
+    "-lunr",
+    "search-jieba",
     "edit-link",
     "codeblock-filename",
     "back-to-top-button",
