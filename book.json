@@ -5,9 +5,7 @@
   "language": "zh-hans",
   "links": {
     "sidebar": {
-      "Home": "https://github.com/baomidou",
-      "English Doc":"http://mp.baomidou.com/en/",
-      "中文文档": "http://mp.baomidou.com/zh/"
+      "Home": "https://github.com/baomidou"
     },
     "gitbook": true
   },
@@ -18,7 +16,6 @@
     "forkmegithub",
     "codeblock-filename",
     "back-to-top-button",
-    "baidu",
     "sitemap"
   ],
   "pluginsConfig": {
@@ -39,9 +36,6 @@
     "edit-link": {
       "base": "https://github.com/baomidou/mybatis-plus-doc/edit/master",
       "label": "Edit This Page"
-    },
-    "baidu": {
-      "token": "b051ec2910ce5c29c448002ff86d975c"
     }
   }
 }
