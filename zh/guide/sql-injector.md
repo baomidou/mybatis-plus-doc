@@ -2,7 +2,8 @@
 
 > 自定义注入全表删除方法  deteleAll
 
-* 自定义 MySqlInjector 注入类 `java` 代码如下：
+## 自定义 MySqlInjector 注入类 `java` 代码如下：
+
 ```java
 public class MySqlInjector extends AutoSqlInjector {
 
@@ -27,7 +28,7 @@ public class MySqlInjector extends AutoSqlInjector {
 }
 ```
 
-* 当然你的 mapper.java 接口类需要申明使用方法 deleteAll 如下
+## 当然你的 mapper.java 接口类需要申明使用方法 deleteAll 如下
 
 ```java
 public interface UserMapper extends AutoMapper<User> {
@@ -40,7 +41,7 @@ public interface UserMapper extends AutoMapper<User> {
 }
 ```
 
-* 最后一步注入启动
+## 最后一步注入启动
 
 ```xml
 <!-- MyBatis SqlSessionFactoryBean 配置 -->
