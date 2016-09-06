@@ -16,9 +16,7 @@ No！我们不是山寨Mybatis，我们只是一个Mybatis增强辅助工具，�
 
 > 示例中，我们假设有一张表叫foo，里面包含id和name两个字段，通过MP来生成代码
 
---------------------------------------------------------------------------------
-
-> Foo.java
+!FILENAME Foo.java
 
 ```java
 /**
@@ -58,9 +56,7 @@ public class Foo implements Serializable {
 }
 ```
 
---------------------------------------------------------------------------------
-
-> FooMapper.java
+!FILENAME FooMapper.java
 
 ```java
 /**
@@ -73,26 +69,22 @@ public interface FooMapper extends AutoMapper<Foo> {
 }
 ```
 
---------------------------------------------------------------------------------
-
-> FooMapper.xml
+!FILENAME FooMapper.xml
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xxx.mapper.FooMapper">
 
-	<!-- 通用查询结果列-->
-	<sql id="Base_Column_List">
-		 id, name
-	</sql>
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+         id, name
+    </sql>
 
 </mapper>
 ```
 
---------------------------------------------------------------------------------
-
-> FooService.java
+!FILENAME FooService.java
 
 ```java
 /**
@@ -105,9 +97,7 @@ public interface IFooService extends ISuperService<Foo> {
 }
 ```
 
---------------------------------------------------------------------------------
-
-> FooServiceImpl.java
+!FILENAME FooServiceImpl.java
 
 ```java
 /**
