@@ -18,7 +18,7 @@ No！我们不是山寨Mybatis，我们只是一个Mybatis增强辅助工具，�
 
 --------------------------------------------------------------------------------
 
-!FILENAME Foo.java
+> Foo.java
 
 ```java
 /**
@@ -60,7 +60,7 @@ public class Foo implements Serializable {
 
 --------------------------------------------------------------------------------
 
-!FILENAME FooMapper.java
+> FooMapper.java
 
 ```java
 /**
@@ -75,7 +75,7 @@ public interface FooMapper extends AutoMapper<Foo> {
 
 --------------------------------------------------------------------------------
 
-!FILENAME FooMapper.xml
+> FooMapper.xml
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -92,7 +92,7 @@ public interface FooMapper extends AutoMapper<Foo> {
 
 --------------------------------------------------------------------------------
 
->  FooService.java
+> FooService.java
 
 ```java
 /**
