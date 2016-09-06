@@ -1,7 +1,7 @@
 # Summary
 
-* [简介](README.md)
-  * [Mybatis-Plus优点](intro/advantage.md)
+* [Mybatis-Plus简介](README.md)
+  * [概述](intro/introduction.md)
   * [LOGO故事和愿景](intro/logo.md)
   * [构架原理](intro/framework.md)
 * [如何集成](install/README.md)
