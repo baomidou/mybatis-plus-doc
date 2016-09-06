@@ -7,7 +7,9 @@
 参数相关的配置，详见[ConfigGenerator](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/generator/ConfigGenerator.java)类
 
 
-**saveDir**
+> **saveDir**
+
+
 - 类型：String
 - 描述：生成代码存放目录
 - 备注：无
@@ -103,9 +105,9 @@
 - 备注：无
 
 **dbUrl**
-类型：String
-描述：数据库URL
-备注：无
+- 类型：String
+- 描述：数据库URL
+- 备注：无
 
 **idType**
 - 类型：boolean
