@@ -361,4 +361,4 @@ Page<T> selectPage(Page<T> page, EntityWrapper<T> entityWrapper);
 
 > 欢迎大家提出issue和pull-request，包括新功能建议、BUG反馈以及维护代码等，让我们一起把MP变得更加的强大！
 
-看完上面的概述和优点描述，是不是蠢蠢欲动？那么赶紧来看接下来的文章，快速上手Mybatis-Plus！
+**看完上面的概述和优点描述，是不是蠢蠢欲动？那么赶紧来看接下来的文章，快速上手Mybatis-Plus！**
