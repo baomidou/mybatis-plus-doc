@@ -19,8 +19,7 @@
     "back-to-top-button",
     "sitemap",
     "splitter",
-    "toggle-chapters",
-    "tbfed-pagefooter"
+    "toggle-chapters"
   ],
   "pluginsConfig": {
     "sharing": {
@@ -40,11 +39,6 @@
     "edit-link": {
       "base": "https://github.com/baomidou/mybatis-plus-doc/edit/master",
       "label": "Edit This Page"
-    },
-    "tbfed-pagefooter": {
-      "copyright": "&copy baomidou team",
-      "modify_label": "last modify:",
-      "modify_format": "YYYY-MM-DD HH:mm:ss"
     }
   }
 }
