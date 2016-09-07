@@ -185,6 +185,50 @@ IdType.INPUT     | 用户输入ID
 IdType.ID_WORKER | 全局唯一ID，内容为空自动填充（默认配置）
 IdType.UUID      | 全局唯一ID，内容为空自动填充
 
+AUTO、INPUT和UUID大家都应该能够明白，这里主要讲一下ID_WORKER。首先得感谢开源项目`Sequence`，感谢作者`李景枫`。
+
+什么是Sequence？简单来说就是一个分布式高效有序ID生产黑科技工具，思路主要是来源于`Twitter-Snowflake算法`。这里不详细讲解Sequence，有兴趣的朋友请[点此去了解Sequence](http://git.oschina.net/yu120/sequence)。
+
+MP在Sequence的基础上进行部分优化，用于产生全局唯一ID，好的东西希望推广给大家，所以我们将ID_WORDER设置为默认配置。
+
 # 表及字段命名策略选择
 
+在MP中，我们建议`数据库表名`采用`下划线命名方式`，而`表字段名`采用`驼峰命名方式`。
+
+这么做的原因是为了避免在对应实体类时产生的性能损耗，这样字段不用做映射就能直接和实体类对应。当然如果项目里不用考虑这点性能损耗，那么你采用下滑线也是没问题的，只需要在生成代码时配置`dbColumnUnderline`属性就可以。
+
 # 如何生成代码
+
+## 代码生成
+
+> 生成示例
+
+```java
+public class AutoGenerator{
+    public static void main(String[] args) {
+        ConfigGenerator cg = new ConfigGenerator();
+        // 配置 MySQL 连接
+    		cg.setDbDriverName("com.mysql.jdbc.Driver");
+    		cg.setDbUser("username");
+    		cg.setDbPassword("password");
+    		cg.setDbUrl("jdbc:mysql://127.0.0.1:3306/mybatis-plus?characterEncoding=utf8");
+
+        // 配置包名
+        cg.setEntityPackage("com.baomidou.entity");
+    		cg.setMapperPackage("com.baomidou.mapper");
+    		cg.setServicePackage("com.baomidou.service");
+    		cg.setXmlPackage("com.baomidou.mapper.xml");
+    		cg.setServiceImplPackage("com.baomidou.service.impl");
+
+        // 配置保存路径
+        cg.setSaveDir("/path/to/src");
+
+        // 其他参数请根据上面的参数说明自行配置，当所有配置完善后，运行AutoGenerator.run()方法生成Code
+        // 生成代码
+        AutoGenerator.run(cg);
+    }
+}
+```
+
+## Maven插件生成
+待补充（Maven代码生成插件尚未发布到中央库）
