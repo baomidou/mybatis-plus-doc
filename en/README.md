@@ -1,7 +1,5 @@
 <p align="center">
-  <a href="https://github.com/baomidou/mybatis-plus">
-    <img src="../assets/mybatis-plus-logo.png">
-  </a>
+  <img src="../assets/mybatis-plus-logo.png">
 </p>
 <p align="center">Born To Simplify Development</p>
 
