@@ -20,7 +20,8 @@
     "back-to-top-button",
     "sitemap",
     "splitter",
-    "toggle-chapters"
+    "toggle-chapters",
+    "duoshuo"
   ],
   "pluginsConfig": {
     "sharing": {
@@ -44,6 +45,10 @@
     "toc": {
       "addClass": true,
       "className": "toc"
+    },
+    "duoshuo": {
+      "short_name": "dyang520",
+      "theme": "default"
     }
   }
 }
