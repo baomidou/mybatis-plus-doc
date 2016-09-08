@@ -1,4 +1,4 @@
-![Mybatis-Plus-Logo](https://raw.githubusercontent.com/baomidou/logo/master/mybatis-plus-logo-with-words.png "logo")
+![Mybatis-Plus-Logo](assets/mybatis-plus-logo-with-words.png "logo")
 
 > 为简化开发工作、提高生产率而生
 
