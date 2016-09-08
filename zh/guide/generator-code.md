@@ -6,7 +6,9 @@
 
 参数相关的配置，详见[ConfigGenerator](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/generator/ConfigGenerator.java)类
 
-> **saveDir**
+--------------------------------------------------------------------------------
+
+`saveDir`
 
 ```
 类型：String
@@ -14,7 +16,9 @@
 备注：无
 ```
 
-> **entityPackage**
+--------------------------------------------------------------------------------
+
+`entityPackage`
 
 ```
 类型：String
@@ -22,7 +26,9 @@
 备注：无
 ```
 
-> **mapperPackage**
+--------------------------------------------------------------------------------
+
+`mapperPackage`
 
 ```
 类型：String
@@ -30,7 +36,9 @@
 备注：无
 ```
 
-> **xmlPackage**
+--------------------------------------------------------------------------------
+
+`xmlPackage`
 
 ```
 类型：String
@@ -38,7 +46,9 @@
 备注：默认为Mapper目录下的xml文件夹
 ```
 
-> **servicePackage**
+--------------------------------------------------------------------------------
+
+`servicePackage`
 
 ```
 类型：String
@@ -46,7 +56,9 @@
 备注：无
 ```
 
-> **serviceImplPackage**
+--------------------------------------------------------------------------------
+
+`serviceImplPackage`
 
 ```
 类型：String
@@ -54,7 +66,9 @@
 备注：默认为Service目录下的impl文件夹
 ```
 
-> **superService**
+--------------------------------------------------------------------------------
+
+`superService`
 
 ```
 类型：String
@@ -62,7 +76,9 @@
 备注：通过该项，你可以自定义Service层的父类，实现自定义通用方法。若无需求，不用配置。
 ```
 
-> **superServiceImpl**
+--------------------------------------------------------------------------------
+
+`superServiceImpl`
 
 ```
 类型：String
@@ -70,7 +86,9 @@
 备注：同上
 ```
 
-> **mapperName**
+--------------------------------------------------------------------------------
+
+`mapperName`
 
 ```
 类型：String
@@ -78,7 +96,9 @@
 备注：采用"%s"做占位符，默认为"%sMapper"，生成后为FooMapper.java
 ```
 
-> **mapperXMLName**
+--------------------------------------------------------------------------------
+
+`mapperXMLName`
 
 ```
 类型：String
@@ -86,7 +106,9 @@
 备注：采用"%s"做占位符，默认为"%sMapper"，生成后为FooMapper.xml
 ```
 
-> **serviceName**
+--------------------------------------------------------------------------------
+
+`serviceName`
 
 ```
 类型：String
@@ -94,7 +116,9 @@
 备注：采用"%s"做占位符，默认为"I%sService"，生成后为IFooService.java
 ```
 
-> **serviceImplName**
+--------------------------------------------------------------------------------
+
+`serviceImplName`
 
 ```
 类型：String
@@ -102,7 +126,9 @@
 备注：采用"%s"做占位符，默认为"%sServiceImpl"，生成后为FooServiceImpl.java
 ```
 
-> **tableNames**
+--------------------------------------------------------------------------------
+
+`tableNames`
 
 ```
 类型：String[]
@@ -110,7 +136,9 @@
 备注：若为空就直接指定所有表，格式为逗号分割
 ```
 
-> **fileOverride**
+--------------------------------------------------------------------------------
+
+`fileOverride`
 
 ```
 类型：boolean
@@ -118,15 +146,19 @@
 备注：true为覆盖，false为不覆盖
 ```
 
-> **dbPrefix**
+--------------------------------------------------------------------------------
+
+`dbPrefix`
 
 ```
 类型：boolean
 描述：设置数据库前缀
-备注：例如`mp_user`生成实体类，false 为 MpUser.java , true 为 User.java
+备注：例如`mp_user`生成实体类，false 为 MpUser.java , true 为 User.java 。
 ```
 
-> **dbColumnUnderline**
+--------------------------------------------------------------------------------
+
+`dbColumnUnderline`
 
 ```
 类型：boolean
@@ -134,7 +166,9 @@
 备注：
 ```
 
-> **dbDriverName**
+--------------------------------------------------------------------------------
+
+`dbDriverName`
 
 ```
 类型：String
@@ -142,7 +176,9 @@
 备注：如com.mysql.jdbc.Driver
 ```
 
-> **dbUser**
+--------------------------------------------------------------------------------
+
+`dbUser`
 
 ```
 类型：String
@@ -150,7 +186,9 @@
 备注：无
 ```
 
-> **dbPassword**
+--------------------------------------------------------------------------------
+
+`dbPassword`
 
 ```
 类型：String
@@ -158,7 +196,9 @@
 备注：无
 ```
 
-> **dbUrl**
+--------------------------------------------------------------------------------
+
+`dbUrl`
 
 ```
 类型：String
@@ -166,13 +206,17 @@
 备注：无
 ```
 
-> **idType**
+--------------------------------------------------------------------------------
+
+`idType`
 
 ```
 类型：boolean
 描述：ID主键策略
 备注：表主键 ID 生成类型, 自增该设置无效。详见主键策略选择。
 ```
+
+--------------------------------------------------------------------------------
 
 # 主键策略选择
 
@@ -208,17 +252,17 @@ public class AutoGenerator{
     public static void main(String[] args) {
         ConfigGenerator cg = new ConfigGenerator();
         // 配置 MySQL 连接
-    		cg.setDbDriverName("com.mysql.jdbc.Driver");
-    		cg.setDbUser("username");
-    		cg.setDbPassword("password");
-    		cg.setDbUrl("jdbc:mysql://127.0.0.1:3306/mybatis-plus?characterEncoding=utf8");
+            cg.setDbDriverName("com.mysql.jdbc.Driver");
+            cg.setDbUser("username");
+            cg.setDbPassword("password");
+            cg.setDbUrl("jdbc:mysql://127.0.0.1:3306/mybatis-plus?characterEncoding=utf8");
 
         // 配置包名
         cg.setEntityPackage("com.baomidou.entity");
-    		cg.setMapperPackage("com.baomidou.mapper");
-    		cg.setServicePackage("com.baomidou.service");
-    		cg.setXmlPackage("com.baomidou.mapper.xml");
-    		cg.setServiceImplPackage("com.baomidou.service.impl");
+            cg.setMapperPackage("com.baomidou.mapper");
+            cg.setServicePackage("com.baomidou.service");
+            cg.setXmlPackage("com.baomidou.mapper.xml");
+            cg.setServiceImplPackage("com.baomidou.service.impl");
 
         // 配置保存路径
         cg.setSaveDir("/path/to/src");
@@ -231,4 +275,5 @@ public class AutoGenerator{
 ```
 
 ## Maven插件生成
+
 待补充（Maven代码生成插件尚未发布到中央库）

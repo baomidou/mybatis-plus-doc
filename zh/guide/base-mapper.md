@@ -2,7 +2,9 @@
 
 通用Mapper和Service集成了单表CRUD的大部分方法，能够满足各类型的开发，下面我们来一览其包含的方法：
 
-> insert(T entity)
+--------------------------------------------------------------------------------
+
+`insert(T entity)`
 
 ```
 插入一条记录
@@ -12,7 +14,9 @@
 描述：无
 ```
 
-> insertSelective(T entity)
+--------------------------------------------------------------------------------
+
+`insertSelective(T entity)`
 
 ```
 选择性插入一条记录
@@ -22,7 +26,9 @@
 描述：null字段不插入
 ```
 
-> insertBatch(List<T> entityList)
+--------------------------------------------------------------------------------
+
+`insertBatch(List<T> entityList)`
 
 ```
 批量插入
@@ -32,7 +38,9 @@
 描述：推荐批量操作的时候使用对应的批量操作，for循环性能很低的。注意！该方法不适合 Oracle！
 ```
 
-> deleteById(PK id)
+--------------------------------------------------------------------------------
+
+`deleteById(PK id)`
 
 ```
 删除一条记录
@@ -42,7 +50,9 @@
 描述：无
 ```
 
-> deleteByMap(Map<String, Object> columnMap)
+--------------------------------------------------------------------------------
+
+`deleteByMap(Map<String, Object> columnMap)`
 
 ```
 根据自定义Map来进行删除
@@ -52,7 +62,9 @@
 描述：比如 columnMap.put("name", "zhangsan")，删除的时候将会去删除name为zhangsan的数据。
 ```
 
-> deleteSelective(T entity)
+--------------------------------------------------------------------------------
+
+`deleteSelective(T entity)`
 
 ```
 根据实体类选择性删除
@@ -62,7 +74,9 @@
 描述：比如 entity.setName("zhangsan")，删除的时候将会去删除name为zhangsan的数据。
 ```
 
-> deleteBatchIds(List<PK> idList)
+--------------------------------------------------------------------------------
+
+`deleteBatchIds(List<PK> idList)`
 
 ```
 批量删除
@@ -72,7 +86,9 @@
 描述：无
 ```
 
-> updateById(T entity)
+--------------------------------------------------------------------------------
+
+`updateById(T entity)`
 
 ```
 通过ID更新数据
@@ -82,7 +98,9 @@
 描述：无
 ```
 
-> updateSelectiveById(T entity)
+--------------------------------------------------------------------------------
+
+`updateSelectiveById(T entity)`
 
 ```
 通过ID选择性更新数据
@@ -92,7 +110,9 @@
 描述：null字段不更新
 ```
 
-> update(T entity, T whereEntity)
+--------------------------------------------------------------------------------
+
+`update(T entity, T whereEntity)`
 
 ```
 通过实体类构造where条件进行更新
@@ -102,7 +122,9 @@
 描述：比如 whereEntity.setName("zhangsan")，查找name为zhangsan的数据进行更新，更新的内容是entity中的数据
 ```
 
-> updateSelective(T entity, T whereEntity)
+--------------------------------------------------------------------------------
+
+`updateSelective(T entity, T whereEntity)`
 
 ```
 通过实体类构造where条件进行选择性更新
@@ -112,7 +134,9 @@
 描述：null字段不更新
 ```
 
-> updateBatchById(List<T> entityList)
+--------------------------------------------------------------------------------
+
+`updateBatchById(List<T> entityList)`
 
 ```
 通过ID批量更新
@@ -122,7 +146,9 @@
 描述：无
 ```
 
-> selectById(PK id)
+--------------------------------------------------------------------------------
+
+`selectById(PK id)`
 
 ```
 通过ID查询一条数据
@@ -132,7 +158,9 @@
 描述：无
 ```
 
-> selectBatchIds(List<PK> idList)
+--------------------------------------------------------------------------------
+
+`selectBatchIds(List<PK> idList)`
 
 ```
 通过ID批量查询
@@ -142,7 +170,9 @@
 描述：无
 ```
 
-> selectByMap(Map<String, Object> columnMap)
+--------------------------------------------------------------------------------
+
+`selectByMap(Map<String, Object> columnMap)`
 
 ```
 根据自定义Map来进行查询
@@ -152,7 +182,9 @@
 描述：无
 ```
 
-> selectOne(T entity)
+--------------------------------------------------------------------------------
+
+`selectOne(T entity)`
 
 ```
 根据 entity 条件，查询一条记录
@@ -162,7 +194,9 @@
 描述：比如 entity.setName("zhangsan")，将会去查询name为zhangsan的数据。
 ```
 
-> selectCount(T entity)
+--------------------------------------------------------------------------------
+
+`selectCount(T entity)`
 
 ```
 根据 entity 条件，查询总记录数
@@ -172,7 +206,9 @@
 描述：无
 ```
 
-> selectList(EntityWrapper<T> entityWrapper)
+--------------------------------------------------------------------------------
+
+`selectList(EntityWrapper<T> entityWrapper)`
 
 ```
 根据entityWrapper进行查询
@@ -182,7 +218,9 @@
 描述：entityWrapper请详看查询条件构造器EntityWrapper文档。
 ```
 
-> selectPage(Page<T> page, EntityWrapper<T> entityWrapper)
+--------------------------------------------------------------------------------
+
+`selectPage(Page<T> page, EntityWrapper<T> entityWrapper)`
 
 ```
 翻页查询
@@ -192,5 +230,7 @@
 描述：page请详看分页插件文档，entityWrapper请详看查询条件构造器EntityWrapper文档。
 selectPage查询后，将会把查询到的数据set进Page的records属性中，而其他的分页相关的代码也会set进对应的属性。
 ```
+
+--------------------------------------------------------------------------------
 
 如果需要示例，请参考源码中Test中的相应示例，[点此去查看](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/test/java/com/baomidou/mybatisplus/test/mysql/UserMapperTest.java)。
