@@ -1,4 +1,4 @@
-![mybati-to-plus]("https://raw.githubusercontent.com/baomidou/logo/master/mybatis-plus-logo-with-words.png")
+![Mybatis-Plus-Logo](https://raw.githubusercontent.com/baomidou/logo/master/mybatis-plus-logo-with-words.png "logo")
 
 > Born To Simplify Development
 
