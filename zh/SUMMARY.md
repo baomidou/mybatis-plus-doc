@@ -17,5 +17,5 @@
   * [数据库表关键词转义配置](guide/keywords-transfer.md)
   * [表公共字段自定义填充](guide/auto-fill.md)
   * [注入自定义公共方法SQL](guide/sql-injector.md)
-  * [mapper.xml 热加载配置使用](guide/hot-loading.md)
+  * [Mapper对应XML文件热加载](guide/hot-loading.md)
 * [常见问题](faq/README.md)

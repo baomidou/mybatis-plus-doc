@@ -9,4 +9,4 @@
 - [数据库表关键词转义配置](keywords-transfer.md)
 - [表公共字段自定义填充](auto-fill.md)
 - [注入自定义公共方法SQL](sql-injector.md)
-- [mapper.xml 热加载配置使用](hot-loading.md)
+- [Mapper对应XML文件热加载](hot-loading.md)
