@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="assets/mybatis-plus-logo.png">
+  <a href="https://github.com/baomidou/mybatis-plus">
+    <img src="https://raw.githubusercontent.com/baomidou/logo/master/mybatis-plus-logo-with-words.png">
+  </a>
 </p>
 <p align="center">为简化开发工作、提高生产率而生</p>
 
