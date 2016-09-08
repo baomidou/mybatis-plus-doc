@@ -14,7 +14,7 @@
     "search-jieba",
     "-highlight",
     "prism",
-    "atoc",
+    "toc",
     "edit-link",
     "forkmegithub",
     "back-to-top-button",
@@ -41,9 +41,9 @@
       "base": "https://github.com/baomidou/mybatis-plus-doc/edit/master",
       "label": "Edit This Page"
     },
-    "atoc": {
+    "toc": {
       "addClass": true,
-      "className": "atoc"
+      "className": "toc"
     }
   }
 }
