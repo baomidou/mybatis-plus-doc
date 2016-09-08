@@ -1,9 +1,6 @@
-<p align="center">
-  <a href="https://github.com/baomidou/mybatis-plus">
-    <img src="https://raw.githubusercontent.com/baomidou/logo/master/mybatis-plus-logo-with-words.png">
-  </a>
-</p>
-<p align="center">Born To Simplify Development</p>
+![mybati-to-plus]("https://raw.githubusercontent.com/baomidou/logo/master/mybatis-plus-logo-with-words.png")
+
+> Born To Simplify Development
 
 # Introduction
 

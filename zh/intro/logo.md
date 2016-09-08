@@ -6,6 +6,6 @@
 
 愿景：成为`Mybatis`最得力的助手，就像魂斗罗中的1P和2P，齐力面对开发难题。
 
-![contra](../../assets/contra.jpg)
+![contra](../../assets/contra.jpg "contra")
 
 > 这就是LOGO的来源，红色和蓝色的忍者鸟就像魂斗罗中的1P和2P，**基友搭配、效率翻倍**。
