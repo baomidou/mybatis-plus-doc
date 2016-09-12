@@ -252,17 +252,17 @@ public class AutoGenerator{
     public static void main(String[] args) {
         ConfigGenerator cg = new ConfigGenerator();
         // 配置 MySQL 连接
-            cg.setDbDriverName("com.mysql.jdbc.Driver");
-            cg.setDbUser("username");
-            cg.setDbPassword("password");
-            cg.setDbUrl("jdbc:mysql://127.0.0.1:3306/mybatis-plus?characterEncoding=utf8");
+        cg.setDbDriverName("com.mysql.jdbc.Driver");
+        cg.setDbUser("username");
+        cg.setDbPassword("password");
+        cg.setDbUrl("jdbc:mysql://127.0.0.1:3306/mybatis-plus?characterEncoding=utf8");
 
         // 配置包名
         cg.setEntityPackage("com.baomidou.entity");
-            cg.setMapperPackage("com.baomidou.mapper");
-            cg.setServicePackage("com.baomidou.service");
-            cg.setXmlPackage("com.baomidou.mapper.xml");
-            cg.setServiceImplPackage("com.baomidou.service.impl");
+        cg.setMapperPackage("com.baomidou.mapper");
+        cg.setServicePackage("com.baomidou.service");
+        cg.setXmlPackage("com.baomidou.mapper.xml");
+        cg.setServiceImplPackage("com.baomidou.service.impl");
 
         // 配置保存路径
         cg.setSaveDir("/path/to/src");

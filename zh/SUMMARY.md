@@ -8,7 +8,7 @@
   * [安装及依赖说明](install/dependency.md)
   * [集成教程](install/configuration.md)
 * [如何使用](guide/README.md)
-  * [代码生成](guide/generator-code.md)
+  * [代码生成](guide/generate-code.md)
   * [通用Mapper和Service](guide/base-mapper.md)
   * [查询条件构造器EntityWrapper](guide/entity-wrapper.md)
   * [分页插件](guide/page-plugin.md)

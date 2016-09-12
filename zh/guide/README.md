@@ -1,6 +1,6 @@
 # 使用文档
 
-- [代码生成](generator-code.md)
+- [代码生成](generate-code.md)
 - [通用Mapper和Service](base-mapper.md)
 - [查询条件构造器EntityWrapper](entity-wrapper.md)
 - [分页插件](page-plugin.md)
