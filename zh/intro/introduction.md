@@ -4,7 +4,9 @@
 
 No！我们不是山寨Mybatis，我们只是一个Mybatis增强辅助工具，通过这个工具我们可以极其方便的进行单表的CRUD，从枯燥单一的CRUD中脱离出来。
 
-你也许会说这不就是通用Mapper么？对，MP是具有通用Mapper的功能，但是又不仅仅限于此，使用MP，能够有效的提升您的开发效率！因为我们所做的一切都是为了简化开发工作、提高生产率！口说无凭，我们来看看使用MP开发到底多有效率~
+你也许会说这不就是通用Mapper么？对，MP是具有通用Mapper的功能，但是又不仅仅限于此，使用MP，能够有效的提升您的开发效率！因为MP就是为简化开发工作、提高生产率而生！
+
+口说无凭，我们来看看使用MP开发到底多有效率~
 
 # 前瞻
 
@@ -113,226 +115,69 @@ public class FooServiceImpl extends SuperServiceImpl<FooMapper, Foo> implements 
 }
 ```
 
-这就是MP生成代码，非常的简洁而且还生成了对应的注释（实体类字段的注释需要在数据库设计的时候就填写好备注），你可以看到MP采用了继承的方式来提取CRUD方法，那么我们到底有哪些方法呢？
+纳尼？！！怎么可以这么简洁？！！xml怎么什么东西都没有？！！
+
+对，你没有看错，这就是MP生成代码，非常的简洁而且还生成了对应的注释（备注：实体类字段的注释需要在数据库设计的时候就填写好备注）。
+
+你可以看到MP采用了继承的方式来提取CRUD方法，那么我们到底有哪些方法呢（详见：[通用Mapper和Service](../guide/base-mapper.md)）？
+
+> insert相关
 
 ```java
-/**
- * <p>
- * 插入一条记录
- * </p>
- *
- * @param entity
- *            实体对象
- * @return boolean
- */
-boolean insert(T entity);
+boolean insert(T entity); //插入
 
-/**
- * <p>
- * 插入一条记录（选择字段， null 字段不插入）
- * </p>
- *
- * @param entity
- *            实体对象
- * @return boolean
- */
-boolean insertSelective(T entity);
+boolean insertSelective(T entity); //选择性插入，null字段不插入
 
-/**
- * <p>
- * 插入（批量），该方法不适合 Oracle
- * </p>
- *
- * @param entityList
- *            实体对象列表
- * @return boolean
- */
-boolean insertBatch(List<T> entityList);
-
-/**
- * <p>
- * 根据 ID 删除
- * </p>
- *
- * @param id
- *            主键ID
- * @return boolean
- */
-boolean deleteById(I id);
-
-/**
- * <p>
- * 根据 columnMap 条件，删除记录
- * </p>
- *
- * @param columnMap
- *            表字段 map 对象
- * @return boolean
- */
-boolean deleteByMap(Map<String, Object> columnMap);
-
-/**
- * <p>
- * 根据 entity 条件，删除记录
- * </p>
- *
- * @param entity
- *            实体对象
- * @return boolean
- */
-boolean deleteSelective(T entity);
-
-/**
- * <p>
- * 删除（根据ID 批量删除）
- * </p>
- *
- * @param idList
- *            主键ID列表
- * @return boolean
- */
-boolean deleteBatchIds(List<I> idList);
-
-/**
- * <p>
- * 根据 ID 修改
- * </p>
- *
- * @param entity
- *            实体对象
- * @return boolean
- */
-boolean updateById(T entity);
-
-/**
- * <p>
- * 根据 ID 选择修改
- * </p>
- *
- * @param entity
- *            实体对象
- * @return boolean
- */
-boolean updateSelectiveById(T entity);
-
-/**
- * <p>
- * 根据 whereEntity 条件，更新记录
- * </p>
- *
- * @param entity
- *            实体对象
- * @param whereEntity
- *            实体查询条件（可以为 null）
- * @return boolean
- */
-boolean update(T entity, T whereEntity);
-
-/**
- * <p>
- * 根据 whereEntity 条件，选择更新记录
- * </p>
- *
- * @param entity
- *            实体对象
- * @param whereEntity
- *            实体查询条件（可以为 null）
- * @return boolean
- */
-boolean updateSelective(T entity, T whereEntity);
-
-/**
- * <p>
- * 根据ID 批量更新
- * </p>
- *
- * @param entityList
- *            实体对象列表
- * @return boolean
- */
-boolean updateBatchById(List<T> entityList);
-
-/**
- * <p>
- * 根据 ID 查询
- * </p>
- *
- * @param id
- *            主键ID
- * @return T
- */
-T selectById(I id);
-
-/**
- * <p>
- * 查询（根据ID 批量查询）
- * </p>
- *
- * @param idList
- *            主键ID列表
- * @return List<T>
- */
-List<T> selectBatchIds(List<I> idList);
-
-/**
- * <p>
- * 查询（根据 columnMap 条件）
- * </p>
- *
- * @param columnMap
- *            表字段 map 对象
- * @return List<T>
- */
-List<T> selectByMap(Map<String, Object> columnMap);
-
-/**
- * <p>
- * 根据 entity 条件，查询一条记录
- * </p>
- *
- * @param entity
- *            实体对象
- * @return T
- */
-T selectOne(T entity);
-
-/**
- * <p>
- * 根据 entity 条件，查询总记录数
- * </p>
- *
- * @param entity
- *            实体对象
- * @return int
- */
-int selectCount(T entity);
-
-/**
- * <p>
- * 查询列表
- * </p>
- *
- * @param entityWrapper
- *            实体包装类 {@link EntityWrapper}
- * @return
- */
-List<T> selectList(EntityWrapper<T> entityWrapper);
-
-/**
- * <p>
- * 翻页查询
- * </p>
- *
- * @param page
- *            翻页对象
- * @param entityWrapper
- *            实体包装类 {@link EntityWrapper}
- * @return
- */
-Page<T> selectPage(Page<T> page, EntityWrapper<T> entityWrapper);
+boolean insertBatch(List<T> entityList); //批量插入
 ```
 
-只要生成了代码，就已经带有上述的所有方法，单表的CRUD已经完全能够满足了。你也许会问，那多表或者复杂业务怎么办？之前说了，MP是一个增强辅助工具，不会改变Mybatis，如果有多表业务和复杂业务，就可以像正常Mybatis一样使用，没有任何冲突。
+> delete相关
+
+```java
+boolean deleteById(I id); //通过ID删除
+
+boolean deleteByMap(Map<String, Object> columnMap); // 通过自定义MAP删除
+
+boolean deleteSelective(T entity); //通过entity实体选择性删除，null字段不作为条件
+
+boolean deleteBatchIds(List<I> idList); //批量删除
+```
+
+> update相关
+
+```java
+boolean updateById(T entity); //通过ID更新
+
+boolean updateSelectiveById(T entity); //通过ID选择性更新，null字段不更新
+
+boolean update(T entity, T whereEntity); //通过whereEntity实体构造where条件进行更新
+
+boolean updateSelective(T entity, T whereEntity); //通过whereEntity实体构造where条件进行选择性更新
+
+boolean updateBatchById(List<T> entityList); //批量更新
+```
+
+> select相关
+
+```java
+T selectById(I id); //通过ID查询
+
+List<T> selectBatchIds(List<I> idList); //通过ID集合批量查询
+
+List<T> selectByMap(Map<String, Object> columnMap); //通过自定义MAP查询
+
+T selectOne(T entity); //通过实体entity查询
+
+int selectCount(T entity); //统计查询
+
+List<T> selectList(EntityWrapper<T> entityWrapper); //List查询，entityWrapper为查询条件构造器
+
+Page<T> selectPage(Page<T> page, EntityWrapper<T> entityWrapper); //分页查询，page为分页实体，entityWrapper为查询条件构造器
+```
+
+只要生成了代码，就已经带有上述的所有方法，单表的CRUD已经完全能够满足了。
+
+你也许会问，那多表或者复杂业务怎么办？之前说了，MP是一个增强辅助工具，不会改变Mybatis，如果有多表业务和复杂业务，就可以像正常Mybatis一样使用，没有任何冲突。
 
 > 文档君吐槽：其实也是由于复杂业务多而杂，不好归纳整理，所以我们希望能够维护好单表的CRUD，让开发者能够专注于复杂业务，脱离单调枯燥的CRUD，可以疯狂的输出代码，缩短开发周期，开发周期一短领导就高兴，领导一高兴就要加薪，一加薪就从此走上人生巅峰，赢取白富美~ `↖(^ω^)↗`
 
