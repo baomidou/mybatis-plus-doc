@@ -251,6 +251,7 @@ MP在Sequence的基础上进行部分优化，用于产生全局唯一ID，好�
 public class AutoGenerator{
     public static void main(String[] args) {
         ConfigGenerator cg = new ConfigGenerator();
+        
         // 配置 MySQL 连接
         cg.setDbDriverName("com.mysql.jdbc.Driver");
         cg.setDbUser("username");
