@@ -39,6 +39,7 @@ deploy:
   type: git
   repo:
       github: https://github.com/baomidou/mybatis-plus-doc.git,gh-pages
+      osc: https://git.oschina.net/baomidou/mybatis-plus-doc.git,gh-pages
 
 # Third-Party Plugins
 #disqus_shortname: hexojs
