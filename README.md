@@ -47,3 +47,4 @@ gitbook install
 # run as serve
 gitbook serve
 ```
+![Alt text](/path/to/img.jpg "Optional title")![Alt text](/path/to/img.jpg "Optional title")![Alt text](/path/to/img.jpg "Optional title")![Alt text](/path/to/img.jpg "Optional title")![Alt text](/path/to/img.jpg "Optional title")
