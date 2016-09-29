@@ -1,0 +1,5 @@
+docs:
+  getting_started:
+    overview: index.html
+    futures: futures.html
+    architecture: architecture.html
