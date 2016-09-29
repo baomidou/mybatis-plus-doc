@@ -1,4 +1,4 @@
-# Hexo files
+# Hexo Files
 node_modules/
 *.log
 db.json
