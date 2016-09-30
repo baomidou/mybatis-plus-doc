@@ -28,16 +28,16 @@ sidebar:
     configuration: 集成教程
 
     guide: 如何使用
-    generate-code: 代码生成器
-    base-mapper: 通用CRUD方法
-    entity-wrapper: 条件构造器
+    code-generator: 代码生成器
+    common-crud: 通用CRUD方法
+    criteria-constructor: 条件构造器
     page-plugin: 分页插件
     performance-analysis-plugin: 性能分析插件
     execution-analysis-plugin: 执行分析插件
-    keywords-transfer: 关键词转义配置
-    auto-fill: 公共字段自动填充
-    sql-injector: 注入自定义SQL
-    hot-loading: XML文件热加载
+    keywords-transfer: 关键词转义
+    auto-fill: 自动填充
+    sql-injector: 自定义SQL注入
+    hot-loading: 热加载
 
     faq: 常见问题
     faq-list: 问题列表

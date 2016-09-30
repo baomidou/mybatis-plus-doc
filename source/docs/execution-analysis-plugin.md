@@ -1,6 +1,5 @@
 title: 执行分析插件
---- 
-
+---
 > SQL 执行分析拦截器【 目前只支持 MYSQL-5.6.3 以上版本 】，作用是分析 处理 DELETE UPDATE 语句，
 防止小白或者恶意 delete update 全表操作！
 

@@ -23,21 +23,21 @@ sidebar:
     futures: Futures
     architecture: Architecture
 
-    install: 如何安装
-    dependency: 安装及依赖说明
-    configuration: 集成教程
+    install: Install
+    dependency: Dependency
+    configuration: Configuration
 
-    guide: 如何使用
-    generate-code: 代码生成
-    base-mapper: 通用Mapper和Service
-    entity-wrapper: 查询条件构造器EntityWrapper
-    page-plugin: 分页插件
-    performance-analysis-plugin: 性能分析插件
-    execution-analysis-plugin: 执行分析插件
-    keywords-transfer: 数据库表关键词转义配置
-    auto-fill: 表公共字段自定义填充
-    sql-injector: 注入自定义公共方法SQL
-    hot-loading: Mapper对应XML文件热加载
+    guide: Guide
+    code-generator: Code Generator
+    common-crud: Common CRUD
+    criteria-constructor: Criteria Constructor
+    page-plugin: Page Plugin
+    performance-analysis-plugin: Performance Analysis Plugin
+    execution-analysis-plugin: Execution Analysis Plugin
+    keywords-transfer: Keywords Transfer
+    auto-fill: Auto Fill
+    sql-injector: SQL Injector
+    hot-loading: Hot Loading
 
-    faq: 常见问题
-    faq-list: 问题列表
+    faq: FAQ
+    faq-list: FAQ List

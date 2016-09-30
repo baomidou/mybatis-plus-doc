@@ -37,3 +37,5 @@ Mybatis-Plus 是 `Mybatis` 最得力的助手，只做增强不做改变，为�
 - 维护文档：文档地址[Mybatis-Plus-Doc](https://github.com/baomidou/mybatis-plus-doc)，欢迎参与翻译和修订~
 
 Mybatis-Plus的发展离不开每一位支持它的人，谢谢各位对MP的支持！
+
+**文档托管在Github上，MP的Github也才开不久，希望各位能够在Github上去Star、Fork一下，让Github上的MP活跃起来！**

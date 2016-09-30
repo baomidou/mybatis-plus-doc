@@ -2,7 +2,7 @@ title: 集成教程
 ---
 # SpringMVC方式
 
-在进行配置之前，请确保MP本地和其依赖包都已配置好，详见**安装及依赖说明**
+> 在进行配置之前，请确保MP本地和其依赖包都已配置好!
 
 ```xml spring-mybatis.xml
 <!-- MyBatis SqlSessionFactoryBean 配置 -->
