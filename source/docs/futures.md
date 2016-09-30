@@ -4,7 +4,11 @@ title: 愿景
 
 ![mybati-to-plus](/images/relationship-with-mybatis.png "mybatis-to-plus")
 
-愿景：成为`Mybatis`最得力的助手，就像魂斗罗中的1P和2P，齐力面对开发难题。
+# 愿景
+
+> 成为`Mybatis`最得力的助手，就像魂斗罗中的1P和2P，齐力面对开发难题。
+
+# LOGO灵感
 
 ![contra](/images/contra.jpg "contra")
 

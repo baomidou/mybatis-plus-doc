@@ -1,4 +1,4 @@
-title: 查询条件构造器EntityWrapper
+title: 条件构造器
 ---
 > 实体包装器，用语处理 sql 拼接，排序，实体参数查询等！
 

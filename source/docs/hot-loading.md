@@ -1,4 +1,4 @@
-title: Mapper对应XML文件热加载
+title: XML文件热加载
 ---
 > 开启动态加载 mapper.xml
 

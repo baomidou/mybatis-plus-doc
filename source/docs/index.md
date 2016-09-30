@@ -33,7 +33,7 @@ Mybatis-Plus 是 `Mybatis` 最得力的助手，只做增强不做改变，为�
 
 > 欢迎各路好汉一起来参与完善Mybatis-Plus，我们期待你的PR！
 
-- 贡献代码：代码地址[Mybati-Plus](https://github.com/baomidou/mybatis-plus)，欢迎提交issue或者pull-request~
+- 贡献代码：代码地址[Mybatis-Plus](https://github.com/baomidou/mybatis-plus)，欢迎提交issue或者pull-request~
 - 维护文档：文档地址[Mybatis-Plus-Doc](https://github.com/baomidou/mybatis-plus-doc)，欢迎参与翻译和修订~
 
-Mybatis-Plus的发展离不开每一位支持她的人，谢谢各位对MP的支持！
+Mybatis-Plus的发展离不开每一位支持它的人，谢谢各位对MP的支持！

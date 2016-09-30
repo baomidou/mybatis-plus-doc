@@ -2,11 +2,9 @@ title: 集成教程
 ---
 # SpringMVC方式
 
-在进行配置之前，请确保MP本地和其依赖包都已配置好，详见[安装及依赖说明](dependency.md)
+在进行配置之前，请确保MP本地和其依赖包都已配置好，详见**安装及依赖说明**
 
-> spring-mybatis.xml
-
-```xml
+```xml spring-mybatis.xml
 <!-- MyBatis SqlSessionFactoryBean 配置 -->
 <!-- 注意：这里使用的是MP的MybatisSqlSessionFactoryBean，而不是Mybatis的，因为MP需要进行相应代理 -->
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
@@ -22,9 +20,9 @@ title: 集成教程
     <property name="plugins">
         <array>
             <!-- 分页插件配置 -->
-	        <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
-	            <property name="dialectType" value="mysql" />
-	        </bean>
+            <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
+                <property name="dialectType" value="mysql" />
+            </bean>
         </array>
     </property>
     <!-- Oracle需要添加该项 -->
@@ -40,4 +38,6 @@ title: 集成教程
 </bean>
 ```
 
-# 其他方式待补充......
+# SpringBoot形式
+
+文档待补充，可先行查看Demo：[Github](https://github.com/baomidou/mybatisplus-spring-boot)、[OSC](http://git.oschina.net/baomidou/mybatisplus-spring-boot)

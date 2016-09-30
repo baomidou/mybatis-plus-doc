@@ -1,4 +1,4 @@
-title: 注入自定义公共方法SQL
+title: 注入自定义SQL
 ---
 > 自定义注入全表删除方法  deteleAll
 

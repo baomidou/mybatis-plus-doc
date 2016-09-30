@@ -1,4 +1,4 @@
-title: 数据库表关键词转义配置
+title: 关键词转义配置
 ---
 > 启动全局 database-keywords 数据库关键词转义
 
