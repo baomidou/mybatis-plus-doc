@@ -29,7 +29,7 @@ sidebar:
 
     guide: Guide
     code-generator: Code Generator
-    common-crud: Common CRUD
+    general-crud: General CRUD
     criteria-constructor: Criteria Constructor
     page-plugin: Page Plugin
     performance-analysis-plugin: Performance Analysis Plugin

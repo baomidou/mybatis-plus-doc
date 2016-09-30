@@ -11,7 +11,7 @@ docs:
 
   guide:
     code-generator: code-generator.html
-    common-crud: common-crud.html
+    general-crud: general-crud.html
     criteria-constructor: criteria-constructor.html
     page-plugin: page-plugin.html
     performance-analysis-plugin: performance-analysis-plugin.html

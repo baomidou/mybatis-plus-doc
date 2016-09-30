@@ -29,7 +29,7 @@ sidebar:
 
     guide: 如何使用
     code-generator: 代码生成器
-    common-crud: 通用CRUD方法
+    general-crud: 通用CRUD方法
     criteria-constructor: 条件构造器
     page-plugin: 分页插件
     performance-analysis-plugin: 性能分析插件

@@ -139,7 +139,7 @@ MP在Sequence的基础上进行部分优化，用于产生全局唯一ID，好�
 ## 方式一、代码生成
 
 ```java 生成示例
-public class AutoGenerator{
+public class CustomGenerator{
     public static void main(String[] args) {
         ConfigGenerator cg = new ConfigGenerator();
 
@@ -155,7 +155,10 @@ public class AutoGenerator{
         cg.setServicePackage("com.baomidou.service");
         cg.setXmlPackage("com.baomidou.mapper.xml");
         cg.setServiceImplPackage("com.baomidou.service.impl");
-
+        
+        // 配置表主键策略
+        cg.setIdType(IdType.AUTO);
+        
         // 配置保存路径
         cg.setSaveDir("/path/to/src");
 
