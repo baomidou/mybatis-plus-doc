@@ -1,5 +1,25 @@
 docs:
-  getting_started:
-    overview: index.html
+  intro:
+    index: index.html
+    overview: overview.html
     futures: futures.html
     architecture: architecture.html
+
+  install:
+    dependency: dependency.html
+    configuration: configuration.html
+
+  guide:
+    generate-code: generate-code.html
+    base-mapper: base-mapper.html
+    entity-wrapper: entity-wrapper.html
+    page-plugin: page-plugin.html
+    performance-analysis-plugin: performance-analysis-plugin.html
+    execution-analysis-plugin: execution-analysis-plugin.html
+    keywords-transfer: keywords-transfer.html
+    auto-fill: auto-fill.html
+    sql-injector: sql-injector.html
+    hot-loading: hot-loading.html
+
+  faq:
+    faq-list: faq-list.html

@@ -1,12 +1,16 @@
 title: 简介
 ---
-![Mybatis-Plus-Logo](/images/mybatis-plus-logo-with-words.png "logo")
+<p align="center">
+  <a href="https://github.com/baomidou/mybatis-plus">
+    <img src="/images/mybatis-plus-logo-with-words.png">
+  </a>
+</p>
 
-> 为简化开发工作、提高生产率而生
+> 为简化开发、提高效率而生
 
 # 简介
 
-Mybatis-Plus 是 `Mybatis` 最得力的助手，只做增强不做改变，为简化开发工作、提高生产率而生。
+Mybatis-Plus 是 `Mybatis` 最得力的助手，只做增强不做改变，为简化开发、提高效率而生。
 
 > 我们的愿景是成为`Mybatis`最好的搭档，就像魂斗罗中的1P、2P，齐力面对开发难题。
 
@@ -25,23 +29,11 @@ Mybatis-Plus 是 `Mybatis` 最得力的助手，只做增强不做改变，为�
 - **全局拦截**：提供全表`delete`、`update`操作智能分析阻断
 - **避免Sql注入**：内置Sql注入内容剥离器，预防Sql注入攻击
 
-# 文档修订
+# 加入我们
 
-> 欢迎各路好汉一起来完善文档，我们期待你的PR！
+> 欢迎各路好汉一起来参与完善Mybatis-Plus，我们期待你的PR！
 
-```bash
-# clone this repo
-git clone https://github.com/baomidou/mybatis-plus-doc.git
+- 贡献代码：代码地址[Mybati-Plus](https://github.com/baomidou/mybatis-plus)，欢迎提交issue或者pull-request~
+- 维护文档：文档地址[Mybatis-Plus-Doc](https://github.com/baomidou/mybatis-plus-doc)，欢迎参与翻译和修订~
 
-# cd into project
-cd mybatis-plus-doc/
-
-# install gitbook-cli
-npm install gitbook-cli -g
-
-# init gitbook
-gitbook install
-
-# run as serve
-gitbook serve
-```
+Mybatis-Plus的发展离不开每一位支持她的人，谢谢各位对MP的支持！

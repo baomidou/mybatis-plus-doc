@@ -14,19 +14,19 @@ Mybatis-Plus is an enhanced toolkit of `Mybatis` to simplify the operation of CU
 
 ```bash
 # clone this repo
-git clone https://github.com/baomidou/mybatis-plus-doc.git
+git clone -b master https://github.com/baomidou/mybatis-plus-doc.git
 
 # cd into project
 cd mybatis-plus-doc/
 
-# install gitbook-cli
-npm install gitbook-cli -g
+# install
+npm install
 
-# init gitbook
-gitbook install
+# generate
+hexo generate & gulp
 
 # run as serve
-gitbook serve
+hexo serve
 ```
 
-# Coming Soon......
+Coming Soon......
