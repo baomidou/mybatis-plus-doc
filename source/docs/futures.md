@@ -2,7 +2,7 @@ title: 愿景
 ---
 > Mybatis-Plus 是 `Mybatis` 的增强工具包，只做增强不做改变，为简化开发、提高效率而生。
 
-![mybati-to-plus](/images/relationship-with-mybatis.png "mybatis-to-plus")
+![mybatis-to-plus](/images/relationship-with-mybatis.png "mybatis-to-plus")
 
 # 愿景
 

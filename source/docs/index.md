@@ -29,6 +29,10 @@ Mybatis-Plus 是 `Mybatis` 最得力的助手，只做增强不做改变，为�
 - **全局拦截**：提供全表`delete`、`update`操作智能分析阻断
 - **避免Sql注入**：内置Sql注入内容剥离器，预防Sql注入攻击
 
+# 代码托管
+
+> **[Github](https://github.com/baomidou/mybatis-plus)** | **[OSChina](http://git.oschina.net/baomidou/mybatis-plus)**
+
 # 加入我们
 
 > 欢迎各路好汉一起来参与完善Mybatis-Plus，我们期待你的PR！
