@@ -31,9 +31,9 @@ sidebar:
     code-generator: Code Generator
     general-crud: General CRUD
     criteria-constructor: Criteria Constructor
-    page-plugin: Page Plugin
-    performance-analysis-plugin: Performance Analysis Plugin
-    execution-analysis-plugin: Execution Analysis Plugin
+    page-plugin: Paginator
+    performance-analysis-plugin: Performance Analysis
+    execution-analysis-plugin: Execution Analysis
     keywords-transfer: Keywords Transfer
     auto-fill: Auto Fill
     sql-injector: SQL Injector
