@@ -15,9 +15,8 @@
   <!-- build:css build/css/baomidou.css -->
   {{ css('css/baomidou') }}
   <!-- endbuild -->
-  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
   <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css">
+  <link href="//cdn.bootcss.com/docsearch.js/1.3.0/docsearch.min.css" rel="stylesheet">
   <!-- RSS -->
   {{ feed_tag('atom.xml') }}
   <!-- Open Graph -->
@@ -27,4 +26,6 @@
   }) }}
   <!-- Google Analytics -->
   {{ partial('google_analytics') }}
+  <!-- Baidu Analytics -->
+  {{ partial('baidu_analytics') }}
 </head>

@@ -42,10 +42,9 @@ deploy:
       coding: https://git.coding.net/yangyang0507/mybatis-plus-doc.git,gh-pages
 
 # Third-Party Plugins
-#disqus_shortname: hexojs
-#google_analytics: UA-4910098-10
-#baidu_analytics:
-#fb_admins: 100000247608790
+duoshuo_shortname: mp-doc
+google_analytics: UA-85414008-1
+baidu_analytics: efbacb2342e8f494c196a4eb9ad00dfc
 #algolia:
 #  en:
 #    api_key: c3d5d4c995b5e0c2ffb5623900279a66
@@ -56,6 +55,4 @@ deploy:
 #  zh-cn:
 #    api_key: cdea7d4e47d84f6145b77e7f68689f35
 #    index_name: hexo_zh-cn
-#twitter: hexojs
 github: baomidou/mybatis-plus
-osc: baomidou/mybatis-plus

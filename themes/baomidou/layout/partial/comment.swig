@@ -1,18 +1,20 @@
-{% if page.comments && config.disqus_shortname %}
+{% if page.comments && config.duoshuo_shortname %}
+<br/>
 <section id="comments">
-  <div id="disqus_thread"></div>
+    <!-- DuoShuo start -->
+    <div class="ds-thread" data-thread-key="{{ page.canonical_path }}" data-title="{{ page.title }}" data-url="{{ url }}"></div>
+    <!-- DuoShuo end -->
 </section>
 <script>
-  var disqus_shortname = '{{ config.disqus_shortname }}';
-  var disqus_url = '{{ url }}';
-  var disqus_title = {{ JSON.stringify(page.title) }};
-  var disqus_config = function(){
-    this.language = '{{ disqus_lang() }}';
-  };
-  (function(){
-    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-    dsq.src = 'https://go.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
+    var duoshuoQuery = {short_name: "{{ config.duoshuo_shortname }}"};
+    (function () {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';
+        ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
 </script>
 {% endif %}

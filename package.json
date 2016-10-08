@@ -1,6 +1,6 @@
 {
-  "name": "hexo-site",
-  "version": "0.0.0",
+  "name": "mybatis-plus-doc",
+  "version": "0.0.1",
   "private": true,
   "hexo": {
     "version": "3.2.2"
