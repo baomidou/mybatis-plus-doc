@@ -14,7 +14,7 @@ env:
   - CXX=g++-4.8
 
 before_install:
-  - export TZ=Asia/ChongQing
+  - export TZ=Asia/Shanghai
 
 addons:
   apt:
