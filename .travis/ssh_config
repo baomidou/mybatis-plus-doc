@@ -1,4 +1,4 @@
-Host github.com
+Host *
     User git
     StrictHostKeyChecking no
     IdentityFile ~/.ssh/id_rsa
