@@ -1,4 +1,7 @@
 # Mybatis-Plus Doc Website
+
+[![Build Status](https://travis-ci.org/baomidou/mybatis-plus-doc.svg?branch=master)](https://travis-ci.org/baomidou/mybatis-plus-doc)
+
 This repo is the site of `Mybatis-Plus`, the generated files at gh-pages branch.
 
 # Improve this doc
