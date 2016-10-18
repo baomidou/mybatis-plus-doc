@@ -12,13 +12,13 @@
 <!-- endbuild -->
 {% endif %}
 <!-- Algolia -->
-{% if config.algolia[page.lang] %}
-<script src="//cdn.bootcss.com/docsearch.js/1.3.0/docsearch.min.js"></script>
+{% if config.algolia %}
+<script src="//cdn.bootcss.com/docsearch.js/2.1.8/docsearch.min.js"></script>
 <script>
 document.getElementById('search-input-wrap').classList.add('on');
 docsearch({
-  apiKey: '{{ config.algolia[page.lang].api_key }}',
-  indexName: '{{ config.algolia[page.lang].index_name }}',
+  apiKey: '{{ config.algolia.api_key }}',
+  indexName: '{{ config.algolia.index_name }}',
   inputSelector: '#search-input'
 });
 </script>

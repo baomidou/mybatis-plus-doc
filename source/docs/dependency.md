@@ -8,17 +8,17 @@ title: 安装及依赖说明
 
 所以，Maven集成仅导入以下坐标即可！！
 
-# Maven坐标
+# Maven坐标 [![GitHub release](https://img.shields.io/github/release/baomidou/mybatis-plus.svg?maxAge=2592000)](https://github.com/baomidou/mybatis-plus)
 
-Maven地址：http://mvnrepository.com/artifact/com.baomidou/mybatis-plus
-
-> 以上地址不是Maven中心库，而是一个Maven信息收集的网站，便于展示。版本更新后，它有一定的延迟，如果各位不能第一时间知道最高的版本，可以去[Maven官方库](http://search.maven.org/)搜索 `g:"com.baomidou" AND a:"mybatis-plus"` 查看最新版本。
+> 查询最高版本或历史版本方式：
+> - 访问：[http://mvnrepository.com/artifact/com.baomidou/mybatis-plus](http://mvnrepository.com/artifact/com.baomidou/mybatis-plus)
+> - 访问：[http://search.maven.org](http://search.maven.org)，搜索 `g:"com.baomidou" AND a:"mybatis-plus"` 查看
 
 ```xml
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus</artifactId>
-    <version>Maven 官方最新版本为准</version>
+    <version>最新版本</version>
 </dependency>
 ```
 

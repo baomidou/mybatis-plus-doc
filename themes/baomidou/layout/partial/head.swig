@@ -16,7 +16,7 @@
   {{ css('css/baomidou') }}
   <!-- endbuild -->
   <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/docsearch.js/1.3.0/docsearch.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/docsearch.js/2.1.8/docsearch.min.css" rel="stylesheet">
   <!-- RSS -->
   {{ feed_tag('atom.xml') }}
   <!-- Open Graph -->
