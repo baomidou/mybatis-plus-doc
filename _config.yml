@@ -39,7 +39,7 @@ deploy:
   type: git
   repo:
       github: git@github.com:baomidou/mybatis-plus-doc.git,gh-pages
-      coding: git@git.coding.net:yangyang0507/mybatis-plus-doc.git,gh-pages
+      coding: git@git.coding.net:yangyang0507/mybatis-plus-doc.git,coding-pages
 
 # Third-Party Plugins
 duoshuo_shortname: mp-doc
