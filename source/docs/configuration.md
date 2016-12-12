@@ -25,12 +25,17 @@ title: 集成教程
             </bean>
         </array>
     </property>
+    <!-- 全局配置注入 -->
+    <property name="globalConfig" ref="globalConfig" />
+</bean>
+<bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
+	<property name="idType" value="0" />
     <!-- Oracle需要添加该项 -->
     <!-- <property name="dbType" value="oracle" /> -->
 
     <!-- 全局表为下划线命名设置 true -->
     <!-- <property name="dbColumnUnderline" value="true" /> -->
-</bean>
+<bean>
 
 <!-- 配置Mapper扫描路径 -->
 <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
