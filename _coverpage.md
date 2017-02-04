@@ -1,4 +1,4 @@
-<img width="200" height"200" src="img/logo.svg">
+<img width="200" height"200" src="assets/logo.svg">
 
 # Mybatis-Plus <small>2.0.1</small>
 
