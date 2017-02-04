@@ -4,7 +4,7 @@
 
 > Born To Simplify Development
 
-- Simple、Powerfyl、Extensibility
+- Simple、Powerful、Extensibility
 
 [GitHub](https://github.com/baomidou/mybatis-plus)
 [Get Started](#简介)
