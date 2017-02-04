@@ -1,23 +1,25 @@
 # 简介
 
-Mybatis-Plus 是 `Mybatis` 最得力的助手，只做增强不做改变，为简化开发、提高效率而生。
+[Mybatis-Plus](https://github.com/baomidou/mybatis-plus)是一个[Mybatis](http://www.mybatis.org/mybatis-3/)的增强工具，在Mybatis的基础上只做增强不做改变，为简化开发、提高效率而生。
 
-> 我们的愿景是成为`Mybatis`最好的搭档，就像魂斗罗中的1P、2P，齐力面对开发难题。
+!> 我们的愿景是成为`Mybatis`最好的搭档，就像[魂斗罗](assets/contra.jpg)中的1P、2P，齐力面对开发难题。
 
-## 优点
+![relationship](assets/relationship-with-mybatis.png)
 
-- **纯正血统**：完全继承原生 `Mybatis` 的所有特性
-- **最少依赖**：仅仅依赖`Mybatis`以及`Mybatis-Spring`
-- **性能损耗小**：启动即会自动注入基本CURD ，性能无损耗，直接面向对象操作
-- **自动热加载**：Mapper对应的xml可以热加载，大大减少重启Web服务器时间，提升开发效率
-- **自动生成代码**：包含自动生成代码类以及Maven插件，通过少量配置，即可快速生成Mybatis对应的xml、mapper、entity、service、serviceimpl层代码，减少开发时间
-- **自定义操作**：支持自定义Sql注入，实现个性化操作
-- **自定义转义规则**：支持数据库关键词（例如：`order`、`key`等）自动转义，支持自定义关键词
+## 特性
+
+- **最少依赖**：仅仅依赖Mybatis以及Mybatis-Spring
+- **性能损耗小**：启动即会自动注入基本CURD，性能无损耗，直接面向对象操作
+- **避免Sql注入**：内置Sql注入剥离器，有效预防Sql注入攻击
 - **多种主键策略**：支持多达4种主键策略，可自由配置，若无将会自动填充，更有充满黑科技的`分布式全局唯一ID生成器`
-- **无缝分页插件**：基于Mybatis物理分页，无需关心具体操作，等同于编写基本`selectList`查询
-- **性能分析**：自带Sql性能分析插件，开发测试时，能有效解决慢查询
-- **全局拦截**：提供全表`delete`、`update`操作智能分析阻断
-- **避免Sql注入**：内置Sql注入内容剥离器，预防Sql注入攻击
+- **支持ActionRecord**：支持`ActionRecord`形式调用
+- **支持热加载**：Mapper对应的xml支持`热加载`，对于简单的CRUD操作，甚至可以`无xml启动`
+- **支持代码生成**：采用`代码`或者`Maven插件`可快速生成Mapper、Model、Service层代码，支持`模板引擎`，更有`超多自定义配置`等您来使用（P.S. 比Mybatis官方的Generator更强大！）
+- **支持自定义全局通用操作**：支持全局通用方法注入(Write once, use anywhere)
+- **支持关键词自动转义**：支持数据库关键词（例如：order、key等）自动转义，还可自定义关键词
+- **内置分页插件**：基于Mybatis物理分页，无需关心具体操作，配置好插件之后，写分页等同于写基本`selectList`查询
+- **内置性能分析插件**：自带Sql性能分析插件，可输出Sql语句和执行时间，开发测试时，能有效解决慢查询
+- **内置全局拦截插件**：提供全表`delete`、`update`操作智能分析阻断，预防误操作
 
 ## 代码托管
 
@@ -25,180 +27,28 @@ Mybatis-Plus 是 `Mybatis` 最得力的助手，只做增强不做改变，为�
 
 ## 加入我们
 
-> 欢迎各路好汉一起来参与完善Mybatis-Plus，我们期待你的PR！
+?> 欢迎各路好汉一起来参与完善`Mybatis-Plus`，我们期待你的PR！
 
-- 贡献代码：代码地址[Mybatis-Plus](https://github.com/baomidou/mybatis-plus)，欢迎提交issue或者pull-request~
-- 维护文档：文档地址[Mybatis-Plus-Doc](https://github.com/baomidou/mybatis-plus-doc)，欢迎参与翻译和修订~
+- 贡献代码：代码地址 [Mybatis-Plus](https://github.com/baomidou/mybatis-plus)，欢迎提交issue或者pull-request~
+- 维护文档：文档地址 [Mybatis-Plus-Doc](https://github.com/baomidou/mybatis-plus-doc)，欢迎参与翻译和修订~
 
-Mybatis-Plus的发展离不开每一位支持它的人，谢谢各位对MP的支持！
+# 快速上手
 
-**文档托管在Github上，MP的Github也才开不久，之前一直是在OSChina上面，现在想多方面发展，希望各位看官能够在Github上去Star、Fork一下，让Github上的MP活跃起来！**
+## 简单示例(传统)
 
-# 概览
-
-## 前瞻
-
-> MP自带了代码生成器，包含代码生成类和Maven插件，你可以灵活的调整生成代码的方式。
-
-进行开发你需要做什么呢？你仅仅需要配置好数据库和代码生成路径，然后生成代码就可以开撸Controller层代码了，MP已经把 Entity层、Mapper层、Service层的代码以及Mapper对应的XML文件生成好了！
-
-我们来看看生成后的代码是什么样子：
-
-> 示例中，我们假设有一张表叫foo，里面包含id和name两个字段，通过MP来生成代码
+!> 假设我们已存在一张Foo表，且已有对应的实体类Foo，实现Foo表的CRUD操作我们需要做什么呢？
 
 ```java
-/**
- *
- * Foo表
- *
- */
-@TableName("foo")
-public class Foo implements Serializable {
-
-    @TableField(exist = false)
-    protected static final long serialVersionUID = 1L;
-
-    /** ID */
-    @TableId
-    protected Long id;
-
-    /** 名称 */
-    protected String name;
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-}
+/** Foo对应的Mapper接口 */
+public interface FooMapper extends BaseMapper<Foo> { }
 ```
+
+以上就是你所需的所有操作，如何使用它呢？
+
+> 基本CRUD
 
 ```java
-/**
- *
- * Foo 表数据库控制层接口
- *
- */
-public interface FooMapper extends AutoMapper<Foo> {
-
-}
+int i = fooMapper.insert();
 ```
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xxx.mapper.FooMapper">
-
-    <!-- 通用查询结果列-->
-    <sql id="Base_Column_List">
-         id, name
-    </sql>
-
-</mapper>
-```
-
-```java
-/**
- *
- * Foo 表数据服务层接口
- *
- */
-public interface IFooService extends ISuperService<Foo> {
-
-}
-```
-
-```java
-/**
- *
- * Foo 表数据服务层接口实现类
- *
- */
-@Service
-public class FooServiceImpl extends SuperServiceImpl<FooMapper, Foo> implements IFooService {
-
-}
-```
-
-纳尼？！！怎么可以这么简洁？！！xml怎么什么东西都没有？！！
-
-对，你没有看错，这就是MP生成代码，非常的简洁而且还生成了对应的注释（备注：实体类字段的注释需要在数据库设计的时候就填写好备注），要是你喜欢，甚至可以配置为无xml（如果不进行扩展，只需要基本CRUD的话）。
-
-## 方法说明
-
-你可以看到MP采用了继承的方式来提取CRUD方法，那么我们到底有哪些方法呢？
-
-```java
-boolean insert(T entity); //插入
-
-boolean insertOrUpdate(T entity); //插入或修改
-
-boolean insertBatch(List<T> entityList); //批量插入
-
-boolean insertBatch(List<T> entityList, int batchSize); //批量指定步长插入
-
-boolean insertOrUpdateBatch(List<T> entityList); //批量插入或修改
-
-boolean insertOrUpdateBatch(List<T> entityList, int batchSize); //批量指定步长插入或修改
-```
-
-```java
-boolean deleteById(Serializable id); //通过ID删除
-
-boolean deleteByMap(Map<String, Object> columnMap);  // 通过自定义MAP删除
-
-boolean delete(Wrapper<T> wrapper); //通过Wrapper条件删除
-
-boolean deleteBatchIds(List<? extends Serializable> idList); //根据主键批量删除
-```
-
-```java
-boolean updateById(T entity); //通过ID更新
-
-boolean update(T entity, Wrapper<T> wrapper); //根据 Wrapper 条件，更新记录
-
-boolean updateBatchById(List<T> entityList); // 根据ID 批量更新
-```
-
-```java
-T selectById(Serializable id); // 根据 ID 查询
-
-List<T> selectBatchIds(List<? extends Serializable> idList); //查询（根据ID 批量查询）
-
-List<T> selectByMap(Map<String, Object> columnMap);  //查询（根据 columnMap 条件）
-
-T selectOne(Wrapper<T> wrapper);  //根据 Wrapper，查询一条记录
-
-Map<String, Object> selectMap(Wrapper wrapper);  //根据 Wrapper，查询一条记录 返回Map
-
-int selectCount(Wrapper<T> wrapper); //根据 Wrapper 条件，查询总记录数
-
-List<T> selectList(Wrapper<T> wrapper); //根据Wrapper查询列表
-
-Page<T> selectPage(Page<T> page); //翻页查询
-
-List<Map<String, Object>> selectMaps(Wrapper wrapper); //根据Wrapper查询列表 返回Map
-
-Page<Map<String, Object>> selectMapsPage(Page page, Wrapper wrapper); //根据Wrapper翻页查询返回Map
-
-Page<T> selectPage(Page<T> page, Wrapper<T> wrapper);  //根据Wrapper翻页查询
-```
-
-只要生成了代码，就已经带有上述的所有方法，单表的CRUD已经完全能够满足了。
-
-你也许会问，那多表或者复杂业务怎么办？之前说了，MP是一个增强辅助工具，不会改变Mybatis，如果有多表业务和复杂业务，就可以像正常Mybatis一样使用，没有任何冲突。
-
-> 文档君吐槽：其实也是由于复杂业务多而杂，不好归纳整理，所以我们希望能够维护好单表的CRUD，让开发者能够专注于复杂业务，脱离单调枯燥的CRUD，可以疯狂的输出代码，缩短开发周期，开发周期一短领导就高兴，领导一高兴就要加薪，一加薪就从此走上人生巅峰，赢取白富美~ `↖(^ω^)↗`
-
-**看完上面的概述和优点描述，是不是蠢蠢欲动？那么赶紧来看接下来的文章，快速上手Mybatis-Plus！**
+## 简单示例(ActionRecord)
