@@ -1,6 +1,6 @@
 # Mybatis-Plus Doc
 
-This repo is the site of [Mybatis-Plus], this doc use [docsify](https://docsify.js.org/) to generated.
+this repo is the site of [Mybatis-Plus], this doc use [docsify] to generated.
 
 # Improve this doc
 
@@ -21,3 +21,4 @@ docsify serve
 ```
 
 [mybatis-plus]: https://github.com/baomidou/mybatis-plus
+[docsify]: https://docsify.js.org/
