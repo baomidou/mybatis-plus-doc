@@ -58,7 +58,38 @@ User user = userMapper.selectById(userId); // 通过 userId 查询 User
 > 分页操作
 
 ```java
-Page
+List<User> userList = userMapper.selectPage(
+        new Page<User>(1, 10),
+        new EntityWrapper<User>().where("age >= {0}", 18)
+); // 分页查询10条年龄大于18的用户记录
 ```
+
+如您所见，我们仅仅需要继承一个 BaseMapper 即可实现大部分单表 CRUD 操作，极大的减少的开发负担。
+
+有人也许会质疑：这难道不是通用 Mapper 么？别急，咱们接着往下看。
+
+!> 现有一个需求，我们需要`分页查询` User 表中，`年龄在18~50之间性别为男且姓名为张三的所有用户`，这时候我们需要如何操作呢？
+
+我们怎样才能实现以上需求呢？
+
+传统做法是 Mapper 中定义一个方法，然后在 Mapper 对应的 XML 中填写对应的 SELECT 语句，且我们还要集成分页，实现以上一个简单的需求，往往需要我们做很多重复单调的工作，普通的通用 Mapper 能够解决这类痛点么？
+
+> 用 MP 的方式打开以上需求
+
+```java
+public List<User> complexQueryExample(Page<User> page) {
+    return userMapper.selectPage(
+            new Page<User>(1, 10),
+            new EntityWrapper<User>().where("name={0}", "张三")
+                    .and("sex={0}", 0)
+                    .between("age", "18", "50")
+            // 以上操作，等价于 WHERE (name='张三' AND sex=0 AND age BETWEEN '18' AND '50') LIMIT 1,10
+    );
+}
+```
+
+以上查询，会查询出姓名为张三，性别为男，且年龄在18~50之间的10条用户记录。
+
+MP 通过 EntityWrapper 或者 Condition 来让用户自由的构建查询条件，简单便捷，没有额外的负担，能够有效提高开发效率。
 
 ## 简单示例(ActionRecord)
