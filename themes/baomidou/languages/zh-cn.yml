@@ -1,6 +1,7 @@
 menu:
   home: 首页
   docs: 文档
+  api: API
   news: 动态
   search: 搜索
 
@@ -41,3 +42,7 @@ sidebar:
 
     faq: 常见问题
     faq-list: 问题列表
+
+  api:
+    core: 核心
+    index: 概述

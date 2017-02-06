@@ -11,8 +11,8 @@ title: 安装及依赖说明
 # Maven坐标 [![GitHub release](https://img.shields.io/github/release/baomidou/mybatis-plus.svg?maxAge=2592000)](https://github.com/baomidou/mybatis-plus)
 
 > 查询最高版本或历史版本方式：
-> - 访问：[http://mvnrepository.com/artifact/com.baomidou/mybatis-plus](http://mvnrepository.com/artifact/com.baomidou/mybatis-plus)
-> - 访问：[http://search.maven.org](http://search.maven.org)，搜索 `g:"com.baomidou" AND a:"mybatis-plus"` 查看
+> - 访问：[Maven中央库-阿里源](http://maven.aliyun.com/nexus/#nexus-search;quick~mybatis-plus)
+> - 访问：[Maven中央库-正统源](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.baomidou%22%20AND%20a%3A%22mybatis-plus%22)
 
 ```xml
 <dependency>

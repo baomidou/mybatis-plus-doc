@@ -16,10 +16,13 @@ docs:
     page-plugin: page-plugin.html
     performance-analysis-plugin: performance-analysis-plugin.html
     execution-analysis-plugin: execution-analysis-plugin.html
-    keywords-transfer: keywords-transfer.html
     auto-fill: auto-fill.html
     sql-injector: sql-injector.html
     hot-loading: hot-loading.html
 
   faq:
     faq-list: faq-list.html
+
+api:
+  core:
+    index: index.html

@@ -111,50 +111,70 @@ public class FooServiceImpl extends SuperServiceImpl<FooMapper, Foo> implements 
 
 你可以看到MP采用了继承的方式来提取CRUD方法，那么我们到底有哪些方法呢？
 
+
 ```java insert相关
+
 boolean insert(T entity); //插入
 
-boolean insertSelective(T entity); //选择性插入，null字段不插入
+boolean insertOrUpdate(T entity); //插入或修改
 
 boolean insertBatch(List<T> entityList); //批量插入
+
+boolean insertBatch(List<T> entityList, int batchSize); //批量指定步长插入
+
+boolean insertOrUpdateBatch(List<T> entityList); //批量插入或修改
+
+boolean insertOrUpdateBatch(List<T> entityList, int batchSize); //批量指定步长插入或修改
+
 ```
 
 ```java delete相关
-boolean deleteById(I id); //通过ID删除
 
-boolean deleteByMap(Map<String, Object> columnMap); // 通过自定义MAP删除
+boolean deleteById(Serializable id); //通过ID删除
 
-boolean deleteSelective(T entity); //通过entity实体选择性删除，null字段不作为条件
+boolean deleteByMap(Map<String, Object> columnMap);  // 通过自定义MAP删除
 
-boolean deleteBatchIds(List<I> idList); //批量删除
+boolean delete(Wrapper<T> wrapper); //通过Wrapper条件删除
+
+boolean deleteBatchIds(List<? extends Serializable> idList); //根据主键批量删除
+
+
 ```
 
 ```java update相关
+
 boolean updateById(T entity); //通过ID更新
 
-boolean updateSelectiveById(T entity); //通过ID选择性更新，null字段不更新
+boolean update(T entity, Wrapper<T> wrapper); //根据 Wrapper 条件，更新记录
 
-boolean update(T entity, T whereEntity); //通过whereEntity实体构造where条件进行更新
+boolean updateBatchById(List<T> entityList); // 根据ID 批量更新
 
-boolean updateSelective(T entity, T whereEntity); //通过whereEntity实体构造where条件进行选择性更新
 
-boolean updateBatchById(List<T> entityList); //批量更新
 ```
 
 ```java select相关
-T selectById(I id); //通过ID查询
 
-List<T> selectBatchIds(List<I> idList); //通过ID集合批量查询
+T selectById(Serializable id); // 根据 ID 查询
 
-List<T> selectByMap(Map<String, Object> columnMap); //通过自定义MAP查询
+List<T> selectBatchIds(List<? extends Serializable> idList); //查询（根据ID 批量查询）
 
-T selectOne(T entity); //通过实体entity查询
+List<T> selectByMap(Map<String, Object> columnMap);  //查询（根据 columnMap 条件）
 
-int selectCount(T entity); //统计查询
+T selectOne(Wrapper<T> wrapper);  //根据 Wrapper，查询一条记录
 
-List<T> selectList(EntityWrapper<T> entityWrapper); //List查询，entityWrapper为查询条件构造器
+Map<String, Object> selectMap(Wrapper wrapper);  //根据 Wrapper，查询一条记录 返回Map
 
-Page<T> selectPage(Page<T> page, EntityWrapper<T> entityWrapper); //分页查询，page为分页实体，entityWrapper为查询条件构造器
+int selectCount(Wrapper<T> wrapper); //根据 Wrapper 条件，查询总记录数
+
+List<T> selectList(Wrapper<T> wrapper); //根据Wrapper查询列表
+
+Page<T> selectPage(Page<T> page); //翻页查询
+
+List<Map<String, Object>> selectMaps(Wrapper wrapper); //根据Wrapper查询列表 返回Map
+
+Page<Map<String, Object>> selectMapsPage(Page page, Wrapper wrapper); //根据Wrapper翻页查询返回Map
+
+Page<T> selectPage(Page<T> page, Wrapper<T> wrapper);  //根据Wrapper翻页查询
 ```
 
 只要生成了代码，就已经带有上述的所有方法，单表的CRUD已经完全能够满足了。

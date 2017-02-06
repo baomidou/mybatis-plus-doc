@@ -1,6 +1,7 @@
 menu:
   home: Home
   docs: Docs
+  api: API
   news: News
   search: Search
 
@@ -41,3 +42,7 @@ sidebar:
 
     faq: FAQ
     faq-list: FAQ List
+
+  api:
+    core: Core
+    index: Overview

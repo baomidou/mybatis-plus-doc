@@ -28,12 +28,12 @@ public class MyMetaObjectHandler implements IMetaObjectHandler {
 ```xml
 <!-- MyBatis SqlSessionFactoryBean 配置 -->
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
-	....
-
-    <!-- 公共字段填充处理器 -->
-    <property name="metaObjectHandler" ref="myMetaObjectHandler" />
+	<property name="globalConfig" ref="globalConfig"></property>
 </bean>
-
+<bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
+	<!-- 公共字段填充处理器 -->
+	<property name="metaObjectHandler" ref="myMetaObjectHandler" />
+</bean>
 <!-- 自定义处理器 -->
 <bean id="myMetaObjectHandler" class="com.baomidou.test.MyMetaObjectHandler" />
 ```

@@ -21,13 +21,18 @@
 
 #banner-start-command
   background: lighten(color-baomidou, 10%)
-  font-family: font-mono
+  font-family: font-sans
   display: inline-block
   padding: 15px 20px
-  &:before
-    content: "$"
+  @keyframes blink {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  &:after
+    content: '|';
     opacity: 0.5
     padding-right: 10px
+    animation: blink 800ms infinite;
 
 #banner-start-link
   color: #fff

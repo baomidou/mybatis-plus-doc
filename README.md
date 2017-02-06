@@ -21,3 +21,15 @@ hexo generate & gulp
 # run as serve
 hexo serve
 ```
+
+# Thanks
+
+1. [Hexo]
+2. [Hexo Docs]
+3. [Walle Docs]
+4. [Malarkey]
+
+[Hexo]: https://github.com/hexojs/hexo
+[Hexo Docs]: https://github.com/hexojs/site
+[Walle Docs]: https://github.com/meolu/docs
+[Malarkey]: https://github.com/yuanqing/malarkey

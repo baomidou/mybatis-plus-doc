@@ -7,6 +7,10 @@ title: 分页插件
     <!-- 
      | 分页插件配置 
      | 插件提供二种方言选择：1、默认方言 2、自定义方言实现类，两者均未配置则抛出异常！
+	 | overflowCurrent 溢出总页数，设置第一页 默认false
+	 | optimizeType Count优化方式 默认default
+	 | 1.支持 aliDruid 方式，需添加aliDruid依赖
+	 | 2.支持 jsqlparser 方式，需添加jsqlparser依赖
      | dialectType 数据库方言  
      |             默认支持  mysql  oracle  hsql  sqlite  postgre  sqlserver
      | dialectClazz 方言实现类
@@ -15,10 +19,12 @@ title: 分页插件
     <!-- 配置方式一、使用 MybatisPlus 提供方言实现类 -->
     <plugin interceptor="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
         <property name="dialectType" value="mysql" />
+		<property name="optimizeType" value="aliDruid" />
     </plugin>
     <!-- 配置方式二、使用自定义方言实现类 -->
     <plugin interceptor="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
         <property name="dialectClazz" value="xxx.dialect.XXDialect" />
+		<property name="optimizeType" value="jsqlparser" />
     </plugin>
 </plugins>
 ```

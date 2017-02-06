@@ -29,13 +29,29 @@ title: 集成教程
     <property name="globalConfig" ref="globalConfig" />
 </bean>
 <bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
-	<property name="idType" value="0" />
-    <!-- Oracle需要添加该项 -->
+    <!-- 
+		AUTO->`0`("数据库ID自增")
+	 	INPUT->`1`(用户输入ID")
+		ID_WORKER->`2`("全局唯一ID")
+		UUID->`3`("全局唯一ID")
+	-->
+    <!-- <property name="idType" value="0" /> -->
+	<!--
+		MYSQL->`mysql`
+		ORACLE->`oracle`
+		DB2->`db2`
+		H2->`h2`
+		HSQL->`hsql`
+		SQLITE->`sqlite`
+		POSTGRE->`postgresql`
+		SQLSERVER2005->`sqlserver2005`
+		SQLSERVER->`sqlserver`
+	-->
+	<!-- Oracle需要添加该项 -->
     <!-- <property name="dbType" value="oracle" /> -->
-
     <!-- 全局表为下划线命名设置 true -->
     <!-- <property name="dbColumnUnderline" value="true" /> -->
-<bean>
+</bean>
 
 <!-- 配置Mapper扫描路径 -->
 <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
