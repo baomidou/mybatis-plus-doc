@@ -17,7 +17,7 @@
 - **支持ActiveRecord**：支持 ActiveRecord 形式调用，实体类只需继承 Model 类即可实现基本 CRUD 操作
 - **支持代码生成**：采用代码或者 Maven 插件可快速生成 Mapper 、 Model 、 Service 层代码，支持模板引擎，更有超多自定义配置等您来使用（P.S. 比 Mybatis 官方的 Generator 更加强大！）
 - **支持自定义全局通用操作**：支持全局通用方法注入（ Write once, use anywhere ）
-- **支持关键词自动转义**：支持数据库关键词（order、key……）自动转义，还可自定义关键词
+- **支持关键词自动转义**：支持数据库关键词（order、key......）自动转义，还可自定义关键词
 - **内置分页插件**：基于Mybatis物理分页，开发者无需关心具体操作，配置好插件之后，写分页等同于写基本List查询
 - **内置性能分析插件**：可输出Sql语句以及其执行时间，建议开发测试时启用该功能，能有效解决慢查询
 - **内置全局拦截插件**：提供全表 delete 、 update 操作智能分析阻断，预防误操作
@@ -117,3 +117,25 @@ public class User extends Model<User> {
 我们仅仅需要继承 Model 类且实现主键指定方法 即可让实体开启 AR 之旅，开启 AR 之路后，我们如何使用它呢？
 
 > 基本CRUD
+
+```java
+
+```
+
+# 安装
+
+查询最高版本或历史版本方式：
+
+- 访问：[Maven中央库-阿里源](http://maven.aliyun.com/nexus/#nexus-search;quick~mybatis-plus)
+- 访问：[Maven中央库-正统源](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.baomidou%22%20AND%20a%3A%22mybatis-plus%22)
+
+```xml
+<dependency>
+    <groupId>com.baomidou</groupId>
+    <artifactId>mybatis-plus</artifactId>
+    <version>最新版本</version>
+</dependency>
+`
+```
+
+!> 特别说明：**`Mybatis`及`Mybatis-Spring`依赖请勿加入项目配置，以免引起版本冲突！！！Mybatis-Plus会自动帮你维护！**
