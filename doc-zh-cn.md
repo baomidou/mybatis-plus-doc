@@ -14,7 +14,7 @@
 - **预防Sql注入**：内置Sql注入剥离器，有效预防Sql注入攻击
 - **多种主键策略**：支持多达4种主键策略（内含分布式唯一ID生成器），可自由配置，完美解决主键问题
 - **支持热加载**：Mapper 对应的 XML 支持热加载，对于简单的 CRUD 操作，甚至可以无 XML 启动
-- **支持ActionRecord**：支持 ActionRecord 形式调用，实体类只需继承 Model 类即可实现基本 CRUD 操作
+- **支持ActiveRecord**：支持 ActiveRecord 形式调用，实体类只需继承 Model 类即可实现基本 CRUD 操作
 - **支持代码生成**：采用代码或者 Maven 插件可快速生成 Mapper 、 Model 、 Service 层代码，支持模板引擎，更有超多自定义配置等您来使用（P.S. 比 Mybatis 官方的 Generator 更加强大！）
 - **支持自定义全局通用操作**：支持全局通用方法注入（ Write once, use anywhere ）
 - **支持关键词自动转义**：支持数据库关键词（order、key……）自动转义，还可自定义关键词
@@ -55,6 +55,8 @@ int i = userMapper.updateById(user); // 更新 User
 User user = userMapper.selectById(userId); // 通过 userId 查询 User
 ```
 
+以上是基本的 CRUD 操作，当然我们可用的 API 远不止这4个，我们提供了多达 17 个方法给大家使用，可以极其方便的实现单一、批量、分页等操作，接下来我们就来看看 MP 是如何使用分页的。
+
 > 分页操作
 
 ```java
@@ -90,4 +92,28 @@ public List<User> complexQueryExample(Page<User> page) {
 
 MP 通过 EntityWrapper 或者 Condition 来让用户自由的构建查询条件，简单便捷，没有额外的负担，能够有效提高开发效率。
 
-## 简单示例(ActionRecord)
+## 简单示例(ActiveRecord)
+
+ActiveRecord 一直广受动态语言（ PHP 、 Ruby 等）的喜爱，而 Java 作为准静态语言，对于 ActiveRecord 往往只能感叹其优雅，所以我们也在 AR 道路上进行了一定的探索，喜欢大家能够喜欢，也同时欢迎大家反馈意见与建议。
+
+我们如何使用 AR 模式？
+
+```java
+@TableName("sys_user") // 注解指定表名
+public class User extends Model<User> {
+
+  ... // fields
+
+  ... // getter and setter
+
+  /** 指定主键 */
+  @Override
+  protected Serializable pkVal() {
+      return this.id;
+  }
+}
+```
+
+我们仅仅需要继承 Model 类且实现主键指定方法 即可让实体开启 AR 之旅，开启 AR 之路后，我们如何使用它呢？
+
+> 基本CRUD
