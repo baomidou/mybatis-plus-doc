@@ -133,9 +133,8 @@ public class User extends Model<User> {
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus</artifactId>
-    <version>最新版本</version>
+    <version>2.0.1</version>
 </dependency>
-`
 ```
 
 !> 特别说明：**`Mybatis`及`Mybatis-Spring`依赖请勿加入项目配置，以免引起版本冲突！！！Mybatis-Plus会自动帮你维护！**
