@@ -198,6 +198,56 @@ rlt = t2.delete("type={0}", "t1021");
 
 !> 特别说明：**`Mybatis`及`Mybatis-Spring`依赖请勿加入项目配置，以免引起版本冲突！！！Mybatis-Plus会自动帮你维护！**
 
+# 集成示例
+
+> SpringMVC 参考 Demo
+
+<a href="https://git.oschina.net/baomidou/mybatisplus-spring-mvc" target="_blank">https://git.oschina.net/baomidou/mybatisplus-spring-mvc</a>
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+        ...
+        <property name="plugins">
+            <array>
+                <!-- 分页插件配置 -->
+                <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
+                    <property name="dialectType" value="mysql"/>
+                </bean>
+            </array>
+        </property>
+	    <!-- 全局配置注入 -->
+	    <property name="globalConfig" ref="globalConfig" />
+	</bean>
+	<bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
+	    <!-- 
+			AUTO->`0`("数据库ID自增")
+		 	INPUT->`1`(用户输入ID")
+			ID_WORKER->`2`("全局唯一ID")
+			UUID->`3`("全局唯一ID")
+		-->
+	    <property name="idType" value="2" />
+		<!--
+			MYSQL->`mysql`
+			ORACLE->`oracle`
+			DB2->`db2`
+			H2->`h2`
+			HSQL->`hsql`
+			SQLITE->`sqlite`
+			POSTGRE->`postgresql`
+			SQLSERVER2005->`sqlserver2005`
+			SQLSERVER->`sqlserver`
+		-->
+		<!-- Oracle需要添加该项 -->
+	    <!-- <property name="dbType" value="oracle" /> -->
+	    <!-- 全局表为下划线命名设置 true -->
+	    <!-- <property name="dbColumnUnderline" value="true" /> -->
+	</bean>
+```
+> SpringBoot 参考 Demo
+
+<a href="https://git.oschina.net/baomidou/mybatisplus-spring-boot" target="_blank">https://git.oschina.net/baomidou/mybatisplus-spring-boot</a>
+
+
 # 代码生成器
 ---
 在代码生成之前，首先进行配置，MP提供了大量的自定义设置，生成的代码完全能够满足各类型的需求，如果你发现配置不能满足你的需求，欢迎提交issue和pull-request，有兴趣的也可以查看[源码](https://github.com/baomidou/mybatis-plus/tree/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/generator)进行了解。
