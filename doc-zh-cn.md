@@ -229,17 +229,15 @@ List<User> userList = user.selectPage(
 
 Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybatis 自带的`MybatisSqlSessionFactoryBean`替换为 MP 自带的即可。
 
-!> MP 大部分配置都和传统 Mybatis 一致，少量配置为 MP 特色功能配置，**此处仅对 MP 的特色功能进行讲解，其余请参考 *Mybatis-Spring* 配置说明 。**
+!> MP 大部分配置都和传统 Mybatis 一致，少量配置为 MP 特色功能配置，**此处仅对 MP 的特色功能进行讲解，其余请参考 _Mybatis-Spring_ 配置说明 。**
 
-### 参数说明
+示例工程：
 
-#### MybatisSqlSessionFactoryBean
+👉 [mybatisplus-spring-mvc](https://git.oschina.net/baomidou/mybatisplus-spring-mvc)
 
-包名：`com.baomidou.mybatisplus.spring`
+👉 [mybatisplus-spring-boot](https://git.oschina.net/baomidou/mybatisplus-spring-boot)
 
-### 集成示例
-
-示例工程：[mybatisplus-spring-mvc](https://git.oschina.net/baomidou/mybatisplus-spring-mvc) | [mybatisplus-spring-boot](https://git.oschina.net/baomidou/mybatisplus-spring-boot)
+示例代码：
 
 > Xml Config
 
@@ -303,6 +301,8 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 ```java
 
 ```
+
+详细配置介绍可查看 [MybatisSqlSessionFactoryBean](#mybatissqlsessionfactorybean)、[GlobalConfiguration](#globalconfiguration)
 
 <br><br>
 
@@ -798,5 +798,41 @@ public class MyMetaObjectHandler implements IMetaObjectHandler {
 <br><br>
 
 # 常见问题
+
+--------------------------------------------------------------------------------
+
+## Mybatis-Plus 性能如何？
+
+<br><br>
+
+# 参数说明
+
+--------------------------------------------------------------------------------
+
+## MybatisSqlSessionFactoryBean
+
+- 包名：`com.baomidou.mybatisplus.spring`
+
+- 描述：创建 SqlSession 示例（与 _Mybatis-Spring_ 的工厂 Bean 相类似，只是加入了 MP 特色功能配置）
+
+- 用法：参考原生 Mybatis-Spring 的使用
+
+- [源码](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/spring/MybatisSqlSessionFactoryBean.java)
+
+<br>
+
+## GlobalConfiguration
+
+- 包名：`com.baomidou.mybatisplus.entity.config`
+
+- 描述：MP 全局配置类，用于配置 MP 的各项策略（如：主键策略、数据库方言等）
+
+- 用法：参照上述示例代码
+
+- [源码](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/generator/config/GlobalConfig.java)
+
+### dbType
+
+- 默认值：`MySql`
 
 --------------------------------------------------------------------------------
