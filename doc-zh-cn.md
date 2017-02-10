@@ -208,7 +208,7 @@ List<User> userList = user.selectPage(
 
 --------------------------------------------------------------------------------
 
-## 依赖说明
+## 依赖配置
 
 查询最高版本或历史版本方式：
 
@@ -302,7 +302,35 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 
 ```
 
-详细配置介绍可查看 [MybatisSqlSessionFactoryBean](#mybatissqlsessionfactorybean)、[GlobalConfiguration](#globalconfiguration)
+## 参数说明
+
+--------------------------------------------------------------------------------
+
+### MybatisSqlSessionFactoryBean
+
+- 包名：`com.baomidou.mybatisplus.spring`
+
+- 描述：创建 SqlSession 示例（与 _Mybatis-Spring_ 的工厂 Bean 相类似，只是加入了 MP 特色功能配置）
+
+- 用法：参考原生 Mybatis-Spring 的使用
+
+- [源码](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/spring/MybatisSqlSessionFactoryBean.java)
+
+<br>
+
+### GlobalConfiguration
+
+- 包名：`com.baomidou.mybatisplus.entity.config`
+
+- 描述：MP 全局配置类，用于配置 MP 的各项策略（如：主键策略、数据库方言等）
+
+- 用法：参照上述示例代码
+
+- [源码](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/generator/config/GlobalConfig.java)
+
+#### dbType
+
+- 默认值：`MySql`
 
 <br><br>
 
@@ -804,35 +832,3 @@ public class MyMetaObjectHandler implements IMetaObjectHandler {
 ## Mybatis-Plus 性能如何？
 
 <br><br>
-
-# 参数说明
-
---------------------------------------------------------------------------------
-
-## MybatisSqlSessionFactoryBean
-
-- 包名：`com.baomidou.mybatisplus.spring`
-
-- 描述：创建 SqlSession 示例（与 _Mybatis-Spring_ 的工厂 Bean 相类似，只是加入了 MP 特色功能配置）
-
-- 用法：参考原生 Mybatis-Spring 的使用
-
-- [源码](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/spring/MybatisSqlSessionFactoryBean.java)
-
-<br>
-
-## GlobalConfiguration
-
-- 包名：`com.baomidou.mybatisplus.entity.config`
-
-- 描述：MP 全局配置类，用于配置 MP 的各项策略（如：主键策略、数据库方言等）
-
-- 用法：参照上述示例代码
-
-- [源码](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/generator/config/GlobalConfig.java)
-
-### dbType
-
-- 默认值：`MySql`
-
---------------------------------------------------------------------------------
