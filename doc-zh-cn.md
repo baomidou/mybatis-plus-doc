@@ -171,7 +171,7 @@ result = t2.deleteById();
 
 ```java
 // 分页查询 10 条姓名为‘张三’的用户记录
-List<User> userList = new User().selectPage(
+List<User> userList = user.selectPage(
         new Page<User>(1, 10),
         new EntityWrapper<User>().where("name={0}", "张三")
 ).getRecords();
@@ -181,20 +181,15 @@ List<User> userList = new User().selectPage(
 
 ```java
 // 分页查询 10 条姓名为‘张三’、性别为男，且年龄在18至50之间的用户记录
-List<User> userList = new User().selectPage(
+List<User> userList = user.selectPage(
         new Page<User>(1, 10),
         new EntityWrapper<User>().where("name={0}", "张三")
                 .and("sex={0}", 0)
                 .between("age", "18", "50")
 ).getRecords();
-/*
-以上操作，同样等价于
-  SELECT *
-  FROM sys_user
-  WHERE (name='张三' AND sex=0 AND age BETWEEN '18' AND '50')
-  LIMIT 0,10
-*/
 ```
+
+!> 注意：开启 AR 模式
 
 # 安装
 
