@@ -100,8 +100,8 @@ List<User> userList = userMapper.selectPage(
 // 分页查询 10 条姓名为‘张三’、性别为男，且年龄在18至50之间的用户记录
 List<User> userList = userMapper.selectPage(
         new Page<User>(1, 10),
-        new EntityWrapper<User>().where("name={0}", "张三")
-                .and("sex={0}", 0)
+        new EntityWrapper<User>().eq("name", "张三")
+                .eq("sex", 0)
                 .between("age", "18", "50")
 );
 /*
