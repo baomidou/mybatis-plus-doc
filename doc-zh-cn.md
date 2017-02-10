@@ -33,6 +33,8 @@
 - 贡献代码：代码地址 [Mybatis-Plus](https://github.com/baomidou/mybatis-plus) ，欢迎提交 Issue 或者 Pull Requests
 - 维护文档：文档地址 [Mybatis-Plus-Doc](https://github.com/baomidou/mybatis-plus-doc) ，欢迎参与翻译和修订
 
+--------------------------------------------------------------------------------
+
 # 快速上手
 
 ## 简单示例(传统)
@@ -67,7 +69,7 @@ User exampleUser = userMapper.selectById(user.getId());
 
 // 查询姓名为‘张三’的所有用户记录
 List<User> userList = userMapper.selectList(
-        new EntityWrapper<User>().where("name={0}", "张三")
+        new EntityWrapper<User>().eq("name", "张三")
 );
 
 // 删除 User
@@ -82,7 +84,7 @@ result = userMapper.deleteById(user.getId());
 // 分页查询 10 条姓名为‘张三’的用户记录
 List<User> userList = userMapper.selectPage(
         new Page<User>(1, 10),
-        new EntityWrapper<User>().where("name={0}", "张三")
+        new EntityWrapper<User>().eq("name", "张三")
 );
 ```
 
@@ -104,16 +106,18 @@ List<User> userList = userMapper.selectPage(
                 .eq("sex", 0)
                 .between("age", "18", "50")
 );
-/*
-以上操作，等价于
-  SELECT *
-  FROM sys_user
-  WHERE (name='张三' AND sex=0 AND age BETWEEN '18' AND '50')
-  LIMIT 0,10
-*/
 ```
 
-我们通过 EntityWrapper（简称 EW，MP 封装的一个查询条件构造器）或者 Condition（与EW类似） 来让用户自由的构建查询条件，简单便捷，没有额外的负担，能够有效提高开发效率。
+以上操作，等价于
+
+```sql
+SELECT *
+FROM sys_user
+WHERE (name='张三' AND sex=0 AND age BETWEEN '18' AND '50')
+LIMIT 0,10
+```
+
+Mybatis-Plus 通过 EntityWrapper（简称 EW，MP 封装的一个查询条件构造器）或者 Condition（与EW类似） 来让用户自由的构建查询条件，简单便捷，没有额外的负担，能够有效提高开发效率。
 
 ## 简单示例(ActiveRecord)
 
@@ -142,10 +146,10 @@ public class User extends Model<User> {
 > 基本CRUD
 
 ```java
-// 初始化 User
-User user = new User();
 // 初始化 成功标识
 boolean result = false;
+// 初始化 User
+User user = new User();
 
 // 保存 User
 user.setName("Tom");
@@ -160,7 +164,7 @@ User exampleUser = t1.selectById();
 
 // 查询姓名为‘张三’的所有用户记录
 List<User> userList1 = user.selectList(
-        new EntityWrapper<User>().where("name={0}", "张三")
+        new EntityWrapper<User>().eq("name", "张三")
 );
 
 // 删除 User
@@ -173,7 +177,7 @@ result = t2.deleteById();
 // 分页查询 10 条姓名为‘张三’的用户记录
 List<User> userList = user.selectPage(
         new Page<User>(1, 10),
-        new EntityWrapper<User>().where("name={0}", "张三")
+        new EntityWrapper<User>().eq("name", "张三")
 ).getRecords();
 ```
 
@@ -183,32 +187,38 @@ List<User> userList = user.selectPage(
 // 分页查询 10 条姓名为‘张三’、性别为男，且年龄在18至50之间的用户记录
 List<User> userList = user.selectPage(
         new Page<User>(1, 10),
-        new EntityWrapper<User>().where("name={0}", "张三")
-                .and("sex={0}", 0)
+        new EntityWrapper<User>().eq("name", "张三")
+                .eq("sex", 0)
                 .between("age", "18", "50")
 ).getRecords();
 ```
 
-!> 注意：开启 AR 模式
+?> AR 模式提供了一种更加便捷的方式实现 CRUD 操作，其本质还是调用的 Mybatis 对应的方法，类似于语法糖。
+
+通过以上两个简单示例，我们简单领略了 Mybatis-Plus 的魅力与高效率，值得注意的一点是：我们提供了强大的`代码生成器`，可以快速生成各类代码，做到了`即开即用`。
+
+--------------------------------------------------------------------------------
 
 # 安装
 
+## 依赖说明
+
 查询最高版本或历史版本方式：
 
-- 访问：[Maven中央库-阿里源](http://maven.aliyun.com/nexus/#nexus-search;quick~mybatis-plus)
-- 访问：[Maven中央库-正统源](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.baomidou%22%20AND%20a%3A%22mybatis-plus%22)
+- [Maven中央库-正统源](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.baomidou%22%20AND%20a%3A%22mybatis-plus%22)
+- [Maven中央库-阿里源](http://maven.aliyun.com/nexus/#nexus-search;quick~mybatis-plus)
 
 ```xml
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus</artifactId>
-    <version>最新版本</version>
+    <version>2.0.1</version>
 </dependency>
 ```
 
 !> 特别说明：**`Mybatis`及`Mybatis-Spring`依赖请勿加入项目配置，以免引起版本冲突！！！Mybatis-Plus会自动帮你维护！**
 
-# 集成示例
+## 如何集成
 
 > SpringMVC 参考 Demo
 
@@ -258,9 +268,11 @@ List<User> userList = user.selectPage(
 
 <https://git.oschina.net/baomidou/mybatisplus-spring-boot>
 
-# 代码生成器
-
 --------------------------------------------------------------------------------
+
+# 核心功能
+
+## 代码生成器
 
 在代码生成之前，首先进行配置，MP提供了大量的自定义设置，生成的代码完全能够满足各类型的需求，如果你发现配置不能满足你的需求，欢迎提交issue和pull-request，有兴趣的也可以查看[源码](https://github.com/baomidou/mybatis-plus/tree/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/generator)进行了解。
 
@@ -438,8 +450,70 @@ public class MpGenerator {
 
 待补充（Maven代码生成插件 待完善） <http://git.oschina.net/baomidou/mybatisplus-maven-plugin>
 
+## 通用 CRUD
 
-# 分页插件
+## 条件构造器
+
+> 实体包装器，用于处理 sql 拼接，排序，实体参数查询等！
+
+. 实体包装器 EntityWrapper 继承 Wrapper
+
+- 例如：
+
+- 翻页查询
+
+  ```java
+  public Page<T> selectPage(Page<T> page, EntityWrapper<T> entityWrapper) {
+    if (null != entityWrapper) {
+        entityWrapper.orderBy(page.getOrderByField(), page.isAsc());
+    }
+    page.setRecords(baseMapper.selectPage(page, entityWrapper));
+    return page;
+  }
+  ```
+
+- 拼接 sql
+
+```java
+@Test
+public void testTSQL11() {
+    /*
+     * 实体带查询使用方法  输出看结果
+     */
+    ew.setEntity(new User(1));
+    ew.where("name={0}", "'zhangsan'").and("id=1")
+            .orNew("status={0}", "0").or("status=1")
+            .notLike("nlike", "notvalue")
+            .andNew("new=xx").like("hhh", "ddd")
+            .andNew("pwd=11").isNotNull("n1,n2").isNull("n3")
+            .groupBy("x1").groupBy("x2,x3")
+            .having("x1=11").having("x3=433")
+            .orderBy("dd").orderBy("d1,d2");
+    System.out.println(ew.getSqlSegment());
+}
+```
+
+- 自定义 SQL 方法如何使用 Wrapper
+
+. mapper java 接口方法
+
+```java
+List<User> selectMyPage(RowBounds rowBounds, @Param("ew") Wrapper<T> wrapper);
+```
+
+. mapper xml 定义
+
+```xml
+<select id="selectMyPage" resultType="User">
+  SELECT * FROM user WHERE state = 1 ${ew.sqlSegment}
+</select>
+```
+
+--------------------------------------------------------------------------------
+
+# 插件扩展
+
+## 分页插件
 
 - mybatis 配置文件中配置插件 [mybatis-config.xml]
 
@@ -504,64 +578,7 @@ public Page<User> selectUserPage(Page<User> page, Integer state) {
 </select>
 ```
 
-# 条件构造器 Wrapper
-
-> 实体包装器，用于处理 sql 拼接，排序，实体参数查询等！
-
-. 实体包装器 EntityWrapper 继承 Wrapper
-
-- 例如：
-
-- 翻页查询
-
-  ```java
-  public Page<T> selectPage(Page<T> page, EntityWrapper<T> entityWrapper) {
-    if (null != entityWrapper) {
-        entityWrapper.orderBy(page.getOrderByField(), page.isAsc());
-    }
-    page.setRecords(baseMapper.selectPage(page, entityWrapper));
-    return page;
-  }
-  ```
-
-- 拼接 sql
-
-```java
-@Test
-public void testTSQL11() {
-    /*
-     * 实体带查询使用方法  输出看结果
-     */
-    ew.setEntity(new User(1));
-    ew.where("name={0}", "'zhangsan'").and("id=1")
-            .orNew("status={0}", "0").or("status=1")
-            .notLike("nlike", "notvalue")
-            .andNew("new=xx").like("hhh", "ddd")
-            .andNew("pwd=11").isNotNull("n1,n2").isNull("n3")
-            .groupBy("x1").groupBy("x2,x3")
-            .having("x1=11").having("x3=433")
-            .orderBy("dd").orderBy("d1,d2");
-    System.out.println(ew.getSqlSegment());
-}
-```
-- 自定义 SQL 方法如何使用 Wrapper
-
-. mapper java 接口方法
-```java
-
-List<User> selectMyPage(RowBounds rowBounds, @Param("ew") Wrapper<T> wrapper);
-
-```
-. mapper xml 定义
-```xml
-
-<select id="selectMyPage" resultType="User">
-  SELECT * FROM user WHERE state = 1 ${ew.sqlSegment}
-</select>
-
-```
-
-# XML文件热加载
+## XML文件热加载
 
 > 开启动态加载 mapper.xml
 
@@ -593,7 +610,7 @@ List<User> selectMyPage(RowBounds rowBounds, @Param("ew") Wrapper<T> wrapper);
     </bean>
 ```
 
-# 执行分析插件
+## 执行分析插件
 
 > SQL 执行分析拦截器【 目前只支持 MYSQL-5.6.3 以上版本 】，作用是分析 处理 DELETE UPDATE 语句， 防止小白或者恶意 delete update 全表操作！
 
@@ -612,7 +629,7 @@ List<User> selectMyPage(RowBounds rowBounds, @Param("ew") Wrapper<T> wrapper);
 
 - 注意！该插件只用于开发环境，不建议生产环境使用。。。
 
-# 性能分析插件
+## 性能分析插件
 
 > 性能分析拦截器，用于输出每条 SQL 语句及其执行时间
 
@@ -638,7 +655,7 @@ List<User> selectMyPage(RowBounds rowBounds, @Param("ew") Wrapper<T> wrapper);
 
 - 注意！该插件只用于开发环境，不建议生产环境使用。。。
 
-# 注入自定义SQL
+## 注入自定义SQL
 
 > 自定义注入全表删除方法 deteleAll
 
@@ -698,7 +715,7 @@ public interface UserMapper extends AutoMapper<User> {
 
 - 完成如上几步共享，注入完成！可以开始使用了。。。
 
-# 公共字段自动填充
+## 公共字段自动填充
 
 > 公共字段字段填充
 
@@ -737,3 +754,7 @@ public class MyMetaObjectHandler implements IMetaObjectHandler {
 <!-- 自定义处理器 -->
 <bean id="myMetaObjectHandler" class="com.baomidou.test.MyMetaObjectHandler" />
 ```
+
+--------------------------------------------------------------------------------
+
+# 常见问题
