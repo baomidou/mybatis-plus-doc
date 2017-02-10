@@ -1,5 +1,7 @@
 # 简介
 
+--------------------------------------------------------------------------------
+
 [Mybatis-Plus](https://github.com/baomidou/mybatis-plus)（简称MP）是一个 [Mybatis](http://www.mybatis.org/mybatis-3/) 的增强工具，在 Mybatis 的基础上只做增强不做改变，为简化开发、提高效率而生。
 
 !> 我们的愿景是成为`Mybatis`最好的搭档，就像 [魂斗罗](https://raw.githubusercontent.com/baomidou/mybatis-plus-doc/master/assets/contra.jpg) 中的1P、2P，基友搭配，效率翻倍。
@@ -12,6 +14,7 @@
 - **依赖少**：仅仅依赖 Mybatis 以及 Mybatis-Spring
 - **损耗小**：启动即会自动注入基本CURD，性能基本无损耗，直接面向对象操作
 - **预防Sql注入**：内置Sql注入剥离器，有效预防Sql注入攻击
+- **通用CRUD操作**：内置通用 Mapper、通用 Service，仅仅通过少量配置即可实现单表大部分 CRUD 操作，更有强大的条件构造器，满足各类使用需求
 - **多种主键策略**：支持多达4种主键策略（内含分布式唯一ID生成器），可自由配置，完美解决主键问题
 - **支持热加载**：Mapper 对应的 XML 支持热加载，对于简单的 CRUD 操作，甚至可以无 XML 启动
 - **支持ActiveRecord**：支持 ActiveRecord 形式调用，实体类只需继承 Model 类即可实现基本 CRUD 操作
@@ -33,9 +36,11 @@
 - 贡献代码：代码地址 [Mybatis-Plus](https://github.com/baomidou/mybatis-plus) ，欢迎提交 Issue 或者 Pull Requests
 - 维护文档：文档地址 [Mybatis-Plus-Doc](https://github.com/baomidou/mybatis-plus-doc) ，欢迎参与翻译和修订
 
---------------------------------------------------------------------------------
+<br><br>
 
 # 快速上手
+
+--------------------------------------------------------------------------------
 
 ## 简单示例(传统)
 
@@ -197,9 +202,11 @@ List<User> userList = user.selectPage(
 
 通过以上两个简单示例，我们简单领略了 Mybatis-Plus 的魅力与高效率，值得注意的一点是：我们提供了强大的`代码生成器`，可以快速生成各类代码，做到了`即开即用`。
 
---------------------------------------------------------------------------------
+<br><br>
 
 # 安装
+
+--------------------------------------------------------------------------------
 
 ## 依赖说明
 
@@ -220,57 +227,88 @@ List<User> userList = user.selectPage(
 
 ## 如何集成
 
-> SpringMVC 参考 Demo
+Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybatis 自带的`MybatisSqlSessionFactoryBean`替换为 MP 自带的即可。
 
-<https://git.oschina.net/baomidou/mybatisplus-spring-mvc>
+!> MP 大部分配置都和传统 Mybatis 一致，少量配置为 MP 特色功能配置，**此处仅对 MP 的特色功能进行讲解，其余请参考 *Mybatis-Spring* 配置说明 。**
+
+### 参数说明
+
+#### MybatisSqlSessionFactoryBean
+
+包名：`com.baomidou.mybatisplus.spring`
+
+### 集成示例
+
+示例工程：[mybatisplus-spring-mvc](https://git.oschina.net/baomidou/mybatisplus-spring-mvc) | [mybatisplus-spring-boot](https://git.oschina.net/baomidou/mybatisplus-spring-boot)
+
+> Xml Config
 
 ```xml
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
-        ...
-        <property name="plugins">
-            <array>
-                <!-- 分页插件配置 -->
-                <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
-                    <property name="dialectType" value="mysql"/>
-                </bean>
-            </array>
-        </property>
-        <!-- 全局配置注入 -->
-        <property name="globalConfig" ref="globalConfig" />
-    </bean>
-    <bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
-        <!--
-            AUTO->`0`("数据库ID自增")
-             INPUT->`1`(用户输入ID")
-            ID_WORKER->`2`("全局唯一ID")
-            UUID->`3`("全局唯一ID")
-        -->
-        <property name="idType" value="2" />
-        <!--
-            MYSQL->`mysql`
-            ORACLE->`oracle`
-            DB2->`db2`
-            H2->`h2`
-            HSQL->`hsql`
-            SQLITE->`sqlite`
-            POSTGRE->`postgresql`
-            SQLSERVER2005->`sqlserver2005`
-            SQLSERVER->`sqlserver`
-        -->
-        <!-- Oracle需要添加该项 -->
-        <!-- <property name="dbType" value="oracle" /> -->
-        <!-- 全局表为下划线命名设置 true -->
-        <!-- <property name="dbColumnUnderline" value="true" /> -->
-    </bean>
+    <!-- 配置数据源 -->
+    <property name="dataSource" ref="dataSource"/>
+    <!-- 自动扫描 Xml 文件位置 -->
+    <property name="mapperLocations" value="classpath:mybatis/*/*.xml"/>
+    <!-- 配置 Mybatis 配置文件（可无） -->
+    <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+    <!-- 配置包别名 -->
+    <property name="typeAliasesPackage" value="com.baomidou.springmvc.model"/>
+
+    <!-- 以上配置和传统 Mybatis 一致 -->
+
+    <!-- 插件配置 -->
+    <property name="plugins">
+        <array>
+            <!-- 分页插件配置 -->
+            <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
+                <!-- 指定数据库方言 -->
+                <property name="dialectType" value="mysql"/>
+            </bean>
+            <!-- 如需要开启其他插件，可配置于此 -->
+        </array>
+    </property>
+
+    <!-- MP 全局配置注入 -->
+    <property name="globalConfig" ref="globalConfig" />
+</bean>
+
+<bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
+    <!-- MP 主键策略配置
+        AUTO->`0`("数据库ID自增")
+        INPUT->`1`(用户输入ID")
+        ID_WORKER->`2`("全局唯一ID")
+        UUID->`3`("全局唯一ID")
+    -->
+    <property name="idType" value="2" />
+    <!--
+        MYSQL->`mysql`
+        ORACLE->`oracle`
+        DB2->`db2`
+        H2->`h2`
+        HSQL->`hsql`
+        SQLITE->`sqlite`
+        POSTGRE->`postgresql`
+        SQLSERVER2005->`sqlserver2005`
+        SQLSERVER->`sqlserver`
+    -->
+    <!-- Oracle需要添加该项 -->
+    <!-- <property name="dbType" value="oracle" /> -->
+    <!-- 全局表为下划线命名设置 true -->
+    <!-- <property name="dbColumnUnderline" value="true" /> -->
+</bean>
 ```
 
-> SpringBoot 参考 Demo
+> Java Config
 
-<https://git.oschina.net/baomidou/mybatisplus-spring-boot>
+```java
 
---------------------------------------------------------------------------------
+```
+
+<br><br>
 
 # 核心功能
+
+--------------------------------------------------------------------------------
 
 ## 代码生成器
 
@@ -509,9 +547,11 @@ List<User> selectMyPage(RowBounds rowBounds, @Param("ew") Wrapper<T> wrapper);
 </select>
 ```
 
---------------------------------------------------------------------------------
+<br><br>
 
 # 插件扩展
+
+--------------------------------------------------------------------------------
 
 ## 分页插件
 
@@ -578,38 +618,6 @@ public Page<User> selectUserPage(Page<User> page, Integer state) {
 </select>
 ```
 
-## XML文件热加载
-
-> 开启动态加载 mapper.xml
-
-- 多数据源配置多个 MybatisMapperRefresh 启动 bean
-
-```
-参数说明：
-      sqlSessionFactory:session工厂
-      mapperLocations:mapper匹配路径
-      enabled:是否开启动态加载  默认:false
-      delaySeconds:项目启动延迟加载时间  单位：秒  默认:10s
-      sleepSeconds:刷新时间间隔  单位：秒 默认:20s
-  提供了两个构造,挑选一个配置进入spring配置文件即可：
-
-构造1:
-    <bean class="com.baomidou.mybatisplus.spring.MybatisMapperRefresh">
-        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
-        <constructor-arg name="mapperLocations" value="classpath*:mybatis/mappers/*/*.xml"/>
-        <constructor-arg name="enabled" value="true"/>
-    </bean>
-
-构造2:
-    <bean class="com.baomidou.mybatisplus.spring.MybatisMapperRefresh">
-        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
-        <constructor-arg name="mapperLocations" value="classpath*:mybatis/mappers/*/*.xml"/>
-        <constructor-arg name="delaySeconds" value="10"/>
-        <constructor-arg name="sleepSeconds" value="20"/>
-        <constructor-arg name="enabled" value="true"/>
-    </bean>
-```
-
 ## 执行分析插件
 
 > SQL 执行分析拦截器【 目前只支持 MYSQL-5.6.3 以上版本 】，作用是分析 处理 DELETE UPDATE 语句， 防止小白或者恶意 delete update 全表操作！
@@ -646,6 +654,38 @@ public Page<User> selectUserPage(Page<User> page, Integer state) {
             <property name="format" value="true" />
         </plugin>
     </plugins>
+```
+
+## XML文件热加载
+
+> 开启动态加载 mapper.xml
+
+- 多数据源配置多个 MybatisMapperRefresh 启动 bean
+
+```
+参数说明：
+      sqlSessionFactory:session工厂
+      mapperLocations:mapper匹配路径
+      enabled:是否开启动态加载  默认:false
+      delaySeconds:项目启动延迟加载时间  单位：秒  默认:10s
+      sleepSeconds:刷新时间间隔  单位：秒 默认:20s
+  提供了两个构造,挑选一个配置进入spring配置文件即可：
+
+构造1:
+    <bean class="com.baomidou.mybatisplus.spring.MybatisMapperRefresh">
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <constructor-arg name="mapperLocations" value="classpath*:mybatis/mappers/*/*.xml"/>
+        <constructor-arg name="enabled" value="true"/>
+    </bean>
+
+构造2:
+    <bean class="com.baomidou.mybatisplus.spring.MybatisMapperRefresh">
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <constructor-arg name="mapperLocations" value="classpath*:mybatis/mappers/*/*.xml"/>
+        <constructor-arg name="delaySeconds" value="10"/>
+        <constructor-arg name="sleepSeconds" value="20"/>
+        <constructor-arg name="enabled" value="true"/>
+    </bean>
 ```
 
 > 注意！参数说明
@@ -755,6 +795,8 @@ public class MyMetaObjectHandler implements IMetaObjectHandler {
 <bean id="myMetaObjectHandler" class="com.baomidou.test.MyMetaObjectHandler" />
 ```
 
---------------------------------------------------------------------------------
+<br><br>
 
 # 常见问题
+
+--------------------------------------------------------------------------------
