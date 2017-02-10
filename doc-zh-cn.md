@@ -439,6 +439,11 @@ public class MpGenerator {
 }
 ```
 
+> 方式二、Maven插件生成
+
+待补充（Maven代码生成插件 待完善） <http://git.oschina.net/baomidou/mybatisplus-maven-plugin>
+
+
 # 分页插件
 
 - mybatis 配置文件中配置插件 [mybatis-config.xml]
@@ -504,13 +509,11 @@ public Page<User> selectUserPage(Page<User> page, Integer state) {
 </select>
 ```
 
-> 方式二、Maven插件生成
-
-待补充（Maven代码生成插件 待完善） <http://git.oschina.net/baomidou/mybatisplus-maven-plugin>
-
-# 条件构造器
+# 条件构造器 Wrapper
 
 > 实体包装器，用于处理 sql 拼接，排序，实体参数查询等！
+
+. 实体包装器 EntityWrapper 继承 Wrapper
 
 - 例如：
 
@@ -545,6 +548,22 @@ public void testTSQL11() {
             .orderBy("dd").orderBy("d1,d2");
     System.out.println(ew.getSqlSegment());
 }
+```
+- 自定义 SQL 方法如何使用 Wrapper
+
+. mapper java 接口方法
+```java
+
+List<User> selectMyPage(RowBounds rowBounds, @Param("ew") Wrapper<T> wrapper);
+
+```
+. mapper xml 定义
+```xml
+
+<select id="selectMyPage" resultType="User">
+  SELECT * FROM user WHERE state = 1 ${ew.sqlSegment}
+</select>
+
 ```
 
 # XML文件热加载
