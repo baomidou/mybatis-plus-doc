@@ -316,8 +316,6 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 
 - [源码](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/spring/MybatisSqlSessionFactoryBean.java)
 
-<br>
-
 ### GlobalConfiguration
 
 - 包名：`com.baomidou.mybatisplus.entity.config`
@@ -328,9 +326,19 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 
 - [源码](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/generator/config/GlobalConfig.java)
 
-#### dbType
+- 参数：
 
-- 默认值：`MySql`
+  - dbType（数据库类型）
+
+    - 类型：Enum
+    - 默认值：DBType.MYSQL
+    - 可选值：MYSQL、ORACLE、DB2、H2、HSQL、SQLITE、POSTGRE、SQLSERVER2005、SQLSERVER、OTHER
+
+  - idType（主键类型）
+
+    - 类型：Enum
+    - 默认值：IdType.ID_WORKER
+    - 可选值：ID_WORKER（分布式全局唯一ID）、UUID（32位UUID字符串）、AUTO（数据库自增）、INPUT(自行输入)
 
 <br><br>
 
