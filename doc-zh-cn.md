@@ -1,7 +1,5 @@
 # 简介
 
---------------------------------------------------------------------------------
-
 [Mybatis-Plus](https://github.com/baomidou/mybatis-plus)（简称MP）是一个 [Mybatis](http://www.mybatis.org/mybatis-3/) 的增强工具，在 Mybatis 的基础上只做增强不做改变，为简化开发、提高效率而生。
 
 !> 我们的愿景是成为`Mybatis`最好的搭档，就像 [魂斗罗](https://raw.githubusercontent.com/baomidou/mybatis-plus-doc/master/assets/contra.jpg) 中的1P、2P，基友搭配，效率翻倍。
@@ -36,11 +34,9 @@
 - 贡献代码：代码地址 [Mybatis-Plus](https://github.com/baomidou/mybatis-plus) ，欢迎提交 Issue 或者 Pull Requests
 - 维护文档：文档地址 [Mybatis-Plus-Doc](https://github.com/baomidou/mybatis-plus-doc) ，欢迎参与翻译和修订
 
-<br><br>
+--------------------------------------------------------------------------------
 
 # 快速上手
-
---------------------------------------------------------------------------------
 
 ## 简单示例(传统)
 
@@ -202,18 +198,16 @@ List<User> userList = user.selectPage(
 
 通过以上两个简单示例，我们简单领略了 Mybatis-Plus 的魅力与高效率，值得注意的一点是：我们提供了强大的`代码生成器`，可以快速生成各类代码，做到了`即开即用`。
 
-<br><br>
+--------------------------------------------------------------------------------
 
 # 安装
-
---------------------------------------------------------------------------------
 
 ## 依赖配置
 
 查询最高版本或历史版本方式：
 
-- [Maven中央库-正统源](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.baomidou%22%20AND%20a%3A%22mybatis-plus%22)
-- [Maven中央库-阿里源](http://maven.aliyun.com/nexus/#nexus-search;quick~mybatis-plus)
+- [Maven中央库](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.baomidou%22%20AND%20a%3A%22mybatis-plus%22)
+- [Maven阿里库](http://maven.aliyun.com/nexus/#nexus-search;quick~mybatis-plus)
 
 ```xml
 <dependency>
@@ -309,42 +303,29 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 ### MybatisSqlSessionFactoryBean
 
 - 包名：`com.baomidou.mybatisplus.spring`
-
 - 描述：创建 SqlSession 示例（与 _Mybatis-Spring_ 的工厂 Bean 相类似，只是加入了 MP 特色功能配置）
-
 - 用法：参考原生 Mybatis-Spring 的使用
-
 - [源码](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/spring/MybatisSqlSessionFactoryBean.java)
 
 ### GlobalConfiguration
 
 - 包名：`com.baomidou.mybatisplus.entity.config`
-
 - 描述：MP 全局配置类，用于配置 MP 的各项策略（如：主键策略、数据库方言等）
-
 - 用法：参照上述示例代码
-
 - [源码](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/generator/config/GlobalConfig.java)
-
 - 参数：
-
   - dbType（数据库类型）
-
     - 类型：Enum
     - 默认值：DBType.MYSQL
     - 可选值：MYSQL、ORACLE、DB2、H2、HSQL、SQLITE、POSTGRE、SQLSERVER2005、SQLSERVER、OTHER
-
   - idType（主键类型）
-
     - 类型：Enum
     - 默认值：IdType.ID_WORKER
     - 可选值：ID_WORKER（分布式全局唯一ID）、UUID（32位UUID字符串）、AUTO（数据库自增）、INPUT(自行输入)
 
-<br><br>
+--------------------------------------------------------------------------------
 
 # 核心功能
-
---------------------------------------------------------------------------------
 
 ## 代码生成器
 
@@ -583,11 +564,9 @@ List<User> selectMyPage(RowBounds rowBounds, @Param("ew") Wrapper<T> wrapper);
 </select>
 ```
 
-<br><br>
+--------------------------------------------------------------------------------
 
 # 插件扩展
-
---------------------------------------------------------------------------------
 
 ## 分页插件
 
@@ -831,12 +810,8 @@ public class MyMetaObjectHandler implements IMetaObjectHandler {
 <bean id="myMetaObjectHandler" class="com.baomidou.test.MyMetaObjectHandler" />
 ```
 
-<br><br>
+--------------------------------------------------------------------------------
 
 # 常见问题
 
---------------------------------------------------------------------------------
-
 ## Mybatis-Plus 性能如何？
-
-<br><br>
