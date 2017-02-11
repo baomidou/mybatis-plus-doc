@@ -312,7 +312,7 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 - 包名：`com.baomidou.mybatisplus.entity.config`
 - 描述：MP 全局配置类，用于配置 MP 的各项策略（如：主键策略、数据库方言等）
 - 用法：参照上述示例代码
-- [源码](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/generator/config/GlobalConfig.java)
+- [源码](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/entity/config/GlobalConfig.java)
 - 参数：
   - dbType（数据库类型）
     - 类型：Enum
