@@ -290,6 +290,8 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 </bean>
 ```
 
+!> 特别注意 `MybatisSqlSessionFactoryBean` 非原生的类，必须如上配置 ！
+
 > Java Config
 
 ```java
