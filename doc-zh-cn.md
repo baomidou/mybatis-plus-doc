@@ -566,18 +566,20 @@ List<User> selectMyPage(RowBounds rowBounds, @Param("ew") Wrapper<T> wrapper);
 </select>
 ```
 
-> 排除非表中字段
+## 排除非表中字段
 
-- 使用 transient 修饰
+> 如果三种方式选择一种即可！
+
+- 1、使用 transient 修饰
 ```java
 private transient String noColumn;
 ```
 
-- 使用 static 修饰
+- 2、使用 static 修饰
 ```java
 private static String noColumn;
 ```
-- 使用 TableField 注解
+- 3、使用 TableField 注解
 ```
 @TableField(exist=false)
 private String noColumn;
