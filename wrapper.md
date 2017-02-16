@@ -1,21 +1,22 @@
 # 条件构造器
+
 实体包装器，用于处理 sql 拼接，排序，实体参数查询等！
 
-. 实体包装器 EntityWrapper 继承 Wrapper
+实体包装器 EntityWrapper 继承 Wrapper
 
 - 例如：
 
 - 翻页查询
 
-  ```java
-  public Page<T> selectPage(Page<T> page, EntityWrapper<T> entityWrapper) {
-    if (null != entityWrapper) {
-        entityWrapper.orderBy(page.getOrderByField(), page.isAsc());
-    }
-    page.setRecords(baseMapper.selectPage(page, entityWrapper));
-    return page;
+```java
+public Page<T> selectPage(Page<T> page, EntityWrapper<T> entityWrapper) {
+  if (null != entityWrapper) {
+      entityWrapper.orderBy(page.getOrderByField(), page.isAsc());
   }
-  ```
+  page.setRecords(baseMapper.selectPage(page, entityWrapper));
+  return page;
+}
+```
 
 - 拼接 sql
 
@@ -40,13 +41,13 @@ public void testTSQL11() {
 
 - 自定义 SQL 方法如何使用 Wrapper
 
-. mapper java 接口方法
+mapper java 接口方法
 
 ```java
 List<User> selectMyPage(RowBounds rowBounds, @Param("ew") Wrapper<T> wrapper);
 ```
 
-. mapper xml 定义
+mapper xml 定义
 
 ```xml
 <select id="selectMyPage" resultType="User">

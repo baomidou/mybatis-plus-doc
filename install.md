@@ -18,7 +18,7 @@
 
 Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybatis 自带的`MybatisSqlSessionFactoryBean`替换为 MP 自带的即可。
 
-!> MP 大部分配置都和传统 Mybatis 一致，少量配置为 MP 特色功能配置，**此处仅对 MP 的特色功能进行讲解，其余请参考 _Mybatis-Spring_ 配置说明 。**
+!> MP 大部分配置都和传统 Mybatis 一致，少量配置为 MP 特色功能配置，**此处仅对 MP 的特色功能进行讲解，其余请参考 _Mybatis-Spring_ 配置说明**。
 
 示例工程：
 
@@ -120,6 +120,7 @@ MP 创建 SqlSession 示例工厂类（与 _Mybatis-Spring_ 的工厂 Bean 相�
   ```
 
   ```java
+  // todo
   ```
 
 ## [GlobalConfiguration](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/entity/GlobalConfiguration.java)
