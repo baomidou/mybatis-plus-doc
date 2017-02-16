@@ -149,6 +149,16 @@ public class MpGenerator {
                 this.setMap(map);
             }
         };
+        // 自定义 xxList.jsp 生成
+        List<FileOutConfig> focList = new ArrayList<FileOutConfig>();
+		focList.add(new FileOutConfig("/template/list.jsp.vm") {
+			@Override
+			public String outputFile(TableInfo tableInfo) {
+				// 自定义输入文件名称
+				return "D://my_" + tableInfo.getEntityName() + ".jsp";
+			}
+		});
+		cfg.setFileOutConfigList(focList);
         mpg.setCfg(cfg);
 
         // 自定义模板配置，可以 copy 源码 mybatis-plus/src/main/resources/template 下面内容修改，
