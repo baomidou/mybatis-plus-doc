@@ -1,4 +1,3 @@
-- Language
-  - [English](/doc-en)
-  - [简体中文](/doc-zh-cn)
-  - [繁體中文](/doc-zh-tw)
+- Download
+  - [Github](https://github.com/baomidou/mybatis-plus)
+  - [OSChina](http://git.oschina.net/baomidou/mybatis-plus)
