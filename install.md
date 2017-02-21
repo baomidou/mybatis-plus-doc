@@ -59,15 +59,19 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
     <property name="globalConfig" ref="globalConfig" />
 </bean>
 
+<!-- 定义 MP 全局策略 -->
 <bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
-    <!-- MP 主键策略配置
+    <!-- 主键策略配置 -->
+    <!-- 可选参数
         AUTO->`0`("数据库ID自增")
         INPUT->`1`(用户输入ID")
         ID_WORKER->`2`("全局唯一ID")
         UUID->`3`("全局唯一ID")
     -->
     <property name="idType" value="2" />
-    <!--
+
+    <!-- 数据库类型配置 -->
+    <!-- 可选参数（默认mysql）
         MYSQL->`mysql`
         ORACLE->`oracle`
         DB2->`db2`
@@ -78,10 +82,10 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
         SQLSERVER2005->`sqlserver2005`
         SQLSERVER->`sqlserver`
     -->
-    <!-- Oracle需要添加该项 -->
-    <!-- <property name="dbType" value="oracle" /> -->
+    <property name="dbType" value="oracle" />
+
     <!-- 全局表为下划线命名设置 true -->
-    <!-- <property name="dbColumnUnderline" value="true" /> -->
+    <property name="dbColumnUnderline" value="true" />
 </bean>
 ```
 
@@ -90,53 +94,5 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 > Java Config
 
 ```java
-
+// TODO
 ```
-
-# 参数说明
-
-## MybatisSqlSessionFactoryBean
-
-MP 创建 SqlSession 示例工厂类（与 _Mybatis-Spring_ 的工厂 Bean 相类似，只是加入了 MP 特色功能配置），用法参考原生 Mybatis-Spring 的使用方法。
-
-!> 本处只针对 MP 特有参数进行讲解，其余请参考原生 Mybatis
-
-### globalConfig（MP 全局配置）
-
-- 类型：GlobalConfiguration
-- 用法：
-
-  ```xml
-  <!-- MyBatis SqlSessionFactoryBean 配置 -->
-  <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
-    .....
-    <!-- 注入 MP 全局配置  -->
-    <property name="globalConfig" ref="globalConfig" />
-  </bean>
-  <!-- 定义 MP 全局配置 Bean -->
-  <bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
-    ......
-  </bean>
-  ```
-
-  ```java
-  // todo
-  ```
-
-## [GlobalConfiguration](https://github.com/baomidou/mybatis-plus/blob/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/entity/GlobalConfiguration.java)
-
-MP 全局配置类，用于配置 MP 的各项策略（如：主键策略、数据库方言等），需要注入到 `MybatisSqlSessionFactoryBean` 中。
-
-- 参数：
-
-  - dbType（数据库类型）
-
-    - 类型：Enum
-    - 默认值：DBType.MYSQL
-    - 可选值：MYSQL、ORACLE、DB2、H2、HSQL、SQLITE、POSTGRE、SQLSERVER2005、SQLSERVER、OTHER
-
-  - idType（主键类型）
-
-    - 类型：Enum
-    - 默认值：IdType.ID_WORKER
-    - 可选值：ID_WORKER（分布式全局唯一ID）、UUID（32位UUID字符串）、AUTO（数据库自增）、INPUT(自行输入)

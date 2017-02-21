@@ -20,5 +20,6 @@
 
 - 其他
 
+  - [参数说明](api)
   - [常见问题](question)
   - [更新日志](changelog)
