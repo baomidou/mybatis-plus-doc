@@ -23,7 +23,7 @@
   private String noColumn;
   ```
 
-## 出现异常`Invalid bound statement (not found)`的解决方法
+## 异常`Invalid bound statement (not found)` 解决方法
 
 > 不要怀疑，正视自己，这个异常肯定是你插入的姿势不对……
 
@@ -53,4 +53,16 @@
   </build>
   ```
 
+## 字段 update 空字符串 OR NULL 修改验证策略
 
+> FieldStrategy 三种策略 IGNORED【忽略】，NOT_NULL【非 NULL，默认策略】，NOT_EMPTY【非空】
+
+- 全局的验证策略，注入配置 GlobalConfiguration 属性 fieldStrategy
+
+- 根据具体情况，选择验证注解，如验证非空：
+
+  ```java
+  @TableField(validate=FieldStrategy.NOT_EMPTY)
+  ```
+  
+ 
