@@ -1,12 +1,14 @@
 # 参数说明
 
-## MybatisSqlSessionFactoryBean
+## 基础类API
+
+### MybatisSqlSessionFactoryBean
 
 MP 创建 SqlSession 示例工厂类（与 _Mybatis-Spring_ 的工厂 Bean 相类似，只是加入了 MP 特色功能配置），用法参考原生 Mybatis-Spring 的使用方法。
 
 !> 本处只针对 MP 特有参数进行讲解，其余请参考原生 Mybatis
 
-### globalConfig
+#### globalConfig
 
 - 类型：GlobalConfiguration
 - 描述：MP 全局策略配置
@@ -29,11 +31,11 @@ MP 创建 SqlSession 示例工厂类（与 _Mybatis-Spring_ 的工厂 Bean 相�
 // TODO
 ```
 
-## GlobalConfiguration
+### GlobalConfiguration
 
 MP 全局配置类，用于配置 MP 的各项策略（如：主键策略、数据库方言等），需要注入到 `MybatisSqlSessionFactoryBean` 中。
 
-### dbType
+#### dbType
 
 - 描述：指定数据库类型（如无您所需的数据库类型，可以向我们提交 `issue` 或者 `自行扩展数据库方言`）
 - 类型：`Enum`
@@ -52,7 +54,7 @@ DBType.POSTGRE       | postgresql
 DBType.SQLSERVER2005 | sqlserver2005
 DBType.SQLSERVER     | sqlserver
 
-### idType
+#### idType
 
 - 描述：定义主键策略
 - 类型：`Enum`
@@ -66,7 +68,7 @@ IdType.INPUT     | 1
 IdType.ID_WORKER | 2
 IdType.UUID      | 3
 
-### dbColumnUnderline
+#### dbColumnUnderline
 
 - 描述：表名和字段名是否使用下划线命名
 - 类型：`boolean`
