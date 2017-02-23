@@ -16,6 +16,11 @@
 </body>
 <!-- Custom Config -->
 <script>
+    // support pwa
+    if (typeof navigator.serviceWorker !== 'undefined') {
+        navigator.serviceWorker.register('sw.js')
+    }
+    // docsify config 
     window.$docsify = {
         name: 'Mybatis-Plus',
         subMaxLevel: 4,
