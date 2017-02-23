@@ -31,9 +31,9 @@
 
 - 检查是否指定了主键？如未指定，则会导致 `selectById` 相关 ID 无法操作，请用注解 `@TableId` 注解表 ID 主键
 
-- 对于`IDEA`系列编辑器，XML 文件是不能放在 java 文件夹中的，IDEA 默认不会编译源码文件夹中的 XML 文件，如果非要放在 java 文件夹中，可以参照一下方式解决：
+- 对于`IDEA`系列编辑器，XML 文件是不能放在 java 文件夹中的，IDEA 默认不会编译源码文件夹中的 XML 文件，可以参照以下方式解决：
 
-  - 将配置文件放在 resource 文件夹中
+  - 将配置文件放在 resource 文件夹中，请参考 Spring-MVC 的集成 DEMO
   - 对于 Maven 项目，可指定 POM 文件的 resource
 
   ```xml
