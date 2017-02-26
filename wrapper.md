@@ -51,6 +51,6 @@ mapper xml 定义
 
 ```xml
 <select id="selectMyPage" resultType="User">
-  SELECT * FROM user WHERE state = 1 ${ew.sqlSegment}
+  SELECT * FROM user ${ew.sqlSegment}
 </select>
 ```
