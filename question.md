@@ -66,11 +66,15 @@
   ```
   
  
-## bit 、tinyint(1) 使用 boolean 类型映射解决方法
+## 字段 `bit 、tinyint(1)` 使用 boolean 类型映射解决方法
 
 > 默认 mybatis 是不会自动处理该映射，需要修改请求连接添加参数 tinyInt1isBit=false【默认 true】如下：
 
   ```xml
   jdbc:mysql://127.0.0.1:3306/mp?tinyInt1isBit=false
   ```
+
+## 异常`Injection of autowired` 解决方法
+
+> 原因！低版本不支持泛型注入，请升级 spring 4+
 
