@@ -53,6 +53,44 @@
   </build>
   ```
 
+## ID_WORKER 主键 Long 导致 js 精度丢失
+
+> JavaScript 无法处理 Java 的长整型 Long 导致精度丢失，解决办法 Long 转为 String 返回
+
+- FastJson 处理方式：
+
+```java
+ /**
+     * <p>
+     * 消息转换
+     * </p>
+     */
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        FastJsonHttpMessageConverter fastJsonConverter = new FastJsonHttpMessageConverter();
+        FastJsonConfig fjc = new FastJsonConfig();
+
+        //1、序列化重点
+fjc.setSerializerFeatures(SerializerFeature.BrowserCompatible);
+        fastJsonConverter.setFastJsonConfig(fjc);
+        converters.add(fastJsonConverter);
+    }
+```
+
+- JackJson 处理方式：
+
+```java
+// 1、注解处理，这里可以配置公共 baseEntity 处理
+@JsonSerialize(using=ToStringSerializer.class)
+public long getId() {
+    return id;
+}
+
+// 2、全局配置序列化返回 JSON 处理
+final ObjectMapper objectMapper = new ObjectMapper();
+objectMapper.configure(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);
+```
+
 ## 字段 update 空字符串 OR NULL 修改验证策略
 
 > FieldStrategy 三种策略 IGNORED【忽略】，NOT_NULL【非 NULL，默认策略】，NOT_EMPTY【非空】
