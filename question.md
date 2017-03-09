@@ -60,21 +60,20 @@
 - FastJson 处理方式：
 
 ```java
-    /**
-     * <p>
-     * 消息转换
-     * </p>
-     */
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        FastJsonHttpMessageConverter fastJsonConverter = new FastJsonHttpMessageConverter();
-        FastJsonConfig fjc = new FastJsonConfig();
-
-        //1、序列化重点
-fjc.setSerializerFeatures(SerializerFeature.BrowserCompatible);
-        fastJsonConverter.setFastJsonConfig(fjc);
-        converters.add(fastJsonConverter);
-    }
+/**
+ * <p>
+ * 消息转换
+ * </p>
+ */
+ @Override
+ public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+    FastJsonHttpMessageConverter fastJsonConverter = new FastJsonHttpMessageConverter();
+    FastJsonConfig fjc = new FastJsonConfig();
+    //1、序列化重点
+    fjc.setSerializerFeatures(SerializerFeature.BrowserCompatible);
+    fastJsonConverter.setFastJsonConfig(fjc);
+    converters.add(fastJsonConverter);
+ }
 ```
 
 - JackJson 处理方式：
