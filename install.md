@@ -105,6 +105,8 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 
 - SSM 后台框架 [KangarooAdmin](https://git.oschina.net/zhougaojun/KangarooAdmin)
 
+- 又一个 SSM 后台管理框架 [framework](https://git.oschina.net/sunhan521/framework)
+
 - 轻量级权限管理系统 [tizi](https://git.oschina.net/beijingeducation/tizi)
 
 - 猫宁Morning公益商城 [Morning](https://git.oschina.net/Morning_/Morning)
