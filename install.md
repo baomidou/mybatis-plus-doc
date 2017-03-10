@@ -101,9 +101,9 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 
 - Java EE（J2EE）快速开发框架 [SpringWind](https://git.oschina.net/juapk/SpringWind)
 
-- JAVA分布式快速开发基础平台 [iBase4J](https://git.oschina.net/iBase4J/iBase4J)
+- JAVA分布式快速开发基础平台 [iBase4J](https://git.oschina.net/iBase4J/iBase4J) 
 
-- SSM 后台框架 [renren](https://git.oschina.net/zhougaojun/KangarooAdmin)
+- SSM 后台框架 [KangarooAdmin](https://git.oschina.net/zhougaojun/KangarooAdmin)
 
 - 轻量级权限管理系统 [tizi](https://git.oschina.net/beijingeducation/tizi)
 
@@ -111,10 +111,13 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 
 - 人人开源 [renren](https://git.oschina.net/cdf962155660/renren) 支持多数据源
 
-- 系统管理中心系统 [center](https://git.oschina.net/willenfoo/center)
-
 - 基础权限开发框架 [BMS](https://git.oschina.net/eric.xu/BMS)  Shiro 案例
 
 - 简单实用的权限系统 [spring-shiro-training](https://git.oschina.net/wangzhixuan/spring-shiro-training)  Shiro 案例
+
+- 系统管理中心系统 [center](https://git.oschina.net/willenfoo/center)
+
+- Springboot-Shiro 脚手架 [skeleton](https://github.com/fengchangsheng/skeleton)
+
 
 !> 需！加入列表的童鞋可以告诉我们。
