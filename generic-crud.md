@@ -1,7 +1,8 @@
 # 通用 CRUD
 
-## 基本 CRUD 介绍
+## 基本介绍(CRUD 增删改查)
 TODO
+
 
 ## 注解说明
 
@@ -37,4 +38,6 @@ value            | 字段值（驼峰命名方式，该值可无）
 el               | 详看注释说明
 exist            | 是否为数据库表字段（ 默认 true 存在，false 不存在 ）
 validate         | 字段验证 （ 默认 非 null 判断，查看 com.baomidou.mybatisplus.enums.FieldStrategy ）
+
+!> 排除非表字段、查看文档常见问题部分！
 
