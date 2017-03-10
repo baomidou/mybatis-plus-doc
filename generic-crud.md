@@ -15,7 +15,7 @@ value            | 表名（ 默认空 ）
 resultMap        | xml 字段映射 resultMap ID
 
 
-> 主键 `@TableId ` 注解
+> 主键注解 `@TableId `
 
 - com.baomidou.mybatisplus.annotations.TableId
 
@@ -27,7 +27,7 @@ type             | 主键 ID 策略类型（ 默认 INPUT ，全局开启�
 !> 暂不支持组合主键
 
 
-> 字段 `@TableField ` 注解
+> 字段注解 `@TableField `
 
 - com.baomidou.mybatisplus.annotations.TableField
 
