@@ -1,0 +1,32 @@
+language: node_js
+
+sudo: false
+
+node_js:
+  - "6"
+
+cache:
+  apt: true
+  directories:
+    - node_modules
+
+env:
+  - CXX=g++-4.8
+
+before_install:
+  - export TZ=Asia/Shanghai
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+  ssh_known_hosts: github.com
+
+deploy:
+  provider: script
+  script: .travis/sync.sh
+  skip_cleanup: true
+  on:
+    branch: master
