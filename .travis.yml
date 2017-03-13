@@ -1,14 +1,7 @@
-language: node_js
-
 sudo: false
-
-node_js:
-  - "6"
 
 cache:
   apt: true
-  directories:
-    - node_modules
 
 env:
   - CXX=g++-4.8
@@ -23,10 +16,6 @@ addons:
     packages:
       - g++-4.8
   ssh_known_hosts: github.com
-
-scripts:
-  test:
-    - console.log('sync to coding')
 
 deploy:
   provider: script
