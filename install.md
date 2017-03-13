@@ -28,7 +28,9 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 
 示例代码：
 
-> Xml Config
+> XML 配置
+
+?> 详细配置可参考参数说明中的 [MybatisSqlSessionFactoryBean](/api?id=mybatissqlsessionfactorybean) 和 [GlobalConfiguration](/api?id=globalconfiguration)
 
 ```xml
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
@@ -56,7 +58,7 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
     </property>
 
     <!-- MP 全局配置注入 -->
-    <property name="globalConfig" ref="globalConfig" />
+    <property name="globalConfig" ref="globalConfig"/>
 </bean>
 
 <!-- 定义 MP 全局策略 -->
@@ -68,7 +70,7 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
         ID_WORKER->`2`("全局唯一ID")
         UUID->`3`("全局唯一ID")
     -->
-    <property name="idType" value="2" />
+    <property name="idType" value="2"/>
 
     <!-- 数据库类型配置 -->
     <!-- 可选参数（默认mysql）
@@ -82,10 +84,10 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
         SQLSERVER2005->`sqlserver2005`
         SQLSERVER->`sqlserver`
     -->
-    <property name="dbType" value="oracle" />
+    <property name="dbType" value="oracle"/>
 
     <!-- 全局表为下划线命名设置 true -->
-    <property name="dbColumnUnderline" value="true" />
+    <property name="dbColumnUnderline" value="true"/>
 </bean>
 ```
 
