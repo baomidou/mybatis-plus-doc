@@ -24,6 +24,10 @@ addons:
       - g++-4.8
   ssh_known_hosts: github.com
 
+scripts:
+  test:
+    - console.log('sync to coding')
+
 deploy:
   provider: script
   script: .travis/sync.sh
