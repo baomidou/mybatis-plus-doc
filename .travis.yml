@@ -1,9 +1,9 @@
+language: java
+
 sudo: false
 
 cache:
   apt: true
-  directories:
-    - node_modules
 
 env:
   - CXX=g++-4.8
