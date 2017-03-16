@@ -1,9 +1,14 @@
-language: java
+language: node_js
 
 sudo: false
 
+node_js:
+  - "6"
+
 cache:
   apt: true
+  directories:
+    - node_modules
 
 env:
   - CXX=g++-4.8
