@@ -12,7 +12,10 @@ cp .travis/ssh_config ~/.ssh/config
 # Set Git config
 git config --global user.name "D.Yang"
 git config --global user.email koyangslash@gmail.com
+git config --global push.default simple
 # Add coding remote
 git remote add coding git@git.coding.net:yangyang0507/mybatis-plus-doc.git
+git remote add oschina git@git.oschina.net:baomidou/mybatis-plus-doc.git
 # Push
 git push coding
+git push oschina
