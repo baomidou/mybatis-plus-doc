@@ -17,6 +17,7 @@
   - [XML热加载](hot-loading)
   - [自定义全局操作](sql-injector)
   - [自动填充公共字段](auto-fill)
+  - [多数据源支持](multi-datasource)
 
 - 其他
 
