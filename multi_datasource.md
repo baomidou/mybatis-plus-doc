@@ -1,8 +1,9 @@
-# 关于多数据源的问题，可以使用spring的AbstractRoutingDataSource实现。 具体实现如下：
+# 关于多数据源，使用 Spring AbstractRoutingDataSource 实现
 
--  第一步：扩展Spring的AbstractRoutingDataSource抽象类，实现动态数据源。
-AbstractRoutingDataSource中的抽象方法determineCurrentLookupKey是实现数据源的route的核心.这里对该方法进行Override。
+>  第一步：扩展Spring的AbstractRoutingDataSource抽象类，实现动态数据源。
+AbstractRoutingDataSource中的抽象方法determineCurrentLookupKey是实现数据源的route的核心，这里对该方法进行Override。
 【上下文DbContextHolder为一线程安全的ThreadLocal】具体代码如下：
+
 ```java
 public class DynamicDataSource extends AbstractRoutingDataSource {
 
@@ -93,3 +94,4 @@ log.debug(user.getId() + "#" + user.getName() + "#" + user.getAge());
 !> 说明：
 - 1、事务管理：使用动态数据源的时候，可以看出和使用单数据源的时候相比，在使用配置上几乎没有差别，在进行性事务管理配置的时候也没有差别：
 - 2、通过扩展Spring的AbstractRoutingDataSource可以很好的实现多数据源的rout效果，而且对扩展更多的数据源有良好的伸缩性，只要增加数据源和修改DynamicDataSource的targetDataSources属性配置就好。在数据源选择控制上，可以采用手动控制(业务逻辑并不多的时候)，也可以很好的用AOP的@Aspect在Service的入口加入一个切面@Pointcut，在@Before里判断JoinPoint的类容选定特定的数据源。
+
