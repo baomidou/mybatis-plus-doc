@@ -44,8 +44,8 @@ public interface UserMapper extends AutoMapper<User> {
 > 最后一步注入启动
 
 ```xml
-<!-- MyBatis SqlSessionFactoryBean 配置 -->
-<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+<!-- 定义 MP 全局策略，安装集成文档部分结合 -->
+<bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
     .....
 
   <!-- 自定义注入 deleteAll 方法  -->
