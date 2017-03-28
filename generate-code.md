@@ -176,7 +176,8 @@ public class MpGenerator {
         // tc.setXml("...");
         // tc.setService("...");
         // tc.setServiceImpl("...");
-        // mpg.setTemplate(tc);
+	// 如上任何一个模块如果设置 空 OR Null 将不生成该模块。
+        // mpg.setTemplate(tc);
 
         // 执行生成
         mpg.execute();
