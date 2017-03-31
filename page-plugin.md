@@ -16,7 +16,8 @@
      | dialectClazz 方言实现类
      |              自定义需要实现 com.baomidou.mybatisplus.plugins.pagination.IDialect 接口
      | -->
-    <!-- 配置方式一、使用 MybatisPlus 提供方言实现类 -->
+    <!-- 注意!! 如果要支持二级缓存分页使用类 CachePaginationInterceptor 默认、建议如下！！ -->
+    <!-- 配置方式一、使用 MybatisPlus 提供方言实现类 -->
     <plugin interceptor="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
         <property name="dialectType" value="mysql" />
         <property name="optimizeType" value="aliDruid" />
