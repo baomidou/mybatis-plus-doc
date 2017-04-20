@@ -14,7 +14,7 @@
   - [分页插件](page-plugin)
   - [执行分析插件](execution-analysis-plugin)
   - [性能分析插件](performance-analysis-plugin)
-  - [乐观锁插件](optimistic-locker)
+  - [乐观锁插件](optimistic-locker-plugin)
   - [XML热加载](hot-loading)
   - [自定义全局操作](sql-injector)
   - [自动填充公共字段](auto-fill)
