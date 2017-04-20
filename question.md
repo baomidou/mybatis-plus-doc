@@ -117,4 +117,4 @@ objectMapper.configure(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);
 
 ## 异常`java.lang.NoSuchMethodError: org.apache.ibatis.session.Configuration.getDefaultScriptingLanguageInstance()Lorg/apache/ibatis/scripting/LanguageDriver` 解决方法
 
-版本引入问题。3.4.1版本里没有,3.4.2里面才有
+> 版本引入问题：3.4.1版本里没有，3.4.2里面才有！
