@@ -17,7 +17,9 @@
   - [XML热加载](hot-loading)
   - [自定义全局操作](sql-injector)
   - [自动填充公共字段](auto-fill)
-  - [多数据源](multi-datasource)
+  - [乐观锁](optimistic-locker)
+  - [逻辑删除](logic-delete)
+  - [多数据源](multi-datasource)
 
 - 其他
 
