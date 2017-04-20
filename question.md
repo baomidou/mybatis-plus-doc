@@ -101,8 +101,8 @@ objectMapper.configure(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);
   ```java
   @TableField(validate=FieldStrategy.NOT_EMPTY)
   ```
-  
- 
+
+
 ## 字段 `bit 、tinyint(1)` 使用 boolean 类型映射解决方法
 
 > 默认 mybatis 是不会自动处理该映射，需要修改请求连接添加参数 tinyInt1isBit=false【默认 true】如下：
@@ -115,3 +115,6 @@ objectMapper.configure(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);
 
 > 原因！低版本不支持泛型注入，请升级 spring 4+
 
+## 异常`java.lang.NoSuchMethodError: org.apache.ibatis.session.Configuration.getDefaultScriptingLanguageInstance()Lorg/apache/ibatis/scripting/LanguageDriver` 解决方法
+
+版本引入问题。3.4.1版本里没有,3.4.2里面才有
