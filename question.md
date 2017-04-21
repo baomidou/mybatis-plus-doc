@@ -101,7 +101,12 @@ objectMapper.configure(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);
   ```java
   @TableField(validate=FieldStrategy.NOT_EMPTY)
   ```
+- 解决办法 二
+```java
+updateAllColumnById(entity) // 全部字段更新
 
+insertAllColumn(entity) // 全部字段插入
+```
 
 ## 字段 `bit 、tinyint(1)` 使用 boolean 类型映射解决方法
 
