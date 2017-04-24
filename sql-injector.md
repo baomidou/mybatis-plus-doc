@@ -31,7 +31,7 @@ public class MySqlInjector extends AutoSqlInjector {
 > 当然你的 mapper.java 接口类需要申明使用方法 deleteAll 如下
 
 ```java
-public interface UserMapper extends AutoMapper<User> {
+public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 自定义注入方法
