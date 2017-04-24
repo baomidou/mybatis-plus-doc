@@ -121,5 +121,7 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 
 - Springboot-Shiro 脚手架 [skeleton](https://github.com/fengchangsheng/skeleton)
 
+- Springboot-Shiro 美女图片爬虫 [springboot_mybatisplus](https://git.oschina.net/z77z/springboot_mybatisplus)
+
 
 !> 需！加入列表的童鞋可以告诉我们。
