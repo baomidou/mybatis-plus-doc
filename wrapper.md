@@ -26,6 +26,7 @@ public void testTSQL11() {
     /*
      * 实体带查询使用方法  输出看结果
      */
+    EntityWrapper<User> ew = new EntityWrapper<User>();
     ew.setEntity(new User(1));
     ew.where("name={0}", "'zhangsan'").and("id=1")
             .orNew("status={0}", "0").or("status=1")
