@@ -18,7 +18,7 @@ public Page<T> selectPage(Page<T> page, EntityWrapper<T> entityWrapper) {
 }
 ```
 
-- 拼接 sql
+- 拼接 sql 方式 一
 
 ```java
 @Test
@@ -37,6 +37,20 @@ public void testTSQL11() {
             .orderBy("dd").orderBy("d1,d2");
     System.out.println(ew.getSqlSegment());
 }
+```
+
+- 拼接 sql 方式 二
+
+```java
+int buyCount = selectCount(Condition.instance()
+                .setSqlSelect("sum(quantity)")
+                .isNull("order_id")
+                .eq("user_id", 1)
+                .eq("type", 1)
+                .in("status", new Integer[]{0, 1})
+                .eq("product_id", 1)
+                .between("created_time", startDate, currentDate)
+                .eq("weal", 1));
 ```
 
 - 自定义 SQL 方法如何使用 Wrapper
