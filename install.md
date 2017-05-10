@@ -123,5 +123,7 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 
 - Springboot-Shiro 美女图片爬虫 [springboot_mybatisplus](https://git.oschina.net/z77z/springboot_mybatisplus)
 
+- guns 后台管理系统 [guns](http://git.oschina.net/naan1993/guns)
+
 
 !> 需！加入列表的童鞋可以告诉我们。
