@@ -1,6 +1,6 @@
 <img width="200" height"200" src="assets/logo.svg">
 
-# Mybatis-Plus <small>2.0.7</small>
+# Mybatis-Plus <small>2.0.8</small>
 
 > Born To Simplify Development
 
