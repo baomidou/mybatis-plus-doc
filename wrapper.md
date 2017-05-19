@@ -43,7 +43,7 @@ public void testTSQL11() {
 - 拼接 sql 方式 二
 
 ```java
-int buyCount = selectCount(Condition.instance()
+int buyCount = selectCount(Condition.create()
                 .setSqlSelect("sum(quantity)")
                 .isNull("order_id")
                 .eq("user_id", 1)
