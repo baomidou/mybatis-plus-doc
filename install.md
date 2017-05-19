@@ -8,7 +8,7 @@
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus</artifactId>
-    <version>2.0.7</version>
+    <version>仓库最高版本号</version>
 </dependency>
 ```
 
