@@ -69,4 +69,4 @@ mapper xml 定义
   SELECT * FROM user ${ew.sqlSegment}
 </select>
 ```
-!> 关于 ${ew.sqlSegment} 这里使用了 $ 不要误以为就会被 sql 注入，请放心使用 mp 内部对 wrapper 进行了字符转义处理！
+!> 关于 ${ew.sqlSegment} 使用了 $ 不要误以为就会被 sql 注入，请放心使用 mp 内部对 wrapper 进行了字符转义处理！
