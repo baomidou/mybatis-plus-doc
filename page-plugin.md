@@ -1,6 +1,6 @@
 # 分页插件
 
-- mybatis 配置文件中配置插件 [mybatis-config.xml]
+- spring 注入 mybatis 配置插件
 
 ```xml
 <plugins>
