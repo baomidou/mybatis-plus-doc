@@ -20,6 +20,7 @@
   - [自动填充公共字段](auto-fill)
   - [逻辑删除](logic-delete)
   - [多数据源](multi-datasource)
+  - [主键Sequence](sequence)
 
 - 其他
 
