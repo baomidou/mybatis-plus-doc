@@ -25,7 +25,7 @@ result = userMapper.insert(user);
 
 // 更新 User
 user.setAge(18);
-result = userMapper.updateById(user.getId());
+result = userMapper.updateById(user);
 
 // 查询 User
 User exampleUser = userMapper.selectById(user.getId());
