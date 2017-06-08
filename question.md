@@ -33,7 +33,7 @@
 
 - 当然 `@TableId` 注解可以没有！但是你的主键必须叫  id  忽略大小写
 
-- 注意！maven 多模块 jar 依赖 xml 扫描需为 ` classpath*: ` 加载多个文件下的 xml 
+- 注意！maven 多模块 jar 依赖 xml 扫描需为 ` classpath*: ` 加载多个 jar 下的 xml 
 
 - 对于`IDEA`系列编辑器，XML 文件是不能放在 java 文件夹中的，IDEA 默认不会编译源码文件夹中的 XML 文件，可以参照以下方式解决：
 
