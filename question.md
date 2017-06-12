@@ -129,3 +129,8 @@ objectMapper.configure(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);
 Lorg/apache/ibatis/scripting/LanguageDriver` 解决方法
 
 > 版本引入问题：3.4.1版本里没有，3.4.2里面才有！
+
+
+## 出现2个limit语句
+> 原因：配了2个分页拦截器! 检查配置文件或者代码，只留一个！
+
