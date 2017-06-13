@@ -134,3 +134,5 @@ Lorg/apache/ibatis/scripting/LanguageDriver` 解决方法
 ## 出现2个limit语句
 > 原因：配了2个分页拦截器! 检查配置文件或者代码，只留一个！
 
+## insert后如何返回主键
+> insert后主键会自动set到实体的ID字段，只需要entity.getId()
