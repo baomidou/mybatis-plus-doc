@@ -1,6 +1,7 @@
 # 分页插件
 
-- spring 注入 mybatis 配置插件
+- 自定义查询语句分页（自己写sql/mapper）
+- spring 注入 mybatis 配置分页插件
 
 ```xml
 <plugins>
@@ -30,28 +31,45 @@
 </plugins>
 ```
 
+```java
+//Spring boot方式
+@Bean
+public SqlSessionFactory sqlSessionFactory(){
+  MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
+  ...
+  PaginationInterceptor pagination = new PaginationInterceptor();
+  pagination.setOptimizeType("jsqlparser");
+  sqlSessionFactory.setPlugins(new Interceptor[]{
+      pagination
+    });
+  return sqlSessionFactory.getObject();
+}
+```
+
 - UserMapper.java 方法内容
 
 ```java
-/**
- * <p>
- * 查询 state 状态，用户列表，分页显示
- * </p>
- *
- * @param page
- *            翻页对象，可以作为 xml 参数直接使用，传递参数 Page 即自动分页
- * @param state
- *            状态
- * @return
- */
-List<User> selectUserList(Pagination page, Integer state);
+public interface UserMapper{//可以继承或者不继承BaseMapper
+    /**
+     * <p>
+     * 查询 : 根据state状态查询用户列表，分页显示
+     * </p>
+     *
+     * @param page
+     *            翻页对象，可以作为 xml 参数直接使用，传递参数 Page 即自动分页
+     * @param state
+     *            状态
+     * @return
+     */
+    List<User> selectUserList(Pagination page, Integer state);
+}
 ```
 
 - UserServiceImpl.java 调用翻页方法，需要 page.setRecords 回传给页面
 
 ```java
 public Page<User> selectUserPage(Page<User> page, Integer state) {
-    page.setRecords(baseMapper.selectUserList(page, state));
+    page.setRecords(userMapper.selectUserList(page, state));
     return page;
 }
 ```
