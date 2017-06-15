@@ -36,4 +36,4 @@ logicNotDeleteValue // 逻辑未删除全局值
 ```
 
 ## 逻辑删除效果
-> 会在mp自带查询和更新方法的sql后面，追加<逻辑删除字段>=<LogicNotDeleteValue默认值>
+> 会在mp自带查询和更新方法的sql后面，追加『逻辑删除字段』=『LogicNotDeleteValue默认值』
