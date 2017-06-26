@@ -9,24 +9,18 @@
      | 分页插件配置
      | 插件提供二种方言选择：1、默认方言 2、自定义方言实现类，两者均未配置则抛出异常！
      | overflowCurrent 溢出总页数，设置第一页 默认false
-     | optimizeType Count优化方式 默认default
-     | 1.支持 aliDruid 方式，需添加aliDruid依赖
-     | 2.支持 jsqlparser 方式，需添加jsqlparser依赖
-     | dialectType 数据库方言
-     |             默认支持  mysql  oracle  hsql  sqlite  postgre  sqlserver
-     | dialectClazz 方言实现类
-     |              自定义需要实现 com.baomidou.mybatisplus.plugins.pagination.IDialect 接口
+     | optimizeType Count优化方式 （ 版本 2.0.9 改为使用 jsqlparser 不需要配置 ）
      | -->
     <!-- 注意!! 如果要支持二级缓存分页使用类 CachePaginationInterceptor 默认、建议如下！！ -->
     <!-- 配置方式一、使用 MybatisPlus 提供方言实现类 -->
     <plugin interceptor="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
-        <property name="dialectType" value="mysql" />
-        <property name="optimizeType" value="aliDruid" />
+        <property name="sqlParser" ref="....." />
+        <property name="localPage" value="默认 false 改为 true 开启了 pageHeper 支持" />
     </plugin>
     <!-- 配置方式二、使用自定义方言实现类 -->
     <plugin interceptor="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
         <property name="dialectClazz" value="xxx.dialect.XXDialect" />
-        <property name="optimizeType" value="jsqlparser" />
+        ...
     </plugin>
 </plugins>
 ```
@@ -80,4 +74,13 @@ public Page<User> selectUserPage(Page<User> page, Integer state) {
 <select id="selectUserList" resultType="User">
     SELECT * FROM user WHERE state=#{state}
 </select>
+```
+
+- PageHelper 使用方式如下：
+```java
+// 开启分页
+PageHelper.startPage(1, 2);
+List<User> data = userService.findAll(params);
+// 获取总条数
+int total = PageHelper.getTotal();
 ```
