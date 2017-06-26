@@ -49,7 +49,7 @@ MP在Sequence的基础上进行部分优化，用于产生全局唯一ID，好�
 </dependency>
 ```
 
-> 代码生成示例
+> 代码生成、示例一
 
 ```java
 import java.util.HashMap;
@@ -207,6 +207,27 @@ public class MpGenerator {
 }
 ```
 
-> 方式二、Maven插件生成
+
+> 代码生成 [点此去了解](https://github.com/baomidou/mybatis-plus/blob/master/src/test/java/com/baomidou/mybatisplus/test/generator/MysqlGenerator.java) 、示例二 
+
+```java
+new AutoGenerator().setGlobalConfig(
+	...
+).setDataSource(
+	...
+).setStrategy(
+	...
+).setPackageInfo(
+	...
+).setCfg(
+	...
+).setTemplate(
+	...
+).execute();
+
+```
+
+> 其他方式、 Maven插件生成
+
 
 待补充（Maven代码生成插件 待完善） <http://git.oschina.net/baomidou/mybatisplus-maven-plugin>
