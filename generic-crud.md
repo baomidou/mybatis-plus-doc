@@ -37,7 +37,23 @@ type             | 主键 ID 策略类型（ 默认 INPUT ，全局开启�
 value            | 字段值（驼峰命名方式，该值可无）
 el               | 详看注释说明
 exist            | 是否为数据库表字段（ 默认 true 存在，false 不存在 ）
-validate         | 字段验证 （ 默认 非 null 判断，查看 com.baomidou.mybatisplus.enums.FieldStrategy ）
+strategy         | 字段验证 （ 默认 非 null 判断，查看 com.baomidou.mybatisplus.enums.FieldStrategy ）
+ignore           | 字段忽略策略 （ 配合自动填充使用 ）
+
+
+> 序列主键策略 注解 `@KeySequence `
+
+- com.baomidou.mybatisplus.annotations.KeySequence
+
+值                | 描述
+---------------- | ---------------------
+value            | 序列名
+clazz            | id的类型
+
+
+> 乐观锁标记注解 `@Version `
+
+- com.baomidou.mybatisplus.annotations.Version
 
 !> 排除非表字段、查看文档常见问题部分！
 
