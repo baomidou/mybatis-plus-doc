@@ -2,22 +2,19 @@
 
 - 实现元对象处理器接口： com.baomidou.mybatisplus.mapper.IMetaObjectHandler
 
+- 忽略填充字段，注解 @TableField(.. ignore = FieldIgnore.INSERT) 生成器策略部分也可以配置！
+
 - 自定义实现类 MyMetaObjectHandler
 
 ```java
 /**  自定义填充公共 name 字段  */
-public class MyMetaObjectHandler  extends MetaObjectHandler {
+public class MyMetaObjectHandler extends MetaObjectHandler {
 
     /**
      * 测试 user 表 name 字段为空自动填充
      */
     public void insertFill(MetaObject metaObject) {
-        // 测试下划线
-        Object testType = metaObject.getValue("testType");
-        System.err.println("testType==" + testType);
-        if (null == testType) {
-            metaObject.setValue("testType", 3);
-        }
+        // 更多查看源码测试用例
     }
 
     @Override
