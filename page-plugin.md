@@ -12,7 +12,6 @@
      | optimizeType Count优化方式 （ 版本 2.0.9 改为使用 jsqlparser 不需要配置 ）
      | -->
     <!-- 注意!! 如果要支持二级缓存分页使用类 CachePaginationInterceptor 默认、建议如下！！ -->
-    <!-- 配置方式一、使用 MybatisPlus 提供方言实现类 -->
     <plugin interceptor="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
         <property name="sqlParser" ref="自定义解析类、可以没有" />
         <property name="localPage" value="默认 false 改为 true 开启了 pageHeper 支持、可以没有" />
