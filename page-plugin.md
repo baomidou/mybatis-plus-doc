@@ -14,13 +14,9 @@
     <!-- 注意!! 如果要支持二级缓存分页使用类 CachePaginationInterceptor 默认、建议如下！！ -->
     <!-- 配置方式一、使用 MybatisPlus 提供方言实现类 -->
     <plugin interceptor="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
-        <property name="sqlParser" ref="....." />
-        <property name="localPage" value="默认 false 改为 true 开启了 pageHeper 支持" />
-    </plugin>
-    <!-- 配置方式二、使用自定义方言实现类 -->
-    <plugin interceptor="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
-        <property name="dialectClazz" value="xxx.dialect.XXDialect" />
-        ...
+        <property name="sqlParser" ref="自定义解析类、可以没有" />
+        <property name="localPage" value="默认 false 改为 true 开启了 pageHeper 支持、可以没有" />
+        <property name="dialectClazz" value="自定义方言类、可以没有" />
     </plugin>
 </plugins>
 ```
