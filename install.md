@@ -48,11 +48,7 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
     <!-- 插件配置 -->
     <property name="plugins">
         <array>
-            <!-- 分页插件配置 -->
-            <bean id="paginationInterceptor" class="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
-                <!-- 指定数据库方言 -->
-                <property name="dialectType" value="mysql"/>
-            </bean>
+            <!-- 分页插件配置, 参考文档分页插件部分！！ -->
             <!-- 如需要开启其他插件，可配置于此 -->
         </array>
     </property>
