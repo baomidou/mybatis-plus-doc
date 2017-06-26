@@ -28,8 +28,8 @@ public SqlSessionFactory sqlSessionFactory(){
   MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
   ...
   PaginationInterceptor pagination = new PaginationInterceptor();
-  pagination.setOptimizeType("jsqlparser");
-  sqlSessionFactory.setPlugins(new Interceptor[]{
+  // 具体参考自己设置，参考 xml 参数说明或源码注释
+  sqlSessionFactory.setPlugins(new Interceptor[]{
       pagination
     });
   return sqlSessionFactory.getObject();
