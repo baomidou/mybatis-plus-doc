@@ -20,10 +20,10 @@ public class MyMetaObjectHandler extends MetaObjectHandler {
         System.out.println("*************************");
 
         // 测试下划线
-        Object testType = getFieldValByName("testType", metaObject);
+        Object testType = getFieldValByName("testType", metaObject);//mybatis-plus版本2.0.9+
         System.out.println("testType=" + testType);
         if (testType == null) {
-            setFieldValByName("testType", 3, metaObject);
+            setFieldValByName("testType", 3, metaObject);//mybatis-plus版本2.0.9+
         }
     }
 
@@ -33,6 +33,7 @@ public class MyMetaObjectHandler extends MetaObjectHandler {
         System.out.println("*************************");
         System.out.println("update fill");
         System.out.println("*************************");
+        //mybatis-plus版本2.0.9+
         setFieldValByName("lastUpdatedDt", new Timestamp(System.currentTimeMillis()), metaObject);
     }
 }
