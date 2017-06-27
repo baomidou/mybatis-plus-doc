@@ -8,7 +8,7 @@
 
 ```java
   GlobalConfiguration gc = new GlobalConfiguration();
-  gc.setDbType("oracle");
+  //gc.setDbType("oracle");//不需要这么配置了
   gc.setKeyGenerator(new OracleKeyGenerator());
 ```
 

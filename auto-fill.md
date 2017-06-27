@@ -15,11 +15,25 @@ public class MyMetaObjectHandler extends MetaObjectHandler {
      */
     public void insertFill(MetaObject metaObject) {
         // 更多查看源码测试用例
+        System.out.println("*************************");
+        System.out.println("insert fill");
+        System.out.println("*************************");
+
+        // 测试下划线
+        Object testType = getFieldValByName("testType", metaObject);
+        System.out.println("testType=" + testType);
+        if (testType == null) {
+            setFieldValByName("testType", 3, metaObject);
+        }
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         //更新填充
+        System.out.println("*************************");
+        System.out.println("update fill");
+        System.out.println("*************************");
+        setFieldValByName("lastUpdatedDt", new Timestamp(System.currentTimeMillis()), metaObject);
     }
 }
 
