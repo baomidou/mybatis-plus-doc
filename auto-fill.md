@@ -2,7 +2,7 @@
 
 - 实现元对象处理器接口： com.baomidou.mybatisplus.mapper.IMetaObjectHandler
 
-- 注解填充字段 @TableField(.. fill = FieldFill.INSERT) 生成器策略部分也可以配置！
+- 注解填充字段 `@TableField(.. fill = FieldFill.INSERT)` 生成器策略部分也可以配置！
 
 ```java
 public class User {
