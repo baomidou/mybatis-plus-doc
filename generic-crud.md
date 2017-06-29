@@ -1,7 +1,14 @@
 # 通用 CRUD
 
 ## 简单介绍
+
 TODO
+
+> 实体无注解化设置，表字段如下规则，主键叫 id 可无注解大写小如下规则。
+
+1、驼峰命名 【 无需处理 】 
+
+2、全局配置： 下划线命名 dbColumnUnderline 设置 true ,  大写 isCapitalMode 设置 true
 
 
 ## 注解说明
