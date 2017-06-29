@@ -6,7 +6,7 @@
 <bean class="com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor"/>
 ```
 
-## 注解实体
+## 注解实体字段 @Version
 
 ```java
 public class user {
