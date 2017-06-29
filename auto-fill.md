@@ -2,7 +2,7 @@
 
 - 实现元对象处理器接口： com.baomidou.mybatisplus.mapper.IMetaObjectHandler
 
-- 忽略填充字段，注解 @TableField(.. fill = FieldFill.INSERT) 生成器策略部分也可以配置！
+- 注解填充字段 @TableField(.. fill = FieldFill.INSERT) 生成器策略部分也可以配置！
 
 - 自定义实现类 MyMetaObjectHandler
 
@@ -40,7 +40,7 @@ public class MyMetaObjectHandler extends MetaObjectHandler {
 
 ```
 
-!> 特别说明：** 需要填充的字段需要忽略验证，查看文档问题部分！ **
+!> 特别说明：** 一点要注解填充字段，查看文档问题部分！ **
 
 > spring 启动注入 MyMetaObjectHandler 配置
 
