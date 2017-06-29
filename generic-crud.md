@@ -38,7 +38,7 @@ value            | 字段值（驼峰命名方式，该值可无）
 el               | 详看注释说明
 exist            | 是否为数据库表字段（ 默认 true 存在，false 不存在 ）
 strategy         | 字段验证 （ 默认 非 null 判断，查看 com.baomidou.mybatisplus.enums.FieldStrategy ）
-ignore           | 字段忽略策略 （ 配合自动填充使用 ）
+fill             | 字段填充标记 （ 配合自动填充使用 ）
 
 
 > 序列主键策略 注解 `@KeySequence `
