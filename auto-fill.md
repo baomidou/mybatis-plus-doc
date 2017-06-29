@@ -2,7 +2,7 @@
 
 - 实现元对象处理器接口： com.baomidou.mybatisplus.mapper.IMetaObjectHandler
 
-- 忽略填充字段，注解 @TableField(.. ignore = FieldIgnore.INSERT) 生成器策略部分也可以配置！
+- 忽略填充字段，注解 @TableField(.. fill = FieldFill.INSERT) 生成器策略部分也可以配置！
 
 - 自定义实现类 MyMetaObjectHandler
 
