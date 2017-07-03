@@ -37,6 +37,8 @@ MP 全局配置类，用于配置 MP 的各项策略（如：主键策略、数�
 
 #### dbType
 
+!> 从2.1-gamma版本，不需要配置dbType，自动识别
+
 - 描述：指定数据库类型（如无您所需的数据库类型，可以向我们提交 `issue` 或者 `自行扩展数据库方言`）
 - 类型：`Enum`
 - 默认值：`DBType.MYSQL`
@@ -73,3 +75,26 @@ IdType.UUID      | 3
 - 描述：表名和字段名是否使用下划线命名
 - 类型：`boolean`
 - 默认值：`false`
+
+#### keyGenerator
+
+- Sequence生成器：根据数据库类型，可选值：
+
+DB2KeyGenerator
+OracleKeyGenerator
+PostgreKeyGenerator
+
+#### 逻辑删除注入
+
+```java
+    @Bean
+    public GlobalConfiguration globalConfiguration() {
+        GlobalConfiguration conf = new GlobalConfiguration(new LogicSqlInjector());
+        conf.setLogicDeleteValue("-1");
+        conf.setLogicNotDeleteValue("1");
+        conf.setIdType(2);
+        return conf;
+    }
+```
+
+
