@@ -2,6 +2,8 @@
 
 实体包装器，用于处理 sql 拼接，排序，实体参数查询等！
 
+!> 补充说明： 使用的是数据库字段，不是Java属性!
+
 实体包装器 EntityWrapper 继承 Wrapper
 
 - 例如：
@@ -28,9 +30,9 @@ public void testTSQL11() {
      */
     EntityWrapper<User> ew = new EntityWrapper<User>();
     ew.setEntity(new User(1));
-    ew.where("name={0}", "'zhangsan'").and("id=1")
-            .orNew("status={0}", "0").or("status=1")
-            .notLike("nlike", "notvalue")
+    ew.where("user_name={0}", "'zhangsan'").and("id=1")
+            .orNew("user_status={0}", "0").or("status=1")
+            .notLike("user_nickname", "notvalue")
             .andNew("new=xx").like("hhh", "ddd")
             .andNew("pwd=11").isNotNull("n1,n2").isNull("n3")
             .groupBy("x1").groupBy("x2,x3")
