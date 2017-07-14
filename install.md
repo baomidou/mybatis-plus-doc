@@ -121,5 +121,6 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 
 - guns 后台管理系统 [guns](http://git.oschina.net/naan1993/guns)
 
+- maple 企业信息化的开发基础平台 [maple](https://git.oschina.net/blind/maple)
 
 !> 需！加入列表的童鞋可以告诉我们。
