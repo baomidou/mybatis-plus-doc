@@ -99,15 +99,13 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 
 - Java EE（J2EE）快速开发框架 [SpringWind](https://git.oschina.net/juapk/SpringWind)
 
-- JAVA分布式快速开发基础平台 [iBase4J](https://git.oschina.net/iBase4J/iBase4J) 
-
 - SSM 后台框架 [KangarooAdmin](https://git.oschina.net/zhougaojun/KangarooAdmin)
+
+- JAVA分布式快速开发基础平台 [iBase4J](https://git.oschina.net/iBase4J/iBase4J) 
 
 - 又一个 SSM 后台管理框架 [framework](https://git.oschina.net/sunhan521/framework)
 
 - 猫宁Morning公益商城 [Morning](https://git.oschina.net/Morning_/Morning)
-
-- 人人开源 [renren](https://git.oschina.net/cdf962155660/renren) 读写分离案例
 
 - 基础权限开发框架 [BMS](https://git.oschina.net/eric.xu/BMS)  Shiro 案例
 
