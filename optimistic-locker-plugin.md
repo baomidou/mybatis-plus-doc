@@ -1,5 +1,18 @@
 # 乐观锁插件
 
+##主要使用场景：
+
+意图： 
+
+当要更新一条记录的时候，希望这条记录没有被别人更新
+
+乐观锁实现方式：
+* 取出记录时，获取当前version
+* 更新时，带上这个version
+* 执行更新时， set version = yourVersion+1 where version = yourVersion
+* 如果version不对，就更新失败
+
+
 ## 插件配置
 
 ```xml
@@ -9,7 +22,7 @@
 ## 注解实体字段 `@Version` 必须要！
 
 ```java
-public class user {
+public class User {
 
     @Version
     private Integer version;
@@ -19,3 +32,30 @@ public class user {
 ```
 
 !> 特别说明： **仅支持int,Integer,long,Long,Date,Timestamp
+
+##示例
+示例Java代码
+
+```java
+int id = 100;
+int version = 2;
+
+User u = new User();
+u.setId(id);
+u.setVersion(version);
+u.setXXX(xxx);
+
+if(userService.updateById(u)){
+    System.out.println("Update successfully");
+}else{
+    System.out.println("Update failed due to modified by others");
+}
+
+```
+
+示例SQL原理
+
+```text
+update tbl_user set name='update',version=3 where id=100 and version=2;
+```
+
