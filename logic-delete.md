@@ -39,5 +39,22 @@ XML配置方式：
 <bean id="logicSqlInjector" class="com.baomidou.mybatisplus.mapper.LogicSqlInjector" />
 ```
 
+##逻辑删除实体
+
+```java
+
+@TableName("tbl_user")
+public class UserLogicDelete {
+    
+    private Long id;
+    ...
+    
+    @TableField(value = "delete_flag")
+    @TableLogic
+    private Integer deleteFlag;
+}
+```
+
 ## 逻辑删除效果
 > 会在mp自带查询和更新方法的sql后面，追加『逻辑删除字段』=『LogicNotDeleteValue默认值』
+> 删除方法: deleteById()和其他delete方法, 底层SQL调用的是update tbl_xxx set 『逻辑删除字段』=『logicDeleteValue默认值』
