@@ -136,3 +136,17 @@ Lorg/apache/ibatis/scripting/LanguageDriver` 解决方法
 
 ## insert后如何返回主键
 > insert后主键会自动set到实体的ID字段，只需要entity.getId()
+
+## MP如何只查指定几个字段，而不是全字段？
+> EntityWrapper.sqlSelect配置你想要查询的字段
+
+```java
+EntityWrapper<H2User> ew = new EntityWrapper<>();
+ew.setSqlSelect("test_id as id, name, age");//只查询3个字段
+List<H2User> list = userService.selectList(ew);
+for(H2User u:list){
+    Assert.assertNotNull(u.getId());
+    Assert.assertNotNull(u.getName());
+    Assert.assertNull(u.getPrice());//这个字段没有查询出来
+}
+```
