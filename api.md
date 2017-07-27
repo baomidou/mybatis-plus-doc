@@ -30,7 +30,7 @@ MP 创建 SqlSession 示例工厂类（与 _Mybatis-Spring_ 的工厂 Bean 相�
     <!-- 全局ID类型： 0, "数据库ID自增"， 1, "用户输入ID", 2, "全局唯一ID", 3, "全局唯一ID"-->
     <property name="idType" value="2" />
     <!-- 2.1-gamma 数据库自动识别，无需配置数据库类型
-    <property name="dbType" value="2" />
+    <property name="dbType" value="mysql" />
     -->
     <!--主键Sequence-->
     <property name="keyGenerator" ref="keyGenerator"/>
