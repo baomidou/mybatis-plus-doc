@@ -23,8 +23,28 @@ MP 创建 SqlSession 示例工厂类（与 _Mybatis-Spring_ 的工厂 Bean 相�
 
 <!-- 定义 MP 全局策略 -->
 <bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
-    ......
+    <!-- 逻辑删除 定义下面3个参数-->
+    <property name="sqlInjector" ref="logicSqlInjector" />
+    <property name="logicDeleteValue" value="-1" />
+    <property name="logicNotDeleteValue" value="1" />
+    <!-- 全局ID类型： 0, "数据库ID自增"， 1, "用户输入ID", 2, "全局唯一ID", 3, "全局唯一ID"-->
+    <property name="idType" value="2" />
+    <!-- 2.1-gamma 数据库自动识别，无需配置数据库类型
+    <property name="dbType" value="2" />
+    -->
+    <!--主键Sequence-->
+    <property name="keyGenerator" ref="keyGenerator"/>
+    <!-- 公共字段填充处理器 -->
+    <property name="metaObjectHandler" ref="myMetaObjectHandler" />
+    <!--数据库关键字转义符，'desc', "desc" -->
+    <property name="identifierQuote" value="'" />
 </bean>
+
+<!-- 配置oracle主键Sequence， 其他类型数据库，请配置相应的类型-->
+<bean id="keyGenerator" class="com.baomidou.mybatisplus.incrementer.OracleKeyGenerator"/>
+ 
+<!-- 自定义处理器 -->
+<bean id="myMetaObjectHandler" class="com.baomidou.test.MyMetaObjectHandler" />
 ```
 
 ```java
