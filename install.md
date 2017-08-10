@@ -129,5 +129,7 @@ sql-injector: com.baomidou.mybatisplus.mapper.PostgreSqlInjector
 
 - JeeWeb敏捷开发平台 [jeeweb-mybatis](https://git.oschina.net/dataact/jeeweb-mybatis)
 
+- CMS 平台 [youngcms](https://gitee.com/fumiao/youngcms)
+
 
 !> 需！加入列表的童鞋可以告诉我们。
