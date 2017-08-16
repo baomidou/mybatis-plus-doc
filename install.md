@@ -131,5 +131,7 @@ sql-injector: com.baomidou.mybatisplus.mapper.PostgreSqlInjector
 
 - CMS 平台 [youngcms](https://gitee.com/fumiao/youngcms)
 
+- 前后端分离的基础权限管理后台 [king-admin](https://github.com/oukingtim/king-admin)
+
 
 !> 需！加入列表的童鞋可以告诉我们。
