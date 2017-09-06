@@ -14,6 +14,6 @@ git config --global user.name "D.Yang"
 git config --global user.email koyangslash@gmail.com
 git config --global push.default simple
 # Add coding remote
-git remote add gitee git@gitee.com:baomidou/mybatis-plus.git
+git remote add gitee git@gitee.com:baomidou/mybatis-plus-doc.git
 # Push
 git push gitee master -f
