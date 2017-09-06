@@ -1,4 +1,4 @@
 language: bash
 
 script:
-    - bash .travis/sync.sh
+- bash .travis/sync.sh
