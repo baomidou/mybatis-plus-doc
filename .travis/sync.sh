@@ -16,4 +16,4 @@ git config --global push.default simple
 # Add coding remote
 git remote add gitee git@gitee.com:baomidou/mybatis-plus.git
 # Push
-git push gitee master
+git push gitee master -f
