@@ -6,5 +6,6 @@
 
 - Simple、Powerful、Extensibility
 
+[Gitee](https://git.oschina.net/baomidou/mybatis-plus)
 [GitHub](https://github.com/baomidou/mybatis-plus)
 [Get Started](#简介)
