@@ -37,8 +37,8 @@ MP在Sequence的基础上进行部分优化，用于产生全局唯一ID，好�
 <!-- 模板引擎 -->
 <dependency>
     <groupId>org.apache.velocity</groupId>
-    <artifactId>velocity</artifactId>
-    <version>1.7</version>
+    <artifactId>velocity-engine-core</artifactId>
+    <version>2.0</version>
 </dependency>
 
 <!-- MP 核心库 -->
