@@ -35,7 +35,7 @@ public SqlSessionFactory sqlSessionFactory(){
 }
 ```
 
-# 方式一 、传参区分分页模式【推荐】
+# 方式一 、传参区分模式【推荐】
 
 - UserMapper.java 方法内容
 
