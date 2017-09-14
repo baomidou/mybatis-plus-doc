@@ -73,7 +73,7 @@ public Page<User> selectUserPage(Page<User> page, Integer state) {
 </select>
 ```
 
-# 方式二、ThreadLocal 默认【容易出错，不推荐】
+# 方式二、ThreadLocal 模式【容易出错，不推荐】
 
 - PageHelper 使用方式如下：
 ```java
