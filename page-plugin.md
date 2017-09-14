@@ -35,6 +35,8 @@ public SqlSessionFactory sqlSessionFactory(){
 }
 ```
 
+# 方式一 、传参区分分页模式【推荐】
+
 - UserMapper.java 方法内容
 
 ```java
@@ -70,6 +72,8 @@ public Page<User> selectUserPage(Page<User> page, Integer state) {
     SELECT * FROM user WHERE state=#{state}
 </select>
 ```
+
+# 方式二、ThreadLocal 默认【容易出错，不推荐】
 
 - PageHelper 使用方式如下：
 ```java
