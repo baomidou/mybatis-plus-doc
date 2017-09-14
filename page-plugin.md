@@ -78,4 +78,6 @@ PageHelper.startPage(1, 2);
 List<User> data = userService.findAll(params);
 // 获取总条数
 int total = PageHelper.getTotal();
+// 获取总条数，并释放资源
+int total = PageHelper.freeTotal();
 ```
