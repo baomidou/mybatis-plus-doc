@@ -46,8 +46,10 @@ sql-injector: com.baomidou.mybatisplus.mapper.PostgreSqlInjector
     <property name="mapperLocations" value="classpath:mybatis/*/*.xml"/>
     <!-- 配置 Mybatis 配置文件（可无） -->
     <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
-    <!-- 配置包别名 -->
+    <!-- 配置包别名，支持通配符 * 或者 ; 分割 -->
     <property name="typeAliasesPackage" value="com.baomidou.springmvc.model"/>
+    <!-- 枚举属性配置扫描，支持通配符 * 或者 ; 分割 -->
+    <property name="typeEnumsPackage" value="com.baomidou.springmvc.entity.*.enums"/>
 
     <!-- 以上配置和传统 Mybatis 一致 -->
 
