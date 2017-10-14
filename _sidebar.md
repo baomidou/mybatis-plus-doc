@@ -22,6 +22,7 @@
   - [多数据源](multi-datasource)
   - [主键Sequence](sequence)
   - [多租户 SQL 解析器](tenant)
+  - [通用枚举自动注入](enum)
 
 - 其他
 
