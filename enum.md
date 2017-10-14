@@ -27,8 +27,8 @@ public enum AgeEnum implements IEnum {
         return this.value;
     }
 
-    @JsonValue
-    public String getDesc(){
+    @JsonValue // Jackson 注解，可序列化该属性为中文描述【可无】
+    public String getDesc(){
         return this.desc;
     }
 }
