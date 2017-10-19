@@ -91,7 +91,9 @@ public long getId() {
 
 // 2、全局配置序列化返回 JSON 处理
 final ObjectMapper objectMapper = new ObjectMapper();
-objectMapper.configure(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);
+SimpleModule simpleModule = new SimpleModule();
+simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
+objectMapper.registerModule(simpleModule);
 ```
 
 ## 字段 update 空字符串 OR NULL 修改验证策略
