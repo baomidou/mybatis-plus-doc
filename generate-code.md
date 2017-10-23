@@ -83,8 +83,8 @@ public class MpGenerator {
         GlobalConfig gc = new GlobalConfig();
         gc.setOutputDir("D://");
         gc.setFileOverride(true);
-        gc.setActiveRecord(true);
-        gc.setEnableCache(false);// XML 二级缓存
+        gc.setActiveRecord(true);// 不需要ActiveRecord特性的请改为false
+        gc.setEnableCache(false);// XML 二级缓存
         gc.setBaseResultMap(true);// XML ResultMap
         gc.setBaseColumnList(false);// XML columList
         gc.setAuthor("Yanghu");
