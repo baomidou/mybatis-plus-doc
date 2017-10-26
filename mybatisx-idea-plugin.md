@@ -7,7 +7,7 @@
 
 - Jar 安装：  File -> Settings -> Plugins -> Install plugin from disk.. 选中 mybatisx..jar 安装
 
-亲！好用 [五分好评](http://baomidou.oschina.io/mybatis-plus-doc/#/mybatisx-idea-plugin) 哦！！
+亲！好用 [五分好评](https://plugins.jetbrains.com/plugin/10119-mybatisx) 哦！！
 
 
 # 功能
