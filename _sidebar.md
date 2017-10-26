@@ -27,6 +27,7 @@
 
 - 其他
 
+  - [捐赠支持](donate)
   - [参数说明](api)
   - [常见问题](question)
   - [更新日志](changelog)
