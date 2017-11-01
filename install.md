@@ -135,5 +135,7 @@ sql-injector: com.baomidou.mybatisplus.mapper.PostgreSqlInjector
 
 - 前后端分离的基础权限管理后台 [king-admin](https://github.com/oukingtim/king-admin)
 
+- 前后端分离 Vue 快速开发平台 [jeefast](https://gitee.com/theodo/jeefast)
+
 
 !> 需！加入列表的童鞋可以告诉我们。
