@@ -105,7 +105,7 @@ sql-injector: com.baomidou.mybatisplus.mapper.PostgreSqlInjector
 
 ## 优秀案例
 
-- Java EE（J2EE）快速开发框架 [SpringWind](https://git.oschina.net/juapk/SpringWind)
+- Java EE（J2EE）快速开发框架 [SpringWind](https://gitee.com/baomidou/SpringWind)
 
 - SSM 后台框架 [KangarooAdmin](https://git.oschina.net/zhougaojun/KangarooAdmin)
 
