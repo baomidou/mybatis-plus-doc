@@ -137,5 +137,6 @@ sql-injector: com.baomidou.mybatisplus.mapper.PostgreSqlInjector
 
 - 前后端分离 Vue 快速开发平台 [jeefast](https://gitee.com/theodo/jeefast)
 
+- SpringBoot + Shiro +FreeMarker 制作的通用权限管理 [bing-upms](https://gitee.com/xiaobingby/bing-upms)
 
 !> 需！加入列表的童鞋可以告诉我们。
