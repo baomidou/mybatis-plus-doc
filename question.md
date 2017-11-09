@@ -56,6 +56,9 @@
     </resources>
   </build>
   ```
+## 关于Long型主键填充不生效的问题
+
+> 检查是不是用了long而不是Long！【特别说明】long类型默认值为0，而mp只会判断是否为null
 
 ## ID_WORKER 主键 Long 导致 js 精度丢失
 
