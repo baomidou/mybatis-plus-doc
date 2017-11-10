@@ -87,6 +87,7 @@ public class MpGenerator {
         gc.setEnableCache(false);// XML 二级缓存
         gc.setBaseResultMap(true);// XML ResultMap
         gc.setBaseColumnList(false);// XML columList
+	// .setKotlin(true) 是否生成 kotlin 代码
         gc.setAuthor("Yanghu");
 
         // 自定义文件命名，注意 %s 会自动填充表实体属性！
