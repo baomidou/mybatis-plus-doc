@@ -28,7 +28,7 @@ Mybatis-Plus 的集成非常简单，对于 Spring，我们仅仅需要把 Mybat
 
 ```
 # PostgreSql 自定义 SQL 注入器
-sql-injector: com.baomidou.mybatisplus.mapper.PostgreSqlInjector
+sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
 ```
 
 
