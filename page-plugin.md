@@ -22,17 +22,20 @@
 
 ```java
 //Spring boot方式
-@Bean
-public SqlSessionFactory sqlSessionFactory(){
-  MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
-  ...
-  PaginationInterceptor pagination = new PaginationInterceptor();
-  // 具体参考自己设置，参考 xml 参数说明或源码注释
-  sqlSessionFactory.setPlugins(new Interceptor[]{
-      pagination
-    });
-  return sqlSessionFactory.getObject();
+@EnableTransactionManagement
+@Configuration
+@MapperScan("com.baomidou.cloud.service.*.mapper*")
+public class MybatisPlusConfig {
+
+    /**
+     * 分页插件
+     */
+    @Bean
+    public PaginationInterceptor paginationInterceptor() {
+        return new PaginationInterceptor();
+    }
 }
+
 ```
 
 # 方式一 、传参区分模式【推荐】
