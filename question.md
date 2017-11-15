@@ -27,6 +27,8 @@
 
 > 不要怀疑，正视自己，这个异常肯定是你插入的姿势不对……
 
+- 检查是不是引入 jar 冲突
+
 - 检查命名空间是否正常？ 检查包扫描路径是否正常？如果扫描不到，MP无法进行预注入
 
 - 检查是否指定了主键？如未指定，则会导致 `selectById` 相关 ID 无法操作，请用注解 `@TableId` 注解表 ID 主键
@@ -56,6 +58,7 @@
     </resources>
   </build>
   ```
+
 ## 关于Long型主键填充不生效的问题
 
 > 检查是不是用了long而不是Long！【特别说明】long类型默认值为0，而mp只会判断是否为null
@@ -155,3 +158,10 @@ for(H2User u:list){
     Assert.assertNull(u.getPrice());//这个字段没有查询出来
 }
 ```
+
+## mapper 层二级缓存问题
+
+> 我们建议缓存放到 service 层，你可以自定义自己的 BaseServiceImpl 重写注解父类方法，继承自己的实现。
+
+- 当然你是一个极端分子，请使用 CachePaginationInterceptor 替换默认分页，这样支持分页缓存。
+
