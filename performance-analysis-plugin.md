@@ -17,6 +17,24 @@
 </plugins>
 ```
 
+```java
+//Spring boot方式
+@EnableTransactionManagement
+@Configuration
+@MapperScan("com.baomidou.cloud.service.*.mapper*")
+public class MybatisPlusConfig {
+
+    /**
+     * SQL执行效率插件
+     */
+    @Bean
+    @Profile({"dev","test"})// 设置 dev test 环境开启
+    public PerformanceInterceptor performanceInterceptor() {
+        return new PerformanceInterceptor();
+    }
+}
+```
+
 > 注意！参数说明
 
 - 参数：maxTime SQL 执行最大时长，超过自动停止运行，有助于发现问题。
