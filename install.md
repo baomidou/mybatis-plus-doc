@@ -139,4 +139,6 @@ sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
 
 - SpringBoot + Shiro +FreeMarker 制作的通用权限管理 [bing-upms](https://gitee.com/xiaobingby/bing-upms)
 
+- SpringBoot 企业级快速开发脚手架 [slife](https://gitee.com/jamen/slife)
+
 !> 需！加入列表的童鞋可以告诉我们。
