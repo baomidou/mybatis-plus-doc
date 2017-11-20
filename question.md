@@ -59,6 +59,25 @@
   </build>
   ```
 
+## 自定义sql无法执行
+
+> 指在xml里面自定义sql，需要配置xml扫描路径
+  
+-  spring mvc配置mapper.xml(参考[spring-mybatis.xml](https://gitee.com/baomidou/mybatisplus-spring-mvc/blob/master/src/main/resources/spring/spring-mybatis.xml))
+
+  ```xml
+    <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+    	<property name="dataSource" ref="dataSource" />
+    	<property name="typeAliasesPackage" value="xxx.entity" />
+    	<property name="mapperLocations" value="classpath:com/xx/mapper/xml/*Mapper.xml" />
+  	    ...
+	</bean>
+  ```
+-  spring boot yml配置mapper.xml(参考[mybatisplus-spring-boot](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/master/src/main/resources/application.yml))
+  ```properties
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  ```
 ## 关于Long型主键填充不生效的问题
 
 > 检查是不是用了long而不是Long！【特别说明】long类型默认值为0，而mp只会判断是否为null
