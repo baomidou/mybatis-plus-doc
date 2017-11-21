@@ -184,3 +184,14 @@ for(H2User u:list){
 
 - 当然你是一个极端分子，请使用 CachePaginationInterceptor 替换默认分页，这样支持分页缓存。
 
+## Cause: org.apache.ibatis.type.TypeException: 
+Error setting null for parameter #1 with JdbcType OTHER
+
+> 配置jdbcTypeForNull=NULL
+Spring Bean配置方式：
+```java
+    MybatisConfiguration configuration = new MybatisConfiguration();
+    configuration.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
+    configuration.setJdbcTypeForNull(JdbcType.NULL);
+    sqlSessionFactory.setConfiguration(configuration);
+```
