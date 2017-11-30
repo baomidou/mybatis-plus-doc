@@ -193,6 +193,7 @@ Spring Bean配置方式：
     MybatisConfiguration configuration = new MybatisConfiguration();
     configuration.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
     configuration.setJdbcTypeForNull(JdbcType.NULL);
+    configuration.setMapUnderscoreToCamelCase(true);//开启下划线转驼峰
     sqlSessionFactory.setConfiguration(configuration);
 ```
 
@@ -200,3 +201,20 @@ Spring Bean配置方式：
 
 > Page对象是继承RowBounds，是Mybatis内置对象，无法在mapper里获取
 请使用自定义Map/对象，或者通过@Param来传参
+
+## 开启查询结果【下划线转驼峰】
+
+> 该功能是mybatis原生自带，配置如下
+
+Spring Bean 配置：
+```java
+  MybatisConfiguration configuration = new MybatisConfiguration();
+  configuration.setMapUnderscoreToCamelCase(true);//开启下划线转驼峰
+  ...其他配置，见上面的【配置jdbcTypeForNull=NULL】
+```
+Spring Boot yml配置：
+```yaml
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+```
