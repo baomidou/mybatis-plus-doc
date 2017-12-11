@@ -88,3 +88,10 @@ int total = PageHelper.getTotal();
 // 获取总条数，并释放资源
 int total = PageHelper.freeTotal();
 ```
+
+# JSON 序列化移除 transient 修饰的 Page 无关紧要的返回属性
+```
+// Jackson 方式
+objectMapper.configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true);
+```
+
