@@ -36,7 +36,7 @@ public class User {
 
 ##示例
 
-示例Java代码
+示例Java代码（参考[test case](https://gitee.com/baomidou/mybatis-plus/blob/dev/mybatis-plus-core/src/test/java/com/baomidou/mybatisplus/test/h2/H2UserExtendsTest.java)代码）
 
 ```java
 int id = 100;

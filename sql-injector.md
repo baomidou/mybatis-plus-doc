@@ -57,3 +57,6 @@ public interface UserMapper extends BaseMapper<User> {
 ```
 
 - 完成如上几步共享，注入完成！可以开始使用了。。。
+
+> 扩展
+通过上述方式，就可以自定义各种你想要的sql（逻辑删除目前就是这个解决方案mp_2.1.5）

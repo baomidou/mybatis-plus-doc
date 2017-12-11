@@ -40,67 +40,102 @@ sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
 
 ```xml
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
-    <!-- 配置数据源 -->
     <property name="dataSource" ref="dataSource"/>
-    <!-- 自动扫描 Xml 文件位置 -->
-    <property name="mapperLocations" value="classpath:mybatis/*/*.xml"/>
-    <!-- 配置 Mybatis 配置文件（可无） -->
-    <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
-    <!-- 配置包别名，支持通配符 * 或者 ; 分割 -->
-    <property name="typeAliasesPackage" value="com.baomidou.springmvc.model"/>
-    <!-- 枚举属性配置扫描，支持通配符 * 或者 ; 分割 -->
-    <property name="typeEnumsPackage" value="com.baomidou.springmvc.entity.*.enums"/>
-
-    <!-- 以上配置和传统 Mybatis 一致 -->
-
-    <!-- 插件配置 -->
-    <property name="plugins">
-        <array>
-            <!-- 分页插件配置, 参考文档分页插件部分！！ -->
-            <!-- 如需要开启其他插件，可配置于此 -->
-        </array>
-    </property>
-
+    <property name="typeAliasesPackage" value="com.baomidou.mybatisplus.test.h2.entity"/>
+    <property name="configuration" ref="mybatisConfig"/>
     <!-- MP 全局配置注入 -->
     <property name="globalConfig" ref="globalConfig"/>
+    <property name="plugins">
+        <array>
+            <!-- 分页插件配置 -->
+            <bean id="paginationInterceptor"
+                  class="com.baomidou.mybatisplus.plugins.PaginationInterceptor"/>
+            <bean id="optimisticLockerInterceptor"
+                  class="com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor">
+            </bean>
+            <bean id="performanceInterceptor"
+                  class="com.baomidou.mybatisplus.plugins.PerformanceInterceptor"/>
+        </array>
+    </property>
+</bean>
+
+<bean id="mybatisConfig" class="com.baomidou.mybatisplus.MybatisConfiguration">
+    <property name="mapUnderscoreToCamelCase" value="true"/>
+    <property name="jdbcTypeForNull">
+        <util:constant static-field="org.apache.ibatis.type.JdbcType.NULL"/>
+    </property>
 </bean>
 
 <!-- 定义 MP 全局策略 -->
 <bean id="globalConfig" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
-    <!-- 主键策略配置 -->
-    <!-- 可选参数
-        AUTO->`0`("数据库ID自增")
-        INPUT->`1`(用户输入ID")
-        ID_WORKER->`2`("全局唯一ID")
-        UUID->`3`("全局唯一ID")
-    -->
+    <!-- 逻辑删除 定义下面3个参数-->
+    <property name="sqlInjector" ref="logicSqlInjector"/>
+    <property name="logicDeleteValue" value="-1"/>
+    <property name="logicNotDeleteValue" value="1"/>
+    <!-- 全局ID类型： 0, "数据库ID自增"， 1, "用户输入ID", 2, "全局唯一ID", 3, "全局唯一ID"-->
     <property name="idType" value="2"/>
-
-    <!-- 数据库类型配置 -->
-    <!-- 可选参数（默认mysql）
-        MYSQL->`mysql`
-        ORACLE->`oracle`
-        DB2->`db2`
-        H2->`h2`
-        HSQL->`hsql`
-        SQLITE->`sqlite`
-        POSTGRE->`postgresql`
-        SQLSERVER2005->`sqlserver2005`
-        SQLSERVER->`sqlserver`
+    <!-- 2.1-gamma+ 数据库自动识别，无需配置数据库类型
+    <property name="dbType" value="mysql" />
     -->
-    <property name="dbType" value="oracle"/>
+    <!--主键Sequence-->
+    <property name="keyGenerator" ref="keyGenerator"/>
+    <!-- 公共字段填充处理器 -->
+    <property name="metaObjectHandler" ref="myMetaObjectHandler"/>
+    <!--数据库关键字转义符，'desc', "desc" 2.1-gamma+不需要制定-->
+    <!--<property name="identifierQuote" value="'" />-->
+</bean>
 
-    <!-- 全局表为下划线命名设置 true -->
-    <property name="dbColumnUnderline" value="true"/>
+<!-- 配置oracle主键Sequence， 其他类型数据库，请配置相应的类型-->
+<bean id="keyGenerator" class="com.baomidou.mybatisplus.incrementer.OracleKeyGenerator"/>
+ 
+<!-- 自定义处理器 -->
+<bean id="myMetaObjectHandler" class="com.baomidou.test.MyMetaObjectHandler" />
+<!-- 逻辑删除Sql注入器-->
+<bean id="logicSqlInjector" class="com.baomidou.mybatisplus.mapper.LogicSqlInjector"/>
+
+<!-- 配置mybatis 扫描mapper接口的路径, 相当于注解@MapperScan，@MapperScan("com.baomidou.mybatisplus.test.h2.entity.mapper")-->
+<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <property name="basePackage" value="com.baomidou.mybatisplus.test.h2.entity.mapper"/>
 </bean>
 ```
 
 !> 特别注意 `MybatisSqlSessionFactoryBean` 非原生的类，必须如上配置 ！
 
-> Java Config
+> Spring Bean Configuration[示例](https://gitee.com/baomidou/mybatis-plus/tree/dev/mybatis-plus-core/src/test/java/com/baomidou/mybatisplus/test/h2/config)
 
 ```java
-// TODO
+@Configuration
+@MapperScan("com.baomidou.mybatisplus.test.h2.entity.mapper")
+public class MybatisConfigMetaObjOptLockConfig {
+
+    @Bean("mybatisSqlSession")
+    public SqlSessionFactory sqlSessionFactory(DataSource dataSource, ResourceLoader resourceLoader, GlobalConfiguration globalConfiguration) throws Exception {
+        MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
+        sqlSessionFactory.setDataSource(dataSource);
+        sqlSessionFactory.setTypeAliasesPackage("com.baomidou.mybatisplus.test.h2.entity.persistent");
+        MybatisConfiguration configuration = new MybatisConfiguration();
+        configuration.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
+        configuration.setJdbcTypeForNull(JdbcType.NULL);
+        sqlSessionFactory.setConfiguration(configuration);
+        sqlSessionFactory.setPlugins(new Interceptor[]{
+                new PaginationInterceptor(),
+                new PerformanceInterceptor(),
+                new OptimisticLockerInterceptor()
+        });
+        sqlSessionFactory.setGlobalConfig(globalConfiguration);
+        return sqlSessionFactory.getObject();
+    }
+
+    @Bean
+    public GlobalConfiguration globalConfiguration() {
+        GlobalConfiguration conf = new GlobalConfiguration(new LogicSqlInjector());
+        conf.setLogicDeleteValue("-1");
+        conf.setLogicNotDeleteValue("1");
+        conf.setIdType(2);
+        conf.setMetaObjectHandler(new H2MetaObjectHandler());
+        return conf;
+    }
+}
 ```
 
 ## 优秀案例

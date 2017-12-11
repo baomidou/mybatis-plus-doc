@@ -38,3 +38,5 @@ public class Child extends Parent{
 ```
 
 以上步骤就可以使用Sequence当主键了。
+
+Spring MVC：xml配置，请参考【[安装集成](/install)】
