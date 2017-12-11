@@ -41,6 +41,8 @@ sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
 ```xml
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
     <property name="dataSource" ref="dataSource"/>
+    <!-- 配置实体扫描路径，多个package可以用分号; 逗号, 分隔， 支持通配符*-->
+    <!-- com.a.b.entity;com.a.c.entity;com.d.*.entity-->
     <property name="typeAliasesPackage" value="com.baomidou.mybatisplus.test.h2.entity"/>
     <property name="configuration" ref="mybatisConfig"/>
     <!-- MP 全局配置注入 -->
@@ -50,9 +52,11 @@ sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
             <!-- 分页插件配置 -->
             <bean id="paginationInterceptor"
                   class="com.baomidou.mybatisplus.plugins.PaginationInterceptor"/>
+            <!-- 乐观锁插件 -->    
             <bean id="optimisticLockerInterceptor"
                   class="com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor">
             </bean>
+            <!-- 性能拦截器，兼打印sql，不建议生产环境配置-->
             <bean id="performanceInterceptor"
                   class="com.baomidou.mybatisplus.plugins.PerformanceInterceptor"/>
         </array>
@@ -61,6 +65,7 @@ sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
 
 <bean id="mybatisConfig" class="com.baomidou.mybatisplus.MybatisConfiguration">
     <property name="mapUnderscoreToCamelCase" value="true"/>
+    <!-- 部分数据库不识别默认的NULL类型（比如oracle，需要配置该属性 -->
     <property name="jdbcTypeForNull">
         <util:constant static-field="org.apache.ibatis.type.JdbcType.NULL"/>
     </property>

@@ -18,6 +18,8 @@ MP 创建 SqlSession 示例工厂类（与 _Mybatis-Spring_ 的工厂 Bean 相�
 ```xml
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
     <property name="dataSource" ref="dataSource"/>
+    <!-- 配置实体扫描路径，多个package可以用分号; 逗号, 分隔， 支持通配符*-->
+    <!-- com.a.b.entity;com.a.c.entity;com.d.*.entity-->
     <property name="typeAliasesPackage" value="com.baomidou.mybatisplus.test.h2.entity"/>
     <property name="configuration" ref="mybatisConfig"/>
     <!-- MP 全局配置注入 -->
@@ -27,9 +29,11 @@ MP 创建 SqlSession 示例工厂类（与 _Mybatis-Spring_ 的工厂 Bean 相�
             <!-- 分页插件配置 -->
             <bean id="paginationInterceptor"
                   class="com.baomidou.mybatisplus.plugins.PaginationInterceptor"/>
+            <!-- 乐观锁插件 -->    
             <bean id="optimisticLockerInterceptor"
                   class="com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor">
             </bean>
+            <!-- 性能拦截器，兼打印sql，不建议生产环境配置-->
             <bean id="performanceInterceptor"
                   class="com.baomidou.mybatisplus.plugins.PerformanceInterceptor"/>
         </array>
