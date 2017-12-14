@@ -45,7 +45,17 @@ value            | 字段值（驼峰命名方式，该值可无）
 el               | 详看注释说明
 exist            | 是否为数据库表字段（ 默认 true 存在，false 不存在 ）
 strategy         | 字段验证 （ 默认 非 null 判断，查看 com.baomidou.mybatisplus.enums.FieldStrategy ）
-fill             | 字段填充标记 （ 配合自动填充使用 ）
+fill             | 字段填充标记 （ FieldFill, 配合自动填充使用 ）
+
+- 字段填充策略 FieldFill
+
+值                | 描述
+---------------- | ---------------------
+DEFAULT | 默认不处理
+INSERT | 插入填充字段
+UPDATE | 更新填充字段
+INSERT_UPDATE | 插入和更新填充字段
+
 
 
 > 序列主键策略 注解 `@KeySequence `
