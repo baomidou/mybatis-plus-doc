@@ -23,7 +23,7 @@
   private String noColumn;
   ```
 
-## 异常`Invalid bound statement (not found)` 解决方法
+## 异常`Invalid bound statement (not found)` 解决方法(MP方法无法调用)
 
 > 不要怀疑，正视自己，这个异常肯定是你插入的姿势不对……
 
@@ -58,26 +58,48 @@
     </resources>
   </build>
   ```
-
+  
 ## 自定义sql无法执行
 
 > 指在xml里面自定义sql，需要配置xml扫描路径
-  
+
 -  spring mvc配置mapper.xml(参考[spring-mybatis.xml](https://gitee.com/baomidou/mybatisplus-spring-mvc/blob/master/src/main/resources/spring/spring-mybatis.xml))
 
-  ```xml
-    <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
-    	<property name="dataSource" ref="dataSource" />
-    	<property name="typeAliasesPackage" value="xxx.entity" />
-    	<property name="mapperLocations" value="classpath:com/xx/mapper/xml/*Mapper.xml" />
-  	    ...
-	</bean>
-  ```
+```xml
+ <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="typeAliasesPackage" value="xxx.entity" />
+    <property name="mapperLocations" value="classpath:com/xx/mapper/xml/*Mapper.xml" />
+    ...
+</bean>
+```
 -  spring boot yml配置mapper.xml(参考[mybatisplus-spring-boot](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/master/src/main/resources/application.yml))
-  ```properties
+```properties
 mybatis-plus:
-  mapper-locations: classpath:/mapper/**/*.xml
-  ```
+mapper-locations: classpath:/mapper/**/*.xml
+```
+    
+## 启动时异常
+
+> java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.TypeVariableImpl cannot be cast to java.lang.Class
+
+- 配置MapperScan需要排除 com.baomidou.mybatisplus.mapper.BaseMapper
+- MapperScan排除自定义公共Mapper, 比如 
+```java
+public interface SuperMapper<T> extends com.baomidou.mybatisplus.mapper.BaseMapper<T> {
+    ...your methds
+}
+```
+
+> 异常`Injection of autowired` 解决方法
+
+- 原因！低版本不支持泛型注入，请升级 spring 4+
+
+> 异常`java.lang.NoSuchMethodError: org.apache.ibatis.session.Configuration.getDefaultScriptingLanguageInstance()
+Lorg/apache/ibatis/scripting/LanguageDriver` 解决方法
+
+- 版本引入问题：3.4.1版本里没有，3.4.2里面才有！
+
 ## 关于Long型主键填充不生效的问题
 
 > 检查是不是用了long而不是Long！【特别说明】long类型默认值为0，而mp只会判断是否为null
@@ -121,6 +143,8 @@ simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
 objectMapper.registerModule(simpleModule);
 ```
 
+- 还有一个方法，增加一个public String getIdStr()方法，前台获取idStr
+
 ## 字段 update 空字符串 OR NULL 修改验证策略
 
 > FieldStrategy 三种策略 IGNORED【忽略】，NOT_NULL【非 NULL，默认策略】，NOT_EMPTY【非空】
@@ -147,16 +171,6 @@ objectMapper.registerModule(simpleModule);
   ```xml
   jdbc:mysql://127.0.0.1:3306/mp?tinyInt1isBit=false
   ```
-
-## 异常`Injection of autowired` 解决方法
-
-> 原因！低版本不支持泛型注入，请升级 spring 4+
-
-## 异常`java.lang.NoSuchMethodError: org.apache.ibatis.session.Configuration.getDefaultScriptingLanguageInstance()
-Lorg/apache/ibatis/scripting/LanguageDriver` 解决方法
-
-> 版本引入问题：3.4.1版本里没有，3.4.2里面才有！
-
 
 ## 出现2个limit语句
 > 原因：配了2个分页拦截器! 检查配置文件或者代码，只留一个！
