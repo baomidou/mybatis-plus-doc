@@ -214,7 +214,7 @@ Spring Bean配置方式：
 ## 自定义sql里使用Page对象传参无法获取
 
 > Page对象是继承RowBounds，是Mybatis内置对象，无法在mapper里获取
-请使用自定义Map/对象，或者通过@Param来传参
+请使用自定义Map/对象，或者通过@Param("page") int page,size来传参
 
 ## 开启查询结果【下划线转驼峰】
 
