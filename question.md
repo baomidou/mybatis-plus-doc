@@ -81,7 +81,7 @@ mapper-locations: classpath:/mapper/**/*.xml
     
 ## 启动时异常
 
-> java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.TypeVariableImpl cannot be cast to java.lang.Class
+> java.lang.ClassCastException: `sun.reflect.generics.reflectiveObjects.TypeVariableImpl cannot be cast to java.lang.Class`
 
 - 配置MapperScan需要排除 com.baomidou.mybatisplus.mapper.BaseMapper
 - MapperScan排除自定义公共Mapper, 比如 
@@ -95,7 +95,7 @@ public interface SuperMapper<T> extends com.baomidou.mybatisplus.mapper.BaseMapp
 
 - 原因！低版本不支持泛型注入，请升级 spring 4+
 
-> 异常`java.lang.NoSuchMethodError: org.apache.ibatis.session.Configuration.getDefaultScriptingLanguageInstance()
+> 异常java.lang.NoSuchMethodError: `org.apache.ibatis.session.Configuration.getDefaultScriptingLanguageInstance()
 Lorg/apache/ibatis/scripting/LanguageDriver` 解决方法
 
 - 版本引入问题：3.4.1版本里没有，3.4.2里面才有！
