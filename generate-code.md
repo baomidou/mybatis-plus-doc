@@ -1,6 +1,6 @@
 # 代码生成器
 
-在代码生成之前，首先进行配置，MP提供了大量的自定义设置，生成的代码完全能够满足各类型的需求，如果你发现配置不能满足你的需求，欢迎提交issue和pull-request，有兴趣的也可以查看[源码](https://github.com/baomidou/mybatis-plus/tree/master/mybatis-plus/src/main/java/com/baomidou/mybatisplus/generator)进行了解。
+在代码生成之前，首先进行配置，MP提供了大量的自定义设置，生成的代码完全能够满足各类型的需求，如果你发现配置不能满足你的需求，欢迎提交issue和pull-request，有兴趣的也可以查看[源码](https://gitee.com/baomidou/mybatis-plus/tree/dev/mybatis-plus-generate)进行了解。
 
 默认配置，[懒人直达电梯](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/dev/src/test/java/com/baomidou/springboot/test/generator/GeneratorServiceEntity.java)
 
