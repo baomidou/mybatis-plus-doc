@@ -13,7 +13,7 @@ logicNotDeleteValue // 逻辑未删除全局值
 [Mybatis-Plus逻辑删除视频教程](http://v.youku.com/v_show/id_XMjc4ODY0MDI5Ng==.html?spm=a2hzp.8244740.userfeed.5!2~5~5~5!3~5~A)
 
 
-##全局配置注入LogicSqlInjector
+## 全局配置注入LogicSqlInjector
 Java Config方式：
 ```java
 @Bean
@@ -39,7 +39,7 @@ XML配置方式：
 <bean id="logicSqlInjector" class="com.baomidou.mybatisplus.mapper.LogicSqlInjector" />
 ```
 
-##逻辑删除实体
+## 逻辑删除实体
 
 ```java
 
@@ -58,3 +58,25 @@ public class UserLogicDelete {
 ## 逻辑删除效果
 > 会在mp自带查询和更新方法的sql后面，追加『逻辑删除字段』=『LogicNotDeleteValue默认值』
 > 删除方法: deleteById()和其他delete方法, 底层SQL调用的是update tbl_xxx set 『逻辑删除字段』=『logicDeleteValue默认值』
+
+
+## Spring Boot mp-starter配置参考
+[application.yml](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/dev/src/main/resources/application.yml)
+```yaml
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.baomidou.springboot.entity
+  typeEnumsPackage: com.baomidou.springboot.entity.enums
+  global-config:
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    id-type: 2
+    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+    field-strategy: 2
+    db-column-underline: true
+    #逻辑删除配置
+    logic-delete-value: 0
+    logic-not-delete-value: 1
+    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+
+```
