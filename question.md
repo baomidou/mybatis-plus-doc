@@ -241,3 +241,38 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
 ```
+
+## 如何使用：`Map下划线自动转驼峰`
+指的是：resultType="java.util.Map"
+
+!> 注意：结果集用Map返回时，不同数据库的处理大小写不一样
+
+* 比如mysql原样返回 select `test_type` from xxx -> test_type:1
+* Oracle只返回全大写 select `test_type` from xxx -> TEST_TYPE:1
+* 上述2种情况，只要是下划线命名的，使用`Map下划线自动转驼峰` 结果集都是 `testType`
+* 但是针对`Oracle数据库`：请注意MP自带方法selectMaps: 语句是 select test_type as testType from xxx -> 得到的结果：
+ 1) 没配`Map下划线自动转驼峰`: `TESTTYPE`:value
+ 2) 配了：`testtype`:value(Mysql数据库会保留驼峰不受影响)
+
+- Java Config Bean方式
+```java
+@Configuration
+@MapperScan("com.baomidou.mybatisplus.test.h2.entity.mapper")
+public class MybatisConfigMetaObjOptLockConfig {
+
+    @Bean("mybatisSqlSession")
+    public SqlSessionFactory sqlSessionFactory(DataSource dataSource, ResourceLoader resourceLoader, GlobalConfiguration globalConfiguration) throws Exception {
+        MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
+        MybatisConfiguration configuration = new MybatisConfiguration();
+        configuration.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
+        configuration.setJdbcTypeForNull(JdbcType.NULL);
+        //*注册Map 下划线转驼峰*
+        configuration.setObjectWrapperFactory(new MybatisMapWrapperFactory());
+        
+        sqlSessionFactory.setConfiguration(configuration);
+        //...其他配置
+        return sqlSessionFactory.getObject();
+    }
+    ...
+}
+```
