@@ -6,6 +6,10 @@
 
 ![relationship](assets/relationship-with-mybatis.png)
 
+# 架构原理
+
+![framework](assets/mybatis-plus.png)
+
 # 特性
 
 - **无侵入**：Mybatis-Plus 在 Mybatis 的基础上进行扩展，只做增强不做改变，引入 Mybatis-Plus 不会对您现有的 Mybatis 构架产生任何影响，而且 MP 支持所有 Mybatis 原生的特性
