@@ -26,8 +26,7 @@ public enum AgeEnum implements IEnum {
     public Serializable getValue() {
         return this.value;
     }
-
-    @JsonValue // Jackson 注解，可序列化该属性为中文描述【可无】
+    
     public String getDesc(){
         return this.desc;
     }
@@ -50,3 +49,23 @@ mybatis-plus:
     typeEnumsPackage: com.baomidou.springboot.entity.enums
   ....
 ```
+# 3.JSON序列化处理
+## 一、Jackson
+	1.在需要响应描述字段的get方法上添加@JsonValue注解即可
+		
+## 二、Fastjson
+1.全局处理方式
+```
+		FastJsonConfig config = new FastJsonConfig();
+		//设置WriteEnumUsingToString
+		config.setSerializerFeatures(SerializerFeature.WriteEnumUsingToString);
+		converter.setFastJsonConfig(config);
+```
+2.局部处理方式
+```	
+		@JSONField(serialzeFeatures= SerializerFeature.WriteEnumUsingToString)
+		private UserStatus status;
+```
+以上两种方式任选其一,然后在枚举中复写toString方法即可.
+
+
