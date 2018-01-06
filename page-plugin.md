@@ -38,7 +38,7 @@ public class MybatisPlusConfig {
 
 ```
 
-# 方式一 、传参区分模式【[推荐](https://gitee.com/baomidou/mybatis-plus/blob/dev/mybatis-plus-core/src/test/java/com/baomidou/mybatisplus/test/h2/H2Pagination4SqlTest.java)】
+# 方式一 、传参区分模式 [推荐](https://gitee.com/baomidou/mybatis-plus/blob/dev/mybatis-plus-core/src/test/java/com/baomidou/mybatisplus/test/h2/H2Pagination4SqlTest.java)
 
 - UserMapper.java 方法内容
 
@@ -63,8 +63,7 @@ public interface UserMapper{//可以继承或者不继承BaseMapper
 
 ```java
 public Page<User> selectUserPage(Page<User> page, Integer state) {
-    page.setRecords(userMapper.selectUserList(page, state));
-    return page;
+    return page.setRecords(userMapper.selectUserList(page, state));
 }
 ```
 
