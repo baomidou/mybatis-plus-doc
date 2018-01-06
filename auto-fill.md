@@ -35,7 +35,6 @@ public class MyMetaObjectHandler extends MetaObjectHandler {
         Object testType = getFieldValByName("testType", metaObject);//mybatis-plus版本2.0.9+
         System.out.println("testType=" + testType);
         if (testType == null) {
-            // 就算不放在 if 中 setFieldValByName 方法也会自动判断 testType 是否存在且无值。
             setFieldValByName("testType", 3, metaObject);//mybatis-plus版本2.0.9+
         }
     }
