@@ -2,7 +2,7 @@
 
   - [快速开始](quick-start)
   - [安装集成](install)
-  - [SpringBoot](spring-boot)
+  - [SpringBoot](spring-boot)
 
 - 核心功能
 
