@@ -3,15 +3,21 @@
 ## 依赖配置
 
 ?> 查询最高版本或历史版本方式：[Maven中央库](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.baomidou%22%20AND%20a%3A%22mybatis-plus%22) | [Maven阿里库](http://maven.aliyun.com/nexus/#nexus-search;quick~mybatis-plus)
-
 ```xml
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus</artifactId>
     <version>仓库最高版本号</version>
 </dependency>
-```
 
+<!--快照版本使用,正式版本无需添加此仓库-->
+<repository>
+    <id>snapshots</id>
+    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+</repository>
+
+```	
+?>
 !> 特别说明：**`Mybatis`及`Mybatis-Spring`依赖请勿加入项目配置，以免引起版本冲突！！！Mybatis-Plus会自动帮你维护！**
 
 ## 如何集成
@@ -182,3 +188,5 @@ public class MybatisConfigMetaObjOptLockConfig {
 - SpringBoot 企业级快速开发脚手架 [slife](https://gitee.com/jamen/slife)
 
 !> 需！加入列表的童鞋可以告诉我们。
+
+
