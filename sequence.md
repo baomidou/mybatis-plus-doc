@@ -8,7 +8,7 @@
 
 ```java
   GlobalConfiguration gc = new GlobalConfiguration();
-  //gc.setDbType("oracle");//不需要这么配置了
+  //gc.setDbType("oracle");//不需要这么配置了，自动获取数据库类型
   gc.setKeyGenerator(new OracleKeyGenerator());
 ```
 
@@ -24,7 +24,7 @@ public class TestSequser{
 }
 ```
 
-* 支持父类定义@KeySequence, 子类使用
+* 支持父类定义@KeySequence, 子类使用，这样就可以几个表共用一个Sequence
 
 ```java
 @KeySequence("SEQ_TEST")
@@ -40,3 +40,29 @@ public class Child extends Parent{
 以上步骤就可以使用Sequence当主键了。
 
 Spring MVC：xml配置，请参考【[安装集成](/install)】
+
+
+## 如何使用Sequence作为主键，但是实体主键类型是String
+也就是说，表的主键是varchar2, 但是需要从sequence中取值
+
+* 1.实体定义@KeySequence 注解clazz指定类型String.class
+* 2.实体定义主键的类型String
+```java
+@KeySequence(value = "SEQ_ORACLE_STRING_KEY", clazz = String.class)
+public class YourEntity{
+    
+    @TableId(value = "ID_STR", type = IdType.INPUT)
+    private String idStr;
+    ...
+}
+```
+* 3.正常配置GlobalConfiguration.keyGenerator
+```java
+@Bean
+public GlobalConfiguration globalConfiguration() {
+    GlobalConfiguration conf = new GlobalConfiguration();
+    conf.setKeyGenerator(new OracleKeyGenerator());
+    return conf;
+}
+```
+
