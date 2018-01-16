@@ -276,3 +276,11 @@ public class MybatisConfigMetaObjOptLockConfig {
     ...
 }
 ```
+
+## 如何使用：`limit` 在 wrapper 中
+```
+// 取 1 条数据
+wrapper.last("limit 1");
+```
+
+
