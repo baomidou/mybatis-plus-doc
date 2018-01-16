@@ -277,7 +277,7 @@ public class MybatisConfigMetaObjOptLockConfig {
 }
 ```
 
-## 如何使用：`limit` 在 wrapper 中
+## 在 wrapper 中如何使用 `limit` 限制 SQL
 ```
 // 取 1 条数据
 wrapper.last("limit 1");
