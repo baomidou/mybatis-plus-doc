@@ -187,6 +187,8 @@ public class MybatisConfigMetaObjOptLockConfig {
 
 - SpringBoot 企业级快速开发脚手架 [slife](https://gitee.com/jamen/slife)
 
+- 轻量级权限管理系统 [renren-security](https://gitee.com/babaio/renren-security)
+
 !> 需！加入列表的童鞋可以告诉我们。
 
 
