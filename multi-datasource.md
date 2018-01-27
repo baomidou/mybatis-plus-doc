@@ -1,4 +1,42 @@
-# 关于多数据源，使用 Spring AbstractRoutingDataSource 实现
+# 读写分离 & 多数据源
+
+> 推荐使用 [shardingjdbc](http://shardingjdbc.io/index_zh.html) 分布式数据库中间件，实现分库分表、读写分离。
+
+
+## 读写分离
+
+> 引入 mybatis-plus sharding-jdbc 依赖
+
+[点击参考](https://gitee.com/nieqiurong/spring-boot-plus-kotlin)
+
+
+> yaml 配置
+```
+sharding:
+  jdbc:
+    datasource:
+      names: ds_master,ds_slave_0,ds_slave_1
+      ds_master:
+        ...
+      ds_slave_0:
+        ...
+      ds_slave_1:
+        ...
+    config:
+      masterslave:
+        load-balance-algorithm-type: round_robin
+        name: ds_ms
+        master-data-source-name: ds_master
+        slave-data-source-names: ds_slave_0,ds_slave_1
+```
+
+
+## 多数据源使用 shardingjdbc 实现
+
+点击 [mybatisplus-sharding-jdbc](https://gitee.com/baomidou/mybatisplus-sharding-jdbc) 查看
+
+
+## 多数据源使用 Spring AbstractRoutingDataSource 实现
 
 >  第一步：扩展Spring的AbstractRoutingDataSource抽象类，实现动态数据源。
 AbstractRoutingDataSource中的抽象方法determineCurrentLookupKey是实现数据源的route的核心，这里对该方法进行Override。
