@@ -20,7 +20,7 @@
   - [自定义全局操作](sql-injector)
   - [公共字段自动填充](auto-fill)
   - [逻辑删除](logic-delete)
-  - [多数据源](multi-datasource)
+  - [读写分离 & 多数据源](multi-datasource)
   - [主键Sequence](sequence)
   - [多租户 SQL 解析器](tenant)
   - [通用枚举自动注入](enum)
