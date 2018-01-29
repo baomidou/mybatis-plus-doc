@@ -35,12 +35,21 @@ MP在Sequence的基础上进行部分优化，用于产生全局唯一ID，好�
 
 > 方式一、代码生成
 
+!> 注意！模板引擎根据您的具体情况选择，自定义模板引擎请继承类 com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine
+
 ```依赖jars
 <!-- 模板引擎 -->
 <dependency>
     <groupId>org.apache.velocity</groupId>
     <artifactId>velocity-engine-core</artifactId>
-    <version>2.0</version>
+    <version>最新版本</version>
+</dependency>
+
+<!-- 模板引擎，需要指定 mpg.setTemplateEngine(new FreemarkerTemplateEngine()); -->
+<dependency>
+    <groupId>org.freemarker</groupId>
+    <artifactId>freemarker</artifactId>
+    <version>最新版本</version>
 </dependency>
 
 <!-- MP 核心库 -->
@@ -80,6 +89,8 @@ public class MpGenerator {
      */
     public static void main(String[] args) {
         AutoGenerator mpg = new AutoGenerator();
+	// 选择 freemarker 引擎，默认 Veloctiy
+	// mpg.setTemplateEngine(new FreemarkerTemplateEngine());
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
