@@ -42,10 +42,28 @@ type             | 主键 ID 策略类型（ 默认 INPUT ，全局开启�
 值                | 描述
 ---------------- | ---------------------
 value            | 字段值（驼峰命名方式，该值可无）
+update           | 预处理 set 字段自定义注入
+condition        | 预处理 WHERE 实体条件自定义运算规则
 el               | 详看注释说明
 exist            | 是否为数据库表字段（ 默认 true 存在，false 不存在 ）
 strategy         | 字段验证 （ 默认 非 null 判断，查看 com.baomidou.mybatisplus.enums.FieldStrategy ）
 fill             | 字段填充标记 （ FieldFill, 配合自动填充使用 ）
+
+- TableField 注解新增属性 `update` 预处理 set 字段自定义注入
+```
+ 例如：@TableField(.. , update="%s+1") 其中 %s 会填充为字段
+ 输出 SQL 为：update 表 set 字段=字段+1 where ...
+```
+```
+ 例如：@TableField(.. , update="now()") 使用数据库时间
+ 输出 SQL 为：update 表 set 字段=now() where ...
+```
+- TableField 注解新增属性 `condition` 预处理 WHERE 实体条件自定义运算规则
+```
+@TableField(condition = SqlCondition.LIKE)
+private String name;
+输出 SQL 为：select 表 where name LIKE CONCAT('%',值,'%')
+```
 
 - 字段填充策略 FieldFill
 
