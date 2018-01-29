@@ -65,7 +65,11 @@ public interface UserMapper{//可以继承或者不继承BaseMapper
 
 ```java
 public Page<User> selectUserPage(Page<User> page, Integer state) {
-    return page.setRecords(userMapper.selectUserList(page, state));
+    // 不进行 count sql 优化，解决 MP 无法自动优化 SQL 问题
+    // page.setOptimizeCountSql(false);
+    // 不查询总记录数
+    // page.setSearchCount(false);
+    return page.setRecords(userMapper.selectUserList(page, state));
 }
 ```
 
