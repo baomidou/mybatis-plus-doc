@@ -148,14 +148,16 @@ DBType.SQLSERVER     | sqlserver
 - 描述：定义主键策略
 - 类型：`Enum`
 - 默认值：`IdType.ID_WORKER`
-- 可选值：AUTO（数据库自增）、INPUT(自行输入)、ID_WORKER（分布式全局唯一ID）、UUID（32位UUID字符串）
+- 可选值：AUTO（数据库自增）、INPUT(自行输入)、ID_WORKER（分布式全局唯一ID）、UUID（32位UUID字符串）、ID_WORKER_STR（分布式全局唯一ID 字符串类型）
 
-Java             | XML
----------------- | ---
-IdType.AUTO      | 0
-IdType.INPUT     | 1
-IdType.ID_WORKER | 2
-IdType.UUID      | 3
+Java                      | XML
+------------------------- | ---
+IdType.AUTO               | 0
+IdType.INPUT              | 1
+IdType.ID_WORKER          | 2
+IdType.UUID               | 3
+IdType.NONE               | 4
+IdType.ID_WORKER_STR      | 5
 
 #### dbColumnUnderline
 
