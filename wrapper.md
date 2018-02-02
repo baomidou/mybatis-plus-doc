@@ -99,8 +99,6 @@ in               |    IN 查询
 notIn            |    NOT IN 查询
 isNull           |    NULL 值查询
 isNotNull        |    IS NOT NULL
-notEmpty         |    字段不为空，非NULL且有内容
-isEmpty          |    字段为NULL或者为
 groupBy          |    分组 GROUP BY
 having           |    HAVING 关键词
 orderBy          |    排序 ORDER BY
