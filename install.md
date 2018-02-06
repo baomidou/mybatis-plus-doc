@@ -191,8 +191,6 @@ public class MybatisConfigMetaObjOptLockConfig {
 
 - 微服务 Spring Cloud 架构 [pig](https://gitee.com/log4j/pig)
 
-- 微服务 Spring Cloud 架构 [adplatform](https://gitee.com/lwydyby/springcloud-adplatform)
-
 !> 需！加入列表的童鞋可以告诉我们。
 
 
