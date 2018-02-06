@@ -154,7 +154,7 @@ objectMapper.registerModule(simpleModule);
 - 根据具体情况，选择验证注解，如验证非空：
 
   ```java
-  @TableField(validate=FieldStrategy.NOT_EMPTY)
+  @TableField(strategy=FieldStrategy.NOT_EMPTY)
   ```
 - 解决办法 二
 
