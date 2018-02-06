@@ -59,6 +59,8 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
+    #配置JdbcTypeForNull
+    jdbc-type-for-null: 'null' 
 ```
 * Java Configuration配置[更多配置参考](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/master/src/main/java/com/baomidou/springboot/config/MybatisPlusConfig.java)
 ```java
@@ -77,7 +79,10 @@ public class MybatisPlusConfig {
      /*
       * oracle数据库配置JdbcTypeForNull
       * 参考：https://gitee.com/baomidou/mybatisplus-boot-starter/issues/IHS8X
-      */
+      不需要这样配置了，参考 yml:
+      mybatis-plus:
+        confuguration
+          dbc-type-for-null: 'null' 
      @Bean
      public ConfigurationCustomizer configurationCustomizer(){
          return new MybatisPlusCustomizers();
@@ -90,5 +95,6 @@ public class MybatisPlusConfig {
              configuration.setJdbcTypeForNull(JdbcType.NULL);
          }
      }
+     */
 }
 ```
