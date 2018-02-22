@@ -18,7 +18,7 @@
 </body>
 
 <!-- Edit on Github -->
-<script src="//unpkg.com/docsify-edit-on-github@1.0.1/index.js"></script>
+<script src="//unpkg.com/docsify-edit-on-github/index.js"></script>
 <!-- Custom Config -->
 <script>
     // docsify config
@@ -39,7 +39,7 @@
             ),
             function (hook, vm) {
                 hook.beforeEach(function (html) {
-                    var hostedBy = '<p>Hosted by <a href="https://pages.coding.me" style="font-weight:bold">Coding Pages</a> & <a href="https://pages.github.com" style="font-weight:bold">Github Pages</a></p>'
+                    var hostedBy = '<p>Hosted by <a href="https://pages.coding.me" target="_blank" style="font-weight:bold">Coding Pages</a> & <a href="https://pages.github.com" target="_blank" style="font-weight:bold">Github Pages</a></p>'
                     return html
                         + '\n----\n'
                         + hostedBy
@@ -65,9 +65,9 @@
         repo: 'mybatis-plus',
         owner: 'baomidou',
         admin: ['yangyang0507', 'qmdx', 'Caratacus', 'nieqiurong', 'yuxiaobin', 'huayanYu'],
-        // facebook-like distraction free mode
         id: 'Comment',
-        distractionFreeMode: true
+        distractionFreeMode: false,
+        pagerDirection: 'last'
     })
 </script>
 
