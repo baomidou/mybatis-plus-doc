@@ -25,5 +25,5 @@ git remote add coding git@git.coding.net:yangyang0507/mybatis-plus-doc.git
 git push coding master -f
 
 # Add gitee remote
-# git remote add gitee git@gitee.com:baomidou/mybatis-plus-doc.git
-# git push gitee master -f
+git remote add gitee git@gitee.com:baomidou/mybatis-plus-doc.git
+git push gitee master -f
