@@ -2,7 +2,7 @@
 
 [Mybatis-Plus](https://github.com/baomidou/mybatis-plus)（简称MP）是一个 [Mybatis](http://www.mybatis.org/mybatis-3/) 的增强工具，在 Mybatis 的基础上只做增强不做改变，为简化开发、提高效率而生。
 
-> 我们的愿景是成为`Mybatis`最好的搭档，就像 [Contra Game](https://raw.githubusercontent.com/baomidou/mybatis-plus-doc/master/assets/contra.jpg) 中的1P、2P，基友搭配，效率翻倍。
+> 我们的愿景是成为 `Mybatis` 最好的搭档，就像 [魂斗罗](https://raw.githubusercontent.com/baomidou/mybatis-plus-doc/master/assets/contra.jpg) 中的1P、2P，基友搭配，效率翻倍。
 
 ![relationship](assets/relationship-with-mybatis.png)
 
@@ -29,7 +29,7 @@
 
 # 代码托管
 
-> **[Github](https://github.com/baomidou/mybatis-plus)** | **[OSChina](http://git.oschina.net/baomidou/mybatis-plus)**
+> **[Github](https://github.com/baomidou/mybatis-plus)** | **[Gitee](https://gitee.com/baomidou/mybatis-plus)**
 
 # 参与贡献
 
