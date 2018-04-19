@@ -7,13 +7,8 @@ spring boot 项目集成mp可以使用starter
 <dependencies>
     <dependency>
         <groupId>com.baomidou</groupId>
-        <artifactId>mybatisplus-spring-boot-starter</artifactId>
-        <version>1.0.5</version>
-    </dependency>
-    <dependency>
-        <groupId>com.baomidou</groupId>
-        <artifactId>mybatis-plus</artifactId>
-        <version>2.1.9</version>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>2.2.0</version>
     </dependency>
 </dependencies>
 <!-- 如果mapper.xml是放在src/main/java目录下，需配置以下-->
