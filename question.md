@@ -290,5 +290,3 @@ wrapper.last("limit 1");
 * 不同数据库对于单条 SQL 批量语法不一样不利于通用
 * 目前的解决方案：循环预处理批量提交，虽然性能比单 SQL 慢但是可以解决以上问题。
 
-    public SqlSessionFactory sqlSessionFactory(DataSource dataSource, ResourceLoader resourceLoader, GlobalConfiguration globalConfiguration) throws Exception {
-    public SqlSessionFactory sqlSessionFactory(DataSource dataSource, ResourceLoader resourceLoader, GlobalConfiguration globalConfiguration) throws Exception {
