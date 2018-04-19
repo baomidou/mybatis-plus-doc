@@ -284,3 +284,7 @@ wrapper.last("limit 1");
 ```
 
 
+## 通用 insertBatch 为什么放在 service 层处理
+
+* SQL 长度有限制海量数据量单条 SQL 无法执行，就算可执行也容易引起内存泄露 JDBC 连接超时等
+* 不同数据库对于单条 SQL 批量语法不一样不利于通用
