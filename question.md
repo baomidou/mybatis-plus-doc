@@ -288,3 +288,7 @@ wrapper.last("limit 1");
 
 * SQL 长度有限制海量数据量单条 SQL 无法执行，就算可执行也容易引起内存泄露 JDBC 连接超时等
 * 不同数据库对于单条 SQL 批量语法不一样不利于通用
+* 目前的解决方案：循环预处理批量提交，虽然性能比单 SQL 慢但是可以解决以上问题。
+
+    public SqlSessionFactory sqlSessionFactory(DataSource dataSource, ResourceLoader resourceLoader, GlobalConfiguration globalConfiguration) throws Exception {
+    public SqlSessionFactory sqlSessionFactory(DataSource dataSource, ResourceLoader resourceLoader, GlobalConfiguration globalConfiguration) throws Exception {
