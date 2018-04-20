@@ -29,7 +29,7 @@
 
 - 检查是不是引入 jar 冲突
 
-- 检查命名空间是否正常？ 检查包扫描路径是否正常？如果扫描不到，MP无法进行预注入
+- 检查命名空间是否正常？ 检查包扫描路径`typeAliasesPackage`是否正常？如果扫描不到，MP无法进行预注入
 
 - 检查是否指定了主键？如未指定，则会导致 `selectById` 相关 ID 无法操作，请用注解 `@TableId` 注解表 ID 主键
 
@@ -78,6 +78,7 @@
 mybatis-plus:
 mapper-locations: classpath:/mapper/**/*.xml
 ```
+-  注意！maven 多模块 jar 依赖 xml 扫描需为 ` classpath*:mapper/**/*Mapper.xml` 加载多个 jar 下的 xml 
     
 ## 启动时异常
 
