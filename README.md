@@ -6,10 +6,6 @@
 
 ![relationship](assets/relationship-with-mybatis.png)
 
-# 架构原理
-
-![framework](assets/mybatis-plus.png)
-
 # 特性
 
 - **无侵入**：Mybatis-Plus 在 Mybatis 的基础上进行扩展，只做增强不做改变，引入 Mybatis-Plus 不会对您现有的 Mybatis 构架产生任何影响，而且 MP 支持所有 Mybatis 原生的特性
@@ -27,9 +23,13 @@
 - **内置性能分析插件**：可输出 Sql 语句以及其执行时间，建议开发测试时启用该功能，能有效解决慢查询
 - **内置全局拦截插件**：提供全表 delete 、 update 操作智能分析阻断，预防误操作
 
+# 架构原理
+
+![framework](assets/mybatis-plus.png)
+
 # 代码托管
 
-> **[Github](https://github.com/baomidou/mybatis-plus)** | **[Gitee](https://gitee.com/baomidou/mybatis-plus)**
+> **[Gitee](https://gitee.com/baomidou/mybatis-plus)** | **[Github](https://github.com/baomidou/mybatis-plus)**
 
 # 参与贡献
 
