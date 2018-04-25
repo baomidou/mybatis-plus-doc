@@ -29,7 +29,7 @@
 
 - 检查是不是引入 jar 冲突
 
-- 检查命名空间是否正常？ 检查包扫描路径是否正常？如果扫描不到，MP无法进行预注入
+- 检查命名空间是否正常？ 检查包扫描路径`typeAliasesPackage`是否正常？如果扫描不到，MP无法进行预注入
 
 - 检查是否指定了主键？如未指定，则会导致 `selectById` 相关 ID 无法操作，请用注解 `@TableId` 注解表 ID 主键
 
@@ -78,6 +78,7 @@
 mybatis-plus:
 mapper-locations: classpath:/mapper/**/*.xml
 ```
+-  注意！maven 多模块 jar 依赖 xml 扫描需为 ` classpath*:mapper/**/*Mapper.xml` 加载多个 jar 下的 xml 
     
 ## 启动时异常
 
@@ -283,4 +284,10 @@ public class MybatisConfigMetaObjOptLockConfig {
 wrapper.last("limit 1");
 ```
 
+
+## 通用 insertBatch 为什么放在 service 层处理
+
+* SQL 长度有限制海量数据量单条 SQL 无法执行，就算可执行也容易引起内存泄露 JDBC 连接超时等
+* 不同数据库对于单条 SQL 批量语法不一样不利于通用
+* 目前的解决方案：循环预处理批量提交，虽然性能比单 SQL 慢但是可以解决以上问题。
 

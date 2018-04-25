@@ -26,6 +26,10 @@
   - [通用枚举自动注入](enum)
   - [Idea 快速开发插件](mybatisx-idea-plugin)
 
+- 常见问题FAQ
+
+  - [常见问题](question)
+
 - 其他
 
   - [捐赠支持](donate)

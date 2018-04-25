@@ -7,13 +7,8 @@ spring boot 项目集成mp可以使用starter
 <dependencies>
     <dependency>
         <groupId>com.baomidou</groupId>
-        <artifactId>mybatisplus-spring-boot-starter</artifactId>
-        <version>1.0.5</version>
-    </dependency>
-    <dependency>
-        <groupId>com.baomidou</groupId>
-        <artifactId>mybatis-plus</artifactId>
-        <version>2.1.9</version>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>2.2.0</version>
     </dependency>
 </dependencies>
 <!-- 如果mapper.xml是放在src/main/java目录下，需配置以下-->
@@ -57,9 +52,10 @@ mybatis-plus:
     #自定义填充策略接口实现
     meta-object-handler: com.baomidou.springboot.MyMetaObjectHandler
   configuration:
+    #配置返回数据库(column下划线命名&&返回java实体是驼峰命名)，自动匹配无需as（没开启这个，SQL需要写as： select user_id as userId） 
     map-underscore-to-camel-case: true
     cache-enabled: false
-    #配置JdbcTypeForNull
+    #配置JdbcTypeForNull, oracle数据库必须配置
     jdbc-type-for-null: 'null' 
 ```
 * Java Configuration配置[更多配置参考](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/master/src/main/java/com/baomidou/springboot/config/MybatisPlusConfig.java)
