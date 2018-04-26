@@ -191,6 +191,8 @@ public class MybatisConfigMetaObjOptLockConfig {
 
 - 系统后台 [mysiteforme](https://gitee.com/wanglingxiao/mysiteforme)
 
+- 基础权限框架 [watchdog-framework](https://github.com/watchdog-framework/watchdog-framework)
+
 !> 需！加入列表的童鞋可以告诉我们。
 
 
