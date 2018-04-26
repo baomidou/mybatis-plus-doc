@@ -193,6 +193,8 @@ public class MybatisConfigMetaObjOptLockConfig {
 
 - 基础权限框架 [watchdog-framework](https://github.com/watchdog-framework/watchdog-framework)
 
+- Java快速开发平台 [iartisan-admin-template](https://gitee.com/iartisan/iartisan-admin-template)
+
 !> 需！加入列表的童鞋可以告诉我们。
 
 
