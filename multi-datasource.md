@@ -2,6 +2,63 @@
 
 > 推荐使用 [shardingjdbc](http://shardingjdbc.io/index_zh.html) 分布式数据库中间件，实现分库分表、读写分离。
 
+## dynamic-datasource-spring-boot-starter 
+
+官网地址 https://gitee.com/baomidou/dynamic-datasource-spring-boot-starter
+
+示例项目 https://gitee.com/baomidou/dynamic-datasource-example
+
+在springboot2.0下最简单集成多数据源的方案。
+
+1. 引入dynamic-datasource-spring-boot-starter。
+
+```xml
+<dependency>
+  <groupId>com.baomidou</groupId>
+  <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+2. 配置主从数据源。
+
+spring.datasource.dynamic.master 配置唯一主数据源（写库）
+
+spring.datasource.dynamic.slaves 配置每一个从数据源（读库）
+
+```yaml
+spring:
+  datasource:
+    dynamic:
+      master:
+        username: root
+        password: 123456
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://47.100.20.186:3307/dynamic?characterEncoding=utf8&useSSL=false
+      slaves:
+        one:
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://47.100.20.186:3308/dynamic?characterEncoding=utf8&useSSL=false
+        two:
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://47.100.20.186:3309/dynamic?characterEncoding=utf8&useSSL=false
+```
+
+3. 切换数据源。
+
+使用 **@DS**  注解切换数据源。
+
+> 可以注解在方法上,可以注解在service实现或mapper接口方法上。
+
+|     注解     |                             结果                             |
+| :----------: | :----------------------------------------------------------: |
+|   没有@DS    |                             主库                             |
+| @DS("slave") |                存在slave指定slave，不存在主库                |
+|     @DS      | 根据DynamicDataSourceStrategy策略，选择一个从库。默认负载均衡策略。 |
+
 
 ## 读写分离
 
