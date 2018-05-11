@@ -1,3 +1,17 @@
-# for Mac OS X System Files
+# IntelliJ project files
+.idea/
+*.iml
+*.ipr
+*.iws
+out
+gem
+
+# VS Code project files
+.vscode/
+
+# MacOS files
 .DS_Store
 Thumbs.db
+
+# Node files
+node_modules/

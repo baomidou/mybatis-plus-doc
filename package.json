@@ -1,0 +1,12 @@
+{
+  "name": "mybatis-plus-doc",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "vuepress dev",
+    "build": "vuepress build"
+  },
+  "devDependencies": {
+    "vuepress": "^0.8.4"
+  }
+}
