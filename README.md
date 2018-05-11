@@ -22,3 +22,7 @@ footer: Apache License 2.0 | © 2018 baomidou
     <version>2.2.0</version>
 </dependency>
 ```
+
+<p align="center">
+Hosted by <a href="https://pages.coding.me" target="_blank" style="font-weight:bold">Coding Pages</a> & <a href="https://pages.github.com" target="_blank" style="font-weight:bold">Github Pages</a>
+</p>
