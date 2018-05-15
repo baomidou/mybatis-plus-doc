@@ -10,7 +10,7 @@ features:
   details: 只需简单配置，即可快速进行 CRUD 操作，从而节省大量时间。
 - title: 丰富功能
   details: 热加载、ActiveRecord、代码生成器、分页、性能分析等功能一应俱全。
-footer: Apache License 2.0 | © 2018 baomidou
+footer: Apache License 2.0 | © 2016-2018 baomidou
 ---
 
 ### 当前最新版本

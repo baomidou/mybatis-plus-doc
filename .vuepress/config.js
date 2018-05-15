@@ -27,6 +27,10 @@ module.exports = {
             {
               text: '配置',
               link: '/config/'
+            },
+            {
+              text: '常见问题',
+              link: '/faq/'
             }
           ],
           sidebar: {
@@ -43,7 +47,9 @@ module.exports = {
         title,
         collapsable: false,
         children: [
-          ''
+          '',
+          'quick-start',
+          'install'
         ]
       }
     ]
