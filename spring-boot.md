@@ -39,8 +39,8 @@ mybatis-plus:
     field-strategy: 2
     #驼峰下划线转换
     db-column-underline: true
-    # 全局表前缀 mp_
-    # table-prefix: mp_
+    #mp2.3+ 全局表前缀 mp_
+    #table-prefix: mp_
     #刷新mapper 调试神器
     #refresh-mapper: true
     #数据库大写下划线转换
