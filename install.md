@@ -88,6 +88,9 @@ sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
     <!-- 2.1-gamma+ 数据库自动识别，无需配置数据库类型
     <property name="dbType" value="mysql" />
     -->
+    <!-- 2.3+ 全局表前缀 mp_
+    <property name="tablePrefix" value="mp_" />
+    -->
     <!--主键Sequence-->
     <property name="keyGenerator" ref="keyGenerator"/>
     <!-- 公共字段填充处理器 -->
