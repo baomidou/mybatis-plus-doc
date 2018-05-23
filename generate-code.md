@@ -241,6 +241,31 @@ new AutoGenerator().setGlobalConfig(
 
 ```
 
+> 自定义模板，自定义参数 [查看示例](https://gitee.com/baomidou/mybatis-plus/blob/dev/mybatis-plus-generate/src/test/java/com/baomidou/mybatisplus/test/generator/CodeGeneratorCustomTemplate.java) 
+
+```java
+TemplateConfig templateConfig = new TemplateConfig()
+    .setXml("/templates/mapper2.xml");//注意，不需要带上.vm
+InjectionConfig injectionConfig = new InjectionConfig() {
+    @Override
+    public void initMap() {//自定义参数
+        Map<String, Object> map = new HashMap<>();
+        map.put("abc", "自定义abc的值");
+        this.setMap(map);
+    }
+};
+new AutoGenerator()
+.setTemplate(templateConfig)//生成器配置自定义模板路径
+.setCfg(injectionConfig)//生成器配置自定义参数
+.xxx
+```
+```xml
+模板里面用自定义参数：${cfg.abc} 
+--cfg是固定写法, 参考AbstractTemplateEngine.batchOutput()方法;
+--abc就是map里put的参数名;
+
+```
+
 > 其他方式、 Maven插件生成
 
 
