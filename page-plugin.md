@@ -69,6 +69,7 @@ public Page<User> selectUserPage(Page<User> page, Integer state) {
     // page.setOptimizeCountSql(false);
     // 不查询总记录数
     // page.setSearchCount(false);
+    // 注意！！ 分页 total 是经过插件自动 回写 到传入 page 对象
     return page.setRecords(userMapper.selectUserList(page, state));
 }
 ```
