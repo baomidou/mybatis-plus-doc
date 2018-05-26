@@ -101,3 +101,6 @@ int total = PageHelper.freeTotal();
 objectMapper.configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true);
 ```
 
+!> page total 为 0 检查下是否加入 com.github.pagehelper 插件，有网友反馈它会干扰 MP 分页，请移除。
+
+
