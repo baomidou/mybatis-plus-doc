@@ -29,6 +29,27 @@
 
 - 检查是不是引入 jar 冲突
 
+- 配置Mapper.java的扫描路径
+  
+  - 方法一：在`Configuration`类上使用注解`MapperScan`：
+  ```java
+  @Configuration
+  @MapperScan("com.yourpackage.*.mapper")
+  public class YourConfigClass{
+    ...
+  }
+  ```
+  - 方法二：在`Configuration`类里面，配置`MapperScannerConfigurer`, [查看示例](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/config%E6%96%B9%E5%BC%8F/src/main/java/com/baomidou/springboot/config/MybatisPlusConfig.java)
+  ```java
+    @Bean
+    public MapperScannerConfigurer mapperScannerConfigurer(){
+        MapperScannerConfigurer scannerConfigurer = new MapperScannerConfigurer();
+        //可以通过环境变量获取你的mapper路径,这样mapper扫描可以通过配置文件配置了
+        scannerConfigurer.setBasePackage("com.yourpackage.*.mapper");
+        return scannerConfigurer;
+    }
+  ```
+
 - 检查命名空间是否正常？ 检查包扫描路径`typeAliasesPackage`是否正常？如果扫描不到，MP无法进行预注入
 
 - 检查是否指定了主键？如未指定，则会导致 `selectById` 相关 ID 无法操作，请用注解 `@TableId` 注解表 ID 主键
