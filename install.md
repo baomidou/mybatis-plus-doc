@@ -198,6 +198,8 @@ public class MybatisConfigMetaObjOptLockConfig {
 
 - Java快速开发平台 [iartisan-admin-template](https://gitee.com/iartisan/iartisan-admin-template)
 
+- ifast 接私活利器 [ifast](https://github.com/izenglong/ifast)
+
 !> 需！加入列表的童鞋可以告诉我们。
 
 
