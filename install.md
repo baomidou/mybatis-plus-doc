@@ -200,6 +200,8 @@ public class MybatisConfigMetaObjOptLockConfig {
 
 - ifast 接私活利器 [ifast](https://github.com/izenglong/ifast)
 
+- Spring Cloud的分布式框架 [roses](https://gitee.com/naan1993/roses)
+
 !> 需！加入列表的童鞋可以告诉我们。
 
 
