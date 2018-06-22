@@ -9,6 +9,8 @@
 
 亲！好用 [五分好评](https://plugins.jetbrains.com/plugin/10119-mybatisx) 哦！！
 
+[MybatisX 源码](https://gitee.com/baomidou/MybatisX)
+
 
 # 功能
 
