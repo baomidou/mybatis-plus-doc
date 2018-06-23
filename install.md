@@ -202,6 +202,8 @@ public class MybatisConfigMetaObjOptLockConfig {
 
 - Spring Cloud的分布式框架 [roses](https://gitee.com/naan1993/roses)
 
+- 飞特后台管理系统 [freeter-admin](https://gitee.com/xcOschina/freeter-admin)
+
 !> 需！加入列表的童鞋可以告诉我们。
 
 
