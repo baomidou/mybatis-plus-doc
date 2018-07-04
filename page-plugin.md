@@ -40,7 +40,7 @@ public class MybatisPlusConfig {
 
 # 方式一 、传参区分模式【推荐】 
 
-[测试用例](https://gitee.com/baomidou/mybatis-plus/blob/dev/mybatis-plus-core/src/test/java/com/baomidou/mybatisplus/test/h2/H2Pagination4SqlTest.java)
+[测试用例](https://gitee.com/baomidou/mybatis-plus/blob/2.x/mybatis-plus-core/src/test/java/com/baomidou/mybatisplus/test/h2/H2Pagination4SqlTest.java)
 
 - UserMapper.java 方法内容
 

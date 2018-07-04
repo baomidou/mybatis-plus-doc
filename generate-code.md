@@ -2,7 +2,7 @@
 
 在代码生成之前，首先进行配置，MP提供了大量的自定义设置，生成的代码完全能够满足各类型的需求，如果你发现配置不能满足你的需求，欢迎提交issue和pull-request，有兴趣的也可以查看[源码](https://gitee.com/baomidou/mybatis-plus/tree/dev/mybatis-plus-generate)进行了解。
 
-默认配置，[懒人直达电梯](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/dev/src/test/java/com/baomidou/springboot/test/generator/GeneratorServiceEntity.java)
+默认配置，[懒人直达电梯](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/2.x/src/test/java/com/baomidou/springboot/test/generator/GeneratorServiceEntity.java)
 
 > 参数说明
 
@@ -222,7 +222,7 @@ public class MpGenerator {
 ```
 
 
-> 代码生成 [点此去了解](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/dev/src/test/java/com/baomidou/springboot/test/generator/GeneratorServiceEntity.java) 、示例二 
+> 代码生成 [点此去了解](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/2.x/src/test/java/com/baomidou/springboot/test/generator/GeneratorServiceEntity.java) 、示例二 
 
 ```java
 new AutoGenerator().setGlobalConfig(
@@ -241,7 +241,7 @@ new AutoGenerator().setGlobalConfig(
 
 ```
 
-> 自定义模板，自定义参数 [查看示例](https://gitee.com/baomidou/mybatis-plus/blob/dev/mybatis-plus-generate/src/test/java/com/baomidou/mybatisplus/test/generator/CodeGeneratorCustomTemplate.java) 
+> 自定义模板，自定义参数 [查看示例](https://gitee.com/baomidou/mybatis-plus/blob/2.x/mybatis-plus-generate/src/test/java/com/baomidou/mybatisplus/test/generator/CodeGeneratorCustomTemplate.java) 
 
 ```java
 TemplateConfig templateConfig = new TemplateConfig()

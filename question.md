@@ -84,7 +84,7 @@
 
 > 指在xml里面自定义sql，需要配置xml扫描路径
 
--  spring mvc配置mapper.xml(参考[spring-mybatis.xml](https://gitee.com/baomidou/mybatisplus-spring-mvc/blob/master/src/main/resources/spring/spring-mybatis.xml))
+-  spring mvc配置mapper.xml(参考[spring-mybatis.xml](https://gitee.com/baomidou/mybatisplus-spring-mvc/blob/dev/src/main/resources/spring/spring-mybatis.xml))
 
 ```xml
  <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
@@ -94,7 +94,7 @@
     ...
 </bean>
 ```
--  spring boot yml配置mapper.xml(参考[mybatisplus-spring-boot](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/master/src/main/resources/application.yml))
+-  spring boot yml配置mapper.xml(参考[mybatisplus-spring-boot](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/2.x/src/main/resources/application.yml))
 ```properties
 mybatis-plus:
 mapper-locations: classpath:/mapper/**/*.xml

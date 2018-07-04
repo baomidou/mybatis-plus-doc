@@ -115,7 +115,7 @@ sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
 
 !> 特别注意 `MybatisSqlSessionFactoryBean` 非原生的类，必须如上配置 ！
 
-> Spring Bean Configuration[示例](https://gitee.com/baomidou/mybatis-plus/tree/dev/mybatis-plus-core/src/test/java/com/baomidou/mybatisplus/test/h2/config)
+> Spring Bean Configuration[示例](https://gitee.com/baomidou/mybatis-plus/tree/2.x/mybatis-plus-core/src/test/java/com/baomidou/mybatisplus/test/h2/config)
 
 ```java
 @Configuration

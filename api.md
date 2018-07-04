@@ -13,7 +13,7 @@ MP 创建 SqlSession 示例工厂类（与 _Mybatis-Spring_ 的工厂 Bean 相�
 - 类型：GlobalConfiguration
 - 描述：MP 全局策略配置
 
-#### Spring MVC [配置参考](https://gitee.com/baomidou/mybatis-plus/blob/dev/mybatis-plus-core/src/test/resources/h2/spring-test-h2-mvc.xml)
+#### Spring MVC [配置参考](https://gitee.com/baomidou/mybatis-plus/blob/2.x/mybatis-plus-core/src/test/resources/h2/spring-test-h2-mvc.xml)
 
 ```xml
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
@@ -80,7 +80,7 @@ MP 创建 SqlSession 示例工厂类（与 _Mybatis-Spring_ 的工厂 Bean 相�
 </bean>
 ```
 
-#### Spring Bean Configuration[示例](https://gitee.com/baomidou/mybatis-plus/tree/dev/mybatis-plus-core/src/test/java/com/baomidou/mybatisplus/test/h2/config)
+#### Spring Bean Configuration[示例](https://gitee.com/baomidou/mybatis-plus/tree/2.x/mybatis-plus-core/src/test/java/com/baomidou/mybatisplus/test/h2/config)
 ```java
 @Configuration
 @MapperScan("com.baomidou.mybatisplus.test.h2.entity.mapper")
