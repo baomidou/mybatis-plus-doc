@@ -12,6 +12,15 @@
   gc.setKeyGenerator(new OracleKeyGenerator());
 ```
 
+* mybatis-plus-boot-starter[配置参考](/spring-boot)
+```yaml
+
+mybatis-plus:
+  global-config:
+    key-generator: com.baomidou.mybatisplus.incrementer.OracleKeyGenerator
+
+```
+
 * 实体类配置主键Sequence,指定主键@TableId(type=IdType.INPUT)//不能使用AUTO
 
 ```java
