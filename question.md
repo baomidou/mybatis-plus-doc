@@ -221,7 +221,8 @@ for(H2User u:list){
 - 当然你是一个极端分子，请使用 CachePaginationInterceptor 替换默认分页，这样支持分页缓存。
 
 ## mapper层二级缓存刷新问题
-> 如果你按照mybatis的方式配置第三方二级缓存，并且使用2.0.9以上的版本，则会发现自带的方法无法更新缓存内容，那么请按如下方式解决
+> 如果你按照mybatis的方式配置第三方二级缓存，并且使用2.0.9以上的版本，则会发现自带的方法无法更新缓存内容，那么请按如下方式解决 二 选 一
+
   1.在代码中mybatis的mapper层添加缓存注释，声明implementation或eviction的值为cache接口的实现类
   @CacheNamespace(implementation=MybatisRedisCache.class,eviction=MybatisRedisCache.class)
   public interface DataResourceMapper extends BaseMapper<DataResource>{}
