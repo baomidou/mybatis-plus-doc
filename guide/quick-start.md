@@ -4,7 +4,7 @@
 
 - 拥有 Java 开发环境以及相应 IDE
 - 熟悉 Spring Boot
-- 熟悉 Maven 或者 Gradle
+- 熟悉 Maven
 
 ---
 
@@ -24,13 +24,57 @@
 
 ## 初始化工程
 
-创建一个空的 Spring Boot 工程，配置数据库连接（Demo 工程采用 H2 作为测试数据库）
+创建一个空的 Spring Boot 工程（工程将以 H2 作为默认数据库进行演示）
 
 ::: tip
 可以使用 [Spring Initializr](https://start.spring.io/) 快速初始化一个 Spring Boot 工程
 :::
 
-在 `application.yml` 配置文件中添加 H2 数据库相关配置：
+## 添加依赖
+
+引入 Spring Boot Starter 父工程：
+```xml
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.0.3.RELEASE</version>
+    <relativePath/> <!-- lookup parent from repository -->
+</parent>
+```
+
+引入 `spring-boot-starter`、`spring-boot-starter-test`、`mybatis-plus-boot-starter`、`lombok`、`h2` 依赖：
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <optional>true</optional>
+    </dependency>
+    <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>3.0-gamma</version>
+    </dependency>
+    <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+</dependencies>
+```
+
+## 配置
+
+在 `application.yml` 配置文件中添加 H2 数据库的相关配置以及 MyBatis-Plus 的相关配置：
 
 ```yaml
 # DataSource Config
@@ -42,6 +86,14 @@ spring:
     url: jdbc:h2:mem:test
     username: root
     password: test
+
+# MyBatis-Plus Config
+mybatis-plus:
+  global-config:
+    db-config:
+      column-underline: true
+      id-type: id_worker
+      field-strategy: not_empty
 ```
 
 数据库 Schema 脚本：
@@ -72,34 +124,14 @@ INSERT INTO user (id, name, age, email) VALUES
 (5, 'Billie', 24, 'test5@baomidou.com');
 ```
 
-## 添加依赖
-
-引入 `mybatis-plus-boot-starter` 依赖
-
-Maven:
-```xml
-<dependency>
-    <groupId>com.baomidou</groupId>
-    <artifactId>mybatis-plus-boot-starter</artifactId>
-    <version>2.3</version>
-</dependency>
-```
-
-Gradle:
-```gradle
-compile('com.baomidou:mybatis-plus-boot-starter:2.3')
-```
-
-## 配置
-
-在 Spring Boot 启动类中添加 `@MapperScan` 注解：
+在 Spring Boot 启动类中添加 `@MapperScan` 注解，扫描 Mapper 文件夹：
 ```java {2}
 @SpringBootApplication
-@MapperScan("com.baomidou.mybatisplus.springbootsample.mapper")
-public class SpringBootSampleApplication {
+@MapperScan("com.baomidou.mybatisplus.samples.quickstart.mapper")
+public class QuickStartApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringBootSampleApplication.class, args);
+        SpringApplication.run(QuickStartApplication.class, args);
     }
 
 }
@@ -134,7 +166,7 @@ public interface UserMapper extends BaseMapper<User> {
 ```java
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SpringBootSampleApplicationTests {
+public class QuickStartTest {
 
     @Autowired
     private UserMapper userMapper;
@@ -148,7 +180,7 @@ public class SpringBootSampleApplicationTests {
 }
 ```
 
-::: tip 温馨提示
+::: tip
 UserMapper 中的 `selectList()` 方法的参数为 MP 内置的条件封装器 `Wrapper`，所以不填写就是无任何条件
 :::
 
