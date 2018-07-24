@@ -12,7 +12,8 @@
 * 执行更新时， set version = yourVersion+1 where version = yourVersion
 * 如果version不对，就更新失败
 
-乐观锁配置需要2步 记得两步 我操
+**乐观锁配置需要2步 记得两步**
+
 ## 1.插件配置
 spring xml
 ```xml
