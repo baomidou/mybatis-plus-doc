@@ -12,15 +12,21 @@
 * 执行更新时， set version = yourVersion+1 where version = yourVersion
 * 如果version不对，就更新失败
 
-
-## 插件配置
-
+乐观锁配置需要2步 记得两步 我操
+## 1.插件配置
+spring xml
 ```xml
 <bean class="com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor"/>
 ```
+spring boot
+```java
+    @Bean
+    public OptimisticLockerInterceptor optimisticLockerInterceptor() {
+        return new OptimisticLockerInterceptor();
+    }
+```
 
-## 注解实体字段 `@Version` 必须要！
-
+## 2.注解实体字段 `@Version` 必须要！
 ```java
 public class User {
 
