@@ -1,6 +1,6 @@
 # 乐观锁插件
 
-##主要使用场景：
+## 主要适用场景
 
 意图： 
 
@@ -38,10 +38,10 @@ public class User {
 }
 ```
 
-!> 特别说明： **仅支持int,Integer,long,Long,Date,Timestamp
+特别说明： **仅支持int,Integer,long,Long,Date,Timestamp**
 
 
-##示例
+## 示例
 
 示例Java代码（参考[test case](https://gitee.com/baomidou/mybatis-plus/blob/2.x/mybatis-plus-core/src/test/java/com/baomidou/mybatisplus/test/h2/H2UserExtendsTest.java)代码）
 
