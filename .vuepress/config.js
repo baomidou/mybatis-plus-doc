@@ -26,12 +26,12 @@ module.exports = {
               link: '/guide/',
             },
             {
-              text: '配置',
-              link: '/config/'
-            },
-            {
               text: '常见问题',
               link: '/faq/'
+            },
+            {
+              text: '更新日志',
+              link: 'https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md'
             }
           ],
           sidebar: {
@@ -50,7 +50,8 @@ module.exports = {
         children: [
           '',
           'quick-start',
-          'install'
+          'install',
+          'config'
         ]
       }
     ]
