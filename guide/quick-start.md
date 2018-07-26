@@ -18,6 +18,36 @@
 | 4   | Sandy  | 21  | test4@baomidou.com |
 | 5   | Billie | 24  | test5@baomidou.com |
 
+其对应的数据库 Schema 脚本如下：
+
+```sql
+DROP TABLE IF EXISTS user;
+
+CREATE TABLE user
+(
+	id BIGINT(20) NOT NULL COMMENT '主键ID',
+	name VARCHAR(30) NULL DEFAULT NULL COMMENT '姓名',
+	age INT(11) NULL DEFAULT NULL COMMENT '年龄',
+	email VARCHAR(50) NULL DEFAULT NULL COMMENT '邮箱',
+	PRIMARY KEY (id)
+);
+```
+
+其对应的数据库 Data 脚本如下：
+
+```sql
+DELETE FROM user;
+
+INSERT INTO user (id, name, age, email) VALUES
+(1, 'Jone', 18, 'test1@baomidou.com'),
+(2, 'Jack', 20, 'test2@baomidou.com'),
+(3, 'Tom', 28, 'test3@baomidou.com'),
+(4, 'Sandy', 21, 'test4@baomidou.com'),
+(5, 'Billie', 24, 'test5@baomidou.com');
+```
+
+---
+
 ::: danger Question
 如果从零开始用 MyBatis-Plus 来实现该表的增删改查我们需要做什么呢？
 :::
@@ -43,7 +73,7 @@
 ```
 
 引入 `spring-boot-starter`、`spring-boot-starter-test`、`mybatis-plus-boot-starter`、`lombok`、`h2` 依赖：
-```xml
+```xml {18}
 <dependencies>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -74,7 +104,7 @@
 
 ## 配置
 
-在 `application.yml` 配置文件中添加 H2 数据库的相关配置以及 MyBatis-Plus 的相关配置：
+在 `application.yml` 配置文件中添加 H2 数据库的相关配置：
 
 ```yaml
 # DataSource Config
@@ -86,49 +116,13 @@ spring:
     url: jdbc:h2:mem:test
     username: root
     password: test
-
-# MyBatis-Plus Config
-mybatis-plus:
-  global-config:
-    db-config:
-      column-underline: true
-      id-type: id_worker
-      field-strategy: not_empty
-```
-
-数据库 Schema 脚本：
-
-```sql
-DROP TABLE IF EXISTS user;
-
-CREATE TABLE user
-(
-	id BIGINT(20) NOT NULL COMMENT '主键ID',
-	name VARCHAR(30) NULL DEFAULT NULL COMMENT '姓名',
-	age INT(11) NULL DEFAULT NULL COMMENT '年龄',
-	email VARCHAR(50) NULL DEFAULT NULL COMMENT '邮箱',
-	PRIMARY KEY (id)
-);
-```
-
-数据库 Data 脚本：
-
-```sql
-DELETE FROM user;
-
-INSERT INTO user (id, name, age, email) VALUES
-(1, 'Jone', 18, 'test1@baomidou.com'),
-(2, 'Jack', 20, 'test2@baomidou.com'),
-(3, 'Tom', 28, 'test3@baomidou.com'),
-(4, 'Sandy', 21, 'test4@baomidou.com'),
-(5, 'Billie', 24, 'test5@baomidou.com');
 ```
 
 在 Spring Boot 启动类中添加 `@MapperScan` 注解，扫描 Mapper 文件夹：
 ```java {2}
 @SpringBootApplication
 @MapperScan("com.baomidou.mybatisplus.samples.quickstart.mapper")
-public class QuickStartApplication {
+public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(QuickStartApplication.class, args);
@@ -166,14 +160,16 @@ public interface UserMapper extends BaseMapper<User> {
 ```java
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class QuickStartTest {
+public class SampleTest {
 
     @Autowired
     private UserMapper userMapper;
 
     @Test
-    public void testSelectAll() {
+    public void testSelect() {
+        System.out.println(("----- selectAll method test ------"));
         List<User> userList = userMapper.selectList(null);
+        Assert.assertEquals(5, userList.size());
         userList.forEach(System.out::println);
     }
 
@@ -193,6 +189,10 @@ User(id=3, name=Tom, age=28, email=test3@baomidou.com)
 User(id=4, name=Sandy, age=21, email=test4@baomidou.com)
 User(id=5, name=Billie, age=24, email=test5@baomidou.com)
 ```
+
+::: tip
+完整的代码示例请移步：[Spring Boot 快速启动示例](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart) | [Spring MVC 快速启动示例](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart-springmvc)
+:::
 
 通过以上几个简单的步骤，我们就实现了 User 表的 CRUD 功能，甚至连 XML 文件都不用编写！但 MyBatis-Plus 的强大远不止这些功能，我们还有强大的代码生成器，通过简单配置即可一键生成 Entity、Mapper、Service 等模块代码，节省大量时间。
 
