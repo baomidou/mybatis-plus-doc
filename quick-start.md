@@ -123,7 +123,7 @@ user.setAge(18);
 result = user.updateById();
 
 // 查询 User
-User exampleUser = t1.selectById();
+User exampleUser = user.selectById();
 
 // 查询姓名为‘张三’的所有用户记录
 List<User> userList1 = user.selectList(
