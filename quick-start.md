@@ -131,7 +131,7 @@ List<User> userList1 = user.selectList(
 );
 
 // 删除 User
-result = t2.deleteById();
+result = user.deleteById();
 ```
 
 > 分页操作
