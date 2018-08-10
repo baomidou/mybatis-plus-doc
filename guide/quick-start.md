@@ -68,7 +68,7 @@ INSERT INTO user (id, name, age, email) VALUES
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.0.3.RELEASE</version>
-    <relativePath/> <!-- lookup parent from repository -->
+    <relativePath/>
 </parent>
 ```
 
@@ -194,6 +194,6 @@ User(id=5, name=Billie, age=24, email=test5@baomidou.com)
 完整的代码示例请移步：[Spring Boot 快速启动示例](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart) | [Spring MVC 快速启动示例](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart-springmvc)
 :::
 
-通过以上几个简单的步骤，我们就实现了 User 表的 CRUD 功能，甚至连 XML 文件都不用编写！但 MyBatis-Plus 的强大远不止这些功能，我们还有强大的代码生成器，通过简单配置即可一键生成 Entity、Mapper、Service 等模块代码，节省大量时间。
+通过以上几个简单的步骤，我们就实现了 User 表的 CRUD 功能，甚至连 XML 文件都不用编写！
 
-想要详细了解 MyBatis-Plus 的强大功能？那就继续往下看吧！
+但 MyBatis-Plus 的强大远不止这些功能，想要详细了解 MyBatis-Plus 的强大功能？那就继续往下看吧！
