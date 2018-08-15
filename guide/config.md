@@ -271,7 +271,7 @@ MyBatis-Plus 全局策略配置，具体请查看 [全局策略配置](#全局�
 - 类型：`boolean`
 - 默认值：`true`
 
-当设置为 true 的时候，懒加载的对象可能被任何懒属性全部加载，否则，每个属性都按需加载。需要和 [lazyLoadingEnabled]() 一起使用。 
+当设置为 true 的时候，懒加载的对象可能被任何懒属性全部加载，否则，每个属性都按需加载。需要和 [lazyLoadingEnabled]() 一起使用。
 
 Spring Boot：
 
@@ -394,7 +394,7 @@ Spring MVC：
 当您遇到类似的情况，请针对该属性进行相关配置以解决以上问题。
 
 ::: warning
-基本类型（int、boolean等）是不能设置成 null 的。
+基本类型（int、boolean 等）是不能设置成 null 的。
 :::
 
 Spring Boot：
@@ -422,14 +422,14 @@ Spring MVC：
 - 类型：`Class<?>`
 - 默认值：`null`
 
-指定一个提供Configuration实例的工厂类。该工厂生产的实例将用来加载已经被反序列化对象的懒加载属性值，其必须包含一个签名方法`static Configuration getConfiguration()`。（从 3.2.3 版本开始）
+指定一个提供 Configuration 实例的工厂类。该工厂生产的实例将用来加载已经被反序列化对象的懒加载属性值，其必须包含一个签名方法`static Configuration getConfiguration()`。（从 3.2.3 版本开始）
 
 Spring Boot：
 
 ```yaml
 mybatis-plus:
-  global-config:
-    sql-parser-cache: true
+  configuration:
+    configuration-factory: com.xxx.SampleConfigurationFactory
 ```
 
 Spring MVC：
@@ -438,7 +438,7 @@ Spring MVC：
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
     <property name="globalConfig">
         <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig">
-            <property name="sqlParserCache" value="true"/>
+            <property name="configurationFactory" value="com.xxx.SampleConfigurationFactory"/>
         </bean>
     </property>
 </bean>
@@ -504,3 +504,115 @@ Spring MVC：
 </bean>
 ```
 
+### sqlSession
+
+- 类型：`SqlSession`
+- 默认值：`null`
+
+单例重用 SqlSession。
+
+Spring Boot：
+
+```yaml
+mybatis-plus:
+  global-config:
+    sql-session: com.xxx.SqlSession
+```
+
+Spring MVC：
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+    <property name="globalConfig">
+        <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+            <property name="sqlSession" value="com.xxx.SqlSession"/>
+        </bean>
+    </property>
+</bean>
+```
+
+### sqlSessionFactory
+
+- 类型：`SqlSessionFactory`
+- 默认值：`null`
+
+缓存当前 Configuration 的 SqlSessionFactory。
+
+Spring Boot：
+
+```yaml
+mybatis-plus:
+  global-config:
+    sql-session-factory: com.xxx.SqlSessionFactory
+```
+
+Spring MVC：
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+    <property name="globalConfig">
+        <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+            <property name="sqlSessionFactory" value="com.xxx.SqlSessionFactory"/>
+        </bean>
+    </property>
+</bean>
+```
+
+### dbConfig
+
+- 类型：`DbConfig`
+- 默认值：`null`
+
+MyBatis-Plus 全局策略中的 DB 策略配置，具体请查看 [DB 策略配置](#DB策略配置)
+
+## DB 策略配置
+
+### capitalMode
+
+- 类型：`boolean`
+- 默认值：`false`
+
+是否开启大写命名，默认不开启。
+
+Spring Boot：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      capital-mode: false
+```
+
+Spring MVC：
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+    <property name="globalConfig">
+        <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+            <property name="dbConfig">
+                <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig.DbConfig">
+                    <property name="capitalMode" value="false"/>
+                </bean>
+            </property>
+        </bean>
+    </property>
+</bean>
+```
+
+### columnLike
+
+### columnUnderline
+
+### dbType
+
+### fieldStrategy
+
+### IdType
+
+### logicDeleteValue
+
+### logicNotDeleteValue
+
+### tablePrefix
+
+### tableUnderline

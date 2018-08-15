@@ -28,10 +28,8 @@ module.exports = {
             link: "/faq/"
           },
           {
-            text: '选择语音',
-            items: [
-              { text: '简体中文', link: '/' }
-            ]
+            text: "选择语音",
+            items: [{ text: "简体中文", link: "/" }]
           },
           {
             text: "生态",
@@ -42,13 +40,15 @@ module.exports = {
               },
               {
                 text: "Dynamic Datasource",
-                link: "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
+                link:
+                  "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
               }
             ]
           },
           {
             text: "更新日志",
-            link: "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
+            link:
+              "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
           }
         ],
         sidebar: {
@@ -64,7 +64,27 @@ function genSidebarConfig(title) {
     {
       title,
       collapsable: false,
-      children: ["", "quick-start", "install", "config"]
+      children: [
+        "",
+        "quick-start",
+        "install",
+        "config",
+        "generator",
+        "crud-interface",
+        "wrapper",
+        "page",
+        "sequence",
+        "hot-loading",
+        "logic-delete",
+        "enum",
+        "auto-fill-metainfo",
+        "sql-injector",
+        "execution-analysis-plugin",
+        "performance-analysis-plugin",
+        "optimistic-locker-plugin",
+        "tenant",
+        "mybatisx-idea-plugin"
+      ]
     }
   ];
 }
