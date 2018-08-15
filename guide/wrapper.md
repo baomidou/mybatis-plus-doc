@@ -1,3 +1,7 @@
+---
+sidebarDepth: 3
+---
+
 # 条件构造器
 
 ## AbstractWrapper
