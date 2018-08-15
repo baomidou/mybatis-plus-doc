@@ -62,18 +62,30 @@ module.exports = {
 function genSidebarConfig(title) {
   return [
     {
-      title,
+      title: "快速入门",
       collapsable: false,
       children: [
         "",
         "quick-start",
         "install",
-        "config",
+        "config"
+      ]
+    },
+    {
+      title: "核心功能",
+      collapsable: false,
+      children: [
         "generator",
         "crud-interface",
         "wrapper",
         "page",
-        "sequence",
+        "sequence"
+      ]
+    },
+    {
+      title: "插件扩展",
+      collapsable: false,
+      children: [
         "hot-loading",
         "logic-delete",
         "enum",
