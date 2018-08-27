@@ -1,4 +1,4 @@
-# 简介
+# 简介(当前文档适用于2.x)
 
 [Mybatis-Plus](https://github.com/baomidou/mybatis-plus)（简称MP）是一个 [Mybatis](http://www.mybatis.org/mybatis-3/) 的增强工具，在 Mybatis 的基础上只做增强不做改变，为简化开发、提高效率而生。
 

@@ -1,4 +1,4 @@
-# Spring Boot 相关介绍
+# Spring Boot 相关介绍(当前文档适用于2.x)
 
 ## 快速入门 mybatis-plus-boot-starter
 spring boot 项目集成mp可以使用starter
