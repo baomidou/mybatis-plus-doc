@@ -7,7 +7,7 @@
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus</artifactId>
-    <version>仓库最高版本号</version>
+    <version>该文档为 2.x 文档，仓库最高 2.x 版本号, 请勿用 3.x 版本</version>
 </dependency>
 
 <!--快照版本使用,正式版本无需添加此仓库-->
@@ -205,6 +205,9 @@ public class MybatisConfigMetaObjOptLockConfig {
 - 人人开源 [renren-security](https://gitee.com/renrenio/renren-security)
 
 - 飞特后台管理系统 [freeter-admin](https://gitee.com/xcOschina/freeter-admin)
+
+- vblog博客 [vblog](https://gitee.com/seu-lfh/vblog)
+
 
 !> 需！加入列表的童鞋可以告诉我们。
 
