@@ -40,3 +40,64 @@
 
 * 贡献代码：代码地址 [MyBatis-Plus](https://github.com/baomidou/mybatis-plus) ，欢迎提交 Issue 或者 Pull Requests
 * 维护文档：文档地址 [MyBatis-Plus-Doc](https://github.com/baomidou/mybatis-plus-doc) ，欢迎参与翻译和修订
+
+## 优秀案例
+
+- Java EE（J2EE）快速开发框架 [SpringWind](https://gitee.com/baomidou/SpringWind)
+
+- SSM 后台框架 [KangarooAdmin](https://git.oschina.net/zhougaojun/KangarooAdmin)
+
+- JAVA分布式快速开发基础平台 [iBase4J](https://git.oschina.net/iBase4J/iBase4J) 
+
+- 又一个 SSM 后台管理框架 [framework](https://git.oschina.net/sunhan521/framework)
+
+- 猫宁Morning公益商城 [Morning](https://git.oschina.net/Morning_/Morning)
+
+- 基础权限开发框架 [BMS](https://git.oschina.net/eric.xu/BMS)  Shiro 案例
+
+- 简单实用的权限系统 [spring-shiro-training](https://git.oschina.net/wangzhixuan/spring-shiro-training)  Shiro 案例
+
+- 系统管理中心系统 [center](https://git.oschina.net/willenfoo/center)
+
+- Springboot-Shiro 脚手架 [skeleton](https://github.com/fengchangsheng/skeleton)
+
+- Springboot-Shiro 美女图片爬虫 [springboot_mybatisplus](https://git.oschina.net/z77z/springboot_mybatisplus)
+
+- guns 后台管理系统 [guns](http://git.oschina.net/naan1993/guns)
+
+- maple 企业信息化的开发基础平台 [maple](https://git.oschina.net/blind/maple)
+
+- JeeWeb敏捷开发平台 [jeeweb-mybatis](https://git.oschina.net/dataact/jeeweb-mybatis)
+
+- CMS 平台 [youngcms](https://gitee.com/fumiao/youngcms)
+
+- 前后端分离的基础权限管理后台 [king-admin](https://github.com/oukingtim/king-admin)
+
+- 前后端分离 Vue 快速开发平台 [jeefast](https://gitee.com/theodo/jeefast)
+
+- SpringBoot + Shiro +FreeMarker 制作的通用权限管理 [bing-upms](https://gitee.com/xiaobingby/bing-upms)
+
+- SpringBoot 企业级快速开发脚手架 [slife](https://gitee.com/jamen/slife)
+
+- 微服务 Spring Cloud 架构 [pig](https://gitee.com/log4j/pig)
+
+- 系统后台 [mysiteforme](https://gitee.com/wanglingxiao/mysiteforme)
+
+- 基础权限框架 [watchdog-framework](https://github.com/watchdog-framework/watchdog-framework)
+
+- Java快速开发平台 [iartisan-admin-template](https://gitee.com/iartisan/iartisan-admin-template)
+
+- ifast 接私活利器 [ifast](https://github.com/izenglong/ifast)
+
+- Spring Cloud的分布式框架 [roses](https://gitee.com/naan1993/roses)
+
+- 人人开源 [renren-security](https://gitee.com/renrenio/renren-security)
+
+- 飞特后台管理系统 [freeter-admin](https://gitee.com/xcOschina/freeter-admin)
+
+- vblog博客 [vblog](https://gitee.com/seu-lfh/vblog)
+
+
+!> 需！加入列表的童鞋可以告诉我们。
+
+
