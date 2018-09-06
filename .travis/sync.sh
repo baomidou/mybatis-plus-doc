@@ -27,7 +27,7 @@ set -e
 yarn run build
 
 # Add docs
-git add docs/
+git add -f docs/ -A
 git commit -m 'deploy'
 
 # Add coding remote
