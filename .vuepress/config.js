@@ -1,7 +1,7 @@
 module.exports = {
   port: "3000",
   dest: "docs",
-  base: "/mybatis-plus-doc/",
+  base: "/",
   locales: {
     "/": {
       lang: "zh-CN",
