@@ -23,11 +23,11 @@ before_install:
   - export TZ=Asia/Shanghai
 
 script:
-  - git clone -b gh-pages https://github.com/baomidou/mybatis-plus-doc.git ./docs
   - yarn run build
 
 after_success:
   - cd ./docs
+  - git init
   - git config user.name "D.Yang"
   - git config user.email "koyangslash@gmail.com"
   - git add .
