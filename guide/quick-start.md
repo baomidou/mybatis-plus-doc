@@ -92,7 +92,7 @@ INSERT INTO user (id, name, age, email) VALUES
     <dependency>
         <groupId>com.baomidou</groupId>
         <artifactId>mybatis-plus-boot-starter</artifactId>
-        <version>3.0-RC</version>
+        <version>3.0.1</version>
     </dependency>
     <dependency>
         <groupId>com.h2database</groupId>
