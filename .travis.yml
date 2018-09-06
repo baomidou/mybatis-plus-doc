@@ -10,6 +10,22 @@ cache:
   directories:
     - node_modules
 
+before_install:
+  - export TZ=Asia/Shanghai
+
+script:
+  - yarn run build
+
+after_success:
+  - cd ./docs
+  - git init
+  - git config user.name "D.Yang"
+  - git config user.email "koyangslash@gmail.com"
+  - git add .
+  - git commit -m "deploy $TRAVIS_BUILD_NUMBER"
+  - git push --force --quiet "https://yangyang0507:${CI_TOKEN}@${GITHUB_REPO}" master:gh-pages
+  - git push --force --quiet "https://yangyang0507:${CI_TOKEN_CODING}@${CODING_REPO}" master:gh-pages
+
 branches:
   only:
     - master
@@ -18,19 +34,3 @@ env:
   global:
     - GITHUB_REPO: github.com/baomidou/mybatis-plus-doc.git
     - CODING_REPO: git.coding.net/yangyang0507/mybatis-plus-doc.git
-
-before_install:
-  - export TZ=Asia/Shanghai
-
-script:
-  - yarn run build
-
-after_script:
-  - cd ./docs
-  - git init
-  - git config user.name "D.Yang"
-  - git config user.email "koyangslash@gmail.com"
-  - git add .
-  - git commit -m "deploy $TRAVIS_BUILD_NUMBER"
-  - git push --force --quiet "https://${CI_TOKEN}@${GITHUB_REPO}" master:gh-pages
-  - git push --force --quiet "https://${CI_TOKEN_CODING}@${CODING_REPO}" master:gh-pages
