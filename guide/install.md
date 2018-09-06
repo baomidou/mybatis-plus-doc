@@ -6,7 +6,7 @@
 - Maven or Gradle
 
 ::: tip
-JDK7 以及下的请参考 MP2.0 版本，地址：[2.0文档](#)
+JDK7 以及下的请参考 MP2.0 版本，地址：[2.0文档](https://baomidou.gitee.io/mybatis-plus-doc/#/)
 :::
 
 ## Spring Boot
