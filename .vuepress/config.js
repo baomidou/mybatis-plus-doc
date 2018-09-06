@@ -30,7 +30,12 @@ module.exports = {
           },
           {
             text: "选择语音",
-            items: [{ text: "简体中文", link: "/" }]
+            items: [
+              {
+                text: "简体中文",
+                link: "/"
+              }
+            ]
           },
           {
             text: "生态",
@@ -50,6 +55,10 @@ module.exports = {
             text: "更新日志",
             link:
               "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
+          },
+          {
+            text: "2.0 文档",
+            link: "https://baomidou.gitee.io/mybatis-plus-doc/#/"
           }
         ],
         sidebar: {
@@ -65,23 +74,12 @@ function genSidebarConfig(title) {
     {
       title: "快速入门",
       collapsable: false,
-      children: [
-        "",
-        "quick-start",
-        "install",
-        "config"
-      ]
+      children: ["", "quick-start", "install", "config"]
     },
     {
       title: "核心功能",
       collapsable: false,
-      children: [
-        "generator",
-        "crud-interface",
-        "wrapper",
-        "page",
-        "sequence"
-      ]
+      children: ["generator", "crud-interface", "wrapper", "page", "sequence"]
     },
     {
       title: "插件扩展",
