@@ -22,7 +22,7 @@ after_success:
   - git config user.name "D.Yang"
   - git config user.email "koyangslash@gmail.com"
   - git add .
-  - git commit -m "deploy at `date +\"%Y-%m-%d\"`"
+  - git commit -m "deploy at `date +\"%Y-%m-%d %H:%M:%S\"`"
   - git push --force --quiet "https://yangyang0507:${CI_TOKEN}@${GITHUB_REPO}" master:gh-pages
   - git push --force --quiet "https://yangyang0507:${CI_TOKEN_CODING}@${CODING_REPO}" master:gh-pages
 
