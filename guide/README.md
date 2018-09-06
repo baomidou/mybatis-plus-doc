@@ -6,7 +6,7 @@
 我们的愿景是成为 MyBatis 最好的搭档，就像 [魂斗罗](/img/contra.jpg) 中的 1P、2P，基友搭配，效率翻倍。
 :::
 
-![relationship](/img/relationship-with-mybatis.jpg)
+![relationship](/img/relationship-with-mybatis.png)
 
 ## 特性
 
@@ -28,7 +28,7 @@
 
 ## 框架结构
 
-![framework](/img/mybatis-plus-framework.png)
+![framework](/img/mybatis-plus-framework.jpg)
 
 ## 代码托管
 
