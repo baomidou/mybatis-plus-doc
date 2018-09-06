@@ -3,7 +3,7 @@
 ## 依赖配置
 
 ?> 查询最高版本或历史版本方式：[Maven中央库](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.baomidou%22%20AND%20a%3A%22mybatis-plus%22) | [Maven阿里库](http://maven.aliyun.com/nexus/#nexus-search;quick~mybatis-plus)
-[Mybatis-Plus 3X 文档](http://mp.baomidou.com)
+| [Mybatis-Plus 3X 文档](http://mp.baomidou.com)
 
 ```xml
 <dependency>
