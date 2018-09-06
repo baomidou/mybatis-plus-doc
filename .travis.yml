@@ -10,6 +10,15 @@ cache:
   directories:
     - node_modules
 
+branches:
+  only:
+    - master
+
+env:
+  global:
+    - GITHUB_REPO: github.com/baomidou/mybatis-plus-doc.git
+    - CODING_REPO: git.coding.net/yangyang0507/mybatis-plus-doc.git
+
 before_install:
   - export TZ=Asia/Shanghai
 
@@ -24,13 +33,4 @@ after_success:
   - git add .
   - git commit -m "deploy at `date +\"%Y-%m-%d %H:%M:%S\"`"
   - git push --force --quiet "https://yangyang0507:${CI_TOKEN}@${GITHUB_REPO}" master:gh-pages
-  - git push --force --quiet "https://yangyang0507:${CI_TOKEN_CODING}@${CODING_REPO}" master:gh-pages
-
-branches:
-  only:
-    - master
-
-env:
-  global:
-    - GITHUB_REPO: github.com/baomidou/mybatis-plus-doc.git
-    - CODING_REPO: git.coding.net/yangyang0507/mybatis-plus-doc.git
+  - git push --force --quiet "https://yangyang0507:${CI_TOKEN_CODING}@${CODING_REPO}" master:master
