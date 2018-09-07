@@ -49,7 +49,50 @@ AutoGenerator 是 MyBatis-Plus 的代码生成器，通过 AutoGenerator 可以�
 - 默认值：`null`
 
 注入配置，通过该配置，可注入自定义参数等操作以实现个性化操作，具体请查看 [注入配置](#注入配置)
-
+- 懒人模板:
+```java
+public class AutoGeneratorStart {
+    public static void main(String[] args) {
+        //代码生成器
+        new AutoGenerator()
+                //全局配置
+                .setGlobalConfig(
+                        new GlobalConfig()
+                                .setOutputDir("E:\\Hello\\genCode")
+                                .setFileOverride(true)
+                                .setEnableCache(false)
+                                .setAuthor("baojie")
+                                .setBaseResultMap(true)
+                                .setIdType(IdType.AUTO)
+                                .setServiceName("%sService")
+                )
+                //数据源配置
+                .setDataSource(
+                        new DataSourceConfig()
+                                .setDbType(DbType.MYSQL)
+                                .setUsername("root")
+                                .setPassword("")
+                                .setDriverName("com.mysql.jdbc.Driver")
+                                .setUrl("jdbc:mysql://地址:3306/数据库名称")
+                )
+                //表策略配置
+                .setStrategy(
+                        new StrategyConfig()
+                                .setNaming(NamingStrategy.underline_to_camel)
+                                .setLogicDeleteFieldName("state")
+                                .setInclude("user")
+                )
+                //包配置
+                .setPackageInfo(
+                        new PackageConfig()
+                                .setParent("com.baojie")
+                                .setXml("mapper")
+                )
+                //go
+                .execute();
+    }
+}
+```
 ## 数据源配置
 
 ### dbType
