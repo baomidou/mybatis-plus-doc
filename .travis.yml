@@ -23,14 +23,14 @@ before_install:
   - export TZ=Asia/Shanghai
 
 script:
+  - git clone https://git.coding.net/yangyang0507/mybatis-plus-doc.git ./docs
   - yarn run build
 
 after_success:
   - cd ./docs
-  - git init
   - git config user.name "D.Yang"
   - git config user.email "koyangslash@gmail.com"
-  - git add .
+  - git add -A
   - git commit -m "deploy at `date +\"%Y-%m-%d %H:%M:%S\"`"
   - git push --force --quiet "https://yangyang0507:${CI_TOKEN}@${GITHUB_REPO}" master:gh-pages
   - git push --force --quiet "https://yangyang0507:${CI_TOKEN_CODING}@${CODING_REPO}" master:master
