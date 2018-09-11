@@ -25,10 +25,6 @@ module.exports = {
             link: "/guide/"
           },
           {
-            text: "常见问题",
-            link: "/faq/"
-          },
-          {
             text: "选择语音",
             items: [
               {
@@ -96,6 +92,11 @@ function genSidebarConfig(title) {
         "tenant",
         "mybatisx-idea-plugin"
       ]
+    },
+    {
+      title: "FAQ",
+      collapsable: false,
+      children: ["faq"]
     }
   ];
 }

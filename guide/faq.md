@@ -1,3 +1,7 @@
+---
+sidebarDepth: 0
+---
+
 # 常见问题
 
 [[toc]]
