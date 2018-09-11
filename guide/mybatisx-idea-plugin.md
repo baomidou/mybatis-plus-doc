@@ -16,7 +16,7 @@
 
 - java xml 调回跳转，mapper 方法自动生成 xml
 
-![relationship](assets/mybatisx-001.gif)
+![relationship](/img/mybatisx-001.gif)
 
 
 
