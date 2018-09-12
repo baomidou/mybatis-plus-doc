@@ -95,6 +95,8 @@ public class CodeGenerator {
 }
 ```
 
+![relationship](/img/generator.gif)
+
 ## 基本配置
 
 ### dataSource
