@@ -37,7 +37,7 @@ mybatis-plus:
     typeEnumsPackage: com.baomidou.springboot.entity.enums
   ....
 ```
-# 3.JSON序列化处理
+# 3、JSON序列化处理
 ## 一、Jackson
 	1.在需要响应描述字段的get方法上添加@JsonValue注解即可
 		
