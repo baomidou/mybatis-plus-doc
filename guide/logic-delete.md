@@ -8,8 +8,8 @@ SpringBoot 配置方式：
   mybatis-plus:
     global-config:
       db-config:
-        logic-delete-value: 1 # 逻辑已删除值
-        logic-not-delete-value: 0 # 逻辑未删除值
+        logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+        logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
   ```
 
 - 注册 Bean：
