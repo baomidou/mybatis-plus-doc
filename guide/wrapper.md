@@ -6,10 +6,10 @@ sidebarDepth: 3
 1. 以下出现的第一个入参`boolean condition`表示该条件**是否**加入最后生成的sql中
 2. 以下方法均有至少省略入参`boolean condition`的同名方法(`condition`默认为`true`)
 3. 以下方法出现在入参出现的`R`为泛型,在普通wrapper中是`String`,在LambdaWrapper中是**函数**(例:`Entity::getId`,`Entity`为实体类,`getId`为字段`id`的**get方法**)
-4. 以下方法入参中的`R column`均表示数据库字段,当`R`为`String`时则为数据库字段名**(字段名是数据库关键字的自己用转义符包裹!)**!而不是实体类数据字段名!!!
+4. 以下方法入参中的`R column`均表示数据库字段,当`R`为`String`时则为数据库字段名(**字段名是数据库关键字的自己用转义符包裹!**)!而不是实体类数据字段名!!!
 4. 以下举例均为使用普通wrapper,并调用的同方法名最少入参的方法,入参为`map`和`list`的均以`json`形式表现!
-5. 有任何疑问就点开源码看!看不懂函数的[点击我](https://www.jianshu.com/p/613a6118e2e0)学习新知识!
-## AbstractWrapper
+5. 有任何疑问就点开源码看!看不懂**函数**的[点击我](https://www.jianshu.com/p/613a6118e2e0)学习新知识!
+## AbstractWrapper: QueryWrapper(LambdaQueryWrapper) 和 UpdateWrapper(LambdaUpdateWrapper) 的父类
 
 ### allEq :全部 = (或 is null)
 `allEq(boolean condition, Map<R, V> params, boolean null2IsNull)`
@@ -84,6 +84,8 @@ sidebarDepth: 3
 `likeRight(boolean condition, R column, Object val)`
 > column like #{val}
 * 例: `likeRight("name", "王")`->`name like '王%'`
+
+##下面这些欢迎有志之士参照如上例子来帮忙pr补全(源码里有注释可以cv的那种)
 
 ### and
 
