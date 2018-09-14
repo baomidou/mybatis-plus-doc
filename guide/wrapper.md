@@ -22,7 +22,7 @@ allEq(Map<R, V> params) //再次省略null2IsNull,默认true
 > 全部 = (或 is null)  
 > column1 = #{value} and column2 = #{value} and column3 is null ...
 >* params : Map;key为数据库字段名,value为字段值, !!!注意!!! 如果此参为空,则不加入sql
->* null2IsNull : 为true则在map的value为null时调用 [isNull](##isNull) 方法,为false时则忽略value为null的(默认为`true`)
+>* null2IsNull : 为true则在map的value为null时调用 [isNull](#isNull) 方法,为false时则忽略value为null的(默认为`true`)
 * 例1: `allEq({id:1,name:"老王",age:null})`->`id = 1 and name = '老王' and age is null`
 * 例2: `allEq({id:1,name:"老王",age:null}, false)`->`id = 1 and name = '老王'`
 
