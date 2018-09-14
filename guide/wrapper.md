@@ -85,7 +85,7 @@ sidebarDepth: 3
 > column like #{val}
 * 例: `likeRight("name", "王")`->`name like '王%'`
 
-##下面这些欢迎有志之士参照如上例子来帮忙pr补全(源码里有注释可以cv的那种)
+## 下面这些欢迎有志之士参照如上例子来帮忙pr补全(源码里有注释可以cv的那种)
 
 ### and
 
