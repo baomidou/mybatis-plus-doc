@@ -4,9 +4,9 @@ sidebarDepth: 3
 
 # 条件构造器
 1. 以下出现的第一个入参`boolean condition`表示该条件**是否**加入最后生成的sql中
-2. 以下方法出现在入参出现的`R`为泛型,在普通wrapper中是`String`,在LambdaWrapper中是**函数**(例:`Entity::getId`,`Entity`为实体类,`getId`为字段`id`的**getMethod**)
+2. 以下方法在入参中出现的`R`为泛型,在普通wrapper中是`String`,在LambdaWrapper中是**函数**(例:`Entity::getId`,`Entity`为实体类,`getId`为字段`id`的**getMethod**)
 3. 以下方法入参中的`R column`均表示数据库字段,当`R`为`String`时则为数据库字段名(**字段名是数据库关键字的自己用转义符包裹!**)!而不是实体类数据字段名!!!
-4. 以下举例均为使用普通wrapper,并调用的同方法名最少入参的方法,入参为`map`和`list`的均以`json`形式表现!
+4. 以下举例均为使用普通wrapper,入参为`map`和`list`的均以`json`形式表现!
 5. 有任何疑问就点开源码看!看不懂**函数**的[点击我](https://www.jianshu.com/p/613a6118e2e0)学习新知识!
 
 ## AbstractWrapper
