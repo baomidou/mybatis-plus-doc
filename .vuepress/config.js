@@ -1,7 +1,7 @@
 module.exports = {
   port: "3000",
   dest: "docs",
-  ga: 'UA-85414008-1',
+  ga: "UA-85414008-1",
   base: "/",
   locales: {
     "/": {
@@ -20,6 +20,7 @@ module.exports = {
         label: "简体中文",
         selectText: "选择语言",
         editLinkText: "在 GitHub 上编辑此页",
+        lastUpdated: "上次更新",
         nav: [
           {
             text: "指南",
