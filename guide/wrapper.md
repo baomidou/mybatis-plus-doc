@@ -190,8 +190,8 @@ column like #{val}
 ### setSql
 
 ## UpdateWrapper
-> 继承自 AbstractWrapper ,自身的内部属性 entity 也用于生成 where 条件
-> 及 LambdaUpdateWrapper, LambdaUpdateWrapper 不能 new 出来,只能通过 new UpdateWrapper().lambda() 方法获取!
+> 继承自 AbstractWrapper ,自身的内部属性 entity 也用于生成 where 条件  
+>> 及 LambdaUpdateWrapper, LambdaUpdateWrapper 不能 new 出来,只能通过 new UpdateWrapper().lambda() 方法获取!
 
 ### select
 
