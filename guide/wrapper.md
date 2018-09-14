@@ -17,7 +17,7 @@ sidebarDepth: 3
 ```
 allEq(boolean condition, Map<R, V> params, boolean null2IsNull)
 allEq(Map<R, V> params, boolean null2IsNull) //省略condition,默认true
-allEq(Map<R, V> params) //省略condition,默认true;省略null2IsNull,默认true
+allEq(Map<R, V> params) //再次省略null2IsNull,默认true
 ```
 > 全部 = (或 is null)  
 > column1 = #{value} and column2 = #{value} and column3 is null ...
@@ -29,7 +29,7 @@ allEq(Map<R, V> params) //省略condition,默认true;省略null2IsNull,默认tru
 ```
 allEq(boolean condition, BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull) 
 allEq(BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull) //省略condition,默认true
-allEq(BiPredicate<R, V> filter, Map<R, V> params) //省略condition,默认true;省略null2IsNull,默认true
+allEq(BiPredicate<R, V> filter, Map<R, V> params) //再次省略null2IsNull,默认true
 ```
 > column1 = #{value} and column2 = #{value} and column3 is null ...
 >* filter : 过滤函数,是否允许字段传入比对条件中
