@@ -6,7 +6,7 @@
 
 
 ```xml
-// spring xml 方式
+<!-- spring xml 方式 -->
 <plugins>
     <plugin interceptor="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
         <property name="sqlParser" ref="自定义解析类、可以没有" />
