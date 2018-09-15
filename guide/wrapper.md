@@ -3,23 +3,26 @@ sidebarDepth: 3
 ---
 
 # 条件构造器
-::: tip
-1. 以下出现的第一个入参`boolean condition`表示该条件**是否**加入最后生成的sql中
-2. 以下方法在入参中出现的`R`为泛型,在普通wrapper中是`String`,在LambdaWrapper中是**函数**(例:`Entity::getId`,`Entity`为实体类,`getId`为字段`id`的**getMethod**)
-3. 以下方法入参中的`R column`均表示数据库字段,当`R`为`String`时则为数据库字段名(**字段名是数据库关键字的自己用转义符包裹!**)!而不是实体类数据字段名!!!
-4. 以下举例均为使用普通wrapper,入参为`Map`和`List`的均以`json`形式表现!
-5. 有任何疑问就点开源码看,看不懂**函数**的[点击我学习新知识](https://www.jianshu.com/p/613a6118e2e0)
+::: tip 说明:
+- 以下出现的第一个入参`boolean condition`表示该条件**是否**加入最后生成的sql中
+- 以下代码块内的多个方法均为从上往下补全个别`boolean`类型的入参,默认为`true`
+- 以下方法在入参中出现的`R`为泛型,在普通wrapper中是`String`,在LambdaWrapper中是**函数**(例:`Entity::getId`,`Entity`为实体类,`getId`为字段`id`的**getMethod**)
+- 以下方法入参中的`R column`均表示数据库字段,当`R`为`String`时则为数据库字段名(**字段名是数据库关键字的自己用转义符包裹!**)!而不是实体类数据字段名!!!
+- 以下举例均为使用普通wrapper,入参为`Map`和`List`的均以`json`形式表现!
+- 有任何疑问就点开源码看,看不懂**函数**的[点击我学习新知识](https://www.jianshu.com/p/613a6118e2e0)
 :::
 
 ## AbstractWrapper
-> 用于生成 sql 的 where 条件
->> QueryWrapper(LambdaQueryWrapper) 和 UpdateWrapper(LambdaUpdateWrapper) 的父类  
+::: tip 说明:
+QueryWrapper(LambdaQueryWrapper) 和 UpdateWrapper(LambdaUpdateWrapper) 的父类 
+用于生成 sql 的 where 条件, entity 属性也用于生成 sql 的 where 条件
+:::
 
 ### allEq
 ```
+allEq(Map<R, V> params)
+allEq(Map<R, V> params, boolean null2IsNull)
 allEq(boolean condition, Map<R, V> params, boolean null2IsNull)
-allEq(Map<R, V> params, boolean null2IsNull) //省略condition,默认true
-allEq(Map<R, V> params) //再次省略null2IsNull,默认true
 ```
 > 全部 = (或 is null)  
 > column1 = #{value} and column2 = #{value} and column3 is null ...
@@ -29,9 +32,9 @@ allEq(Map<R, V> params) //再次省略null2IsNull,默认true
 * 例2: `allEq({id:1,name:"老王",age:null}, false)`->`id = 1 and name = '老王'`
 
 ```
+allEq(BiPredicate<R, V> filter, Map<R, V> params)
+allEq(BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull)
 allEq(boolean condition, BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull) 
-allEq(BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull) //省略condition,默认true
-allEq(BiPredicate<R, V> filter, Map<R, V> params) //再次省略null2IsNull,默认true
 ```
 > column1 = #{value} and column2 = #{value} and column3 is null ...
 >* filter : 过滤函数,是否允许字段传入比对条件中
@@ -41,8 +44,8 @@ allEq(BiPredicate<R, V> filter, Map<R, V> params) //再次省略null2IsNull,默�
 
 ### eq
 ```
+eq(R column, Object val)
 eq(boolean condition, R column, Object val)
-eq(R column, Object val) //省略condition,默认true
 ```
 > 等于 =  
 column = #{val}
@@ -50,8 +53,8 @@ column = #{val}
 
 ### ne
 ```
+ne(R column, Object val)
 ne(boolean condition, R column, Object val)
-ne(R column, Object val) //省略condition,默认true
 ```
 > 不等于 <>  
 column <> #{val}
@@ -59,8 +62,8 @@ column <> #{val}
 
 ### gt
 ```
+gt(R column, Object val)
 gt(boolean condition, R column, Object val)
-gt(R column, Object val) //省略condition,默认true
 ```
 > 大于 >  
 column > #{val}
@@ -68,8 +71,8 @@ column > #{val}
 
 ### ge
 ```
+ge(R column, Object val)
 ge(boolean condition, R column, Object val)
-ge(R column, Object val) //省略condition,默认true
 ```
 > 大于等于 >=  
 column >= #{val}
@@ -77,8 +80,8 @@ column >= #{val}
 
 ### lt
 ```
+lt(R column, Object val)
 lt(boolean condition, R column, Object val)
-lt(R column, Object val) //省略condition,默认true
 ```
 > 小于 <  
 column < #{val}
@@ -86,8 +89,8 @@ column < #{val}
 
 ### le
 ```
+le(R column, Object val)
 le(boolean condition, R column, Object val)
-le(R column, Object val) //省略condition,默认true
 ```
 > 小于等于 <=  
 column <= #{val}
@@ -95,8 +98,8 @@ column <= #{val}
 
 ### between
 ```
+between(R column, Object val1, Object val2)
 between(boolean condition, R column, Object val1, Object val2)
-between(R column, Object val1, Object val2) //省略condition,默认true
 ```
 > BETWEEN 值1 AND 值2  
 column between #{val1} and #{val2} 
@@ -104,8 +107,8 @@ column between #{val1} and #{val2}
 
 ### notBetween
 ```
+notBetween(R column, Object val1, Object val2)
 notBetween(boolean condition, R column, Object val1, Object val2)
-notBetween(R column, Object val1, Object val2) //省略condition,默认true
 ```
 > NOT BETWEEN 值1 AND 值2  
 column not between #{val1} and #{val2} 
@@ -113,8 +116,8 @@ column not between #{val1} and #{val2}
 
 ### like
 ```
+like(R column, Object val)
 like(boolean condition, R column, Object val)
-like(R column, Object val) //省略condition,默认true
 ```
 > LIKE '%值%'  
 column like #{val}
@@ -122,8 +125,8 @@ column like #{val}
 
 ### notLike
 ```
+notLike(R column, Object val)
 notLike(boolean condition, R column, Object val)
-notLike(R column, Object val) //省略condition,默认true
 ```
 > NOT LIKE '%值%'  
 column not like #{val}
@@ -131,8 +134,8 @@ column not like #{val}
 
 ### likeLeft
 ```
+likeLeft(R column, Object val)
 likeLeft(boolean condition, R column, Object val)
-likeLeft(R column, Object val) //省略condition,默认true
 ```
 > LIKE '%值'  
 column like #{val}
@@ -140,8 +143,8 @@ column like #{val}
 
 ### likeRight
 ```
+likeRight(R column, Object val)
 likeRight(boolean condition, R column, Object val)
-likeRight(R column, Object val) //省略condition,默认true
 ```
 > LIKE '值%'  
 column like #{val}
