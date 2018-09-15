@@ -374,7 +374,8 @@ wrapper.last("limit 1");
 
 - 自动填充的实现方式是填充到入参的`entity`内,由于`baseMapper`提供的删除接口入参不是`entity`所以逻辑删除无效
 - 如果你想要使用自动填充有效,你需要配合[Sql注入器](/guide/sql-injector.md)  
-并使用我们提供的`com.baomidou.mybatisplus.extension.injector.methods.LogicDeleteByIdWithFill`类
+并使用我们提供的`com.baomidou.mybatisplus.extension.injector.methods.LogicDeleteByIdWithFill`类  
+该类只能填充指定了自动填充的字段,其他字段无效
 
 - Java Config Bean 方式
   
