@@ -42,7 +42,8 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     }
 }
 ```
-:::warning 注意事项：
+:::
+warning 注意事项：
 - 字段必须声明`TableField`注解，属性`fill`选择对应策略，该申明告知 `Mybatis-Plus` 需要预留注入 `SQL` 字段
 - 填充处理器`MyMetaObjectHandler` 在 Spring Boot 中需要声明`@Component` 注入
 :::
