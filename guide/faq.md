@@ -368,3 +368,40 @@ wrapper.last("limit 1");
 - SQL 长度有限制海量数据量单条 SQL 无法执行，就算可执行也容易引起内存泄露 JDBC 连接超时等
 - 不同数据库对于单条 SQL 批量语法不一样不利于通用
 - 目前的解决方案：循环预处理批量提交，虽然性能比单 SQL 慢但是可以解决以上问题。
+
+
+## 逻辑删除下 自动填充 功能没有效果
+
+- 自动填充的实现方式是填充到入参的`entity`内,由于`baseMapper`提供的删除接口入参不是`entity`所以逻辑删除无效
+- 如果你想要使用自动填充有效,你需要配合[Sql注入器](/guide/sql-injector.md)  
+并使用我们提供的`com.baomidou.mybatisplus.extension.injector.methods.LogicDeleteByIdWithFill`类
+
+- Java Config Bean 方式
+  
+  1. 配置自定义的 SqlInjector
+    ``` java
+    @Bean
+    public LogicSqlInjector logicSqlInjector(){
+        return new LogicSqlInjector() {
+            /**
+             * 注入自定义全局方法
+             */
+            @Override
+            public List<AbstractMethod> getMethodList() {
+                List<AbstractMethod> methodList = super.getMethodList();
+                methodList.add(new LogicDeleteByIdWithFill());
+                return methodList;
+            }
+        };
+    }
+    ```
+  2. 配置自己的全局 baseMapper 并使用
+    ```java
+    public interface MyBaseMapper<T> extends BaseMapper<T> {
+    
+        /**
+         * 自定义全局方法
+         */
+        int deleteByIdWithFill(T entity);
+    }
+    ```
