@@ -330,15 +330,52 @@ nested(boolean condition, Function<This, This> func)
 :::
 
 ### select
+```java{2}
+select(String... sqlSelect)
+select(Predicate<TableFieldInfo> predicate)
+```
+- 设置查询字段
+::: tip 说明:
+以上方法为2个方法.  
+第二个方法为:过滤查询字段(主键除外),调用前需要`wrapper`内的`entity`属性有值!
+`3.0.3`开始,使用第二个方法优先级最高,同一方法重复调用只有最后一次有效!  
+两个方法都调用以第二个方法为准!  
+预计`3.0.8`及之后,两个方法重复调用只有最后一次有效!
+:::
+- 例: `select("id", "name", "age")`
+- 例: `select("id", "name", "age")`
 
 ### excludeColumns <Badge text="@Deprecated" type="error"/>
+- 排除查询字段
+::: warning 
+调用前同样需要`wrapper`内的`entity`属性有值!  
+从`3.0.3`版本开始打上了`@Deprecated`标记,预计在`3.0.8`版本上移除此方法,请谨慎使用!  
+推荐使用[select](#select)方法
+:::
 
 ## UpdateWrapper
 ::: tip 说明:
-继承自 AbstractWrapper ,自身的内部属性 entity 也用于生成 where 条件  
-及 LambdaUpdateWrapper, LambdaUpdateWrapper 不能 new 出来,只能通过 new UpdateWrapper().lambda() 方法获取!
+继承自 `AbstractWrapper` ,自身的内部属性 `entity` 也用于生成 where 条件  
+及 `LambdaUpdateWrapper`, `LambdaUpdateWrapper` 不能 new 出来,只能通过 `new UpdateWrapper().lambda()` 方法获取!
 :::
 
 ### set
-
+```java{2}
+set(String column, Object val)
+set(boolean condition, String column, Object val)
+```
+- SQL SET 字段
+- 例: `set("name", "老李头")`
+- 例: `set("name", "")`--->数据库字段值变为**空字符串**
+- 例: `set("name", null)`--->数据库字段值变为`null`
 ### setSql
+``` java
+setSql(String sql)
+```
+- 设置 SET 部分 SQL
+- 例: `set("name = '老李头')`
+
+### lambda
+- 获取 `LambdaWrapper`  
+在`QueryWrapper`中是获取`LambdaQueryWrapper`  
+在`UpdateWrapper`中是获取`LambdaUpdateWrapper`
