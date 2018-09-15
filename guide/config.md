@@ -266,6 +266,19 @@ MyBatis-Plus 全局策略配置，具体请查看 [全局策略配置](#全局�
 
 本部分的配置大都为 MyBatis 原生支持的配置，这意味着您可以通过 MyBatis XML 配置文件的形式进行配置。
 
+### mapUnderscoreToCamelCase
+
+- 类型：`boolean`
+- 默认值：`true`
+
+是否开启自动驼峰命名规则（camel case）映射，即从经典数据库列名 A_COLUMN 到经典 Java 属性名 aColumn 的类似映射。
+
+::: tip 注意
+此属性在 mybatis 中原默认值为 false
+在 mybatis-plus 中,此属性也将用于生成最终的 sql 的 select body
+符合规则无需使用 `@TableField` 注解指定数据库字段名 
+:::
+
 ### aggressiveLazyLoading
 
 - 类型：`boolean`
@@ -601,7 +614,41 @@ Spring MVC：
 
 ### columnLike
 
-### columnUnderline
+- 类型：`boolean`
+- 默认值：`false`
+
+根据 entity 自动生成的 where 条件中,String 类型字段 是否使用 LIKE
+
+Spring Boot：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      column-like: false
+```
+
+Spring MVC：
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+    <property name="globalConfig">
+        <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+            <property name="dbConfig">
+                <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig.DbConfig">
+                    <property name="columnLike" value="false"/>
+                </bean>
+            </property>
+        </bean>
+    </property>
+</bean>
+```
+
+### ~~columnUnderline~~
+
+::: danger 注意
+此属性存在于 2.x 版本上,现同 [mapUnderscoreToCamelCase](#mapunderscoretocamelcase) 融合
+:::
 
 ### dbType
 
