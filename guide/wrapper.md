@@ -14,7 +14,7 @@ sidebarDepth: 3
 
 ## AbstractWrapper
 ::: tip 说明:
-QueryWrapper(LambdaQueryWrapper) 和 UpdateWrapper(LambdaUpdateWrapper) 的父类 
+QueryWrapper(LambdaQueryWrapper) 和 UpdateWrapper(LambdaUpdateWrapper) 的父类  
 用于生成 sql 的 where 条件, entity 属性也用于生成 sql 的 where 条件
 :::
 
