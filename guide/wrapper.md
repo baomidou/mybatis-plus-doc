@@ -348,7 +348,7 @@ select(Predicate<TableFieldInfo> predicate)
 ### excludeColumns <Badge text="@Deprecated" type="error"/>
 - 排除查询字段
 ::: warning 
-调用前同样需要`wrapper`内的`entity`属性有值!  
+调用前同样需要`wrapper`内的`entity`属性有值!   
 从`3.0.3`版本开始打上了`@Deprecated`标记,预计在`3.0.8`版本上移除此方法,请谨慎使用!  
 推荐使用[select](#select)方法
 :::
