@@ -45,9 +45,9 @@ public interface UserMapper{//可以继承或者不继承BaseMapper
      * 注意!!: 如果入参是有多个,需要加注解指定参数名才能在xml中取值
      * </p>
      *
-     * @param page 翻页对象，可以作为 xml 参数直接使用，传递参数 Page 即自动分页,必须放在第一位
+     * @param page 分页对象,xml中可以从里面进行取值,传递参数 Page 即自动分页,必须放在第一位(你可以继承Page实现自己的分页对象)
      * @param state 状态
-     * @return
+     * @return 分页对象
      */
     IPage<User> selectPageVo(Page page, @Param("state") Integer state);
 }
@@ -61,15 +61,14 @@ public interface UserMapper{//可以继承或者不继承BaseMapper
 </select>
 ```
 
-- UserServiceImpl.java 调用翻页方法，需要 page.setRecords 回传给页面
+- UserServiceImpl.java 调用分页方法
 
-```java
+``` java
 public IPage<User> selectUserPage(Page<User> page, Integer state) {
     // 不进行 count sql 优化，解决 MP 无法自动优化 SQL 问题，这时候你需要自己查询 count 部分
     // page.setOptimizeCountSql(false);
-    // 当 total 为 null 或者大于 0 分页插件不在查询总数
-    // page.setTotal(0);
-    // 注意！！ 分页 total 是经过插件自动 回写 到传入 page 对象
+    // 当 total 为非 0 时(默认为 0),分页插件不会进行 count 查询
+    // 要点!! 分页返回的对象与传入的对象是同一个
     return userMapper.selectPageVo(page, state));
 }
 ```
