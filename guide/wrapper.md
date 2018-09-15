@@ -33,7 +33,7 @@ null2IsNull : 为true则在map的value为null时调用 [isNull](#isnull) 方法,
 * 例1: `allEq({id:1,name:"老王",age:null})`->`id = 1 and name = '老王' and age is null`
 * 例2: `allEq({id:1,name:"老王",age:null}, false)`->`id = 1 and name = '老王'`
 
-```
+```java
 allEq(BiPredicate<R, V> filter, Map<R, V> params)
 allEq(BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull)
 allEq(boolean condition, BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull) 
