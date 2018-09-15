@@ -4,7 +4,10 @@
 
 示例工程：
 
+👉 [mybatis-plus-sample-tenant](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-tenant)
+
 👉 [mybatisplus-spring-boot](https://git.oschina.net/baomidou/mybatisplus-spring-boot)
+
 
 ```
 @Bean
