@@ -652,13 +652,134 @@ Spring MVC：
 
 ### dbType
 
+- 类型：`DbType`
+- 默认值：`OTHER`
+
+数据库类型,默认值为`未知的数据库类型`
+如果值为`OTHER`,启动时会根据数据库连接url获取数据库类型;如果不是`OTHER`则不会自动获取数据库类型
+
+Spring Boot：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      db-type: mysql
+```
+
+Spring MVC：
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+    <property name="globalConfig">
+        <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+            <property name="dbConfig">
+                <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig.DbConfig">
+                    <property name="dbType" value="mysql"/>
+                </bean>
+            </property>
+        </bean>
+    </property>
+</bean>
+```
+
 ### fieldStrategy
 
-### IdType
+### idType
+
+- 类型：`IdType`
+- 默认值：`ID_WORKER`
+
+全局默认主键类型
+
+Spring Boot：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: id_worker
+```
+
+Spring MVC：
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+    <property name="globalConfig">
+        <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+            <property name="dbConfig">
+                <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig.DbConfig">
+                    <property name="idType" value="ID_WORKER"/>
+                </bean>
+            </property>
+        </bean>
+    </property>
+</bean>
+```
 
 ### logicDeleteValue
 
+- 类型：`String`
+- 默认值：`1`
+
+逻辑已删除值,([逻辑删除](/guide/logic-delete.md)下有效)
+
+Spring Boot：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-value: 1
+```
+
+Spring MVC：
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+    <property name="globalConfig">
+        <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+            <property name="dbConfig">
+                <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig.DbConfig">
+                    <property name="logicDeleteValue" value="1"/>
+                </bean>
+            </property>
+        </bean>
+    </property>
+</bean>
+```
+
 ### logicNotDeleteValue
+
+- 类型：`String`
+- 默认值：`0`
+
+逻辑未删除值,([逻辑删除](/guide/logic-delete.md)下有效)
+
+Spring Boot：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-not-delete-value: 0
+```
+
+Spring MVC：
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+    <property name="globalConfig">
+        <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+            <property name="dbConfig">
+                <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig.DbConfig">
+                    <property name="logicNotDeleteValue" value="0"/>
+                </bean>
+            </property>
+        </bean>
+    </property>
+</bean>
+```
 
 ### tablePrefix
 
