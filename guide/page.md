@@ -42,15 +42,14 @@ public interface UserMapper{//可以继承或者不继承BaseMapper
     /**
      * <p>
      * 查询 : 根据state状态查询用户列表，分页显示
+     * 注意!!: 如果入参是有多个,需要加注解指定参数名才能在xml中取值
      * </p>
      *
-     * @param page
-     *            翻页对象，可以作为 xml 参数直接使用，传递参数 Page 即自动分页【 必须存但无顺序 】
-     * @param state
-     *            状态
+     * @param page 翻页对象，可以作为 xml 参数直接使用，传递参数 Page 即自动分页,必须放在第一位
+     * @param state 状态
      * @return
      */
-    IPage<User> selectPageVo(Page page, Integer state);
+    IPage<User> selectPageVo(Page page, @Param("state") Integer state);
 }
 ```
 
