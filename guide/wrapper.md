@@ -50,7 +50,10 @@ params 与 null2IsNull : 同上
 eq(R column, Object val)
 eq(boolean condition, R column, Object val)
 ```
-- 等于 =  `column = #{val}`
+- 等于 =
+```sql
+column = value
+```
 - 例: `eq("name", "老王")`->`name = '老王'`
 
 ### ne
@@ -58,7 +61,10 @@ eq(boolean condition, R column, Object val)
 ne(R column, Object val)
 ne(boolean condition, R column, Object val)
 ```
-不等于 <>  `column <> #{val}`
+- 不等于 <>  
+```sql
+column <> value
+```
 - 例: `ne("name", "老王")`->`name <> '老王'`
 
 ### gt
