@@ -324,16 +324,20 @@ nested(boolean condition, Function<This, This> func)
 - 例: `nested(i -> i.eq("name", "李白").ne("status", "活着"))`--->`(name = '李白' and status <> '活着')`
 
 ## QueryWrapper
-> 继承自 AbstractWrapper ,自身的内部属性 entity 也用于生成 where 条件
->> 及 LambdaQueryWrapper, LambdaQueryWrapper 不能 new 出来,只能通过 new QueryWrapper().lambda() 方法获取!
+::: tip 说明:
+继承自 AbstractWrapper ,自身的内部属性 entity 也用于生成 where 条件  
+及 LambdaQueryWrapper, LambdaQueryWrapper 不能 new 出来,只能通过 new QueryWrapper().lambda() 方法获取!
+:::
 
 ### select
 
 ### excludeColumns <Badge text="@Deprecated" type="error"/>
 
 ## UpdateWrapper
-> 继承自 AbstractWrapper ,自身的内部属性 entity 也用于生成 where 条件  
->> 及 LambdaUpdateWrapper, LambdaUpdateWrapper 不能 new 出来,只能通过 new UpdateWrapper().lambda() 方法获取!
+::: tip 说明:
+继承自 AbstractWrapper ,自身的内部属性 entity 也用于生成 where 条件  
+及 LambdaUpdateWrapper, LambdaUpdateWrapper 不能 new 出来,只能通过 new UpdateWrapper().lambda() 方法获取!
+:::
 
 ### set
 
