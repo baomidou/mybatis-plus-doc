@@ -24,14 +24,13 @@ allEq(Map<R, V> params)
 allEq(Map<R, V> params, boolean null2IsNull)
 allEq(boolean condition, Map<R, V> params, boolean null2IsNull)
 ```
-- 全部 = (或个别 is null)  
-- `column1 = #{value} and column2 = #{value} and column3 is null ...`
+- 全部 =(或个别`is null`)  `column1 = #{value} and column2 = #{value} and column3 is null ...`
 ::: tip 个别参数说明:
 params : Map;key为数据库字段名,value为字段值, !!!注意!!! 如果此参为空,则不加入sql  
 null2IsNull : 为true则在map的value为null时调用 [isNull](#isnull) 方法,为false时则忽略value为null的(默认为`true`)
 :::
-* 例1: `allEq({id:1,name:"老王",age:null})`->`id = 1 and name = '老王' and age is null`
-* 例2: `allEq({id:1,name:"老王",age:null}, false)`->`id = 1 and name = '老王'`
+- 例1: `allEq({id:1,name:"老王",age:null})`->`id = 1 and name = '老王' and age is null`
+- 例2: `allEq({id:1,name:"老王",age:null}, false)`->`id = 1 and name = '老王'`
 
 ``` java{3}
 allEq(BiPredicate<R, V> filter, Map<R, V> params)
@@ -43,44 +42,40 @@ allEq(boolean condition, BiPredicate<R, V> filter, Map<R, V> params, boolean nul
 filter : 过滤函数,是否允许字段传入比对条件中  
 params 与 null2IsNull : 同上
 :::
-* 例1: `allEq((k,v) -> k.indexOf("a") > 0,{id:1,name:"老王",age:null})`->`name = '老王' and age is null`
-* 例2: `allEq((k,v) -> k.indexOf("a") > 0,{id:1,name:"老王",age:null}, false)`->`name = '老王'`
+- 例1: `allEq((k,v) -> k.indexOf("a") > 0,{id:1,name:"老王",age:null})`->`name = '老王' and age is null`
+- 例2: `allEq((k,v) -> k.indexOf("a") > 0,{id:1,name:"老王",age:null}, false)`->`name = '老王'`
 
 ### eq
 ``` java{2}
 eq(R column, Object val)
 eq(boolean condition, R column, Object val)
 ```
-- 等于 =  
-- column = #{val}
-* 例: `eq("name", "老王")`->`name = '老王'`
+- 等于 =  `column = #{val}`
+- 例: `eq("name", "老王")`->`name = '老王'`
 
 ### ne
 ``` java{2}
 ne(R column, Object val)
 ne(boolean condition, R column, Object val)
 ```
-> 不等于 <>  
-column <> #{val}
-* 例: `ne("name", "老王")`->`name <> '老王'`
+不等于 <>  `column <> #{val}`
+- 例: `ne("name", "老王")`->`name <> '老王'`
 
 ### gt
 ``` java{2}
 gt(R column, Object val)
 gt(boolean condition, R column, Object val)
 ```
-> 大于 >  
-column > #{val}
-* 例: `gt("age", 18)`->`age > 18`
+- 大于 >  `column > #{val}`
+- 例: `gt("age", 18)`->`age > 18`
 
 ### ge
 ``` java{2}
 ge(R column, Object val)
 ge(boolean condition, R column, Object val)
 ```
-> 大于等于 >=  
-column >= #{val}
-* 例: `ge("age", 18)`->`age >= 18`
+- 大于等于 >=  `column >= #{val}`
+- 例: `ge("age", 18)`->`age >= 18`
 
 ### lt
 ``` java{2}
