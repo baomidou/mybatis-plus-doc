@@ -373,11 +373,13 @@ wrapper.last("limit 1");
 ## 逻辑删除下 自动填充 功能没有效果
 
 - 自动填充的实现方式是填充到入参的`entity`内,由于`baseMapper`提供的删除接口入参不是`entity`所以逻辑删除无效
-- 如果你想要使用自动填充有效,你需要配合[Sql注入器](/guide/sql-injector.md)  
+- 如果你想要使用自动填充有效:
+  - 方式一: 使用update方法:`UpdateWrapper.set("logicDeleteColumn","deleteValue")`
+  - 方式二: 配合[Sql注入器](/guide/sql-injector.md)  
 并使用我们提供的`com.baomidou.mybatisplus.extension.injector.methods.LogicDeleteByIdWithFill`类  
-该类只能填充指定了自动填充的字段,其他字段无效
+注意该类只能填充指定了自动填充的字段,其他字段无效
 
-- Java Config Bean 方式
+- 方式2下: Java Config Bean 配置
   
   1. 配置自定义的 SqlInjector
     ``` java
