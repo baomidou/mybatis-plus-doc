@@ -19,7 +19,7 @@ QueryWrapper(LambdaQueryWrapper) 和 UpdateWrapper(LambdaUpdateWrapper) 的父�
 :::
 
 ### allEq
-```
+``` java{3}
 allEq(Map<R, V> params)
 allEq(Map<R, V> params, boolean null2IsNull)
 allEq(boolean condition, Map<R, V> params, boolean null2IsNull)
@@ -33,7 +33,7 @@ null2IsNull : 为true则在map的value为null时调用 [isNull](#isnull) 方法,
 * 例1: `allEq({id:1,name:"老王",age:null})`->`id = 1 and name = '老王' and age is null`
 * 例2: `allEq({id:1,name:"老王",age:null}, false)`->`id = 1 and name = '老王'`
 
-```java
+``` java{3}
 allEq(BiPredicate<R, V> filter, Map<R, V> params)
 allEq(BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull)
 allEq(boolean condition, BiPredicate<R, V> filter, Map<R, V> params, boolean null2IsNull) 
@@ -47,7 +47,7 @@ params 与 null2IsNull : 同上
 * 例2: `allEq((k,v) -> k.indexOf("a") > 0,{id:1,name:"老王",age:null}, false)`->`name = '老王'`
 
 ### eq
-```
+``` java{2}
 eq(R column, Object val)
 eq(boolean condition, R column, Object val)
 ```
@@ -56,7 +56,7 @@ eq(boolean condition, R column, Object val)
 * 例: `eq("name", "老王")`->`name = '老王'`
 
 ### ne
-```
+``` java{2}
 ne(R column, Object val)
 ne(boolean condition, R column, Object val)
 ```
@@ -65,7 +65,7 @@ column <> #{val}
 * 例: `ne("name", "老王")`->`name <> '老王'`
 
 ### gt
-```
+``` java{2}
 gt(R column, Object val)
 gt(boolean condition, R column, Object val)
 ```
@@ -74,7 +74,7 @@ column > #{val}
 * 例: `gt("age", 18)`->`age > 18`
 
 ### ge
-```
+``` java{2}
 ge(R column, Object val)
 ge(boolean condition, R column, Object val)
 ```
@@ -83,7 +83,7 @@ column >= #{val}
 * 例: `ge("age", 18)`->`age >= 18`
 
 ### lt
-```
+``` java{2}
 lt(R column, Object val)
 lt(boolean condition, R column, Object val)
 ```
@@ -92,7 +92,7 @@ column < #{val}
 * 例: `lt("age", 18)`->`age < 18`
 
 ### le
-```
+``` java{2}
 le(R column, Object val)
 le(boolean condition, R column, Object val)
 ```
@@ -101,7 +101,7 @@ column <= #{val}
 * 例: `le("age", 18)`->`age <= 18`
 
 ### between
-```
+``` java{2}
 between(R column, Object val1, Object val2)
 between(boolean condition, R column, Object val1, Object val2)
 ```
@@ -110,7 +110,7 @@ column between #{val1} and #{val2}
 * 例: `between("age", 18, 30)`->`age between 18 and 30`
 
 ### notBetween
-```
+``` java{2}
 notBetween(R column, Object val1, Object val2)
 notBetween(boolean condition, R column, Object val1, Object val2)
 ```
@@ -119,7 +119,7 @@ column not between #{val1} and #{val2}
 * 例: `notBetween("age", 18, 30)`->`age not between 18 and 30`
 
 ### like
-```
+``` java{2}
 like(R column, Object val)
 like(boolean condition, R column, Object val)
 ```
@@ -128,7 +128,7 @@ column like #{val}
 * 例: `like("name", "王")`->`name like '%王%'`
 
 ### notLike
-```
+``` java{2}
 notLike(R column, Object val)
 notLike(boolean condition, R column, Object val)
 ```
@@ -137,7 +137,7 @@ column not like #{val}
 * 例: `notLike("name", "王")`->`name not like '%王%'`
 
 ### likeLeft
-```
+``` java{2}
 likeLeft(R column, Object val)
 likeLeft(boolean condition, R column, Object val)
 ```
@@ -146,7 +146,7 @@ column like #{val}
 * 例: `likeLeft("name", "王")`->`name like '%王'`
 
 ### likeRight
-```
+``` java{2}
 likeRight(R column, Object val)
 likeRight(boolean condition, R column, Object val)
 ```
