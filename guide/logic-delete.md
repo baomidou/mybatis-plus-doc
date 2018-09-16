@@ -2,7 +2,7 @@
 
 SpringBoot 配置方式：
 
-- 1.application.yml 加入配置(如果你的默认值和mp默认的一样,该配置可无):
+- application.yml 加入配置(如果你的默认值和mp默认的一样,该配置可无):
 
   ```yaml
   mybatis-plus:
@@ -12,7 +12,7 @@ SpringBoot 配置方式：
         logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
   ```
 
-- 2.注册 Bean：
+- 注册 Bean：
 
   ```java
   import com.baomidou.mybatisplus.core.injector.ISqlInjector;
@@ -30,7 +30,7 @@ SpringBoot 配置方式：
   }
   ```
 
-- 3.实体类字段上加上`@TableLogic`注解
+- 实体类字段上加上`@TableLogic`注解
 
   ``` java
   @TableLogic
