@@ -2,7 +2,7 @@
 
 SpringBoot 配置方式：
 
-- application.yml 加入配置:
+- application.yml 加入配置(可无):
 
   ```yaml
   mybatis-plus:
