@@ -32,13 +32,13 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         LOGGER.info("start insert fill ....");
-        metaObject.setValue("operator","Jerry");
+        this.setFieldValByName("operator", "Jerry", metaObject);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         LOGGER.info("start update fill ....");
-        this.setFieldValByName("operator","Tom",metaObject);
+        this.setFieldValByName("operator", "Tom", metaObject);
     }
 }
 ```
