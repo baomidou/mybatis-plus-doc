@@ -23,19 +23,14 @@ spring boot:
 ``` java
 @Bean
 public OptimisticLockerInterceptor optimisticLockerInterceptor() {
-return new OptimisticLockerInterceptor();
+    return new OptimisticLockerInterceptor();
 }
 ```
 
 ## 2.注解实体字段 `@Version` 必须要!
 ``` java
-public class User {
-
-    @Version
-    private Integer version;
-
-    ...
-}
+@Version
+private Integer version;
 ```
 
 ::: tip 特别说明:
@@ -71,7 +66,7 @@ if(userService.updateById(u)){
 
 示例SQL原理
 
-```text
-update tbl_user set name='update',version=3 where id=100 and version=2;
+```sql
+update tbl_user set name = 'update',version = 3 where id = 100 and version = 2
 ```
 
