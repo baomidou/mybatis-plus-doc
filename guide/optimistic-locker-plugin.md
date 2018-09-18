@@ -9,26 +9,26 @@
 乐观锁实现方式：
 * 取出记录时，获取当前version
 * 更新时，带上这个version
-* 执行更新时， set version = yourVersion+1 where version = yourVersion
+* 执行更新时， set version = newVersion where version = oldVersion
 * 如果version不对，就更新失败
 
 **乐观锁配置需要2步 记得两步**
 
 ## 1.插件配置
-spring xml
+spring xml:
 ```xml
 <bean class="com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor"/>
 ```
-spring boot
-```java
-    @Bean
-    public OptimisticLockerInterceptor optimisticLockerInterceptor() {
-        return new OptimisticLockerInterceptor();
-    }
+spring boot:
+``` java
+@Bean
+public OptimisticLockerInterceptor optimisticLockerInterceptor() {
+return new OptimisticLockerInterceptor();
+}
 ```
 
-## 2.注解实体字段 `@Version` 必须要！
-```java
+## 2.注解实体字段 `@Version` 必须要!
+``` java
 public class User {
 
     @Version
@@ -38,14 +38,22 @@ public class User {
 }
 ```
 
-特别说明： **仅支持int,Integer,long,Long,Date,Timestamp,LocalDateTime**
+::: tip 特别说明:
+- **支持的数据类型只有:int,Integer,long,Long,Date,Timestamp,LocalDateTime**
+- 整数类型下 `newVersion = oldVersion + 1`
+- `newVersion` 会回写到 `entity` 中
+- 仅支持 `updateById(id)` 与 `update(entity, wrapper)` 方法
+- **在 `update(entity, wrapper)` 方法下, `wrapper` 不能复用!!!**
+:::
+ 
+
 
 
 ## 示例
 
 示例Java代码（参考[test case](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-optimistic-locker)代码）
 
-```java
+``` java
 int id = 100;
 int version = 2;
 
@@ -59,7 +67,6 @@ if(userService.updateById(u)){
 }else{
     System.out.println("Update failed due to modified by others");
 }
-
 ```
 
 示例SQL原理
