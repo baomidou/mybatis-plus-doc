@@ -250,6 +250,14 @@ IPage<Map<String, Object>> selectMapsPage(IPage<T> page, @Param(Constants.WRAPPE
 
 ### save
 ```java
+/**
+ * <p>
+ * 插入一条记录（选择字段，策略插入）
+ * </p>
+ *
+ * @param entity 实体对象
+ */
+boolean save(T entity);
 ```
 
 ### saveBatch
