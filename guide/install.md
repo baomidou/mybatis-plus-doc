@@ -50,3 +50,22 @@ compile group: 'com.baomidou', name: 'mybatis-plus', version: '3.0.3'
 ::: warning
 引入 `MyBatis-Plus` 之后请不要再次引入 `MyBatis` 以及 `MyBatis-Spring`，以避免因版本差异导致的问题。
 :::
+
+## 快照 SNAPSHOT 版本需要添加仓库
+
+- Maven
+```xml
+<repository>
+    <id>snapshots</id>
+    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+</repository>
+```
+
+
+- Gradle
+```xml
+repositories {
+    ...
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+```
