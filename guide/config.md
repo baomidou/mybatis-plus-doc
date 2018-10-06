@@ -322,7 +322,7 @@ Spring Boot：
 ```yaml
 mybatis-plus:
   configuration:
-    auto-mapping-unknown-column-behavior: none
+    auto-mapping-behavior: partial
 ```
 
 Spring MVC：
@@ -331,7 +331,7 @@ Spring MVC：
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
     <property name="configuration">
         <bean class="com.baomidou.mybatisplus.core.MybatisConfiguration">
-            <property name="autoMappingUnknownColumnBehavior" value="NONE"/>
+            <property name="autoMappingBehavior" value="PARTIAL"/>
         </bean>
     </property>
 </bean>
@@ -353,7 +353,7 @@ Spring Boot：
 ```yaml
 mybatis-plus:
   configuration:
-    auto-mapping-behavior: partial
+    auto-mapping-unknown-column-behavior: none
 ```
 
 Spring MVC：
@@ -362,7 +362,7 @@ Spring MVC：
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
     <property name="configuration">
         <bean class="com.baomidou.mybatisplus.core.MybatisConfiguration">
-            <property name="autoMappingBehavior" value="PARTIAL"/>
+            <property name="autoMappingUnknownColumnBehavior" value="NONE"/>
         </bean>
     </property>
 </bean>
