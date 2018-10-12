@@ -326,21 +326,20 @@ nested(boolean condition, Function<This, This> func)
 ## QueryWrapper
 ::: tip 说明:
 继承自 AbstractWrapper ,自身的内部属性 entity 也用于生成 where 条件  
-及 LambdaQueryWrapper, LambdaQueryWrapper 不能 new 出来,只能通过 new QueryWrapper().lambda() 方法获取!
+及 LambdaQueryWrapper, 可以通过 new QueryWrapper().lambda() 方法获取
 :::
 
 ### select
-```java{2}
+```java{3}
 select(String... sqlSelect)
 select(Predicate<TableFieldInfo> predicate)
+select(Class<T> entityClass, Predicate<TableFieldInfo> predicate)
 ```
 - 设置查询字段
 ::: tip 说明:
-以上方法为2个方法.  
-第二个方法为:过滤查询字段(主键除外),调用前需要`wrapper`内的`entity`属性有值!
-`3.0.3`开始,使用第二个方法优先级最高,同一方法重复调用只有最后一次有效!  
-两个方法都调用以第二个方法为准!  
-预计`3.0.8`及之后,两个方法重复调用只有最后一次有效!
+以上方分法为两类.  
+第二类方法为:过滤查询字段(主键除外),入参不包含 class 的调用前需要`wrapper`内的`entity`属性有值!
+这两类方法重复调用以最后一次为准  
 :::
 - 例: `select("id", "name", "age")`
 - 例: `select("id", "name", "age")`
@@ -348,9 +347,7 @@ select(Predicate<TableFieldInfo> predicate)
 ### excludeColumns <Badge text="@Deprecated" type="error"/>
 - 排除查询字段
 ::: warning 
-调用前同样需要`wrapper`内的`entity`属性有值!   
-从`3.0.3`版本开始打上了`@Deprecated`标记,预计在`3.0.5`版本上移除此方法,请谨慎使用!  
-推荐使用[select](#select)方法
+已从`3.0.5`版本上移除此方法!
 :::
 
 ## UpdateWrapper
