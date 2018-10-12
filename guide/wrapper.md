@@ -342,7 +342,7 @@ select(Class<T> entityClass, Predicate<TableFieldInfo> predicate)
 这两类方法重复调用以最后一次为准  
 :::
 - 例: `select("id", "name", "age")`
-- 例: `select("id", "name", "age")`
+- 例: `select(i -> i.getProperty().startsWith("test"))`
 
 ### excludeColumns <Badge text="@Deprecated" type="error"/>
 - 排除查询字段
