@@ -98,6 +98,37 @@ public class CodeGenerator {
 
 ![relationship](/img/generator.gif)
 
+## 添加依赖
+
+MP `3.0.3` 之后移除了自动模板引擎依赖，需要手动添加对应引擎的依赖坐标如下：
+
+```xml
+<!-- velocity 模板引擎, 默认 -->
+<dependency>
+    <groupId>org.apache.velocity</groupId>
+    <artifactId>velocity-engine-core</artifactId>
+    <version>最新版本</version>
+</dependency>
+
+<!-- freemarker 模板引擎 -->
+<dependency>
+    <groupId>org.freemarker</groupId>
+    <artifactId>freemarker</artifactId>
+    <version>最新版本</version>
+</dependency>
+
+```
+
+### 切换模板引擎
+
+```java
+// 切换为 freemarker 模板引擎
+mpg.setTemplateEngine(new FreemarkerTemplateEngine());
+```
+### 自定义模板引擎
+
+请继承类 com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine
+
 ## 基本配置
 
 ### dataSource
@@ -185,93 +216,129 @@ public class CodeGenerator {
 
 ## 数据库表配置
 
-### dbColumnUnderline
-
 ### isCapitalMode
+是否大写命名
 
 ### skipView
+是否跳过视图
 
 ### naming
+数据库表映射到实体的命名策略
 
 ### columnNaming
+数据库表字段映射到实体的命名策略, 未指定按照 naming 执行
 
 ### tablePrefix
+表前缀
 
 ### fieldPrefix
+字段前缀
 
 ### superEntityClass
+自定义继承的Entity类全称，带包名
 
 ### superEntityColumns
+自定义基础的Entity类，公共字段
 
 ### superMapperClass
+自定义继承的Mapper类全称，带包名
 
 ### superServiceClass
+自定义继承的Service类全称，带包名
 
 ### superServiceImplClass
+自定义继承的ServiceImpl类全称，带包名
 
 ### superControllerClass
+自定义继承的Controller类全称，带包名
 
 ### include
+需要包含的表名，允许正则表达式（与exclude二选一配置）
 
 ### exclude
+需要排除的表名，允许正则表达式
 
 ### entityColumnConstant
+【实体】是否生成字段常量（默认 false）
 
 ### entityBuilderModel
+【实体】是否为构建者模型（默认 false）
 
 ### entityLombokModel
+【实体】是否为lombok模型（默认 false）
 
 ### entityBooleanColumnRemoveIsPrefix
+Boolean类型字段是否移除is前缀（默认 false）
 
 ### restControllerStyle
+生成 `@RestController` 控制器
 
 ### controllerMappingHyphenStyle
+驼峰转连字符
 
 ### entityTableFieldAnnotationEnable
+是否生成实体时，生成字段注解
 
 ### versionFieldName
+乐观锁属性名称
 
 ### logicDeleteFieldName
+逻辑删除属性名称
 
 ### tableFillList
-
+表填充字段
 
 ## 包名配置
 
 ### parent
+父包名。如果为空，将下面子包名必须写全部， 否则就只需写子包名
 
 ### moduleName
+父包模块名
 
 ### entity
+Entity包名
 
 ### service
+Service包名
 
 ### serviceImpl
+Service Impl包名
 
 ### mapper
+Mapper包名
 
 ### xml
+Mapper XML包名
 
 ### controller
+Controller包名
 
 ### pathInfo
-
+路径配置信息
 
 ## 模板配置
 
 ### entity
+Java 实体类模板
 
 ### entityKt
+Kotin 实体类模板
 
 ### service
+Service 类模板
 
 ### serviceImpl
+Service impl 实现类模板
 
 ### mapper
+mapper 模板
 
 ### xml
+mapper xml 模板
 
 ### controller
+controller 控制器模板
 
 
 ## 全局策略 `globalConfig` 配置
@@ -322,7 +389,7 @@ public class CodeGenerator {
 
 ::: warning 注意事项:
 如下配置 `%s` 为占位符
-###
+:::
 
 ### entityName
 - 实体命名方式
