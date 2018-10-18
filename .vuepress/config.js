@@ -39,11 +39,15 @@ module.exports = {
             text: "生态",
             items: [
               {
-                text: "Lock4j",
+                text: "Kisso 单点登录",
+                link: "https://gitee.com/baomidou/kisso"
+              },
+              {
+                text: "Lock4j 分布式锁",
                 link: "https://gitee.com/baomidou/lock4j-spring-boot-starter"
               },
               {
-                text: "Dynamic Datasource",
+                text: "Dynamic Datasource 动态数据源",
                 link:
                   "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
               }
