@@ -9,7 +9,9 @@
 JDK7 以及下的请参考 MP2.0 版本，地址：[2.0文档](https://baomidou.gitee.io/mybatis-plus-doc/#/)
 :::
 
-## Spring Boot
+## Release
+
+### Spring Boot
 
 Maven：
 
@@ -27,7 +29,7 @@ Gradle：
 compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: '3.0.5'
 ```
 
-## Spring MVC
+### Spring MVC
 
 Maven:
 
@@ -51,9 +53,11 @@ compile group: 'com.baomidou', name: 'mybatis-plus', version: '3.0.5'
 引入 `MyBatis-Plus` 之后请不要再次引入 `MyBatis` 以及 `MyBatis-Spring`，以避免因版本差异导致的问题。
 :::
 
-## 快照 SNAPSHOT 版本需要添加仓库
+## Snapshot
 
-- Maven
+快照 SNAPSHOT 版本需要添加仓库，且版本号为快照版本。
+
+Maven：
 ```xml
 <repository>
     <id>snapshots</id>
@@ -62,10 +66,9 @@ compile group: 'com.baomidou', name: 'mybatis-plus', version: '3.0.5'
 ```
 
 
-- Gradle
-```xml
+Gradle：
+```groovy
 repositories {
-    ...
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 ```

@@ -51,7 +51,7 @@
 - [spring-shiro-training](https://git.oschina.net/wangzhixuan/spring-shiro-training)：简单实用的权限脚手架
 - [center](https://git.oschina.net/willenfoo/center)：系统管理中心系统
 - [skeleton](https://github.com/fengchangsheng/skeleton)：Springboot-Shiro 脚手架
-- [springboot_mybatisplus](https://git.oschina.net/z77z/springboot_mybatisplus)：Springboot-Shiro 美女图片爬虫
+- [springboot_mybatisplus](https://git.oschina.net/z77z/springboot_mybatisplus)：基于SpringBoot的美女图片爬虫系统
 - [guns](http://git.oschina.net/naan1993/guns)：guns 后台管理系统
 - [maple](https://git.oschina.net/blind/maple)：maple 企业信息化的开发基础平台
 - [jeeweb-mybatis](https://git.oschina.net/dataact/jeeweb-mybatis)：JeeWeb 敏捷开发平台
