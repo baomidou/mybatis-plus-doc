@@ -276,7 +276,7 @@ MyBatis-Plus 全局策略配置，具体请查看 [全局策略配置](#全局�
 ::: tip 注意
 此属性在 mybatis 中原默认值为 false
 在 mybatis-plus 中,此属性也将用于生成最终的 sql 的 select body
-符合规则无需使用 `@TableField` 注解指定数据库字段名 
+符合规则无需使用 `@TableField` 注解指定数据库字段名
 :::
 
 ### aggressiveLazyLoading
@@ -617,7 +617,7 @@ Spring MVC：
 - 类型：`boolean`
 - 默认值：`false`
 
-根据 entity 自动生成的 where 条件中,String 类型字段 是否使用 LIKE
+是否开启 LIKE 查询，即根据 entity 自动生成的 where 条件中 String 类型字段 是否使用 LIKE，默认不开启。
 
 Spring Boot：
 
@@ -644,7 +644,7 @@ Spring MVC：
 </bean>
 ```
 
-### ~~columnUnderline~~
+### columnUnderline
 
 ::: danger 注意
 此属性存在于 2.x 版本上,现同 [mapUnderscoreToCamelCase](#mapunderscoretocamelcase) 融合
@@ -656,7 +656,7 @@ Spring MVC：
 - 默认值：`OTHER`
 
 数据库类型,默认值为`未知的数据库类型`
-如果值为`OTHER`,启动时会根据数据库连接url获取数据库类型;如果不是`OTHER`则不会自动获取数据库类型
+如果值为`OTHER`,启动时会根据数据库连接 url 获取数据库类型;如果不是`OTHER`则不会自动获取数据库类型
 
 Spring Boot：
 

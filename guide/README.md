@@ -51,7 +51,7 @@
 - [spring-shiro-training](https://git.oschina.net/wangzhixuan/spring-shiro-training)：简单实用的权限脚手架
 - [center](https://git.oschina.net/willenfoo/center)：系统管理中心系统
 - [skeleton](https://github.com/fengchangsheng/skeleton)：Springboot-Shiro 脚手架
-- [springboot_mybatisplus](https://git.oschina.net/z77z/springboot_mybatisplus)：基于SpringBoot的美女图片爬虫系统
+- [springboot_mybatisplus](https://git.oschina.net/z77z/springboot_mybatisplus)：基于 SpringBoot 的美女图片爬虫系统
 - [guns](http://git.oschina.net/naan1993/guns)：guns 后台管理系统
 - [maple](https://git.oschina.net/blind/maple)：maple 企业信息化的开发基础平台
 - [jeeweb-mybatis](https://git.oschina.net/dataact/jeeweb-mybatis)：JeeWeb 敏捷开发平台
@@ -68,7 +68,7 @@
 - [roses](https://gitee.com/naan1993/roses)：基于 Spring Cloud 的分布式框架
 - [renren-security](https://gitee.com/renrenio/renren-security)：人人权限系统
 - [freeter-admin](https://gitee.com/xcOschina/freeter-admin)：飞特后台管理系统
-- [vblog](https://gitee.com/seu-lfh/vblog)：VBlog博客系统
+- [vblog](https://gitee.com/seu-lfh/vblog)：VBlog 博客系统
 
 ::: tip
 需！加入列表的童鞋可以告诉我们。

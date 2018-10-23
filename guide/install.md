@@ -6,7 +6,7 @@
 - Maven or Gradle
 
 ::: tip
-JDK7 以及下的请参考 MP2.0 版本，地址：[2.0文档](https://baomidou.gitee.io/mybatis-plus-doc/#/)
+JDK7 以及下的请参考 MP2.0 版本，地址：[2.0 文档](https://baomidou.gitee.io/mybatis-plus-doc/#/)
 :::
 
 ## Release
@@ -58,6 +58,7 @@ compile group: 'com.baomidou', name: 'mybatis-plus', version: '3.0.5'
 快照 SNAPSHOT 版本需要添加仓库，且版本号为快照版本。
 
 Maven：
+
 ```xml
 <repository>
     <id>snapshots</id>
@@ -65,8 +66,8 @@ Maven：
 </repository>
 ```
 
-
 Gradle：
+
 ```groovy
 repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
