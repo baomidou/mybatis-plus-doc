@@ -7,7 +7,7 @@ sidebarDepth: 3
 MyBatis-Plus 的配置异常的简单，我们仅需要一些简单的配置即可使用 MyBatis-Plus 的强大功能！
 
 ::: tip
-在讲解配置之前，请确保您已经安装了 MyBatis-Plus，如果您尚未安装，请查看 [安装](http://mp.baomidou.com/guide/install.html) 一章。
+在讲解配置之前，请确保您已经安装了 MyBatis-Plus，如果您尚未安装，请查看 [安装](install.md) 一章。
 :::
 
 - Spring Boot 工程：
@@ -177,7 +177,7 @@ Spring MVC：
 - 类型：`String`
 - 默认值：`null`
 
-枚举类 扫描路径，如果配置了该属性，会将路径下的枚举类进行注入，让实体类字段能够简单快捷的使用枚举属性，具体使用请结合 [枚举注入](http://mp.baomidou.com/guide/enum.html) 查看。
+枚举类 扫描路径，如果配置了该属性，会将路径下的枚举类进行注入，让实体类字段能够简单快捷的使用枚举属性，具体使用请结合 [枚举注入](enum.md) 查看。
 
 Spring Boot：
 
