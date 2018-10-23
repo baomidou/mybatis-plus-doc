@@ -7,7 +7,7 @@ sidebarDepth: 3
 MyBatis-Plus 的配置异常的简单，我们仅需要一些简单的配置即可使用 MyBatis-Plus 的强大功能！
 
 ::: tip
-在讲解配置之前，请确保您已经按照了 MyBatis-Plus，如果您尚未安装，请查看 [安装]() 一章。
+在讲解配置之前，请确保您已经安装了 MyBatis-Plus，如果您尚未安装，请查看 [安装](http://mp.baomidou.com/guide/install.html) 一章。
 :::
 
 - Spring Boot 工程：
@@ -177,7 +177,7 @@ Spring MVC：
 - 类型：`String`
 - 默认值：`null`
 
-枚举类 扫描路径，如果配置了该属性，会将路径下的枚举类进行注入，让实体类字段能够简单快捷的使用枚举属性，具体使用请结合 [枚举注入]() 查看。
+枚举类 扫描路径，如果配置了该属性，会将路径下的枚举类进行注入，让实体类字段能够简单快捷的使用枚举属性，具体使用请结合 [枚举注入](http://mp.baomidou.com/guide/enum.html) 查看。
 
 Spring Boot：
 
@@ -783,4 +783,64 @@ Spring MVC：
 
 ### tablePrefix
 
+- 类型：`String`
+- 默认值：`null`
+
+表名前缀
+
+Spring Boot：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: xx_
+```
+
+Spring MVC：
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+    <property name="globalConfig">
+        <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+            <property name="dbConfig">
+                <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig.DbConfig">
+                    <property name="tablePrefix" value="xx_"/>
+                </bean>
+            </property>
+        </bean>
+    </property>
+</bean>
+```
+
 ### tableUnderline
+
+- 类型：`boolean`
+- 默认值：`true`
+
+表名、是否使用下划线命名，默认数据库表使用下划线命名
+
+Spring Boot：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      table-underline: true
+```
+
+Spring MVC：
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+    <property name="globalConfig">
+        <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+            <property name="dbConfig">
+                <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig.DbConfig">
+                    <property name="tableUnderline" value="true"/>
+                </bean>
+            </property>
+        </bean>
+    </property>
+</bean>
+```
