@@ -63,29 +63,9 @@ sidebarDepth: 0
 
 - 检查是否指定了主键？如未指定，则会导致 `selectById` 相关 ID 无法操作，请用注解 `@TableId` 注解表 ID 主键。当然 `@TableId` 注解可以没有！但是你的主键必须叫 id（忽略大小写）
 
-- 注意！Maven 多模块项目的扫描路径需以 `classpath*:` 开头 （即加载多个 jar 包下的 XML 文件）
+- SqlSessionFactory不要使用原生的，请使用MybatisSqlSessionFactory
 
-- 对于`IDEA`系列编辑器，XML 文件是不能放在 java 文件夹中的，IDEA 默认不会编译源码文件夹中的 XML 文件，可以参照以下方式解决：
 
-  - 将配置文件放在 resource 文件夹中
-  - 对于 Maven 项目，可指定 POM 文件的 resource
-
-  ```xml
-  <build>
-    <resources>
-        <resource>
-            <directory>src/main/java</directory>
-            <includes>
-                <include>**/*.xml</include>
-            </includes>
-        </resource>
-        <!--指定资源的位置-->
-        <resource>
-            <directory>src/main/resources</directory>
-        </resource>
-    </resources>
-  </build>
-  ```
 
 ## 自定义 SQL 无法执行
 
@@ -108,7 +88,29 @@ sidebarDepth: 0
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
 ```
+- 对于`IDEA`系列编辑器，XML 文件是不能放在 java 文件夹中的，IDEA 默认不会编译源码文件夹中的 XML 文件，可以参照以下方式解决：
 
+  - 将配置文件放在 resource 文件夹中
+  - 对于 Maven 项目，可指定 POM 文件的 resource
+
+  ```xml
+  <build>
+    <resources>
+        <resource>
+            <!-- xml放在java目录下-->
+            <directory>src/main/java</directory>
+            <includes>
+                <include>**/*.xml</include>
+            </includes>
+        </resource>
+        <!--指定资源的位置（xml放在resources下，可以不用指定）-->
+        <resource>
+            <directory>src/main/resources</directory>
+        </resource>
+    </resources>
+  </build>
+  ```
+  
 ::: tip
 注意！Maven 多模块项目的扫描路径需以 `classpath*:` 开头 （即加载多个 jar 包下的 XML 文件）
 :::
