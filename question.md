@@ -56,7 +56,26 @@
 
 - 当然 `@TableId` 注解可以没有！但是你的主键必须叫  id  忽略大小写
 
-- 注意！maven 多模块 jar 依赖 xml 扫描需为 ` classpath*: ` 加载多个 jar 下的 xml 
+  
+## 自定义sql无法执行
+
+> 指在xml里面自定义sql，需要配置xml扫描路径
+
+-  spring mvc配置mapper.xml(参考[spring-mybatis.xml](https://gitee.com/baomidou/mybatisplus-spring-mvc/blob/dev/src/main/resources/spring/spring-mybatis.xml))
+
+```xml
+ <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="typeAliasesPackage" value="xxx.entity" />
+    <property name="mapperLocations" value="classpath:com/xx/mapper/xml/*Mapper.xml" />
+    ...
+</bean>
+```
+-  spring boot yml配置mapper.xml(参考[mybatisplus-spring-boot](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/2.x/src/main/resources/application.yml))
+```properties
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+```
 
 - 对于`IDEA`系列编辑器，XML 文件是不能放在 java 文件夹中的，IDEA 默认不会编译源码文件夹中的 XML 文件，可以参照以下方式解决：
 
@@ -79,26 +98,6 @@
     </resources>
   </build>
   ```
-  
-## 自定义sql无法执行
-
-> 指在xml里面自定义sql，需要配置xml扫描路径
-
--  spring mvc配置mapper.xml(参考[spring-mybatis.xml](https://gitee.com/baomidou/mybatisplus-spring-mvc/blob/dev/src/main/resources/spring/spring-mybatis.xml))
-
-```xml
- <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
-    <property name="dataSource" ref="dataSource" />
-    <property name="typeAliasesPackage" value="xxx.entity" />
-    <property name="mapperLocations" value="classpath:com/xx/mapper/xml/*Mapper.xml" />
-    ...
-</bean>
-```
--  spring boot yml配置mapper.xml(参考[mybatisplus-spring-boot](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/2.x/src/main/resources/application.yml))
-```properties
-mybatis-plus:
-mapper-locations: classpath:/mapper/**/*.xml
-```
 -  注意！maven 多模块 jar 依赖 xml 扫描需为 ` classpath*:mapper/**/*Mapper.xml` 加载多个 jar 下的 xml 
     
 ## 启动时异常
