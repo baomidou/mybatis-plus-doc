@@ -44,6 +44,7 @@
 ## 优秀案例
 
 - [SpringWind](https://gitee.com/baomidou/SpringWind)：Java EE（J2EE）快速开发框架
+- [Crown](https://gitee.com/cancerGit/Crown)：基于SpringBoot2.x、Mybatisplus3.x Web脚手架
 - [KangarooAdmin](https://git.oschina.net/zhougaojun/KangarooAdmin)：轻量级权限管理框架
 - [iBase4J](https://git.oschina.net/iBase4J/iBase4J)：Java 分布式快速开发基础平台
 - [framework](https://git.oschina.net/sunhan521/framework)：后台管理框架
