@@ -13,7 +13,7 @@ features:
 footer: Apache License 2.0 | © 2016-2018 baomidou
 ---
 ### 赞助
-<a href="https://m.aliyun.com/act/team1111/?spm=5176.11533457.1089570.5.53fd77e3Stpn4l&userCode=yotea6vk#/" target="_blank" style="font-weight:bold">阿里云双11一折开团 300万现金暴走</a>
+<a href="https://m.aliyun.com/act/team1111/#/share?params=N.zf2PgNVZ2J.5wbjwd1y" target="_blank" style="font-weight:bold">阿里云双11一折开团 300万现金暴走</a>
 
 ### 当前最新版本
 
