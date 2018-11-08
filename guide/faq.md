@@ -220,14 +220,18 @@ FieldStrategy 有三种策略：
   @TableField(strategy=FieldStrategy.NOT_EMPTY)
   ```
 
-- 方式三：使用 `AllColumn` 系列方法
+- 方式三：使用 `UpdateWrapper` (3.x)
 
   使用以下方法来进行更新或插入操作：
 
   ```java
-  updateAllColumnById(entity) // 全部字段更新
-
-  insertAllColumn(entity) // 全部字段插入
+  //updateAllColumnById(entity) // 全部字段更新: 3.0已经移除
+  UpdateWrapper<User> uw = new UpdateWrapper<>();
+  uw.set("email", null);
+  uw.eq("id",4);
+  userMapper.update(new User(), uw);//update user set email=null where id=4
+  User u4 = userMapper.selectById(4);
+  Assert.assertNull(u4.getEmail());
   ```
 
 ## 字段类型为 `bit`、`tinyint(1)` 时映射为 `boolean` 类型
