@@ -12,8 +12,10 @@ features:
   details: 热加载、代码生成、分页、性能分析等功能一应俱全。
 footer: Apache License 2.0 | © 2016-2018 baomidou
 ---
-### 福利
-<a href="https://m.aliyun.com/act/team1111/#/share?params=N.zf2PgNVZ2J.5wbjwd1y" target="_blank" style="font-weight:bold">阿里云双 11 团已拼满直接 5 折</a>
+### 对面的帅哥看过来！
+<a href="https://www.oschina.net/project/top_cn_2018?sort=1" target="_blank" style="font-weight:bold">给 MP 投一票 谢谢 ！！</a>
+<br>
+<a href="https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=5wbjwd1y" target="_blank" style="font-weight:bold">【全民云计算】云主机低至2折</a>
 
 ### 当前最新版本
 
