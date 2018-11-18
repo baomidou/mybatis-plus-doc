@@ -14,7 +14,7 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 ---
 ### 对面的帅哥看过来！
 <a href="https://www.oschina.net/project/top_cn_2018?sort=1" target="_blank" style="font-weight:bold">给 MP 投一票 谢谢 ！！</a>
-<br>
+<br><br><br>
 <a href="https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=5wbjwd1y" target="_blank" style="font-weight:bold">【全民云计算】云主机低至2折</a>
 
 ### 当前最新版本
@@ -23,7 +23,7 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus</artifactId>
-    <version>3.0.5</version>
+    <version>3.0.6</version>
 </dependency>
 ```
 
