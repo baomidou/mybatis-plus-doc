@@ -1,5 +1,7 @@
 # 热加载
 
+`3.0.6+` 版本废弃该功能的，需要的自行到低版本 CV 到自己项目中
+
 > 开启动态加载 mapper.xml
 
 - 多数据源配置多个 MybatisMapperRefresh 启动 bean
