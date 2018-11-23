@@ -32,19 +32,22 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         LOGGER.info("start insert fill ....");
-        this.setFieldValByName("operator", "Jerry", metaObject);
+        this.setFieldValByName("operator", "Jerry", metaObject);//版本号3.0.6以及之前的版本
+        //this.setInsertFieldValByName("operator", "Jerry", metaObject);//@since 快照：3.0.7.2-SNAPSHOT， @since 正式版暂未发布3.0.7
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         LOGGER.info("start update fill ....");
         this.setFieldValByName("operator", "Tom", metaObject);
+        //this.setUpdateFieldValByName("operator", "Tom", metaObject);//@since 快照：3.0.7.2-SNAPSHOT， @since 正式版暂未发布3.0.7
     }
 }
 ```
 ::: warning 注意事项：
 - 字段必须声明`TableField`注解，属性`fill`选择对应策略，该申明告知 `Mybatis-Plus` 需要预留注入 `SQL` 字段
 - 填充处理器`MyMetaObjectHandler` 在 Spring Boot 中需要声明`@Component` 注入
+- 必须使用父类的setFieldValByName()或者setInsertFieldValByName/setUpdateFieldValByName方法，否则不会根据注解FieldFill.xxx来区分
 :::
 
 ```java
