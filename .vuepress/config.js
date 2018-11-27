@@ -105,6 +105,7 @@ function genGuideSidebar() {
         "execution-analysis-plugin",
         "performance-analysis-plugin",
         "optimistic-locker-plugin",
+        "dynamic-datasource"
         "tenant",
         "mybatisx-idea-plugin"
       ]
