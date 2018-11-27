@@ -92,7 +92,7 @@ INSERT INTO user (id, name, age, email) VALUES
     <dependency>
         <groupId>com.baomidou</groupId>
         <artifactId>mybatis-plus-boot-starter</artifactId>
-        <version>3.0.1</version>
+        <version>last-version</version>
     </dependency>
     <dependency>
         <groupId>com.h2database</groupId>
@@ -197,3 +197,19 @@ User(id=5, name=Billie, age=24, email=test5@baomidou.com)
 通过以上几个简单的步骤，我们就实现了 User 表的 CRUD 功能，甚至连 XML 文件都不用编写！
 
 但 MyBatis-Plus 的强大远不止这些功能，想要详细了解 MyBatis-Plus 的强大功能？那就继续往下看吧！
+
+<script>
+export default {
+  mounted () {
+    // 自动获取 MyBatis Plus Boot Starter 最新版本
+    let xmlHttp = new XMLHttpRequest()
+    xmlHttp.open("GET", "https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus-boot-starter.json", false)
+    xmlHttp.send(null)
+    let versionInfo = JSON.parse(xmlHttp.responseText).value.replace('v', '')
+    let codeNodeList = document.querySelectorAll('code')
+    for (var i = 0; i < codeNodeList.length; i++) {
+        codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('last-version', versionInfo)
+    }
+  }
+}
+</script>

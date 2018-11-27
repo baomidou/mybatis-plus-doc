@@ -6,7 +6,11 @@
 我们的愿景是成为 MyBatis 最好的搭档，就像 [魂斗罗](/img/contra.jpg) 中的 1P、2P，基友搭配，效率翻倍。
 :::
 
-![relationship](/img/relationship-with-mybatis.png)
+<p class="demo">
+    <img src="/img/relationship-with-mybatis.png" height="200"/>
+    <img src="/img/contra.jpg" height="200"/>
+</p>
+
 
 ## 特性
 
@@ -43,6 +47,10 @@
 
 ## 优秀案例
 
+::: tip
+名称登记按照时间先后，需加入列表的同学可以告诉我们。
+:::
+
 - [SpringWind](https://gitee.com/baomidou/SpringWind)：Java EE（J2EE）快速开发框架
 - [Crown](https://gitee.com/cancerGit/Crown)：Mybatisplus 3.0 教学版
 - [KangarooAdmin](https://git.oschina.net/zhougaojun/KangarooAdmin)：轻量级权限管理框架
@@ -70,10 +78,6 @@
 - [renren-security](https://gitee.com/renrenio/renren-security)：人人权限系统
 - [freeter-admin](https://gitee.com/xcOschina/freeter-admin)：飞特后台管理系统
 - [vblog](https://gitee.com/seu-lfh/vblog)：VBlog 博客系统
-
-::: tip
-需！加入列表的童鞋可以告诉我们。
-:::
 
 ## 接入企业
 

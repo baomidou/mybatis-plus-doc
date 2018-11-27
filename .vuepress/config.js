@@ -3,6 +3,11 @@ module.exports = {
   dest: "docs",
   ga: "UA-85414008-1",
   base: "/",
+  markdown: {
+    externalLinks: {
+      target: '_blank', rel: 'noopener noreferrer'
+    }
+  },
   locales: {
     "/": {
       lang: "zh-CN",
@@ -25,6 +30,10 @@ module.exports = {
           {
             text: "指南",
             link: "/guide/"
+          },
+          {
+            text: "配置",
+            link: "/config/"
           },
           {
             text: "选择语言",
@@ -64,14 +73,15 @@ module.exports = {
           }
         ],
         sidebar: {
-          "/guide/": genSidebarConfig("指南")
+          "/guide/": genGuideSidebar(),
+          "/config/": genConfigSidebar()
         }
       }
     }
   }
 };
 
-function genSidebarConfig(title) {
+function genGuideSidebar() {
   return [
     {
       title: "快速入门",
@@ -104,5 +114,15 @@ function genSidebarConfig(title) {
       collapsable: false,
       children: ["faq"]
     }
-  ];
+  ]
+}
+
+function genConfigSidebar() {
+  return [
+    {
+      title: "配置",
+      collapsable: false,
+      children: ["", "generator-config"]
+    }
+  ]
 }
