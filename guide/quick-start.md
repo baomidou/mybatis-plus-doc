@@ -92,7 +92,7 @@ INSERT INTO user (id, name, age, email) VALUES
     <dependency>
         <groupId>com.baomidou</groupId>
         <artifactId>mybatis-plus-boot-starter</artifactId>
-        <version>last-version</version>
+        <version>starter-latest-version</version>
     </dependency>
     <dependency>
         <groupId>com.h2database</groupId>
@@ -194,21 +194,24 @@ User(id=5, name=Billie, age=24, email=test5@baomidou.com)
 完整的代码示例请移步：[Spring Boot 快速启动示例](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart) | [Spring MVC 快速启动示例](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart-springmvc)
 :::
 
+## 小结
+
 通过以上几个简单的步骤，我们就实现了 User 表的 CRUD 功能，甚至连 XML 文件都不用编写！
+
+从以上步骤中，我们可以看到集成`MyBatis-Plus`非常的简单，只需要引入 starter 工程，并配置 mapper 扫描路径即可。
 
 但 MyBatis-Plus 的强大远不止这些功能，想要详细了解 MyBatis-Plus 的强大功能？那就继续往下看吧！
 
 <script>
 export default {
   mounted () {
-    // 自动获取 MyBatis Plus Boot Starter 最新版本
-    let xmlHttp = new XMLHttpRequest()
+    var xmlHttp = new XMLHttpRequest()
     xmlHttp.open("GET", "https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus-boot-starter.json", false)
     xmlHttp.send(null)
-    let versionInfo = JSON.parse(xmlHttp.responseText).value.replace('v', '')
-    let codeNodeList = document.querySelectorAll('code')
+    var starterVersionInfo = JSON.parse(xmlHttp.responseText).value.replace('v', '')
+    var codeNodeList = document.querySelectorAll('code')
     for (var i = 0; i < codeNodeList.length; i++) {
-        codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('last-version', versionInfo)
+        codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('starter-latest-version', starterVersionInfo)
     }
   }
 }

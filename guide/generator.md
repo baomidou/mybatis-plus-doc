@@ -98,7 +98,7 @@ public class CodeGenerator {
 
 ![relationship](/img/generator.gif)
 
-更多详细配置，请参考[代码生成器配置](../config/generator-config)一文。
+更多详细配置，请参考[代码生成器配置](../config/generator-config.md)一文。
 
 ## 添加依赖
 

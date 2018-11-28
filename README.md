@@ -19,7 +19,7 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus</artifactId>
-    <version>last-version</version>
+    <version>latest-version</version>
 </dependency>
 ```
 
@@ -34,14 +34,13 @@ Hosted by <a href="https://pages.coding.me" target="_blank" style="font-weight:b
 <script>
 export default {
   mounted () {
-    // 自动获取 MyBatis Plus 最新版本
-    let xmlHttp = new XMLHttpRequest()
+    var xmlHttp = new XMLHttpRequest()
     xmlHttp.open("GET", "https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.json", false)
     xmlHttp.send(null)
-    let versionInfo = JSON.parse(xmlHttp.responseText).value.replace('v', '')
-    let codeNodeList = document.querySelectorAll('code')
+    var versionInfo = JSON.parse(xmlHttp.responseText).value.replace('v', '')
+    var codeNodeList = document.querySelectorAll('code')
     for (var i = 0; i < codeNodeList.length; i++) {
-        codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('last-version', versionInfo)
+        codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('latest-version', versionInfo)
     }
   }
 }
