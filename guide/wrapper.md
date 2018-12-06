@@ -398,7 +398,7 @@ List<MysqlData> getAll(@Param(Constants.WRAPPER) Wrapper wrapper);
 ### 方案二 XML形式 Mapper.xml
 ``` xml
 <select id="getAll" resultType="MysqlData">
-	SELECT * FROM	mysql_data ${ew.customSqlSegment}
+	SELECT * FROM mysql_data ${ew.customSqlSegment}
 </select>
 
 ```
