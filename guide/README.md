@@ -7,8 +7,7 @@
 :::
 
 <p class="demo">
-    <img src="/img/relationship-with-mybatis.png" height="200"/>
-    <img src="/img/contra.jpg" height="200"/>
+    <img src="/img/relationship-with-mybatis.png"/>
 </p>
 
 
