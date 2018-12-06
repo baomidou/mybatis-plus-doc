@@ -376,3 +376,27 @@ setSql(String sql)
 - 获取 `LambdaWrapper`  
 在`QueryWrapper`中是获取`LambdaQueryWrapper`  
 在`UpdateWrapper`中是获取`LambdaUpdateWrapper`
+
+## 自定义SQL使用Wrapper
+::: tip 需求来源:
+在使用了`mybatis-plus`之后, 自定义SQL时也想使用`Wrapper`怎么办？在`mybatis-plus`版本`3.0.7.4-SNAPSHOT`（待正式版发布后3.0.7之后版本都支持包括3.0.7）得到了完美的解决方案!
+:::
+
+### Service.java
+```java
+ mysqlMapper.getAll(Wrappers.lambdaQuery(new MysqlData()).eq(MysqlData::getGroup, 1));
+```
+
+### 方案一 注解方式 Mapper.java
+``` java
+@Select("select * from mysql_data ${ew.customSqlSegment}")
+List<MysqlData> getAll(@Param(Constants.WRAPPER) Wrapper wrapper);
+```
+
+### 方案二 XML形式 Mapper.xml
+``` xml
+ <select id="getAll" resultType="MysqlData">
+		SELECT * FROM	mysql_data ${ew.customSqlSegment}
+	</select>
+
+```
