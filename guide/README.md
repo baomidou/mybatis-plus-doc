@@ -77,6 +77,7 @@
 - [renren-security](https://gitee.com/renrenio/renren-security)：人人权限系统
 - [freeter-admin](https://gitee.com/xcOschina/freeter-admin)：飞特后台管理系统
 - [vblog](https://gitee.com/seu-lfh/vblog)：VBlog 博客系统
+- [Jiiiiiin/jiiiiiin-security](https://github.com/Jiiiiiin/jiiiiiin-security)：jiiiiiin权限系统
 
 ## 接入企业
 
