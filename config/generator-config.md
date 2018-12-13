@@ -305,7 +305,7 @@ controller 控制器模板
 
 ### map
 - 自定义返回配置 Map 对象
-- 该对象可以传递到模板引擎通过 `cfg.map.xxx` 引用
+- 该对象可以传递到模板引擎通过 `cfg.xxx` 引用
 
 ### fileOutConfigList
 - 自定义输出文件
@@ -318,4 +318,4 @@ controller 控制器模板
 该配置用于判断某个类是否需要覆盖创建，当然你可以自己实现差异算法 `merge` 文件
 
 ### initMap
-- 注入自定义 Map 对象
+- 注入自定义 Map 对象(注意需要setMap放进去)
