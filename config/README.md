@@ -643,6 +643,40 @@ Spring MVC：
 
 ### fieldStrategy
 
+- 类型：`FieldStrategy`
+- 默认值：`NOT_NULL`
+
+字段验证策略
+
+::: tip 说明:
+该策略约定了如何产出注入的sql,涉及`insert`,`update`以及`wrapper`内部的`entity`属性生成的 where 条件
+:::
+
+Spring Boot：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      field-strategy: not_null
+```
+
+Spring MVC：
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+    <property name="globalConfig">
+        <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+            <property name="dbConfig">
+                <bean class="com.baomidou.mybatisplus.core.config.GlobalConfig.DbConfig">
+                    <property name="fieldStrategy" value="NOT_NULL"/>
+                </bean>
+            </property>
+        </bean>
+    </property>
+</bean>
+```
+
 ### idType
 
 - 类型：`IdType`

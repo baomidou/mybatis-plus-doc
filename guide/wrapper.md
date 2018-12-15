@@ -17,7 +17,8 @@ sidebarDepth: 3
 ## AbstractWrapper
 ::: tip 说明:
 QueryWrapper(LambdaQueryWrapper) 和 UpdateWrapper(LambdaUpdateWrapper) 的父类  
-用于生成 sql 的 where 条件, entity 属性也用于生成 sql 的 where 条件
+用于生成 sql 的 where 条件, entity 属性也用于生成 sql 的 where 条件  
+注意: entity 生成的 where 条件与 使用各个 api 生成的 where 条件**没有任何关联行为**
 :::
 
 ### allEq
@@ -385,8 +386,8 @@ setSql(String sql)
 :::
 
 ### Service.java
-```java
-mysqlMapper.getAll(Wrappers.lambdaQuery(new MysqlData()).eq(MysqlData::getGroup, 1));
+``` java
+mysqlMapper.getAll(Wrappers.<MysqlData>lambdaQuery().eq(MysqlData::getGroup, 1));
 ```
 
 ### 方案一 注解方式 Mapper.java
