@@ -531,7 +531,7 @@ Spring MVC：
 
 ### dbConfig
 
-- 类型：`DbConfig`
+- 类型：`com.baomidou.mybatisplus.annotation.DbConfig`
 - 默认值：`null`
 
 MyBatis-Plus 全局策略中的 DB 策略配置，具体请查看 [DB 策略配置](#DB策略配置)
@@ -610,7 +610,7 @@ Spring MVC：
 
 ### dbType
 
-- 类型：`DbType`
+- 类型：`com.baomidou.mybatisplus.annotation.DbType`
 - 默认值：`OTHER`
 
 数据库类型,默认值为`未知的数据库类型`
@@ -643,7 +643,7 @@ Spring MVC：
 
 ### fieldStrategy
 
-- 类型：`FieldStrategy`
+- 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
 - 默认值：`NOT_NULL`
 
 字段验证策略
@@ -679,7 +679,7 @@ Spring MVC：
 
 ### idType
 
-- 类型：`IdType`
+- 类型：`com.baomidou.mybatisplus.annotation.IdType`
 - 默认值：`ID_WORKER`
 
 全局默认主键类型
