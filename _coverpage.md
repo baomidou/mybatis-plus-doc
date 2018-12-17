@@ -8,4 +8,4 @@
 
 [Gitee](https://gitee.com/baomidou/mybatis-plus)
 [GitHub](https://github.com/baomidou/mybatis-plus)
-[Get Started](#/quick-start)
+[下拉查看文档](https://baomidou.gitee.io/mybatis-plus-doc/#/quick-start)
