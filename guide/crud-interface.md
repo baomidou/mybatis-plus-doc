@@ -14,7 +14,7 @@ sidebarDepth: 3
 :::
 
 ### insert
-```java
+``` java
 /**
  * <p>
  * 插入一条记录
@@ -27,7 +27,7 @@ int insert(T entity);
 ```
 
 ### deleteById
-```java
+``` java
 /**
  * <p>
  * 根据 ID 删除
@@ -40,7 +40,7 @@ int deleteById(Serializable id);
 ```
 
 ### deleteByMap
-```java
+``` java
 /**
  * <p>
  * 根据 columnMap 条件，删除记录
@@ -53,7 +53,7 @@ int deleteByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
 ```
 
 ### delete
-```java
+``` java
 /**
  * <p>
  * 根据 entity 条件，删除记录
@@ -66,7 +66,7 @@ int delete(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 ```
 
 ### deleteBatchIds
-```java
+``` java
 /**
  * <p>
  * 删除（根据ID 批量删除）
@@ -79,7 +79,7 @@ int deleteBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializabl
 ```
 
 ### updateById
-```java
+``` java
 /**
  * <p>
  * 根据 ID 修改
@@ -92,7 +92,7 @@ int updateById(@Param(Constants.ENTITY) T entity);
 ```
 
 ### update
-```java
+``` java
 /**
  * <p>
  * 根据 whereEntity 条件，更新记录
@@ -106,7 +106,7 @@ int update(@Param(Constants.ENTITY) T entity, @Param(Constants.WRAPPER) Wrapper<
 ```
 
 ### selectById
-```java
+``` java
 /**
  * <p>
  * 根据 ID 查询
@@ -119,7 +119,7 @@ T selectById(Serializable id);
 ```
 
 ### selectBatchIds
-```java
+``` java
 /**
  * <p>
  * 查询（根据ID 批量查询）
@@ -132,7 +132,7 @@ List<T> selectBatchIds(@Param(Constants.COLLECTION) Collection<? extends Seriali
 ```
 
 ### selectByMap
-```java
+``` java
 /**
  * <p>
  * 查询（根据 columnMap 条件）
@@ -146,7 +146,7 @@ List<T> selectByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
 ```
 
 ### selectOne
-```java
+``` java
 /**
  * <p>
  * 根据 entity 条件，查询一条记录
@@ -159,7 +159,7 @@ T selectOne(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 ```
 
 ### selectCount
-```java
+``` java
 /**
  * <p>
  * 根据 Wrapper 条件，查询总记录数
@@ -172,7 +172,7 @@ Integer selectCount(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 ```
 
 ### selectList
-```java
+``` java
 /**
  * <p>
  * 根据 entity 条件，查询全部记录
@@ -185,7 +185,7 @@ List<T> selectList(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 ```
 
 ### selectMaps
-```java
+``` java
 /**
  * <p>
  * 根据 Wrapper 条件，查询全部记录
@@ -198,7 +198,7 @@ List<Map<String, Object>> selectMaps(@Param(Constants.WRAPPER) Wrapper<T> queryW
 ```
 
 ### selectObjs
-```java
+``` java
 /**
  * <p>
  * 根据 Wrapper 条件，查询全部记录
@@ -212,7 +212,7 @@ List<Object> selectObjs(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 ```
 
 ### selectPage
-```java
+``` java
 /**
  * <p>
  * 根据 entity 条件，查询全部记录（并翻页）
@@ -226,7 +226,7 @@ IPage<T> selectPage(IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWra
 ```
 
 ### selectMapsPage
-```java
+``` java
 /**
  * <p>
  * 根据 Wrapper 条件，查询全部记录（并翻页）
@@ -249,7 +249,7 @@ IPage<Map<String, Object>> selectMapsPage(IPage<T> page, @Param(Constants.WRAPPE
 :::
 
 ### save
-```java
+``` java
 /**
  * <p>
  * 插入一条记录（选择字段，策略插入）
@@ -261,7 +261,7 @@ boolean save(T entity);
 ```
 
 ### saveBatch
-```java
+``` java
 /**
  * <p>
  * 插入一条记录（选择字段，策略插入）
@@ -273,7 +273,7 @@ boolean save(T entity);
 ```
 
 ### saveOrUpdateBatch
-```java
+``` java
 /**
  * <p>
  * 批量修改插入
@@ -285,7 +285,7 @@ boolean saveOrUpdateBatch(Collection<T> entityList);
 ```
 
 ### saveOrUpdateBatch
-```java
+``` java
 /**
  * <p>
  * 批量修改插入
@@ -298,7 +298,7 @@ boolean saveOrUpdateBatch(Collection<T> entityList, int batchSize);
 ```
 
 ### removeById
-```java
+``` java
 /**
  * <p>
  * 根据 ID 删除
@@ -310,7 +310,7 @@ boolean removeById(Serializable id);
 ```
 
 ### removeByMap
-```java
+``` java
 /**
  * <p>
  * 根据 columnMap 条件，删除记录
@@ -322,7 +322,7 @@ boolean removeByMap(Map<String, Object> columnMap);
 ```
 
 ### remove
-```java
+``` java
 /**
  * <p>
  * 根据 entity 条件，删除记录
@@ -334,7 +334,7 @@ boolean remove(Wrapper<T> queryWrapper);
 ```
 
 ### removeByIds
-```java
+``` java
 /**
  * <p>
  * 删除（根据ID 批量删除）
@@ -346,7 +346,7 @@ boolean removeByIds(Collection<? extends Serializable> idList);
 ```
 
 ### updateById
-```java
+``` java
 /**
  * <p>
  * 根据 ID 选择修改
@@ -358,7 +358,7 @@ boolean updateById(T entity);
 ```
 
 ### update
-```java
+``` java
 /**
  * <p>
  * 根据 whereEntity 条件，更新记录
@@ -371,7 +371,7 @@ boolean update(T entity, Wrapper<T> updateWrapper);
 ```
 
 ### updateBatchById
-```java
+``` java
 /**
  * <p>
  * 根据ID 批量更新
@@ -384,7 +384,7 @@ boolean updateBatchById(Collection<T> entityList, int batchSize);
 ```
 
 ### saveOrUpdate
-```java
+``` java
 /**
  * <p>
  * TableId 注解存在更新记录，否插入一条记录
@@ -396,7 +396,7 @@ boolean saveOrUpdate(T entity);
 ```
 
 ### getById
-```java
+``` java
 /**
  * <p>
  * 根据 ID 查询
@@ -408,7 +408,7 @@ T getById(Serializable id);
 ```
 
 ### listByIds
-```java
+``` java
 /**
  * <p>
  * 查询（根据ID 批量查询）
@@ -420,7 +420,7 @@ Collection<T> listByIds(Collection<? extends Serializable> idList);
 ```
 
 ### listByMap
-```java
+``` java
 /**
  * <p>
  * 查询（根据 columnMap 条件）
@@ -432,7 +432,7 @@ Collection<T> listByMap(Map<String, Object> columnMap);
 ```
 
 ### getOne
-```java
+``` java
 /**
  * <p>
  * 根据 Wrapper，查询一条记录
@@ -445,7 +445,7 @@ T getOne(Wrapper<T> queryWrapper, boolean throwEx);
 ```
 
 ### getMap
-```java
+``` java
 /**
  * <p>
  * 根据 Wrapper，查询一条记录
@@ -457,7 +457,7 @@ Map<String, Object> getMap(Wrapper<T> queryWrapper);
 ```
 
 ### getObj
-```java
+``` java
 /**
  * <p>
  * 根据 Wrapper，查询一条记录
@@ -469,7 +469,7 @@ Object getObj(Wrapper<T> queryWrapper);
 ```
 
 ### count
-```java
+``` java
 /**
  * <p>
  * 根据 Wrapper 条件，查询总记录数
@@ -481,7 +481,7 @@ int count(Wrapper<T> queryWrapper);
 ```
 
 ### list
-```java
+``` java
 /**
  * <p>
  * 查询列表
@@ -493,7 +493,7 @@ List<T> list(Wrapper<T> queryWrapper);
 ```
 
 ### page
-```java
+``` java
 /**
  * <p>
  * 翻页查询
@@ -506,7 +506,7 @@ IPage<T> page(IPage<T> page, Wrapper<T> queryWrapper);
 ```
 
 ### listMaps
-```java
+``` java
 /**
  * <p>
  * 查询列表
@@ -518,7 +518,7 @@ List<Map<String, Object>> listMaps(Wrapper<T> queryWrapper);
 ```
 
 ### listObjs
-```java
+``` java
 /**
  * <p>
  * 根据 Wrapper 条件，查询全部记录
@@ -530,7 +530,7 @@ List<Object> listObjs(Wrapper<T> queryWrapper);
 ```
 
 ### pageMaps
-```java
+``` java
 /**
  * <p>
  * 翻页查询
@@ -540,4 +540,22 @@ List<Object> listObjs(Wrapper<T> queryWrapper);
  * @param queryWrapper 实体对象封装操作类 {@link com.baomidou.mybatisplus.core.conditions.query.QueryWrapper}
  */
 IPage<Map<String, Object>> pageMaps(IPage<T> page, Wrapper<T> queryWrapper);
+```
+
+## mapper 层 选装件
+
+::: tip 说明:
+选装件位于 `com.baomidou.mybatisplus.extension.injector.methods.additional` 包下
+需要配合[Sql 注入器](sql-injector.md)使用,[案例](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-sql-injector)
+使用详细见[源码注释](https://gitee.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/additional)
+:::
+
+### insertBatchSomeColumn [LogicDeleteByIdWithFill](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/additional/LogicDeleteByIdWithFill.java)
+``` java
+int insertBatchSomeColumn(List<T> entityList);
+```
+
+### deleteByIdWithFill [InsertBatchSomeColumn](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/additional/InsertBatchSomeColumn.java)
+``` java
+int deleteByIdWithFill(T entity);
 ```
