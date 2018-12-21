@@ -78,6 +78,7 @@
 - [freeter-admin](https://gitee.com/xcOschina/freeter-admin)：飞特后台管理系统
 - [vblog](https://gitee.com/seu-lfh/vblog)：VBlog 博客系统
 - [Jiiiiiin/jiiiiiin-security](https://github.com/Jiiiiiin/jiiiiiin-security)：jiiiiiin权限系统
+- [hdw-dubbo](https://github.com/tumao2/hdw-dubbo)：HDW快速开发平台
 
 ## 接入企业
 
