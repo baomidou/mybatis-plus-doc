@@ -59,10 +59,10 @@ int deleteByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
  * 根据 entity 条件，删除记录
  * </p>
  *
- * @param queryWrapper 实体对象封装操作类（可以为 null）
+ * @param wrapper 实体对象封装操作类（可以为 null）
  * @return 删除成功记录数
  */
-int delete(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+int delete(@Param(Constants.WRAPPER) Wrapper<T> wrapper);
 ```
 
 ### deleteBatchIds
@@ -98,7 +98,7 @@ int updateById(@Param(Constants.ENTITY) T entity);
  * 根据 whereEntity 条件，更新记录
  * </p>
  *
- * @param entity        实体对象 (set 条件值,不能为 null)
+ * @param entity        实体对象 (set 条件值,可为 null)
  * @param updateWrapper 实体对象封装操作类（可以为 null,里面的 entity 用于生成 where 语句）
  * @return 修改成功记录数
  */
