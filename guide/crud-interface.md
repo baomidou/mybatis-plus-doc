@@ -269,7 +269,7 @@ boolean save(T entity);
  *
  * @param entity 实体对象
  */
-boolean save(T entity);
+boolean saveBatch(T entity);
 ```
 
 ### saveOrUpdateBatch
