@@ -138,6 +138,14 @@ MP `3.0.3` 之后移除了自动模板引擎依赖，需要手动添加对应引
     <version>最新版本</version>
 </dependency>
 
+
+<!-- beetl 模板引擎 -->
+<dependency>
+    <groupId>com.ibeetl</groupId>
+    <artifactId>beetl</artifactId>
+    <version>最新版本</version>
+</dependency>
+
 ```
 
 ## 切换模板引擎
@@ -145,6 +153,9 @@ MP `3.0.3` 之后移除了自动模板引擎依赖，需要手动添加对应引
 ```java
 // 切换为 freemarker 模板引擎
 mpg.setTemplateEngine(new FreemarkerTemplateEngine());
+
+// 切换为 beetl 模板引擎
+mpg.setTemplateEngine(new BeetlTemplateEngine());
 ```
 ## 自定义模板引擎
 
