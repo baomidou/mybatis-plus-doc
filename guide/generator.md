@@ -124,6 +124,14 @@ public class CodeGenerator {
 MP `3.0.3` 之后移除了自动模板引擎依赖，需要手动添加对应引擎的依赖坐标如下：
 
 ```xml
+<dependency>
+  <groupId>com.baomidou</groupId>
+  <artifactId>mybatis-plus-generator</artifactId>
+  <version>最新版本</version>
+</dependency>
+```
+
+```xml
 <!-- velocity 模板引擎, 默认 -->
 <dependency>
     <groupId>org.apache.velocity</groupId>
