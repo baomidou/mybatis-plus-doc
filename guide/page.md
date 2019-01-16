@@ -8,7 +8,7 @@
 ```xml
 <!-- spring xml 方式 -->
 <plugins>
-    <plugin interceptor="com.baomidou.mybatisplus.plugins.PaginationInterceptor">
+    <plugin interceptor="com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor">
         <property name="sqlParser" ref="自定义解析类、可以没有" />
         <property name="dialectClazz" value="自定义方言类、可以没有" />
     </plugin>
