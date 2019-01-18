@@ -36,3 +36,11 @@ SpringBoot 配置方式：
   @TableLogic
   private Integer deleted;
   ```
+  
+  - 效果: 使用mp自带方法删除和查找都会附带逻辑删除功能 (自己写的xml不会)
+
+  ``` sql
+  example
+  删除时 update user set deleted=1 where id =1
+  查找时 select * from user where deleted=1
+  ```
