@@ -264,12 +264,24 @@ boolean save(T entity);
 ``` java
 /**
  * <p>
- * 插入一条记录（选择字段，策略插入）
+ * 插入（批量）
  * </p>
  *
  * @param entity 实体对象
  */
-boolean save(T entity);
+boolean saveBatch(T entity);
+```
+
+### saveBatch
+``` java
+/**
+* <p>
+* 插入（批量）
+* </p>
+* @param entityList 实体对象集合
+* @param batchSize  插入批次数量
+ */
+boolean saveBatch(Collection<T> entityList, int batchSize);
 ```
 
 ### saveOrUpdateBatch
