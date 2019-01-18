@@ -111,6 +111,7 @@ mybatis-plus:
   </build>
   ```
   
+
 ::: tip
 注意！Maven 多模块项目的扫描路径需以 `classpath*:` 开头 （即加载多个 jar 包下的 XML 文件）
 :::
@@ -414,3 +415,18 @@ wrapper.last("limit 1");
         int deleteByIdWithFill(T entity);
     }
     ```
+
+## 3.x数据库关键字如何处理？
+
+在以前的版本是自动识别关键字进行处理的，但是3.x移除了这个功能。
+
+1. 不同的数据库对关键字的处理不同,很难维护。
+
+2. 在数据库设计时候本身不建议使用关键字。
+3. 交由用户去处理关键字。
+
+```java
+@TableField(value = "'status'")
+private Boolean status;
+```
+
