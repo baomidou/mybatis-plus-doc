@@ -88,7 +88,8 @@ public class CodeGenerator {
         TemplateConfig templateConfig = new TemplateConfig();
 
         // 配置自定义输出模板
-        // templateConfig.setEntity();
+        //指定自定义模板路径，注意不要带上.ftl/.vm, 会根据使用的模板引擎自动识别
+        // templateConfig.setEntity("templates/entity2.java");
         // templateConfig.setService();
         // templateConfig.setController();
         
@@ -168,3 +169,39 @@ mpg.setTemplateEngine(new BeetlTemplateEngine());
 ## 自定义模板引擎
 
 请继承类 com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine
+
+## 自定义代码模板
+```java
+//指定自定义模板路径, 位置：/resources/templates/entity2.java.ftl(或者是.vm)
+//注意不要带上.ftl(或者是.vm), 会根据使用的模板引擎自动识别
+TemplateConfig templateConfig = new TemplateConfig()
+    .setEntity("templates/entity2.java");
+
+AutoGenerator mpg = new AutoGenerator();
+//配置自定义模板
+mpg.setTemplate(templateConfig);
+```
+
+## 自定义属性注入
+```java
+InjectionConfig injectionConfig = new InjectionConfig() {
+    //自定义属性注入:abc
+    //在.ftl(或者是.vm)模板中，通过${cfg.abc}获取属性
+    @Override
+    public void initMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("abc", this.getConfig().getGlobalConfig().getAuthor() + "-mp");
+        this.setMap(map);
+    }
+};
+AutoGenerator mpg = new AutoGenerator();
+//配置自定义属性注入
+mpg.setCfg(injectionConfig);
+```
+```xml
+entity2.java.ftl
+自定义属性注入abc=${cfg.abc}
+
+entity2.java.vm
+自定义属性注入abc=$!{cfg.abc}
+```
