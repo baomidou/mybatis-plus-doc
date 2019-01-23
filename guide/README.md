@@ -79,6 +79,7 @@
 - [vblog](https://gitee.com/seu-lfh/vblog)：VBlog 博客系统
 - [Jiiiiiin/jiiiiiin-security](https://github.com/Jiiiiiin/jiiiiiin-security)：jiiiiiin权限系统
 - [hdw-dubbo](https://github.com/tumao2/hdw-dubbo)：HDW快速开发平台
+- [pybbs](https://github.com/tomoya92/pybbs)：更好用的Java语言社区(论坛)
 
 ## 接入企业
 
