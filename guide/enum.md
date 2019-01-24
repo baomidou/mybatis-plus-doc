@@ -7,7 +7,23 @@
 # 1、申明通用枚举属性
 
 
-> 方式一： 使用 @EnumValue 注解枚举属性
+> 方式一： 使用 @EnumValue 注解枚举属性 [完整示例](https://gitee.com/baomidou/mybatis-plus-samples/blob/master/mybatis-plus-sample-enum/src/main/java/com/baomidou/mybatisplus/samples/enums/enums/GradeEnum.java)
+
+```java
+public enum GradeEnum {
+
+    PRIMARY(1, "小学"),  SECONDORY(2, "中学"),  HIGH(3, "高中");
+
+    GradeEnum(int code, String descp) {
+        this.code = code;
+        this.descp = descp;
+    }
+
+    @EnumValue//标记数据库存的值是code
+    private final int code;
+    //。。。
+}
+```
 
 > 方式二： 枚举属性，实现 IEnum 接口如下：
 
