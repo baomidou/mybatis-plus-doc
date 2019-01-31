@@ -38,5 +38,5 @@ public class MybatisPlusConfig {
 ::: warning 注意！参数说明：
 - 参数：maxTime SQL 执行最大时长，超过自动停止运行，有助于发现问题。
 - 参数：format SQL SQL是否格式化，默认false。
-该插件只用于开发环境，不建议生产环境使用。。。
+- 该插件只用于开发环境，不建议生产环境使用。
 :::
