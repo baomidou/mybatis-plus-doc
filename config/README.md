@@ -130,6 +130,43 @@ Spring MVC：
 </bean>
 ```
 
+### defaultEnumTypeHandler
+
+- 类型：`Class<? extends TypeHandler`
+- 默认值：`org.apache.ibatis.type.EnumTypeHandler`
+
+默认枚举处理类,如果配置了该属性,枚举将统一使用指定处理器进行处理.(**3.0.8增加**)
+
+Spring Boot：
+
+```yaml
+mybatis-plus:
+  configuration:
+  	default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
+
+```
+
+Spring MVC：
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+     <property name="configuration">
+        <bean class="com.baomidou.mybatisplus.core.MybatisConfiguration">
+            <property name="defaultEnumTypeHandler" value="org.apache.ibatis.type.EnumTypeHandler"/>
+        </bean>
+    </property>
+</bean>
+```
+
+::: tip
+
+- org.apache.ibatis.type.EnumTypeHandler : 存储枚举的名称
+- org.apache.ibatis.type.EnumOrdinalTypeHandler : 存储枚举的索引
+- com.baomidou.mybatisplus.extension.handlers.EnumTypeHandler : 枚举类需要实现IEnum接口.
+- com.baomidou.mybatisplus.extension.handlers.EnumAnnotationTypeHandler: 枚举类字段需要标记@EnumValue注解
+
+:::
+
 ### typeEnumsPackage
 
 - 类型：`String`

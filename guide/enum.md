@@ -4,6 +4,11 @@
 
 解决了繁琐的配置，让 mybatis 优雅的使用枚举属性！
 
+::: tip
+	自3.0.8开始,可通过配置默认枚举处理类来进行枚举处理,可省略配置扫描通用枚举配置. [默认枚举配置](https://mp.baomidou.com/config/#defaultEnumTypeHandler)
+
+:::
+
 # 1、申明通用枚举属性
 
 
@@ -56,7 +61,7 @@ mybatis-plus:
 # 3、JSON序列化处理
 ## 一、Jackson
 	1.在需要响应描述字段的get方法上添加@JsonValue注解即可
-		
+
 ## 二、Fastjson
 1.全局处理方式
 ```
