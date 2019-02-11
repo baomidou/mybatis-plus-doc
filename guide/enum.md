@@ -4,11 +4,6 @@
 
 解决了繁琐的配置，让 mybatis 优雅的使用枚举属性！
 
-::: tip
-	自3.0.8开始,可通过配置默认枚举处理类来进行枚举处理,可省略配置扫描通用枚举配置. [默认枚举配置](https://mp.baomidou.com/config/#defaultEnumTypeHandler)
-
-:::
-
 # 1、申明通用枚举属性
 
 
@@ -32,7 +27,7 @@ public enum GradeEnum {
 
 > 方式二： 枚举属性，实现 IEnum 接口如下：
 
-```
+```java
 public enum AgeEnum implements IEnum<String> {
     ...
     @Override
@@ -43,6 +38,8 @@ public enum AgeEnum implements IEnum<String> {
 ```
 
 # 2、配置扫描通用枚举
+
+> 自3.0.8开始,可通过配置默认枚举处理类来省略扫描通用枚举配置. [默认枚举配置](https://mp.baomidou.com/config/#defaultEnumTypeHandler)
 
 - 注意!! spring mvc 配置参考，安装集成 MybatisSqlSessionFactoryBean 枚举包扫描，spring boot 例子配置如下：
 
