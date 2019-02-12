@@ -77,7 +77,7 @@
 - [renren-security](https://gitee.com/renrenio/renren-security)：人人权限系统
 - [freeter-admin](https://gitee.com/xcOschina/freeter-admin)：飞特后台管理系统
 - [vblog](https://gitee.com/seu-lfh/vblog)：VBlog 博客系统
-- [Jiiiiiin/jiiiiiin-security](https://github.com/Jiiiiiin/jiiiiiin-security)：jiiiiiin权限系统
+- [jiiiiiin-security](https://github.com/Jiiiiiin/jiiiiiin-security)：jiiiiiin权限系统
 - [hdw-dubbo](https://github.com/tumao2/hdw-dubbo)：HDW快速开发平台
 - [pybbs](https://github.com/tomoya92/pybbs)：更好用的Java语言社区(论坛)
 - [SmallBun](https://gitee.com/leshalv/smallbun)：SmallBun企业级开发脚手架
