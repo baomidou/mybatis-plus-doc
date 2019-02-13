@@ -29,17 +29,48 @@ public enum GradeEnum {
 
 ```java
 public enum AgeEnum implements IEnum<String> {
-    ...
+    ONE(1, "一岁"),
+    TWO(2, "二岁"),
+    THREE(3, "三岁");
+    
+    private int value;
+    private String desc;
+    
     @Override
-    public String getValue() {
+    public Integer getValue() {
         return this.value;
     }
 }
 ```
 
+> 实体属性使用枚举类型
+
+```java
+public class User{
+    /**
+     * 名字
+     * 数据库字段: name varchar(20)
+     */
+    private String name;
+    
+    /**
+     * 年龄，IEnum接口的枚举处理
+     * 数据库字段：age INT(3)
+     */
+    private AgeEnum age;
+        
+        
+    /**
+     * 年级，原生枚举（带{@link com.baomidou.mybatisplus.annotation.EnumValue}):
+     * 数据库字段：grade INT(2)
+     */
+    private GradeEnum grade;
+}
+```
+
 # 2、配置扫描通用枚举
 
-> 自3.0.8开始,可通过配置默认枚举处理类来省略扫描通用枚举配置. [默认枚举配置](https://mp.baomidou.com/config/#defaultEnumTypeHandler)
+> 自3.0.8开始,可通过配置默认枚举处理类来省略扫描通用枚举配置. [默认枚举配置](../config/#defaultEnumTypeHandler)
 
 - 注意!! spring mvc 配置参考，安装集成 MybatisSqlSessionFactoryBean 枚举包扫描，spring boot 例子配置如下：
 
