@@ -102,7 +102,7 @@ function genGuideSidebar() {
         "enum",
         "auto-fill-metainfo",
         "sql-injector",
-        "execution-analysis-plugin",
+        "block-attack-sql-parser",
         "performance-analysis-plugin",
         "optimistic-locker-plugin",
         "dynamic-datasource",
