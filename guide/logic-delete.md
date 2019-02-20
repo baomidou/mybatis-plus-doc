@@ -41,8 +41,8 @@ SpringBoot 配置方式：
 
   ``` sql
   example
-  删除时 update user set deleted=1 where id =1
-  查找时 select * from user where deleted=1
+  删除时 update user set deleted=1 where id =1 and deleted=0
+  查找时 select * from user where deleted=0
   ```
   
 ::: tip 附件说明
