@@ -6,6 +6,23 @@
 
 👉 [mybatis-plus-sample-crud](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-crud)
 
+- p6spy 依赖引入
+
+Maven：
+
+```xml
+<dependency>
+  <groupId>p6spy</groupId>
+  <artifactId>p6spy</artifactId>
+  <version>最新版本</version>
+</dependency>
+```
+Gradle：
+
+```groovy
+compile group: 'p6spy', name: 'p6spy', version: '最新版本'
+```
+
 - application.yml 配置：
 
 ```xml
