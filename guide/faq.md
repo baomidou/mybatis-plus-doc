@@ -237,7 +237,12 @@ FieldStrategy 有三种策略：
 
 ## 字段类型为 `bit`、`tinyint(1)` 时映射为 `boolean` 类型
 
-MyBatis 是不会自动处理该映射，需要修改请求连接添加参数 `tinyInt1isBit=false`，如下：
+默认mysql驱动会把tinyint(1)字段映射为boolean: 0=false, 非0=true
+
+MyBatis 是不会自动处理该映射，如果不想把tinyint(1)映射为boolean类型:
+
+* 修改类型tinyint(1)为tinyint(2)或者int
+* 需要修改请求连接添加参数 `tinyInt1isBit=false`，如下：
 
 ```xml
 jdbc:mysql://127.0.0.1:3306/mp?tinyInt1isBit=false
