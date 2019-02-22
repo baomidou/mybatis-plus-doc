@@ -1,8 +1,33 @@
 
 
-# 通用枚举扫描并自动关联注入
+# 通用枚举
 
 解决了繁琐的配置，让 mybatis 优雅的使用枚举属性！
+
+> 自3.0.8开始,可通过配置默认枚举处理类来省略扫描通用枚举配置. [默认枚举配置](../config/#defaultEnumTypeHandler)
+>
+> - 升级说明:
+>
+>   3.0.8以下版本改变了原生默认行为,升级时请将默认枚举设置为`EnumOrdinalTypeHandler`
+>
+> - 影响用户:
+>
+>   实体中使用原生枚举
+>
+> - 其他说明:
+>
+>   配置枚举包扫描的时候能提前注册使用注解枚举的缓存
+>
+> - 推荐配置:
+>
+>   - 使用实现`IEnum`接口
+>     - 推荐配置`defaultEnumTypeHandler`
+>   - 使用注解枚举处理
+>     - 推荐配置`typeEnumsPackage`
+>   - 注解枚举处理与`IEnum`接口
+>     - 推荐配置`typeEnumsPackage`
+>   - 与原生枚举混用
+>     - 需配置`defaultEnumTypeHandler`与 `typeEnumsPackage`
 
 # 1、申明通用枚举属性
 
@@ -69,8 +94,6 @@ public class User{
 ```
 
 # 2、配置扫描通用枚举
-
-> 自3.0.8开始,可通过配置默认枚举处理类来省略扫描通用枚举配置. [默认枚举配置](../config/#defaultEnumTypeHandler)
 
 - 注意!! spring mvc 配置参考，安装集成 MybatisSqlSessionFactoryBean 枚举包扫描，spring boot 例子配置如下：
 

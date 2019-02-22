@@ -135,7 +135,7 @@ Spring MVC：
 - 类型：`Class<? extends TypeHandler`
 - 默认值：`org.apache.ibatis.type.EnumTypeHandler`
 
-默认枚举处理类,如果配置了该属性,枚举将统一使用指定处理器进行处理.(**3.0.8增加**)
+默认枚举处理类,如果配置了该属性,枚举将统一使用指定处理器进行处理.
 
 Spring Boot：
 
@@ -162,8 +162,8 @@ Spring MVC：
 
 - org.apache.ibatis.type.EnumTypeHandler : 存储枚举的名称
 - org.apache.ibatis.type.EnumOrdinalTypeHandler : 存储枚举的索引
-- com.baomidou.mybatisplus.extension.handlers.EnumTypeHandler : 枚举类需要实现IEnum接口.
-- com.baomidou.mybatisplus.extension.handlers.EnumAnnotationTypeHandler: 枚举类字段需要标记@EnumValue注解
+- com.baomidou.mybatisplus.extension.handlers.EnumTypeHandler : 枚举类需要实现IEnum接口或字段标记@EnumValue注解.
+- ~~com.baomidou.mybatisplus.extension.handlers.EnumAnnotationTypeHandler: 枚举类字段需要标记@EnumValue注解~~
 
 :::
 
@@ -172,7 +172,7 @@ Spring MVC：
 - 类型：`String`
 - 默认值：`null`
 
-枚举类 扫描路径，如果配置了该属性，会将路径下的枚举类进行注入，让实体类字段能够简单快捷的使用枚举属性，具体使用请结合 [枚举注入](../guide/enum.md) 查看。
+枚举类 扫描路径，如果配置了该属性，会将路径下的枚举类进行注入，让实体类字段能够简单快捷的使用枚举属性。
 
 Spring Boot：
 
