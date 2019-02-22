@@ -114,7 +114,10 @@ function genGuideSidebar() {
     {
       title: "FAQ",
       collapsable: false,
-      children: ["faq"]
+      children: [
+        "faq",
+        "donate"
+      ]
     }
   ]
 }
