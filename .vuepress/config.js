@@ -86,7 +86,7 @@ function genGuideSidebar() {
     {
       title: "快速入门",
       collapsable: false,
-      children: ["", "quick-start", "install", "config"]
+      children: ["", "quick-start", "install", "config", "annotation"]
     },
     {
       title: "核心功能",
