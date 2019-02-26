@@ -6,7 +6,7 @@ sidebarDepth: 3
 ::: tip 说明:
 - 以下出现的第一个入参`boolean condition`表示该条件**是否**加入最后生成的sql中
 - 以下代码块内的多个方法均为从上往下补全个别`boolean`类型的入参,默认为`true`
-- 以下出现的泛型`Param`均为`Wrapper`的子类实例(均具有一下`80%`的方法)
+- 以下出现的泛型`Param`均为`Wrapper`的子类实例(均具有`AbstractWrapper`的所有方法)
 - 以下方法在入参中出现的`R`为泛型,在普通wrapper中是`String`,在LambdaWrapper中是**函数**(例:`Entity::getId`,`Entity`为实体类,`getId`为字段`id`的**getMethod**)
 - 以下方法入参中的`R column`均表示数据库字段,当`R`为`String`时则为数据库字段名(**字段名是数据库关键字的自己用转义符包裹!**)!而不是实体类数据字段名!!!
 - 以下举例均为使用普通wrapper,入参为`Map`和`List`的均以`json`形式表现!
