@@ -283,7 +283,7 @@ apply(boolean condition, String sqlHaving, Object... params)
 该方法可用于数据库**函数**
 动态入参的`params`对应前面`sqlHaving`内部的`{index}`部分.这样是不会有sql注入风险的,反之会有!
 :::
-- 例: `apply("id = 1")`--->`having sum(age) > 10`
+- 例: `apply("id = 1")`--->`id = 1`
 - 例: `apply("date_format(dateColumn,'%Y-%m-%d') = '2008-08-08'")`--->`date_format(dateColumn,'%Y-%m-%d') = '2008-08-08'")`
 - 例: `apply("date_format(dateColumn,'%Y-%m-%d') = {0}", "2008-08-08")`--->`date_format(dateColumn,'%Y-%m-%d') = '2008-08-08'")`
 
@@ -342,7 +342,7 @@ select(Class<T> entityClass, Predicate<TableFieldInfo> predicate)
 第二类方法为:过滤查询字段(主键除外),入参不包含 class 的调用前需要`wrapper`内的`entity`属性有值!
 这两类方法重复调用以最后一次为准  
 :::
-- 例: `select("id", "name", "age")`
+- 例: `select("id", "name", "age")--->SELECT "id", "name", "age"`
 - 例: `select(i -> i.getProperty().startsWith("test"))`
 
 ### excludeColumns <Badge text="@Deprecated" type="error"/>
