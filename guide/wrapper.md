@@ -275,15 +275,15 @@ and(boolean condition, Function<This, This> func)
 
 ### apply
 ``` java{2}
-apply(String sqlHaving, Object... params)
-apply(boolean condition, String sqlHaving, Object... params)
+apply(String applySql, Object... params)
+apply(boolean condition, String applySql, Object... params)
 ```
 - 拼接 sql
 ::: warning 注意事项:
 该方法可用于数据库**函数**
-动态入参的`params`对应前面`sqlHaving`内部的`{index}`部分.这样是不会有sql注入风险的,反之会有!
+动态入参的`params`对应前面`applySql`内部的`{index}`部分.这样是不会有sql注入风险的,反之会有!
 :::
-- 例: `apply("id = 1")`--->`having sum(age) > 10`
+- 例: `apply("id = 1")`--->`id = 1`
 - 例: `apply("date_format(dateColumn,'%Y-%m-%d') = '2008-08-08'")`--->`date_format(dateColumn,'%Y-%m-%d') = '2008-08-08'")`
 - 例: `apply("date_format(dateColumn,'%Y-%m-%d') = {0}", "2008-08-08")`--->`date_format(dateColumn,'%Y-%m-%d') = '2008-08-08'")`
 
@@ -309,8 +309,8 @@ exists(boolean condition, String existsSql)
 
 ### notExists
 ``` java{2}
-notExists(String existsSql)
-notExists(boolean condition, String existsSql)
+notExists(String notExistsSql)
+notExists(boolean condition, String notExistsSql)
 ```
 - 拼接 NOT EXISTS ( sql语句 )
 - 例: `notExists("select id from table where age = 1")`--->`not exists (select id from table where age = 1)`
