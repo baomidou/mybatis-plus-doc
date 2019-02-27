@@ -6,7 +6,7 @@
 
 👉 [mybatis-plus-annotation](https://gitee.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation)
 
-## @TableName
+## [@TableName](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableName.java)
 - 描述：表名注解
 
 | 属性 | 类型 | 是否必须指定 | 默认值 | 意义 | 解释 |
@@ -15,15 +15,15 @@
 | resultMap | String | 否 | "" | xml 中 resultMap 的 id | 设置此值则按指定的 resultMap 封装数据 |
 
 
-## @TableId
+## [@TableId](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableId.java)
 - 描述：主键注解
 
 | 属性 | 类型 | 是否必须指定 | 默认值 | 意义 | 解释 |
 | :-: | :-: | :-: | :-: | :-: | :-: |
 | value | String | 否 | "" | 字段名 | 有值设置则按设置的值为准 |
-| type | Enum | 否 | IdType.NONE | 主键类型 | 查看[IdType](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/IdType.java) |
+| type | Enum | 否 | IdType.NONE | 主键类型 | 主键是为何种类型 |
   
-#### IdType
+### [IdType](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/IdType.java)
 
 | 值 | 描述 |
 | :-: | :-: |
@@ -35,10 +35,13 @@
 | ID_WORKER_STR | 分布式全局唯一ID 字符串类型 |
 
 
-## TableField
+## [@TableField](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableField.java)
+- 描述：字段注解(非主键)
 
-- 描述：非主键字段注解
-- 属性：value、el、exist、condition、update、strategy、fill、select
+| 属性 | 类型 | 是否必须指定 | 默认值 | 意义 | 解释 |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| value | String | 否 | "" | 字段名 | 有值设置则按设置的值为准 |
+| el | String | 否 | "" | 映射为原生 `#{ ... }` 逻辑 | 相当于写在 xml 里的 `#{ ... }` 部分 |
 
 #### value
 
