@@ -23,7 +23,7 @@
 | value | String | 否 | "" | 字段名 | 有值设置则按设置的值为准 |
 | type | Enum | 否 | IdType.NONE | 主键类型 | 主键是为何种类型 |
   
-### [IdType](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/IdType.java)
+#### [IdType](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/IdType.java)
 
 | 值 | 描述 |
 | :-: | :-: |
@@ -49,7 +49,7 @@
 | fill | Enum | 否 | FieldFill.DEFAULT | 字段自动填充策略 | 启动自动填充功能所需要的注解 |
 | select | boolean | 否 | true | 是否进行 select 查询 | 大字段可设置为 false 不自动加入 select 查询字段 |
 
-### [FieldStrategy](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldStrategy.java)
+#### [FieldStrategy](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldStrategy.java)
 
 | 值 | 描述 |
 | :-: | :-: |
@@ -58,7 +58,7 @@
 | NOT_EMPTY | 非空判断(只对字符串类型字段,其他类型字段依然为非NULL判断) |
 | DEFAULT | 追随全局配置 |
 
-### [FieldFill](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldFill.java)
+#### [FieldFill](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldFill.java)
 
 | 值 | 描述 |
 | :-: | :-: |
