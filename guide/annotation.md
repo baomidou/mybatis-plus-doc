@@ -23,7 +23,8 @@
 | value | String | 否 | "" | 字段名 | 有值设置则按设置的值为准 |
 | type | Enum | 否 | IdType.NONE | 主键类型 | 查看[IdType](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/IdType.java) |
   
-  
+#### IdType
+
 | 值 | 描述 |
 | :-: | :-: |
 | AUTO | 数据库自增 |
