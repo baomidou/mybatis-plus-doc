@@ -9,58 +9,28 @@
 ## @TableName
 - 描述：表名注解
 
-| 属性 | 是否必须指定 | 默认值 | 意义 | 解释 |
-| :-: | :-: | :-: | :-: | :-: |
-| value | 否 | "" | 表名 | 有值设置则按设置的值为准 |
-| resultMap | 否 | "" | xml 中 resultMap 的 id | 设置此值则按指定的 resultMap 封装数据 |
+| 属性 | 类型 | 是否必须指定 | 默认值 | 意义 | 解释 |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| value | String | 否 | "" | 表名 | 有值设置则按设置的值为准 |
+| resultMap | String | 否 | "" | xml 中 resultMap 的 id | 设置此值则按指定的 resultMap 封装数据 |
 
 
-## TableId
-
+## @TableId
 - 描述：主键注解
-- 属性：value、type
 
-#### value
+| 属性 | 类型 | 是否必须指定 | 默认值 | 意义 | 解释 |
+| :-: | :-: | :-: | :-: | :-: |
+| value | String | 否 | "" | 字段名 | 有值设置则按设置的值为准 |
+| type | Enum | 否 | IdType.NONE | 主键类型 | 查看[IdType](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/IdType.java) |
 
-- 描述：主键字段数据库真实值
-- 默认：`空` 框架自动赋值 `非空` 按照设置值处理
-
-#### type
-
-- 描述：定义主键策略
-- 类型：`Enum`
-- 默认值：类中 `IdType.NONE` 框架启动会赋值为 `IdType.ID_WORKER`
-- 可选值：AUTO、INPUT、ID_WORKER、UUID、ID_WORKER_STR
-
-Java                      | XML | 描述
-------------------------- | --- | ---
-IdType.AUTO               |  0  | 数据库自增
-IdType.INPUT              |  1  | 自行输入
-IdType.ID_WORKER          |  2  | 分布式全局唯一ID 长整型类型
-IdType.UUID               |  3  | 32 位UUID字符串
-IdType.NONE               |  4  | 无状态
-IdType.ID_WORKER_STR      |  5  | 分布式全局唯一ID 字符串类型
-
-#### dbType
-
-!> 从2.1-gamma版本，不需要配置dbType，自动识别
-
-- 描述：指定数据库类型（如无您所需的数据库类型，可以向我们提交 `issue` 或者 `自行扩展数据库方言`）
-- 类型：`Enum`
-- 默认值：`DBType.MYSQL`
-- 可选值：MYSQL、ORACLE、DB2、H2、HSQL、SQLITE、POSTGRE、SQLSERVER2005、SQLSERVER
-
-Java                 | XML
--------------------- | -------------
-DBType.MYSQL         | mysql
-DBType.ORACLE        | oracle
-DBType.DB2           | db2
-DBType.H2            | h2
-DBType.HSQL          | hsql
-DBType.SQLITE        | sqlite
-DBType.POSTGRE       | postgresql
-DBType.SQLSERVER2005 | sqlserver2005
-DBType.SQLSERVER     | sqlserver
+| 值 | 描述 |
+| :-: | :-: |
+| AUTO | 数据库自增 |
+| INPUT | 自行输入 |
+| ID_WORKER | 分布式全局唯一ID 长整型类型 |
+| UUID | 32位UUID字符串 |
+| NONE | 无状态 |
+| ID_WORKER_STR | 分布式全局唯一ID 字符串类型 |
 
 
 ## TableField
