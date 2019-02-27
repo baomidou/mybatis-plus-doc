@@ -42,66 +42,30 @@
 | :-: | :-: | :-: | :-: | :-: | :-: |
 | value | String | 否 | "" | 字段名 | 有值设置则按设置的值为准 |
 | el | String | 否 | "" | 映射为原生 `#{ ... }` 逻辑 | 相当于写在 xml 里的 `#{ ... }` 部分 |
+| exist | boolean | 否 | true | 是否为数据库表字段 | 标识该字段是数据库表字段 |
+| condition | String | 否 | "" | 字段 `where` 实体查询比较条件 | 有值设置则按设置的值为准,没有则为默认全局的 `%s=#{%s}`,[参考](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java) |
+| update | String | 否 | "" | 字段 `update set` 部分注入 | 该属性优先级高于 `el` 属性 |
+| strategy | Enum | 否 | FieldStrategy.DEFAULT | 字段验证策略 | 构建的所有能根据 entity 产出 sql 的字段验证策略,类比于 xml 里的 `if` 标签 |
+| fill | Enum | 否 | FieldFill.DEFAULT | 字段自动填充策略 | 启动自动填充功能所需要的注解 |
+| select | boolean | 否 | true | 是否进行 select 查询 | 大字段可设置为 false 不自动加入 select 查询字段 |
 
-#### value
+### [FieldStrategy](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldStrategy.java)
 
-- 描述：非主键字段数据库真实值
-- 默认：`空` 框架自动赋值 `非空` 按照设置值处理
+| 值 | 描述 |
+| :-: | :-: |
+| IGNORED | 忽略判断 |
+| NOT_NULL | 非NULL判断 |
+| NOT_EMPTY | 非空判断(只对字符串类型字段,其他类型字段依然为非NULL判断) |
+| DEFAULT | 追随全局配置 |
 
-### el
+### [FieldFill](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldFill.java)
 
-- 描述：映射为原生 `#{ ... }` 逻辑
-- 默认：`空` 不处理
-```txt
-当该Field为类对象时, 可使用#{对象.属性}来映射到数据表.
-支持：@TableField(el = "role, jdbcType=BIGINT)
-支持：@TableField(el = "role, typeHandler=com.baomidou.springcloud.typehandler.PhoneTypeHandler")
-```
-
-#### exist
-
-- 描述：是否为数据库表字段
-- 默认：`true` 存在 `false` 不存在
-
-#### condition
-
-- 描述：字段 `where` 实体查询比较条件
-- 默认：`=` 等值
-
-::: warning 注意！
-- 该条件影响所有自动方法的 `where` 条件部分
-- 通常用来处理 `like` 查询，更多查看注解包 `SqlCondition` 常量类
-:::
-
-#### update
-
-- 描述：字段 `update set` 部分注入, 该注解优于 `el` 注解使用
-- 默认：`=` 等值
-```txt
-例如：@TableField(.. , update="%s+1") 其中 %s 会填充为字段
-输出 SQL 为：update 表 set 字段=字段+1 where ...
-例如：@TableField(.. , update="now()") 使用数据库时间
-输出 SQL 为：update 表 set 字段=now() where ...
-```
-
-#### strategy
-
-- 描述：字段验证策略
-- 默认：追随全局配置
-- 可选值：IGNORED、NOT_NULL、NOT_EMPTY、DEFAULT
-
-Java                      | 描述
-------------------------- | ---
-FieldStrategy.IGNORED     |  忽略判断
-FieldStrategy.NOT_NULL    |  非NULL判断
-FieldStrategy.NOT_EMPTY   |  非空判断
-FieldStrategy.DEFAULT     |  追随全局配置
-
-#### select
-
-- 描述：是否进行 `select` 查询
-- 默认：`true` 大字段可设置为 `false` 不加入 `select` 查询范围
-
+| 值 | 描述 |
+| :-: | :-: |
+| DEFAULT | 默认不处理 |
+| INSERT | 插入时填充字段 |
+| UPDATE | 更新时填充字段 |
+| INSERT_UPDATE | 插入和更新时填充字段 |
 
 ## Version
 
