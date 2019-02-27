@@ -15,19 +15,6 @@
 | resultMap | 否 | "" | xml 中 resultMap 的 id | 设置此值则按指定的 resultMap 封装数据 |
 
 
-- 属性：value、resultMap
-
-#### value
-
-- 描述：表名数据库真实值
-- 默认：`空` 框架自动赋值 `非空` 按照设置值处理
-
-#### resultMap``
-
-- 描述：实体映射结果集
-- 默认：`空` 不处理 `值对应 XML 的 resultMap Id` 设置值改变所有 `select` 查询结果集
-
-
 ## TableId
 
 - 描述：主键注解
