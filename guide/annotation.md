@@ -21,7 +21,7 @@
 | 属性 | 类型 | 是否必须指定 | 默认值 | 意义 | 解释 |
 | :-: | :-: | :-: | :-: | :-: |
 | value | String | 否 | "" | 字段名 | 有值设置则按设置的值为准 |
-| type | Enum | 否 | IdType.NONE | 主键类型 | 查看[IdType](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/IdType.java) |
+| type | Enum | 否 | IdType.NONE | 主键类型 | ss |
   
 #### IdType
 
