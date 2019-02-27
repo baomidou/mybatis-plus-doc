@@ -6,9 +6,15 @@
 
 👉 [mybatis-plus-annotation](https://gitee.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation)
 
-## TableName
-
+## @TableName
 - 描述：表名注解
+
+| 属性 | 是否必须指定 | 默认值 | 意义 | 解释 |
+| --- | --- | --- | --- | --- |
+| value | 否 | "" | 表名 | 有值设置则按设置的值为准 |
+| resultMap | 否 | "" | xml 中 resultMap 的 id | 设置此值则按指定的 resultMap 封装数据 |
+
+
 - 属性：value、resultMap
 
 #### value
