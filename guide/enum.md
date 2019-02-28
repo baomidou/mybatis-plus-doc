@@ -4,11 +4,11 @@
 
 解决了繁琐的配置，让 mybatis 优雅的使用枚举属性！
 
-> 自`3.1.0`开始,可通过配置默认枚举处理类来省略扫描通用枚举配置. [默认枚举配置](../config/#defaultEnumTypeHandler)
+> 自`3.1.0`开始,可配置默认枚举处理类来省略扫描通用枚举配置 [默认枚举配置](../config/#defaultEnumTypeHandler)
 >
 > - 升级说明:
 >
->   3.0.8以下版本改变了原生默认行为,升级时请将默认枚举设置为`EnumOrdinalTypeHandler`
+>   `3.1.0` 以下版本改变了原生默认行为,升级时请将默认枚举设置为`EnumOrdinalTypeHandler`
 >
 > - 影响用户:
 >
