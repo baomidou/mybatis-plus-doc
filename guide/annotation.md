@@ -6,7 +6,7 @@
 
 👉 [mybatis-plus-annotation](https://gitee.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation)
 
-## @TableName [源码](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableName.java)
+## [@TableName](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableName.java)
 - 描述：表名注解
 
 | 属性 | 类型 | 必须指定 | 默认值 | 意义 | 解释 |
@@ -15,7 +15,7 @@
 | resultMap | String | 否 | "" | xml 中 resultMap 的 id | 设置此值则按指定的 resultMap 封装数据 |
 
 
-## @TableId [源码](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableId.java)
+## [@TableId](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableId.java)
 - 描述：主键注解
 
 | 属性 | 类型 | 必须指定 | 默认值 | 意义 | 解释 |
@@ -67,19 +67,19 @@
 | UPDATE | 更新时填充字段 |
 | INSERT_UPDATE | 插入和更新时填充字段 |
 
-## Version
+## [@Version](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/Version.java)
 
 - 描述：乐观锁注解、标记 `@Verison` 在字段上
 - 属性：无
 
 
-## EnumValue
+## [@EnumValue](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/EnumValue.java)
 
 - 描述：通枚举类注解
 - 属性：无
 
 
-## TableLogic
+## [@TableLogic](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableLogic.java)
 
 - 描述：表字段逻辑处理注解（逻辑删除）
 - 属性：value、delval
@@ -95,7 +95,7 @@
 - 默认：该值可无、会自动获取全局配置
 
 
-## SqlParser
+## [@SqlParser](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlParser.java)
 
 - 描述：租户注解 `目前只支持注解在 mapper 的方法上`
 - 属性：filter
@@ -106,7 +106,7 @@
 - 默认：`false` 不处理 `true` 过滤
 
 
-## KeySequence
+## [@KeySequence](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/KeySequence.java)
 
 - 描述：序列主键策略 `oracle`
 - 属性：value、resultMap
