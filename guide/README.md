@@ -52,6 +52,7 @@
 
 - [SpringWind](https://gitee.com/baomidou/SpringWind)：Java EE（J2EE）快速开发框架
 - [Crown](https://gitee.com/cancerGit/Crown)：Mybatisplus 3.0 教学版
+- [Crab](https://gitee.com/atcrab/crab)：WEB 极速开发框架
 - [KangarooAdmin](https://git.oschina.net/zhougaojun/KangarooAdmin)：轻量级权限管理框架
 - [iBase4J](https://git.oschina.net/iBase4J/iBase4J)：Java 分布式快速开发基础平台
 - [framework](https://git.oschina.net/sunhan521/framework)：后台管理框架
@@ -82,6 +83,7 @@
 - [pybbs](https://github.com/tomoya92/pybbs)：更好用的Java语言社区(论坛)
 - [SmallBun](https://gitee.com/leshalv/smallbun)：SmallBun企业级开发脚手架
 - [webplus](https://gitee.com/imsroot/webplus)：综合开发平台
+- [x-boot](https://github.com/Exrick/x-boot)：VUE 前后端分离开发平台
 
 ## 接入企业
 
