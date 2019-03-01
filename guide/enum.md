@@ -53,7 +53,7 @@ public enum GradeEnum {
 > 方式二： 枚举属性，实现 IEnum 接口如下：
 
 ```java
-public enum AgeEnum implements IEnum<String> {
+public enum AgeEnum implements IEnum<Integer> {
     ONE(1, "一岁"),
     TWO(2, "二岁"),
     THREE(3, "三岁");
