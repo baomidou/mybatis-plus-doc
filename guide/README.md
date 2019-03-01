@@ -81,6 +81,7 @@
 - [hdw-dubbo](https://github.com/tumao2/hdw-dubbo)：HDW快速开发平台
 - [pybbs](https://github.com/tomoya92/pybbs)：更好用的Java语言社区(论坛)
 - [SmallBun](https://gitee.com/leshalv/smallbun)：SmallBun企业级开发脚手架
+- [webplus](https://gitee.com/imsroot/webplus)：综合开发平台
 
 ## 接入企业
 
