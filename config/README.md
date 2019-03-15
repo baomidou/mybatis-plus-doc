@@ -272,8 +272,6 @@ MyBatis-Plus 全局策略配置，具体请查看 [全局策略配置](#全局�
 此属性在 MyBatis 中原默认值为 false，在 MyBatis-Plus 中，此属性也将用于生成最终的 SQL 的 select body
 
 如果您的数据库命名符合规则无需使用 `@TableField` 注解指定数据库字段名
-
-这个属性会被classpath:mybatis-config.xml 覆盖
 :::
 
 ### aggressiveLazyLoading
