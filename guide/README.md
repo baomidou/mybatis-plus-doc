@@ -84,6 +84,7 @@
 - [SmallBun](https://gitee.com/leshalv/smallbun)：SmallBun企业级开发脚手架
 - [webplus](https://gitee.com/imsroot/webplus)：综合开发平台
 - [x-boot](https://github.com/Exrick/x-boot)：VUE 前后端分离开发平台
+- [nice-blog-sys](https://gitee.com/KiWiPeach/nice-blog-sys)：基于SpirngBoot开发，好看的个人博客。
 
 ## 接入企业
 
