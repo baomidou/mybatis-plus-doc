@@ -330,19 +330,11 @@ mybatis-plus:
     map-underscore-to-camel-case: true
 ```
 
-## 如何使用：`Map下划线自动转驼峰`
+## 如何使用:【Map下划线自动转驼峰】
 
 指的是：`resultType="java.util.Map"`
 
-注意：结果集用 Map 返回时，不同数据库的处理大小写不一样
-
-- 比如 mysql 原样返回 select `test_type` from xxx -> test_type:1
-- Oracle 只返回全大写 select `test_type` from xxx -> TEST_TYPE:1
-- 上述 2 种情况，只要是下划线命名的，使用`Map下划线自动转驼峰` 结果集都是 `testType`
-- 但是针对`Oracle数据库`：请注意 MP 自带方法 selectMaps: 语句是 select test_type as testType from xxx -> 得到的结果：
-
-1.  没配`Map下划线自动转驼峰`: `TESTTYPE`:value
-2.  配了：`testtype`:value(Mysql 数据库会保留驼峰不受影响)
+- todo 注意事项待定,等待3.1.1版本发布后再写
 
 - Java Config Bean 方式
 
