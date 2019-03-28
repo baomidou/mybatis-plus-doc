@@ -67,7 +67,7 @@ INSERT INTO user (id, name, age, email) VALUES
 <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.0.3.RELEASE</version>
+    <version>spring-latest-version</version>
     <relativePath/>
 </parent>
 ```
@@ -209,9 +209,13 @@ export default {
     xmlHttp.open("GET", "https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus-boot-starter.json", false)
     xmlHttp.send(null)
     var starterVersionInfo = JSON.parse(xmlHttp.responseText).value.replace('v', '')
+    xmlHttp.open("GET", "https://img.shields.io/maven-central/v/org.springframework.boot/spring-boot-starter-parent.json", false)
+    xmlHttp.send(null)
+    var springVersionInfo = JSON.parse(xmlHttp.responseText).value.replace('v', '')
     var codeNodeList = document.querySelectorAll('code')
     for (var i = 0; i < codeNodeList.length; i++) {
         codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('starter-latest-version', starterVersionInfo)
+        codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('spring-latest-version', springVersionInfo)
     }
   }
 }

@@ -13,6 +13,11 @@ module.exports = {
       lang: "zh-CN",
       title: "MyBatis-Plus",
       description: "为简化开发而生"
+    },
+    "/en/": {
+      lang: "en-US",
+      title: "MyBatis-Plus",
+      description: "Born To Simplify Development"
     }
   },
   head: [["link", { rel: "icon", href: `/favicon.ico` }]],
@@ -34,15 +39,6 @@ module.exports = {
           {
             text: "配置",
             link: "/config/"
-          },
-          {
-            text: "选择语言",
-            items: [
-              {
-                text: "简体中文",
-                link: "/"
-              }
-            ]
           },
           {
             text: "生态",
@@ -73,28 +69,71 @@ module.exports = {
           }
         ],
         sidebar: {
-          "/guide/": genGuideSidebar(),
-          "/config/": genConfigSidebar()
+          "/guide/": genGuideSidebar(true),
+          "/config/": genConfigSidebar(true)
         }
-      }
+      },
+        "/en/": {
+            label: "English",
+            selectText: "Languages",
+            editLinkText: "Edit this page on GitHub",
+            lastUpdated: "Last Updated",
+            nav: [
+                {
+                    text: "Guide",
+                    link: "/en/guide/"
+                },
+                {
+                    text: "Config",
+                    link: "/en/config/"
+                },
+                {
+                    text: "Ecosystem",
+                    items: [
+                        {
+                            text: "Kisso",
+                            link: "https://gitee.com/baomidou/kisso"
+                        },
+                        {
+                            text: "Lock4j",
+                            link: "https://gitee.com/baomidou/lock4j-spring-boot-starter"
+                        },
+                        {
+                            text: "Dynamic Datasource",
+                            link: "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
+                        }
+                    ]
+                },
+                {
+                    text: "Changelog",
+                    link:
+                        "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
+                }
+
+            ],
+            sidebar: {
+                "/en/guide/": genGuideSidebar(false),
+                "/en/config/": genConfigSidebar(false)
+            }
+        }
     }
   }
 };
 
-function genGuideSidebar() {
+function genGuideSidebar(isZh) {
   return [
     {
-      title: "快速入门",
+      title: isZh ? "快速入门" : "Getting Start",
       collapsable: false,
       children: ["", "quick-start", "install", "config", "annotation"]
     },
     {
-      title: "核心功能",
+      title: isZh ? "核心功能" : "Core",
       collapsable: false,
       children: ["generator", "crud-interface", "wrapper", "page", "sequence"]
     },
     {
-      title: "插件扩展",
+      title: isZh ? "插件扩展" : "Plugin",
       collapsable: false,
       children: [
         "hot-loading",
@@ -122,10 +161,10 @@ function genGuideSidebar() {
   ]
 }
 
-function genConfigSidebar() {
+function genConfigSidebar(isZh) {
   return [
     {
-      title: "配置",
+      title: isZh ? "配置" : "Config",
       collapsable: false,
       children: ["", "generator-config"]
     }
