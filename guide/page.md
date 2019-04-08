@@ -69,7 +69,7 @@ public IPage<User> selectUserPage(Page<User> page, Integer state) {
     // page.setOptimizeCountSql(false);
     // 当 total 为非 0 时(默认为 0),分页插件不会进行 count 查询
     // 要点!! 分页返回的对象与传入的对象是同一个
-    return userMapper.selectPageVo(page, state));
+    return userMapper.selectPageVo(page, state);
 }
 ```
 
