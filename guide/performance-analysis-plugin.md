@@ -11,7 +11,7 @@
     ....
 
     <!-- SQL 执行性能分析，开发环境使用，线上不推荐。 maxTime 指的是 sql 最大执行时长 -->
-    <plugin interceptor="com.baomidou.mybatisplus.plugins.PerformanceInterceptor">
+    <plugin interceptor="com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor">
         <property name="maxTime" value="100" />
         <!--SQL是否格式化 默认false-->
         <property name="format" value="true" />
