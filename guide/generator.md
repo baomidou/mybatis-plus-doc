@@ -85,7 +85,16 @@ public class CodeGenerator {
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });
-
+        /*
+        cfg.setFileCreate(new IFileCreate() {
+            @Override
+            public boolean isCreate(ConfigBuilder configBuilder, FileType fileType, String filePath) {
+                // 判断自定义文件夹是否需要创建
+                checkDir("调用默认方法创建的目录");
+                return false;
+            }
+        });
+        */
         cfg.setFileOutConfigList(focList);
         mpg.setCfg(cfg);
 
