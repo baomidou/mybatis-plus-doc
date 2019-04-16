@@ -62,8 +62,8 @@ public PaginationInterceptor paginationInterceptor() {
 ```yaml
 # 开启 SQL 解析缓存注解生效
 mybatis-plus:
-    global-config:
-        sql-parser-cache: true
+  global-config:
+    sql-parser-cache: true
 ```
 
 
