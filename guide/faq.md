@@ -271,6 +271,7 @@ insert 后主键会自动 set 到实体的 ID 字段，所以你只需要 getId(
 EntityWrapper.sqlSelect 配置你想要查询的字段
 
 ```java
+//2.x
 EntityWrapper<H2User> ew = new EntityWrapper<>();
 ew.setSqlSelect("test_id as id, name, age");//只查询3个字段
 List<H2User> list = userService.selectList(ew);
@@ -279,6 +280,18 @@ for(H2User u:list){
     Assert.assertNotNull(u.getName());
     Assert.assertNull(u.getPrice()); // 这个字段没有查询出来
 }
+
+//3.x
+mapper.selectList(
+    Wrappers.<User>lambdaQuery()
+    .select(User::getId, User::getName)
+);
+//或者使用QueryWrapper
+mapper.selectList(
+    new QueryWrapper<User>()
+    .select("id","name")
+);
+
 ```
 
 ## mapper 层二级缓存问题
