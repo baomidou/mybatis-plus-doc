@@ -227,12 +227,22 @@ FieldStrategy 有三种策略：
 
   ```java
   //updateAllColumnById(entity) // 全部字段更新: 3.0已经移除
-  UpdateWrapper<User> uw = new UpdateWrapper<>();
-  uw.set("email", null);
-  uw.eq("id",4);
-  userMapper.update(new User(), uw);//update user set email=null where id=4
-  User u4 = userMapper.selectById(4);
-  Assert.assertNull(u4.getEmail());
+  mapper.update(
+     new User().setName("mp").setAge(3),
+     Wrappers.<User>lambdaUpdate()
+             .set(User::getEmail, null) //把email设置成null
+             .eq(User::getId, 2)
+  );
+  //也可以参考下面这种写法
+  mapper.update(
+      null,
+      Wrappers.<User>lambdaUpdate()
+         .set(User::getAge, 3)
+         .set(User::getName, "mp")
+         .set(User::getEmail, null) //把email设置成null
+         .eq(User::getId, 2)
+  );
+  
   ```
 
 ## 字段类型为 `bit`、`tinyint(1)` 时映射为 `boolean` 类型
