@@ -19,16 +19,6 @@ public interface ISqlInjector {
      * @param mapperClass      mapper 接口的 class 对象
      */
     void inspectInject(MapperBuilderAssistant builderAssistant, Class<?> mapperClass);
-
-    /**
-     * <p>
-     * 注入 SqlRunner 相关
-     * </p>
-     *
-     * @param configuration 全局配置
-     * @see ISqlRunner
-     */
-    void injectSqlRunner(Configuration configuration);
 }
 ```
 
@@ -53,11 +43,6 @@ public abstract class AbstractSqlInjector implements ISqlInjector {
                 SqlParserHelper.initSqlParserInfoCache(mapperClass);
             }
         }
-    }
-
-    @Override
-    public void injectSqlRunner(Configuration configuration) {
-        // to do nothing
     }
 
     /**
