@@ -58,7 +58,7 @@ public PaginationInterceptor paginationInterceptor() {
 }
 ```
 
-- 相关 SQL 解析如多租户可通过 `@SqlParser(filter=true)` 排除 SQL 解析，注意！！全局配置 sqlParserCache 设置为 true 才生效。
+- 相关 SQL 解析如多租户可通过 `@SqlParser(filter=true)` 排除 SQL 解析，~~注意！！全局配置 sqlParserCache 设置为 true 才生效。~~(3.1.1开始不再需要这一步)
 ```yaml
 # 开启 SQL 解析缓存注解生效
 mybatis-plus:
