@@ -3,7 +3,7 @@
 ::: tip 注入器配置
 全局配置 `sqlInjector` 用于注入 `ISqlInjector` 接口的子类，实现自定义方法注入。
 
-例如逻辑删除注入器 [LogicSqlInjector](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/LogicSqlInjector.java)
+参考默认注入器 [DefaultSqlInjector](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-core/src/main/java/com/baomidou/mybatisplus/core/injector/DefaultSqlInjector.java)
 :::
 
 - SQL 自动注入器接口 `ISqlInjector`
@@ -19,40 +19,6 @@ public interface ISqlInjector {
      * @param mapperClass      mapper 接口的 class 对象
      */
     void inspectInject(MapperBuilderAssistant builderAssistant, Class<?> mapperClass);
-}
-```
-
-- 实现接口抽象类 `AbstractSqlInjector`
-```java
-public abstract class AbstractSqlInjector implements ISqlInjector {
-
-    @Override
-    public void inspectInject(MapperBuilderAssistant builderAssistant, Class<?> mapperClass) {
-        String className = mapperClass.toString();
-        Set<String> mapperRegistryCache = GlobalConfigUtils.getMapperRegistryCache(builderAssistant.getConfiguration());
-        if (!mapperRegistryCache.contains(className)) {
-            List<AbstractMethod> methodList = this.getMethodList();
-            Assert.notEmpty(methodList, "No effective injection method was found.");
-            // 循环注入自定义方法
-            methodList.forEach(m -> m.inject(builderAssistant, mapperClass));
-            mapperRegistryCache.add(className);
-            /**
-             * 初始化 SQL 解析
-             */
-            if (GlobalConfigUtils.getGlobalConfig(builderAssistant.getConfiguration()).isSqlParserCache()) {
-                SqlParserHelper.initSqlParserInfoCache(mapperClass);
-            }
-        }
-    }
-
-    /**
-     * <p>
-     * 获取 注入的方法
-     * </p>
-     *
-     * @return 注入的方法集合
-     */
-    public abstract List<AbstractMethod> getMethodList();
 }
 ```
 
