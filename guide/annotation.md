@@ -1,6 +1,6 @@
 # 注解
 
-> 介绍 `MybatisPlus` 注解包相关类详解
+> 介绍 `MybatisPlus` 注解包相关类详解(更多详细描述可点击查看源码注释)
 
 注解类包：
 
@@ -9,19 +9,21 @@
 ## [@TableName](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableName.java)
 - 描述：表名注解
 
-| 属性 | 类型 | 必须指定 | 默认值 | 意义 | 解释 |
-| :-: | :-: | :-: | :-: | --- | --- |
-| value | String | 否 | "" | 表名 | 有值设置则按设置的值为准 |
-| resultMap | String | 否 | "" | xml 中 resultMap 的 id | 设置此值则按指定的 resultMap 封装数据 |
+| 属性 | 类型 | 必须指定 | 默认值 | 描述 |
+| :-: | :-: | :-: | :-: | --- |
+| value | String | 否 | "" | 表名 |
+| resultMap | String | 否 | "" | xml 中 resultMap 的 id |
+| schema | String | 否 | "" | schema(@since 3.1.1) |
+| keepGlobalPrefix | boolean | 否 | false | 是否保持使用全局的 tablePrefix 的值(如果设置了全局 tablePrefix 且自行设置了 value 的值)(@since 3.1.1) |
 
 
 ## [@TableId](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableId.java)
 - 描述：主键注解
 
-| 属性 | 类型 | 必须指定 | 默认值 | 意义 | 解释 |
-| :-: | :-: | :-: | :-: | :-: | :-: |
-| value | String | 否 | "" | 字段名 | 有值设置则按设置的值为准 |
-| type | Enum | 否 | IdType.NONE | 主键类型 | 主键是为何种类型 |
+| 属性 | 类型 | 必须指定 | 默认值 | 描述 |
+| :-: | :-: | :-: | :-: | :-: |
+| value | String | 否 | "" | 主键字段名 |
+| type | Enum | 否 | IdType.NONE | 主键类型 |
   
 #### [IdType](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/IdType.java)
 
@@ -38,16 +40,17 @@
 ## [@TableField](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableField.java)
 - 描述：字段注解(非主键)
 
-| 属性 | 类型 | 必须指定 | 默认值 | 意义 | 解释 |
-| :-: | :-: | :-: | :-: | :-: | :-: |
-| value | String | 否 | "" | 字段名 | 有值设置则按设置的值为准 |
-| el | String | 否 | "" | 映射为原生 `#{ ... }` 逻辑 | 相当于写在 xml 里的 `#{ ... }` 部分 |
-| exist | boolean | 否 | true | 是否为数据库表字段 | 标识该字段是数据库表字段 |
-| condition | String | 否 | "" | 字段 `where` 实体查询比较条件 | 有值设置则按设置的值为准,没有则为默认全局的 `%s=#{%s}`,[参考](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java) |
-| update | String | 否 | "" | 字段 `update set` 部分注入 | 该属性优先级高于 `el` 属性 |
-| strategy | Enum | 否 | FieldStrategy.DEFAULT | 字段验证策略 | 构建的所有能根据 entity 产出 sql 的字段验证策略,类比于 xml 里的 `if` 标签 |
-| fill | Enum | 否 | FieldFill.DEFAULT | 字段自动填充策略 | 启动自动填充功能所需要的注解 |
-| select | boolean | 否 | true | 是否进行 select 查询 | 大字段可设置为 false 不自动加入 select 查询字段 |
+| 属性 | 类型 | 必须指定 | 默认值 | 描述 |
+| :-: | :-: | :-: | :-: | :-: |
+| value | String | 否 | "" | 字段名 |
+| el | String | 否 | "" | 映射为原生 `#{ ... }` 逻辑,相当于写在 xml 里的 `#{ ... }` 部分 |
+| exist | boolean | 否 | true | 是否为数据库表字段 |
+| condition | String | 否 | "" | 字段 `where` 实体查询比较条件,有值设置则按设置的值为准,没有则为默认全局的 `%s=#{%s}`,[参考](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java) |
+| update | String | 否 | "" | 字段 `update set` 部分注入(该属性优先级高于 `el` 属性) |
+| strategy | Enum | 否 | FieldStrategy.DEFAULT | 字段验证策略 |
+| fill | Enum | 否 | FieldFill.DEFAULT | 字段自动填充策略 |
+| select | boolean | 否 | true | 是否进行 select 查询 |
+| keepGlobalFormat | boolean | 否 | false | 是否保持使用全局的 format 进行处理(@since 3.1.1) |
 
 #### [FieldStrategy](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldStrategy.java)
 
@@ -68,42 +71,30 @@
 | INSERT_UPDATE | 插入和更新时填充字段 |
 
 ## [@Version](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/Version.java)
-
 - 描述：乐观锁注解、标记 `@Verison` 在字段上
-- 属性：无
 
 
 ## [@EnumValue](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/EnumValue.java)
-
-- 描述：通枚举类注解
-- 属性：无
+- 描述：通枚举类注解(注解在枚举字段上)
 
 
 ## [@TableLogic](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableLogic.java)
 
 - 描述：表字段逻辑处理注解（逻辑删除）
-- 属性：value、delval
 
-#### value
-
-- 描述：逻辑未删除值
-- 默认：该值可无、会自动获取全局配置
-
-#### delval
-
-- 描述：逻辑删除值
-- 默认：该值可无、会自动获取全局配置
+| 属性 | 类型 | 必须指定 | 默认值 | 描述 |
+| :-: | :-: | :-: | :-: | :-: |
+| value | String | 否 | "" | 逻辑未删除值 |
+| delval | String | 否 | "" | 逻辑删除值 |
 
 
 ## [@SqlParser](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlParser.java)
 
-- 描述：租户注解 `目前只支持注解在 mapper 的方法上`
-- 属性：filter
+- 描述：租户注解 ~~目前只支持注解在 mapper 的方法上~~(3.1.1开始支持注解在mapper上)
 
-#### filter
-
-- 描述：过滤 SQL 解析
-- 默认：`false` 不处理 `true` 过滤
+| 属性 | 类型 | 必须指定 | 默认值 | 描述 |
+| :-: | :-: | :-: | :-: | :-: |
+| filter | boolean | 否 | false | 过滤 SQL 解析 |
 
 
 ## [@KeySequence](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/KeySequence.java)
@@ -111,13 +102,7 @@
 - 描述：序列主键策略 `oracle`
 - 属性：value、resultMap
 
-#### value
-
-- 描述：序列名
-- 默认：`空` 可指定为数据库对应的序列
-
-#### clazz
-
-- 描述：ID 类型
-- 默认：`Long.class`
-
+| 属性 | 类型 | 必须指定 | 默认值 | 描述 |
+| :-: | :-: | :-: | :-: | :-: |
+| value | String | 否 | "" | 序列名 |
+| clazz | Class | 否 | Long.class | id的类型 |
