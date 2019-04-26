@@ -14,6 +14,13 @@ sidebarDepth: 3
 - 有任何疑问就点开源码看,看不懂**函数**的[点击我学习新知识](https://www.jianshu.com/p/613a6118e2e0)
 :::
 
+::: danger 警告:
+不支持以及不赞成在 RPC 调用中把 Wrapper 进行传输
+1. wrapper 很重
+2. 传输 wrapper 可以类比为你的 controller 用 map 接收值(开发一时爽,维护火葬场)
+3. 正确的 RPC 调用姿势是写一个 DTO 进行传输,被调用方再根据 DTO 执行相应的操作
+:::
+
 ## AbstractWrapper
 ::: tip 说明:
 QueryWrapper(LambdaQueryWrapper) 和 UpdateWrapper(LambdaUpdateWrapper) 的父类  
