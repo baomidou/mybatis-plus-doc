@@ -12,7 +12,7 @@ SpringBoot 配置方式：
         logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
   ```
 
-- 注册 Bean：
+- ~~注册 Bean~~(3.1.1开始不再需要这一步)：
 
   ```java
   import com.baomidou.mybatisplus.core.injector.ISqlInjector;
