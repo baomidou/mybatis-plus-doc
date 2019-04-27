@@ -146,9 +146,9 @@ function genGuideSidebar(isZh) {
         "p6spy",
         "optimistic-locker-plugin",
         "dynamic-datasource",
+        "dts",
         "tenant",
         "dynamic-table-name-parser",
-        "dts",
         "mybatisx-idea-plugin"
       ]
     },
