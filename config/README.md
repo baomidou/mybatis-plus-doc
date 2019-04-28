@@ -12,7 +12,7 @@ sidebarDepth: 3
 
 ## 使用方式
 
-Spring Boot：
+Spring Boot:
 
 ```yaml
 mybatis-plus:
@@ -29,8 +29,8 @@ Spring MVC：
 
 ```xml
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
-    <property name="configuration" ref="configuration"/>
-    <property name="globalConfig" ref="globalConfig"/>
+    <property name="configuration" ref="configuration"/> <!--  非必须  -->
+    <property name="globalConfig" ref="globalConfig"/> <!--  非必须  -->
     ......
 </bean>
 
@@ -39,7 +39,7 @@ Spring MVC：
 </bean>
 
 <bean id="globalConfig" class="com.baomidou.mybatisplus.core.config.GlobalConfig">
-    <property name="dbConfig" ref="dbConfig"/>
+    <property name="dbConfig" ref="dbConfig"/> <!--  非必须  -->
     ......
 </bean>
 
