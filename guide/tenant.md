@@ -13,7 +13,6 @@
 @Bean
 public PaginationInterceptor paginationInterceptor() {
     PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
-    paginationInterceptor.setLocalPage(true);// 开启 PageHelper 的支持
     /*
      * 【测试多租户】 SQL 解析处理拦截器<br>
      * 这里固定写成住户 1 实际情况你可以从cookie读取，因此数据看不到 【 麻花藤 】 这条记录（ 注意观察 SQL ）<br>
