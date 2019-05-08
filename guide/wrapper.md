@@ -19,6 +19,7 @@ sidebarDepth: 3
 1. wrapper 很重
 2. 传输 wrapper 可以类比为你的 controller 用 map 接收值(开发一时爽,维护火葬场)
 3. 正确的 RPC 调用姿势是写一个 DTO 进行传输,被调用方再根据 DTO 执行相应的操作
+4. 我们拒绝接受任何关于 RPC 传输 Wrapper 报错相关的 issue 甚至 pr
 :::
 
 ## AbstractWrapper
