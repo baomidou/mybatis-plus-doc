@@ -263,23 +263,21 @@ boolean save(T entity);
 ### saveBatch
 ``` java
 /**
- * <p>
  * 插入（批量）
- * </p>
  *
- * @param entity 实体对象
+ * @param entityList 实体对象集合
+ * @param batchSize  插入批次数量
  */
-boolean saveBatch(T entity);
+boolean saveBatch(Collection<T> entityList);
 ```
 
 ### saveBatch
 ``` java
 /**
-* <p>
-* 插入（批量）
-* </p>
-* @param entityList 实体对象集合
-* @param batchSize  插入批次数量
+ * 插入（批量）
+ * 
+ * @param entityList 实体对象集合
+ * @param batchSize  插入批次数量
  */
 boolean saveBatch(Collection<T> entityList, int batchSize);
 ```
