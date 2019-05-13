@@ -450,3 +450,12 @@ wrapper.last("limit 1");
 private Boolean status;
 ```
 
+## MybatisPlusException: Your property named "xxx" cannot find the corresponding database column name!
+
+针对3.1.1以及后面的版本：
+
+现象： 单元测试没问题，启动服务器进行调试就出现这个问题
+
+原因： dev-tools, 3.1.1+针对字段缓存，使用.class来作为key替换了原来的className, 而使用dev-tools会把.class使用不同的classLoader加载，导致可能出现找不到的情况
+
+解决方案： 去掉dev-tools插件
