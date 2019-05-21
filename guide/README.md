@@ -37,6 +37,8 @@
 
 > **[Gitee](https://gitee.com/baomidou/mybatis-plus)** | **[Github](https://github.com/baomidou/mybatis-plus)**
 
+[MyBatis-Plus 慕课入门视频教程](https://www.imooc.com/learn/1130) 
+
 ## 参与贡献
 
 欢迎各路好汉一起来参与完善 MyBatis-Plus，我们期待你的 PR！
