@@ -237,7 +237,7 @@ MyBatis 自动映射时未知列或未知属性处理策略，通过该配置可
 
 是否控制台 print mybatis-plus 的 LOGO
 
-### ~~sqlParserCache~~(Deprecated from 3.1.1,直接开启缓存)
+### ~~sqlParserCache~~(Deprecated 3.1.1,直接开启缓存)
 
 - 类型：`boolean`
 - 默认值：`false`
@@ -256,7 +256,7 @@ MyBatis 自动映射时未知列或未知属性处理策略，通过该配置可
 - 类型：`Long`
 - 默认值：`null`
 
-数据标识 ID 部分(影响雪花ID)
+数据标识 ID 部分(影响雪花ID)(workerId 和 datacenterId 一起配置才能重新初始化 Sequence)
 
 ### enableSqlRunner
 
@@ -279,6 +279,13 @@ SQL注入器(starter 下支持`@bean`注入)
 
 通用Mapper父类(影响sqlInjector,只有这个的子类的 mapper 才会注入 sqlInjector 内的 method)
 
+### metaObjectHandler
+
+- 类型：`com.baomidou.mybatisplus.core.handlers.MetaObjectHandler`
+- 默认值：`null`
+
+元对象字段填充控制器(starter 下支持`@bean`注入)
+
 ### dbConfig
 
 - 类型：`com.baomidou.mybatisplus.annotation.DbConfig`
@@ -288,7 +295,7 @@ MyBatis-Plus 全局策略中的 DB 策略配置，具体请查看 [DbConfig](#Db
 
 ## DbConfig
 
-### ~~dbType~~(Deprecated from 3.1.1,这个属性没什么用)
+### ~~dbType~~(Deprecated 3.1.1,这个属性没什么用)
 
 - 类型：`com.baomidou.mybatisplus.annotation.DbType`
 - 默认值：`OTHER`
@@ -310,14 +317,14 @@ MyBatis-Plus 全局策略中的 DB 策略配置，具体请查看 [DbConfig](#Db
 
 表名前缀
 
-### schema
+### schema(since 3.1.1)
 
 - 类型：`String`
 - 默认值：`null`
 
 schema
 
-### columnFormat
+### columnFormat(since 3.1.1)
 
 - 类型：`String`
 - 默认值：`null`
@@ -331,7 +338,7 @@ schema
 
 表名、是否使用下划线命名，默认数据库表使用下划线命名
 
-### ~~columnLike~~(Deprecated from 3.1.1)
+### ~~columnLike~~(Deprecated 3.1.1)
 
 - 类型：`boolean`
 - 默认值：`false`
@@ -366,7 +373,7 @@ schema
 
 逻辑未删除值,([逻辑删除](/guide/logic-delete.md)下有效)
 
-### ~~fieldStrategy~~(Deprecated from 3.1.2,将用下面三个新的取代)
+### ~~fieldStrategy~~(Deprecated 3.1.2,将用下面三个新的取代)
 
 - 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
 - 默认值：`NOT_NULL`
@@ -377,12 +384,12 @@ schema
 该策略约定了如何产出注入的sql,涉及`insert`,`update`以及`wrapper`内部的`entity`属性生成的 where 条件
 :::
 
-### insertStrategy
+### insertStrategy(since 3.1.2)
 
 - 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
 - 默认值：`NOT_NULL`
 
-字段验证策略之 insert(@since 3.1.2)
+字段验证策略之 insert
 
 ::: tip 说明:
 在 insert 的时候的字段验证策略
@@ -390,12 +397,12 @@ schema
 没配则按 {@link #fieldStrategy} 为准
 :::
 
-### updateStrategy
+### updateStrategy(since 3.1.2)
 
 - 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
 - 默认值：`NOT_NULL`
 
-字段验证策略之 update(@since 3.1.2)
+字段验证策略之 update
 
 ::: tip 说明:
 在 update 的时候的字段验证策略
@@ -403,12 +410,12 @@ schema
 没配则按 {@link #fieldStrategy} 为准
 :::
 
-### selectStrategy
+### selectStrategy(since 3.1.2)
 
 - 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
 - 默认值：`NOT_NULL`
 
-字段验证策略之 select(@since 3.1.2)
+字段验证策略之 select
 
 ::: tip 说明:
 在 select 的时候的字段验证策略: wrapper 根据内部 entity 生成的 where 条件
