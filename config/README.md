@@ -128,16 +128,16 @@ TypeHandler 通常用于自定义类型转换。
 - 类型：`Configuration`
 - 默认值：`null`
 
-原生 MyBatis 所支持的配置，具体请查看 [进阶配置](#进阶配置)
+原生 MyBatis 所支持的配置，具体请查看 [Configuration](#Configuration)
 
 #### globalConfig
 
 - 类型：`GlobalConfig`
 - 默认值：`null`
 
-MyBatis-Plus 全局策略配置，具体请查看 [全局策略配置](#全局策略配置)
+MyBatis-Plus 全局策略配置，具体请查看 [GlobalConfig](#GlobalConfig)
 
-## 进阶配置
+## Configuration
 
 本部分（Configuration）的配置大都为 MyBatis 原生支持的配置，这意味着您可以通过 MyBatis XML 配置文件的形式进行配置。
 
@@ -228,7 +228,7 @@ MyBatis 自动映射时未知列或未知属性处理策略，通过该配置可
 
 指定一个提供 Configuration 实例的工厂类。该工厂生产的实例将用来加载已经被反序列化对象的懒加载属性值，其必须包含一个签名方法`static Configuration getConfiguration()`。（从 3.2.3 版本开始）
 
-## 全局策略配置
+## GlobalConfig
 
 ### ~~sqlParserCache~~(从 3.1.1 开始废弃,直接开启缓存)
 
@@ -258,7 +258,7 @@ MyBatis 自动映射时未知列或未知属性处理策略，通过该配置可
 
 MyBatis-Plus 全局策略中的 DB 策略配置，具体请查看 [DB 策略配置](#DB策略配置)
 
-## DB 策略配置
+## DbConfig
 
 ### capitalMode
 
