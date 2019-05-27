@@ -230,35 +230,113 @@ MyBatis 自动映射时未知列或未知属性处理策略，通过该配置可
 
 ## GlobalConfig
 
-### ~~sqlParserCache~~(从 3.1.1 开始废弃,直接开启缓存)
+### banner
+
+- 类型：`boolean`
+- 默认值：`true`
+
+是否控制台 print mybatis-plus 的 LOGO
+
+### ~~sqlParserCache~~(Deprecated from 3.1.1,直接开启缓存)
 
 - 类型：`boolean`
 - 默认值：`false`
 
 是否缓存 Sql 解析，默认不缓存
 
-### sqlSession
+### workerId
 
-- 类型：`SqlSession`
+- 类型：`Long`
 - 默认值：`null`
 
-单例重用 SqlSession
+机器 ID 部分(影响雪花ID)
 
-### sqlSessionFactory
+### datacenterId
 
-- 类型：`SqlSessionFactory`
+- 类型：`Long`
 - 默认值：`null`
 
-缓存当前 Configuration 的 SqlSessionFactory(无需进行配置)
+数据标识 ID 部分(影响雪花ID)
+
+### enableSqlRunner
+
+- 类型：`boolean`
+- 默认值：`false`
+
+是否初始化 SqlRunner(com.baomidou.mybatisplus.extension.toolkit.SqlRunner)
+
+### sqlInjector
+
+- 类型：`com.baomidou.mybatisplus.core.injector.ISqlInjector`
+- 默认值：`com.baomidou.mybatisplus.core.injector.DefaultSqlInjector`
+
+SQL注入器(starter 下支持`@bean`注入)
+
+### superMapperClass
+
+- 类型：`Class`
+- 默认值：`com.baomidou.mybatisplus.core.mapper.Mapper.class`
+
+通用Mapper父类(影响sqlInjector,只有这个的子类的 mapper 才会注入 sqlInjector 内的 method)
 
 ### dbConfig
 
 - 类型：`com.baomidou.mybatisplus.annotation.DbConfig`
 - 默认值：`null`
 
-MyBatis-Plus 全局策略中的 DB 策略配置，具体请查看 [DB 策略配置](#DB策略配置)
+MyBatis-Plus 全局策略中的 DB 策略配置，具体请查看 [DbConfig](#DbConfig)
 
 ## DbConfig
+
+### ~~dbType~~(Deprecated from 3.1.1,这个属性没什么用)
+
+- 类型：`com.baomidou.mybatisplus.annotation.DbType`
+- 默认值：`OTHER`
+
+数据库类型,默认值为`未知的数据库类型`
+如果值为`OTHER`,启动时会根据数据库连接 url 获取数据库类型;如果不是`OTHER`则不会自动获取数据库类型
+
+### idType
+
+- 类型：`com.baomidou.mybatisplus.annotation.IdType`
+- 默认值：`ID_WORKER`
+
+全局默认主键类型
+
+### tablePrefix
+
+- 类型：`String`
+- 默认值：`null`
+
+表名前缀
+
+### schema
+
+- 类型：`String`
+- 默认值：`null`
+
+schema
+
+### columnFormat
+
+- 类型：`String`
+- 默认值：`null`
+
+字段 format(since 3.1.1),例: ``%s``,(对主键无效)
+
+### tableUnderline
+
+- 类型：`boolean`
+- 默认值：`true`
+
+表名、是否使用下划线命名，默认数据库表使用下划线命名
+
+### ~~columnLike~~(Deprecated from 3.1.1)
+
+- 类型：`boolean`
+- 默认值：`false`
+
+是否开启 LIKE 查询，即根据 entity 自动生成的 where 条件中 String 类型字段 是否使用 LIKE，默认不开启
 
 ### capitalMode
 
@@ -267,44 +345,12 @@ MyBatis-Plus 全局策略中的 DB 策略配置，具体请查看 [DB 策略配�
 
 是否开启大写命名，默认不开启
 
-### ~~columnLike~~(从 3.1.1 开始废弃)
+### keyGenerator
 
-- 类型：`boolean`
-- 默认值：`false`
+- 类型：`com.baomidou.mybatisplus.core.incrementer.IKeyGenerator`
+- 默认值：`null`
 
-是否开启 LIKE 查询，即根据 entity 自动生成的 where 条件中 String 类型字段 是否使用 LIKE，默认不开启
-
-### columnUnderline
-
-::: danger 注意
-此属性存在于 2.x 版本上,现同 [mapUnderscoreToCamelCase](#mapunderscoretocamelcase) 融合
-:::
-
-### ~~dbType~~(从 3.1.1 开始废弃,这个属性没什么用)
-
-- 类型：`com.baomidou.mybatisplus.annotation.DbType`
-- 默认值：`OTHER`
-
-数据库类型,默认值为`未知的数据库类型`
-如果值为`OTHER`,启动时会根据数据库连接 url 获取数据库类型;如果不是`OTHER`则不会自动获取数据库类型
-
-### fieldStrategy
-
-- 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
-- 默认值：`NOT_NULL`
-
-字段验证策略
-
-::: tip 说明:
-该策略约定了如何产出注入的sql,涉及`insert`,`update`以及`wrapper`内部的`entity`属性生成的 where 条件
-:::
-
-### idType
-
-- 类型：`com.baomidou.mybatisplus.annotation.IdType`
-- 默认值：`ID_WORKER`
-
-全局默认主键类型
+表主键生成器(starter 下支持`@bean`注入)
 
 ### logicDeleteValue
 
@@ -320,16 +366,52 @@ MyBatis-Plus 全局策略中的 DB 策略配置，具体请查看 [DB 策略配�
 
 逻辑未删除值,([逻辑删除](/guide/logic-delete.md)下有效)
 
-### tablePrefix
+### ~~fieldStrategy~~(Deprecated from 3.1.2,将用下面三个新的取代)
 
-- 类型：`String`
-- 默认值：`null`
+- 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
+- 默认值：`NOT_NULL`
 
-表名前缀
+字段验证策略
 
-### tableUnderline
+::: tip 说明:
+该策略约定了如何产出注入的sql,涉及`insert`,`update`以及`wrapper`内部的`entity`属性生成的 where 条件
+:::
 
-- 类型：`boolean`
-- 默认值：`true`
+### insertStrategy
 
-表名、是否使用下划线命名，默认数据库表使用下划线命名
+- 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
+- 默认值：`NOT_NULL`
+
+字段验证策略之 insert(@since 3.1.2)
+
+::: tip 说明:
+在 insert 的时候的字段验证策略
+目前没有默认值,等 {@link #fieldStrategy} 完全去除掉,会给个默认值 NOT_NULL
+没配则按 {@link #fieldStrategy} 为准
+:::
+
+### updateStrategy
+
+- 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
+- 默认值：`NOT_NULL`
+
+字段验证策略之 update(@since 3.1.2)
+
+::: tip 说明:
+在 update 的时候的字段验证策略
+目前没有默认值,等 {@link #fieldStrategy} 完全去除掉,会给个默认值 NOT_NULL
+没配则按 {@link #fieldStrategy} 为准
+:::
+
+### selectStrategy
+
+- 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
+- 默认值：`NOT_NULL`
+
+字段验证策略之 select(@since 3.1.2)
+
+::: tip 说明:
+在 select 的时候的字段验证策略: wrapper 根据内部 entity 生成的 where 条件
+目前没有默认值,等 {@link #fieldStrategy} 完全去除掉,会给个默认值 NOT_NULL
+没配则按 {@link #fieldStrategy} 为准
+:::
