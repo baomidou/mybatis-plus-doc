@@ -46,7 +46,7 @@
 | el | String | 否 | "" | 映射为原生 `#{ ... }` 逻辑,相当于写在 xml 里的 `#{ ... }` 部分 |
 | exist | boolean | 否 | true | 是否为数据库表字段 |
 | condition | String | 否 | "" | 字段 `where` 实体查询比较条件,有值设置则按设置的值为准,没有则为默认全局的 `%s=#{%s}`,[参考](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java) |
-| update | String | 否 | "" | 字段 `update set` 部分注入(该属性优先级高于 `el` 属性) |
+| update | String | 否 | "" | 字段 `update set` 部分注入, 例如：update="%s+1"：表示更新时会set version=version+1(该属性优先级高于 `el` 属性) |
 | strategy | Enum | 否 | FieldStrategy.DEFAULT | 字段验证策略 |
 | fill | Enum | 否 | FieldFill.DEFAULT | 字段自动填充策略 |
 | select | boolean | 否 | true | 是否进行 select 查询 |
@@ -94,7 +94,7 @@
 
 | 属性 | 类型 | 必须指定 | 默认值 | 描述 |
 | :-: | :-: | :-: | :-: | :-: |
-| filter | boolean | 否 | false | 过滤 SQL 解析 |
+| filter | boolean | 否 | false | true: 表示过滤SQL解析，即不会进入ISqlParser解析链，否则会进解析链并追加例如tenant_id等条件 |
 
 
 ## [@KeySequence](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/KeySequence.java)
@@ -105,4 +105,4 @@
 | 属性 | 类型 | 必须指定 | 默认值 | 描述 |
 | :-: | :-: | :-: | :-: | :-: |
 | value | String | 否 | "" | 序列名 |
-| clazz | Class | 否 | Long.class | id的类型 |
+| clazz | Class | 否 | Long.class | id的类型, 可以指定String.class，这样返回的Sequence值是字符串"1" |
