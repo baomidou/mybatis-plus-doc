@@ -47,10 +47,10 @@ Packages：
 | exist | boolean | N | true | false: NOT a column, just temporary property |
 | condition | String | N | "" | config the expression in where condition, by default it's `%s=#{%s}`, [reference](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java) |
 | update | String | N | "" | e.g. value="version", update="%s+1", when do update, 'version=version+1' will be appended to  `update xx_table set xxx=xxx` (this property has higher priority than `el` ) |
-| insertStrategy | Enum | N | FieldStrategy.DEFAULT | specify the strategy of this column when do insert, e.g.  NOT_NULL: `insert into table_a(<if test="columnProperty != null">column</if>) values (<if test="columnProperty != null">#{columnProperty}</if>)` (since v_3.1.2)  |
-| updateStrategy | Enum | N | FieldStrategy.DEFAULT | specify the strategy of this column when do update, e.g.  IGNORED: `update table_a set column=#{columnProperty}` (since v_3.1.2)  |
-| whereStrategy | Enum | N | FieldStrategy.DEFAULT | specify the strategy of this column when do query, e.g.  NOT_EMPTY: `where <if test="columnProperty != null and columnProperty!=''">column=#{columnProperty}</if>` (since v_3.1.2)  |
-| fill | Enum | N | FieldFill.DEFAULT | auto fill strategy: INSERT, UPDATE, INSERT_UPDATE |
+| insertStrategy | Enum | N | DEFAULT | specify the strategy of this column when do insert, e.g.  NOT_NULL: `insert into table_a(<if test="columnProperty != null">column</if>) values (<if test="columnProperty != null">#{columnProperty}</if>)` (since v_3.1.2)  |
+| updateStrategy | Enum | N | DEFAULT | specify the strategy of this column when do update, e.g.  IGNORED: `update table_a set column=#{columnProperty}` (since v_3.1.2)  |
+| whereStrategy | Enum | N | DEFAULT | specify the strategy of this column when do query, e.g.  NOT_EMPTY: `where <if test="columnProperty != null and columnProperty!=''">column=#{columnProperty}</if>` (since v_3.1.2)  |
+| fill | Enum | N | DEFAULT | auto fill strategy: INSERT, UPDATE, INSERT_UPDATE |
 | select | boolean | N | true | false: this column will not appear in select expression |
 | keepGlobalFormat | boolean | N | false | whether keep the Global column name format(e.g. UnderscoreToCamelCase) (@since 3.1.1) |
 
