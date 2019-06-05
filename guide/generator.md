@@ -225,16 +225,6 @@ MyBatis-Plus 的代码生成器提供了大量的自定义参数供用户选择�
   dataSourceConfig.setPassword("password");
   ```
 
-- 配置 DataSourceConfig
-
-  ```java
-  DataSourceConfig dataSourceConfig = new DataSourceConfig();
-  dataSourceConfig.setUrl("jdbc:mysql://localhost:3306/ant?useUnicode=true&useSSL=false&characterEncoding=utf8");
-  dataSourceConfig.setDriverName("com.mysql.jdbc.Driver");
-  dataSourceConfig.setUsername("root");
-  dataSourceConfig.setPassword("password");
-  ```
-
 ## 自定义模板引擎
 
 请继承类 com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine
