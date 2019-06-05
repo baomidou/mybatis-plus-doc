@@ -57,7 +57,7 @@ INSERT INTO user (id, name, age, email) VALUES
 创建一个空的 Spring Boot 工程（工程将以 H2 作为默认数据库进行演示）
 
 ::: tip
-可以使用 [Spring Initializr](https://start.spring.io/) 快速初始化一个 Spring Boot 工程
+可以使用 [Spring Initializer](https://start.spring.io/) 快速初始化一个 Spring Boot 工程
 :::
 
 ## 添加依赖
