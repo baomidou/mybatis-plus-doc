@@ -328,6 +328,13 @@ configuration.setMapUnderscoreToCamelCase(true);//开启下划线转驼峰
 sqlSessionFactory.setConfiguration(configuration);
 ```
 
+> yml 配置
+```yaml
+mybatis-plus:
+  configuration:
+    jdbc-type-for-null: 'null' 
+```
+
 ## 自定义 sql 里使用 Page 对象传参无法获取
 
 > Page 对象是继承 RowBounds，是 Mybatis 内置对象，无法在 mapper 里获取
