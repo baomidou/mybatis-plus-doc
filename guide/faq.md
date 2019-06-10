@@ -59,13 +59,11 @@ sidebarDepth: 0
   }
   ```
 
-- 检查命名空间是否正常？ 检查包扫描路径`typeAliasesPackage`是否正常？如果扫描不到，MP 无法进行预注入
-
 - 检查是否指定了主键？如未指定，则会导致 `selectById` 相关 ID 无法操作，请用注解 `@TableId` 注解表 ID 主键。当然 `@TableId` 注解可以没有！但是你的主键必须叫 id（忽略大小写）
 
 - SqlSessionFactory不要使用原生的，请使用MybatisSqlSessionFactory
 
-
+- 检查是否自定义了SqlInjector，是否复写了getMethodList()方法，该方法里是否注入了你需要的方法(可参考DefaultSqlInjector)
 
 ## 自定义 SQL 无法执行
 
