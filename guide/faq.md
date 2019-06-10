@@ -338,53 +338,16 @@ mybatis-plus:
 > Page 对象是继承 RowBounds，是 Mybatis 内置对象，无法在 mapper 里获取
 > 请使用自定义 Map/对象，或者通过@Param("page") int page,size 来传参
 
-## 开启查询结果【下划线转驼峰】
-
-> 该功能是 mybatis 原生自带，配置如下
-
-Spring Bean 配置：
-
-```java
-  MybatisConfiguration configuration = new MybatisConfiguration();
-  configuration.setMapUnderscoreToCamelCase(true);//开启下划线转驼峰
-  //...其他配置，见上面的【配置jdbcTypeForNull=NULL】
-```
-
-Spring Boot yml 配置：
-
-```yaml
-mybatis-plus:
-  configuration:
-    map-underscore-to-camel-case: true
-```
-
 ## 如何使用:【Map下划线自动转驼峰】
 
 指的是：`resultType="java.util.Map"`
 
-- todo 注意事项待定,等待3.1.1版本发布后再写
-
-- Java Config Bean 方式
+- spring boot
 
 ```java
-@Configuration
-@MapperScan("com.baomidou.mybatisplus.test.h2.entity.mapper")
-public class MybatisConfigMetaObjOptLockConfig {
-
-    @Bean("mybatisSqlSession")
-    public SqlSessionFactory sqlSessionFactory(DataSource dataSource, ResourceLoader resourceLoader, GlobalConfiguration globalConfiguration) throws Exception {
-        MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
-        MybatisConfiguration configuration = new MybatisConfiguration();
-        configuration.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
-        configuration.setJdbcTypeForNull(JdbcType.NULL);
-        //*注册Map 下划线转驼峰*
-        configuration.setObjectWrapperFactory(new MybatisMapWrapperFactory());
-
-        sqlSessionFactory.setConfiguration(configuration);
-        //...其他配置
-        return sqlSessionFactory.getObject();
-    }
-    ...
+@Bean
+public ConfigurationCustomizer configurationCustomizer() {
+    return i -> i.setObjectWrapperFactory(new MybatisMapWrapperFactory());
 }
 ```
 
