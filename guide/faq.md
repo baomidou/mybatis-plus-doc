@@ -414,7 +414,7 @@ wrapper.last("limit 1");
 3. 交由用户去处理关键字。
 
 ```java
-@TableField(value = "'status'")
+@TableField(value = "`status`")
 private Boolean status;
 ```
 
