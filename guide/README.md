@@ -83,7 +83,8 @@
 - [SmallBun](https://gitee.com/leshalv/smallbun)：SmallBun企业级开发脚手架
 - [webplus](https://gitee.com/imsroot/webplus)：综合开发平台
 - [x-boot](https://github.com/Exrick/x-boot)：VUE 前后端分离开发平台
-- [nice-blog-sys](https://gitee.com/KiWiPeach/nice-blog-sys)：基于SpirngBoot开发，好看的个人博客。
+- [nice-blog-sys](https://gitee.com/KiWiPeach/nice-blog-sys)：基于SpirngBoot开发，好看的个人博客
+- [Diboot](https://github.com/dibo-software/diboot-v2)：轻代码开发平台
 
 ## 接入企业
 
@@ -147,3 +148,4 @@
 - 成都云堆移动信息技术有限公司
 - 杭州一修鸽科技有限公司
 - 北京乾元大通教育科技有限公司
+- 苏州帝博信息技术有限公司
