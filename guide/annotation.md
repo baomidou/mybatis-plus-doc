@@ -47,7 +47,10 @@
 | exist | boolean | 否 | true | 是否为数据库表字段 |
 | condition | String | 否 | "" | 字段 `where` 实体查询比较条件,有值设置则按设置的值为准,没有则为默认全局的 `%s=#{%s}`,[参考](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java) |
 | update | String | 否 | "" | 字段 `update set` 部分注入, 例如：update="%s+1"：表示更新时会set version=version+1(该属性优先级高于 `el` 属性) |
-| strategy | Enum | 否 | FieldStrategy.DEFAULT | 字段验证策略 |
+| ~~strategy | Enum | 否 | FieldStrategy.DEFAULT | 字段验证策略 3.1.2+使用下面3个替代~~ |
+| insertStrategy | Enum | N | DEFAULT | 举例：NOT_NULL: `insert into table_a(<if test="columnProperty != null">column</if>) values (<if test="columnProperty != null">#{columnProperty}</if>)` (since v_3.1.2)  |
+| updateStrategy | Enum | N | DEFAULT | 举例：IGNORED: `update table_a set column=#{columnProperty}` (since v_3.1.2)  |
+| whereStrategy | Enum | N | DEFAULT | 举例：NOT_EMPTY: `where <if test="columnProperty != null and columnProperty!=''">column=#{columnProperty}</if>` (since v_3.1.2)  |
 | fill | Enum | 否 | FieldFill.DEFAULT | 字段自动填充策略 |
 | select | boolean | 否 | true | 是否进行 select 查询 |
 | keepGlobalFormat | boolean | 否 | false | 是否保持使用全局的 format 进行处理(@since 3.1.1) |
