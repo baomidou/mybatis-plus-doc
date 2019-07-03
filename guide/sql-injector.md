@@ -23,3 +23,5 @@ public interface ISqlInjector {
 ```
 
 自定义自己的通用方法可以实现接口 `ISqlInjector` 也可以继承抽象类  `AbstractSqlInjector` 注入通用方法 `SQL 语句` 然后继承 `BaseMapper` 添加自定义方法，全局配置 `sqlInjector` 注入 MP 会自动将类所有方法注入到 `mybatis` 容器中。
+
+> 参考[自定义BaseMapper示例](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-deluxe))
