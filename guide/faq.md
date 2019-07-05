@@ -427,3 +427,14 @@ private Boolean status;
 原因： dev-tools, 3.1.1+针对字段缓存，使用.class来作为key替换了原来的className, 而使用dev-tools会把.class使用不同的classLoader加载，导致可能出现找不到的情况
 
 解决方案： 去掉dev-tools插件
+
+## Error attempting to get column 'create_time' from result set. Cause: java.sql.SQLFeatureNotSupportedException
+
+3.1.0之前版本没问题，针对3.1.1以及后续版本出现上述问题
+
+现象： 集成druid数据源，使用3.1.0之前版本没问题，升级mp到3.1.1+后，运行时报错:java.sql.SQLFeatureNotSupportedException
+
+原因： mp3.1.1+使用了新版jdbc，LocalDateTime等新日期类型处理方式升级，但druid不支持，[参考issue](https://github.com/baomidou/mybatis-plus/issues/1245)
+
+解决方案： 1. 坐等druid升级解决这个问题；2.保持mp版本3.1.0；3.紧跟mp版本，换掉druid数据源
+
