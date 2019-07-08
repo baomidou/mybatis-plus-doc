@@ -7,12 +7,6 @@
     "build": "vuepress build"
   },
   "devDependencies": {
-    "cz-conventional-changelog": "^2.1.0",
-    "vuepress": "^0.14.8"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+    "vuepress": "^1.0.2"
   }
 }
