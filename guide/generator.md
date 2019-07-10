@@ -270,7 +270,7 @@ entity2.java.vm
 自定义属性注入abc=$!{cfg.abc}
 ```
 
-## 注入查询字段其他信息
+## 字段其他信息查询注入
 
 ![relationship](/img/custom-fields.png)
 
