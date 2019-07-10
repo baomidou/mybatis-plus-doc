@@ -270,6 +270,25 @@ entity2.java.vm
 自定义属性注入abc=$!{cfg.abc}
 ```
 
+## 注入查询字段其他信息
+
+![relationship](/img/custom-fields.png)
+
+```java
+new DataSourceConfig().setDbQuery(new MySqlQuery() {
+
+    /**
+     * 重写父类预留查询自定义字段<br>
+     * 这里查询的 SQL 对应父类 tableFieldsSql 的查询字段，默认不能满足你的需求请重写它<br>
+     * 模板中调用：  table.fields 获取所有字段信息，
+     * 然后循环字段获取 field.customMap 从 MAP 中获取注入字段如下  NULL 或者 PRIVILEGES
+     */
+    @Override
+    public String[] fieldCustom() {
+        return new String[]{"NULL", "PRIVILEGES"};
+    }
+})
+```
 
 <script>
 export default {
