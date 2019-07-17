@@ -85,6 +85,7 @@
 - [x-boot](https://github.com/Exrick/x-boot)：VUE 前后端分离开发平台
 - [nice-blog-sys](https://gitee.com/KiWiPeach/nice-blog-sys)：基于SpirngBoot开发，好看的个人博客
 - [Diboot](https://github.com/dibo-software/diboot-v2)：轻代码开发平台
+- [tyboot](https://gitee.com/magintursh/tyboot)：基于SpringBoot的快速开发脚手架
 
 ## 接入企业
 
