@@ -164,7 +164,7 @@ isNull(boolean condition, R column)
 isNotNull(R column)
 isNotNull(boolean condition, R column)
 ```
-- 字段 IS NULL
+- 字段 IS NOT NULL
 - 例: `isNotNull("name")`--->`name is not null`
 
 ### in
