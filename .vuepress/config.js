@@ -57,7 +57,7 @@ module.exports = {
                   "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
               },
               {
-                text: "jobs 分布式任务调度平台",
+                text: "Jobs 分布式任务调度平台",
                 link: "https://github.com/baomidou/jobs"
               }
             ]
@@ -107,7 +107,7 @@ module.exports = {
                             link: "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
                         },
                         {
-                          text: "jobs Scheduling Platform",
+                          text: "Jobs Scheduling Platform",
                           link: "https://github.com/baomidou/jobs"
                         }
                     ]
