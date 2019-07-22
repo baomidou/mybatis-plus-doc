@@ -55,6 +55,10 @@ module.exports = {
                 text: "Dynamic Datasource 动态数据源",
                 link:
                   "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
+              },
+              {
+                text: "jobs 分布式任务调度平台",
+                link: "https://github.com/baomidou/jobs"
               }
             ]
           },
@@ -101,6 +105,10 @@ module.exports = {
                         {
                             text: "Dynamic Datasource",
                             link: "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
+                        },
+                        {
+                          text: "jobs Scheduling Platform",
+                          link: "https://github.com/baomidou/jobs"
                         }
                     ]
                 },
