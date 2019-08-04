@@ -128,4 +128,9 @@ mybatis-plus:
 ```
 以上两种方式任选其一,然后在枚举中复写toString方法即可.
 
+3.JavaBean方式序列化枚举 ,无需重写toString方法
+```	
+		@JSONType(serializeEnumAsJavaBean = true)
+		public enum GradeEnum {
+```
 
