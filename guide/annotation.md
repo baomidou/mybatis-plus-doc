@@ -12,9 +12,20 @@
 | 属性 | 类型 | 必须指定 | 默认值 | 描述 |
 | :-: | :-: | :-: | :-: | --- |
 | value | String | 否 | "" | 表名 |
-| resultMap | String | 否 | "" | xml 中 resultMap 的 id |
 | schema | String | 否 | "" | schema(@since 3.1.1) |
 | keepGlobalPrefix | boolean | 否 | false | 是否保持使用全局的 tablePrefix 的值(如果设置了全局 tablePrefix 且自行设置了 value 的值)(@since 3.1.1) |
+| resultMap | String | 否 | "" | xml 中 resultMap 的 id |
+| autoResultMap | boolean | 否 | false | 是否自动构建 resultMap 并使用(如果设置 resultMap 则不会进行 resultMap 的自动构建并注入)(@since 3.1.2) |
+
+::: warning 关于`autoResultMap`的说明:
+从mp的原理上讲,因为底层是mybatis,所以一些mybatis的常识你要知道,mp只是帮你注入了常用crud
+注入之前可以说是动态的(根据你entity的字段以及注解变化而变化),但是注入之后是静态的(等于你写在xml的东西)
+而对于直接指定`typeHandler`,mybatis只支持你写在2个地方:
+1. 定义在resultMap里,只作用于select查询的返回结果封装
+2. 定义在`insert`和`update`sql的`#{property}`里的`property`后面(例:`#{property,typehandler=xxx.xxx.xxx}`),只作用于`设置值`
+而除了这两种直接指定`typeHandler`,mybatis有一个全局的扫描你自己的`typeHandler`包的配置,这是根据你的`property`的类型去找`typeHandler`并使用
+这个属性的作用就是:如果你的`property`类型... todo
+:::
 
 
 ## [@TableId](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableId.java)
