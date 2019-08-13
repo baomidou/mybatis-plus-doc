@@ -62,7 +62,7 @@
 - [springboot_mybatisplus](https://git.oschina.net/z77z/springboot_mybatisplus)：基于 SpringBoot 的美女图片爬虫系统
 - [guns](http://git.oschina.net/naan1993/guns)：guns 后台管理系统
 - [maple](https://git.oschina.net/blind/maple)：maple 企业信息化的开发基础平台
-- [jeeweb-mybatis](https://git.oschina.net/dataact/jeeweb-mybatis)：JeeWeb 敏捷开发平台
+- [jeeweb-mybatis](https://gitee.com/dataact/jeeweb)：JeeWeb 敏捷开发平台
 - [youngcms](https://gitee.com/fumiao/youngcms)：CMS 平台
 - [king-admin](https://github.com/oukingtim/king-admin)：前后端分离的基础权限管理后台
 - [jeefast](https://gitee.com/theodo/jeefast)：前后端分离 Vue 快速开发平台
