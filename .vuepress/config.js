@@ -68,8 +68,17 @@ module.exports = {
                             "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
                     },
                     {
-                        text: "2.0 文档",
-                        link: "https://baomidou.gitee.io/mybatis-plus-doc/#/"
+                        text: "3.0 文档",
+                        items: [
+                            {
+                                text: "3.0 文档",
+                                link: "https://mybatis.plus"
+                            },
+                            {
+                                text: "2.0 文档",
+                                link: "https://baomidou.gitee.io/mybatis-plus-doc/#/"
+                            }
+                        ]
                     }
                 ],
                 sidebar: {
