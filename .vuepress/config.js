@@ -174,8 +174,7 @@ function genGuideSidebar(isZh) {
             collapsable: false,
             children: [
                 "faq",
-                "donate",
-                "simple-theory"
+                "donate"
             ]
         }
     ]
