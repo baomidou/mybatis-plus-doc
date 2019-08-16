@@ -71,11 +71,11 @@ module.exports = {
                         text: "3.0 文档",
                         items: [
                             {
-                                text: "3.0 文档",
+                                text: "3.X 文档",
                                 link: "https://mybatis.plus"
                             },
                             {
-                                text: "2.0 文档",
+                                text: "2.X 文档",
                                 link: "https://baomidou.gitee.io/mybatis-plus-doc/#/"
                             }
                         ]
