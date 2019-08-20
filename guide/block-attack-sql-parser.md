@@ -14,7 +14,7 @@ public PaginationInterceptor paginationInterceptor() {
     sqlParserList.add(new BlockAttackSqlParser() {
             @Override
             public void processDelete(Delete delete) {
-                // 如果你想自定义干掉什么，可以重写父类方法像这样子
+                // 如果你想自定义做点什么，可以重写父类方法像这样子
                 if ("user".equals(delete.getTable().getName())) {
                     // 自定义跳过某个表，其他关联表可以调用 delete.getTables() 判断
                     return ;
