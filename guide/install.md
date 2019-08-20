@@ -55,7 +55,7 @@ compile group: 'com.baomidou', name: 'mybatis-plus', version: 'latest-version'
 
 ## Snapshot
 
-快照 SNAPSHOT 版本需要添加仓库，且版本号为快照版本。
+快照 SNAPSHOT 版本需要添加仓库，且版本号为快照版本 [点击查看最新快照版本号](https://oss.sonatype.org/content/repositories/snapshots/com/baomidou/mybatis-plus-boot-starter/)。
 
 Maven：
 
