@@ -2,6 +2,10 @@
 
 > 该功能解决动态表名支持 `3.1.1` 以上版本
 
+简单示例：
+
+👉 [mybatis-plus-sample-dynamic-tablename](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-dynamic-tablename)
+
 源码文件：
 
 👉 [DynamicTableNameParser](https://github.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/parsers)
