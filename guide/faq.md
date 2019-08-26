@@ -29,6 +29,14 @@ sidebarDepth: 0
   private String noColumn;
   ```
 
+## 排除实体父类属性
+```
+/**
+ * 忽略父类 createTime 字段映射
+ */
+private transient String createTime;
+```
+
 ## 出现 `Invalid bound statement (not found)` 异常
 
 > 不要怀疑，正视自己，这个异常肯定是你插入的姿势不对……
