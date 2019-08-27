@@ -51,7 +51,7 @@
 
 - [SpringWind](https://gitee.com/baomidou/SpringWind)：Java EE（J2EE）快速开发框架
 - [Crown](https://gitee.com/cancerGit/Crown)：Mybatisplus 3.0 教学版
-- [Crab](https://gitee.com/atcrab/crab)：WEB 极速开发框架
+- [Crab](http://crab.kuaituima.com)：WEB 极速开发框架
 - [KangarooAdmin](https://git.oschina.net/zhougaojun/KangarooAdmin)：轻量级权限管理框架
 - [iBase4J](https://git.oschina.net/iBase4J/iBase4J)：Java 分布式快速开发基础平台
 - [framework](https://git.oschina.net/sunhan521/framework)：后台管理框架
@@ -86,6 +86,7 @@
 - [nice-blog-sys](https://gitee.com/KiWiPeach/nice-blog-sys)：基于SpirngBoot开发，好看的个人博客
 - [Diboot](https://github.com/dibo-software/diboot-v2)：轻代码开发平台
 - [tyboot](https://gitee.com/magintursh/tyboot)：基于SpringBoot的快速开发脚手架
+- [ac-blog](https://github.com/memo012/ac-blog) ac博客网站
 
 ## 接入企业
 
