@@ -47,8 +47,8 @@
 第三方录制的优秀视频教程，加入该列表必须是免费教程。
 :::
 
-[MyBatis-Plus 入门 - 视频教程 - 慕课网](https://www.imooc.com/learn/1130) 
-[MyBatis-Plus 进阶 - 视频教程 - 慕课网](https://www.imooc.com/learn/1171) 
+- [MyBatis-Plus 入门 - 视频教程 - 慕课网](https://www.imooc.com/learn/1130) 
+- [MyBatis-Plus 进阶 - 视频教程 - 慕课网](https://www.imooc.com/learn/1171) 
 
 
 ## 优秀案例
