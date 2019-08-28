@@ -21,7 +21,9 @@ public PaginationInterceptor paginationInterceptor() {
     TenantSqlParser tenantSqlParser = new TenantSqlParser();
     tenantSqlParser.setTenantHandler(new TenantHandler() {
         @Override
-        public Expression getTenantId() {
+        public Expression getTenantId(boolean where) {
+            // 该 where 条件 3.2.0 版本开始添加的，用于分区是否为在 where 条件中使用
+            // 此判断用于支持返回多个租户 ID 场景，具体使用查看示例工程
             return new LongValue(1L);
         }
 
