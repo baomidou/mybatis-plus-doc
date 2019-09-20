@@ -146,6 +146,7 @@ List<T> selectByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
 ```
 
 ### selectOne
+- 如果逻辑非唯一该方法不会自动替您 `limit 1` 你需要 wrapper.last("limit 1") 设置唯一性。
 ``` java
 /**
  * <p>
