@@ -95,6 +95,7 @@
 - [Diboot](https://github.com/dibo-software/diboot-v2)：轻代码开发平台
 - [tyboot](https://gitee.com/magintursh/tyboot)：基于SpringBoot的快速开发脚手架
 - [ac-blog](https://github.com/memo012/ac-blog) ac博客网站
+- [spider-flow](https://gitee.com/jmxd/spider-flow) 新一代爬虫平台，以图形化方式定义爬虫流程，不写代码即可完成爬虫
 
 ## 接入企业
 
