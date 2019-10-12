@@ -378,7 +378,7 @@ set(boolean condition, String column, Object val)
 setSql(String sql)
 ```
 - 设置 SET 部分 SQL
-- 例: `setSql("name = '老李头')`
+- 例: `setSql("name = '老李头'")`
 
 ### lambda
 - 获取 `LambdaWrapper`  
