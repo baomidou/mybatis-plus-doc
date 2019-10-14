@@ -154,7 +154,7 @@ MyBatis-Plus 全局策略配置，具体请查看 [GlobalConfig](#GlobalConfig)
 如果您的数据库命名符合规则无需使用 `@TableField` 注解指定数据库字段名
 :::
 
-#### defaultEnumTypeHandler
+### defaultEnumTypeHandler
 
 - 类型：`Class<? extends TypeHandler`
 - 默认值：`org.apache.ibatis.type.EnumTypeHandler`
