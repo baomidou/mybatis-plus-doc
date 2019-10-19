@@ -561,6 +561,11 @@ IPage<Map<String, Object>> pageMaps(IPage<T> page, Wrapper<T> queryWrapper);
 使用详细见[源码注释](https://gitee.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/additional)
 :::
 
+### [AlwaysUpdateSomeColumnById](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/additional/AlwaysUpdateSomeColumnById.java)
+``` java
+int alwaysUpdateSomeColumnById(T entity);
+```
+
 ### [insertBatchSomeColumn](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/additional/InsertBatchSomeColumn.java)
 ``` java
 int insertBatchSomeColumn(List<T> entityList);
