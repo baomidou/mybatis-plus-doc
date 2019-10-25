@@ -31,7 +31,7 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 - [【全民云计算】云主机低至2折](https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=5wbjwd1y)
 
 <p align="center">
-Hosted by <a href="https://pages.coding.me" target="_blank" style="font-weight:bold">Coding Pages</a> & <a href="https://pages.github.com" target="_blank" style="font-weight:bold">Github Pages</a>
+Hosted by <a href="https://pages.coding.me" target="_blank" style="font-weight:bold">Coding Pages</a> & <a href="https://pages.github.com" target="_blank" style="font-weight:bold">Github Pages</a>  & <a href="http://www.jetbrains.com" target="_blank" style="font-weight:bold">Idea</a>
 </p>
 
 <script>
