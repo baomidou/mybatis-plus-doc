@@ -31,7 +31,7 @@ Three ways:
 
 ## Runtime Exception `Invalid bound statement (not found)` 
 
-> No doubt, it's caused by incorrect configuration/enviroment
+> No doubt, it's caused by incorrect configuration/environment
 
 - Check whether the jar confliction
 
@@ -53,13 +53,13 @@ Three ways:
   @Bean
   public MapperScannerConfigurer mapperScannerConfigurer(){
       MapperScannerConfigurer scannerConfigurer = new MapperScannerConfigurer();
-      //you can also get the basePackage via enviroment configuration
+      //you can also get the basePackage via environment configuration
       scannerConfigurer.setBasePackage("com.yourpackage.*.mapper");
       return scannerConfigurer;
   }
   ```
 
-- Check whether @TableId(Primary Key) is specified. If not,  methods for ById(such as `selectById`) will encounter this error. If one of the property named "id", @TableId is optional(MP treat "id" as Primay Key)
+- Check whether @TableId(Primary Key) is specified. If not,  methods for ById(such as `selectById`) will encounter this error. If one of the property named "id", @TableId is optional(MP treat "id" as Primary Key)
 
 - Check whether MybatisSqlSessionFactory is used, instead of SqlSessionFactory
 
@@ -261,7 +261,7 @@ jdbc:mysql://127.0.0.1:3306/mp?tinyInt1isBit=false
 
 CAUSE: 2 PaginationInterceptor configured. Check your configuration and keep one only
 
-## Return Primay Key after Insert 
+## Return Primary Key after Insert 
 
 Primary Key will be set to Entity.id property, just use getId() to get it
 
@@ -409,9 +409,9 @@ wrapper.last("limit 1");
 
 ## Deal the KEY WORD of database in 3.x
 
-For 2.x, KEY WORD of database will be recognized and dealt automaticly. But this feature is removed from 3.x
+For 2.x, KEY WORD of database will be recognized and dealt automatically. But this feature is removed from 3.x
 
-  - Mp supports multiple databases, and those databases have different solution for KEY WORD, it's hard for maintainance
+  - Mp supports multiple databases, and those databases have different solution for KEY WORD, it's hard for maintenance
   - We don't recommend to use KEY WORD for column name
   - So let user to deal the KEY WORD, for example:
 
@@ -423,6 +423,6 @@ private String status;
 ## MybatisPlusException: Your property named "xxx" cannot find the corresponding database column name!
 
   - Effected version: v_3.1.1+
-  - Appearance: Code works fine for Unit Test, but failed for debuging on appication server
+  - Appearance: Code works fine for Unit Test, but failed for debugging on application server
   - CAUSE: dev-tools, MP use Class Object(User.class) as the Cache Key instead of ClassName for table info cache since v_3.1.1, dev-tools will use different ClassLoader to load the classes, which will cause such problem
   - Solution: remove dev-tools from pom file
