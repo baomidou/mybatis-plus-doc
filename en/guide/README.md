@@ -18,13 +18,13 @@ Our Vision is to be the best Partner of Mybatis, just like Game: [Contra](/img/c
 - **Powerful CRUD**：general Mapper/Service inside, you can CURD by few configuration, powerful condition constructor can simplify programming. for single table CRUD, XML is needless
 - **Lambda**：Simplify query by using Lambda, and avoid column name typo
 - **Multiple DB**：Support MySQL, MariaDB, Oracle, DB2, H2, HSQL, SQLite, Postgre, SQLServer2005, SQLServer, etc.
-- **Auto generate PK**：4 strategies for Primay Key, free configuration
+- **Auto generate PK**：4 strategies for Primary Key, free configuration
 - **ActiveRecord**：You can use entity for CRUD, just let entity extends Model
 - **Customize general methods**：You can customize general methods, "Write once, use anywhere"
-- **Code Generator**：You can generate Mapper/Model(Entity)/Service/Controller, and customized code template is also supportted(Freemarker, Velocity)
+- **Code Generator**：You can generate Mapper/Model(Entity)/Service/Controller, and customized code template is also supported(Freemarker, Velocity)
 - **Pagination**：Physical pagination, transparent to developers
 - **Performance Interceptor**：Can show sql execution time (Suggest to open it when doing development)
-- **Smart Interceptor**：Can stop execution of delete/update for full table, and customized intercepting rule is also supportted, which can prevent misoperation
+- **Smart Interceptor**：Can stop execution of delete/update for full table, and customized intercepting rule is also supported, which can prevent misoperation
 - **Sql Injection Interceptor**：Can detect and avoid the sql injection
 
 ## Structure

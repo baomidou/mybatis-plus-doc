@@ -84,7 +84,7 @@ Packages：
 
 - Description：annotation to specify the Logic delete column
 
-| Properties | Type | Required | Defalut val | Description |
+| Properties | Type | Required | Default val | Description |
 | :-: | :-: | :-: | :-: | :-: |
 | value | String | N | "" | value for non-deleted records |
 | delval | String | N | "" | value for deleted records |
@@ -92,7 +92,7 @@ Packages：
 
 ## [@SqlParser](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlParser.java)
 
-- Description：annotation for tenant (annotation for mapper is supportted since 3.1.1)
+- Description：annotation for tenant (annotation for mapper is supported since 3.1.1)
 
 | Properties | Type | Required | Default Val | Description |
 | :-: | :-: | :-: | :-: | :-: |
@@ -103,7 +103,7 @@ Packages：
 
 - Description：use DB sequence as PK, such as `oracle`.sequence
 
-| Properties | Type | Required | Defalut val | Description |
+| Properties | Type | Required | Default val | Description |
 | :-: | :-: | :-: | :-: | :-: |
 | value | String | Y | "" | sequence name |
 | clazz | Class | N | Long.class | return value type, if String.class, will return Number.toString: "1" |
