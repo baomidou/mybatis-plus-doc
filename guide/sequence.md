@@ -52,7 +52,10 @@ public class Child extends Parent{
 Spring MVC：xml配置，请参考【[安装集成](/install)】
 
 
-## 如何使用Sequence作为主键，但是实体主键类型是String(3.1.2开始无需关心)
+## 如何使用Sequence作为主键，但是实体主键类型是String
+::: tip
+自版本3.1.2开始,此属性废除，无需指定
+:::
 也就是说，表的主键是varchar2, 但是需要从sequence中取值
 
 * 1.实体定义@KeySequence 注解clazz指定类型String.class

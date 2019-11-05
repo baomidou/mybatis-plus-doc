@@ -147,7 +147,7 @@ function genGuideSidebar(isZh) {
         {
             title: isZh ? "核心功能" : "Core",
             collapsable: false,
-            children: ["generator", "crud-interface", "wrapper", "page", "sequence"]
+            children: ["generator", "crud-interface", "wrapper", "page", "sequence", "id-generator"]
         },
         {
             title: isZh ? "插件扩展" : "Plugin",
