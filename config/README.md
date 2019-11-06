@@ -286,6 +286,13 @@ SQL注入器(starter 下支持`@bean`注入)
 
 元对象字段填充控制器(starter 下支持`@bean`注入)
 
+### idGenerator(since 3.2.1)
+
+- 类型：`com.baomidou.mybatisplus.core.incrementer.IdGenerator`
+- 默认值：`null`
+
+Id生成器(starter 下支持`@bean`注入)
+
 ### dbConfig
 
 - 类型：`com.baomidou.mybatisplus.annotation.DbConfig`

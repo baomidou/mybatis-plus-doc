@@ -3,7 +3,7 @@
 ::: tip
 自3.2.1开始，配合ID_WORKER，ID_WORKER_STR一起使用。
 
-默认使用雪花算法(com.baomidou.mybatisplus.core.incrementer.DefaultIdGenerator)。
+默认使用雪花算法(com.baomidou.mybatisplus.core.incrementer.SnowflakeIdGenerator)。
 :::
 
 ```java
@@ -23,11 +23,4 @@ public IdGenerator idGenerator() {
     return new CustomIdGenerator();
 }
 
-//方式三
-@Bean
-public GlobalConfig globalConfiguration() {
-    GlobalConfig conf = new GlobalConfig();
-    conf.setIdGenerator(new CustomIdGenerator());
-    return conf;
-}
 ```
