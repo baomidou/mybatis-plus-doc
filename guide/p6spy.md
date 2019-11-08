@@ -60,5 +60,6 @@ outagedetectioninterval=2
 ::: warning 注意！
 - driver-class-name 为 p6spy 提供的驱动类
 - url 前缀为 jdbc:p6spy 跟着冒号为对应数据库连接地址
+- 如果你想看到批量日志， excludecategories 属性去掉 batch 配置，最后一条重复正常操作打印重复因为 flush 导致正常。
 - 该插件有性能损耗，不建议生产环境使用。
 :::
