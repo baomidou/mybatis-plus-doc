@@ -8,5 +8,8 @@
   },
   "devDependencies": {
     "vuepress": "^1.0.2"
+  },
+  "dependencies": {
+    "element-ui": "^2.12.0"
   }
 }
