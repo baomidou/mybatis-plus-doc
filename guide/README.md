@@ -4,6 +4,8 @@
 
 <p class="demo">
     <a href="https://www.aliyun.com/1111/2019/home?userCode=5wbjwd1y" target="_blank"><img style="width:216px;height:116px;" src="https://img.alicdn.com/tfs/TB166qCkXT7gK0jSZFpXXaTkpXa-750-400.png"/></a>
+    &nbsp;&nbsp; 亲！请给 MP 投一票
+    <a href="https://www.oschina.net/project/top_cn_2019?sort=1" target="_blank">点击 2019 年度最受欢迎中国开源软件</a> Ctrl + F 输入 Mybatis-Plus 投一票
 </p>
 
 ::: tip 愿景
