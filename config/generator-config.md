@@ -130,8 +130,20 @@ sidebarDepth: 3
 ### include
 需要包含的表名，允许正则表达式（与exclude二选一配置）
 
+自3.2.1起，不在支持正则表达式,请使用[likeTable](#liketable)
+
+### likeTable
+
+自3.2.1起，模糊匹配表名（与notLikeTable二选一配置）
+
 ### exclude
 需要排除的表名，允许正则表达式
+
+自3.2.1起，不在支持正则表达式,请使用[notLikeTable](#notliketable)
+
+### notLikeTable
+
+自3.2.1起，模糊排除表名
 
 ### entityColumnConstant
 【实体】是否生成字段常量（默认 false）
