@@ -1,6 +1,6 @@
 # 安装
 
-全新的 `MyBatis-Plus` 3.0 版本基于 JDK8，提供了 `lambda` 形式的调用，所以安装集成 MP3.0 要求如下：
+全新的 `MyBatis-Plus` 3.x 版本基于 JDK8，提供了 `lambda` 形式的调用，所以安装集成 MP3.x 要求如下：
 
 - JDK 8+
 - Maven or Gradle
@@ -21,12 +21,18 @@ Maven：
     <artifactId>mybatis-plus-boot-starter</artifactId>
     <version>starter-latest-version</version>
 </dependency>
+<dependency>
+    <groupId>com.baomidou</groupId>
+    <artifactId>mybatis-plus-extension</artifactId>
+    <version>starter-latest-version</version>
+</dependency>
 ```
 
 Gradle：
 
 ```groovy
 compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: 'starter-latest-version'
+compile group: 'com.baomidou', name: 'mybatis-plus-extension', version: 'starter-latest-version'
 ```
 
 ### Spring MVC
