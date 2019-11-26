@@ -34,7 +34,10 @@ spring:
 ```
 - spy.properties 配置：
 ```xml
-module.log=com.p6spy.engine.logging.P6LogFactory,com.p6spy.engine.outage.P6OutageFactory
+#3.2.1以上使用
+modulelist=com.baomidou.mybatisplus.extension.p6spy.MybatisPlusLogFactory
+#3.2.1以下使用或者不配置
+#modulelist=com.p6spy.engine.logging.P6LogFactory,com.p6spy.engine.outage.P6OutageFactory
 # 自定义日志打印
 logMessageFormat=com.baomidou.mybatisplus.extension.p6spy.P6SpyLogger
 #日志输出到控制台
@@ -46,7 +49,7 @@ deregisterdrivers=true
 # 取消JDBC URL前缀
 useprefix=true
 # 配置记录 Log 例外,可去掉的结果集有error,info,batch,debug,statement,commit,rollback,result,resultset.
-excludecategories=info,debug,result,batch,resultset
+excludecategories=info,debug,result,commit,resultset
 # 日期格式
 dateformat=yyyy-MM-dd HH:mm:ss
 # 实际驱动可多个
@@ -60,6 +63,8 @@ outagedetectioninterval=2
 ::: warning 注意！
 - driver-class-name 为 p6spy 提供的驱动类
 - url 前缀为 jdbc:p6spy 跟着冒号为对应数据库连接地址
-- 如果你想看到批量日志， excludecategories 属性去掉 batch 配置，最后一条重复正常操作打印重复因为 flush 导致正常。
+- 打印出sql为null,在excludecategories增加commit
+- 批量操作不打印sql,去除excludecategories中的batch
+- 批量操作打印重复的问题请使用MybatisPlusLogFactory (3.2.1新增）
 - 该插件有性能损耗，不建议生产环境使用。
 :::
