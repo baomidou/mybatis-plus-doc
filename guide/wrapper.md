@@ -267,24 +267,24 @@ or(boolean condition)
 - 例: `eq("id",1).or().eq("name","老王")`--->`id = 1 or name = '老王'`
 
 ``` java{2}
-or(Function<Param, Param> func)
-or(boolean condition, Function<Param, Param> func)
+or(Consumer<Param> consumer)
+or(boolean condition, Consumer<Param> consumer)
 ```
 - OR 嵌套
 - 例: `or(i -> i.eq("name", "李白").ne("status", "活着"))`--->`or (name = '李白' and status <> '活着')`
 
 ### and
 ``` java{2}
-and(Function<Param, Param> func)
-and(boolean condition, Function<Param, Param> func)
+and(Consumer<Param> consumer)
+and(boolean condition, Consumer<Param> consumer)
 ```
 - AND 嵌套
 - 例: `and(i -> i.eq("name", "李白").ne("status", "活着"))`--->`and (name = '李白' and status <> '活着')`
 
 ### nested
 ``` java{2}
-nested(Function<Param, Param> func)
-nested(boolean condition, Function<Param, Param> func)
+nested(Consumer<Param> consumer)
+nested(boolean condition, Consumer<Param> consumer)
 ```
 - 正常嵌套 不带 AND 或者 OR
 - 例: `nested(i -> i.eq("name", "李白").ne("status", "活着"))`--->`(name = '李白' and status <> '活着')`
