@@ -71,7 +71,7 @@ public enum AgeEnum implements IEnum<Integer> {
 > 实体属性使用枚举类型
 
 ```java
-public class User{
+public class User {
     /**
      * 名字
      * 数据库字段: name varchar(20)
