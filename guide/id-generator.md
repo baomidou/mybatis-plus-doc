@@ -23,7 +23,7 @@ public class CustomIdGenerator implements IdentifierGenerator {
 
 ```java
 @Bean
-public IdGenerator idGenerator() {
+public IdentifierGenerator idGenerator() {
     return new CustomIdGenerator();
 }
 ```
