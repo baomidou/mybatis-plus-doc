@@ -12,7 +12,7 @@
 @Component
 public class CustomIdGenerator implements IdentifierGenerator {
     @Override
-    public long nextId(Object entity) {
+    public Long nextId(Object entity) {
         //实现自定义ID生成...
         return System.currentTimeMillis();
     }
