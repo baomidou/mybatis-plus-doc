@@ -1,26 +1,39 @@
 # 自定义ID生成器
 
 ::: tip
-自3.2.1开始，配合ID_WORKER，ID_WORKER_STR一起使用。
-
-默认使用雪花算法(com.baomidou.mybatisplus.core.incrementer.SnowflakeIdGenerator)。
+自3.3.0开始,默认使用雪花算法。
 :::
 
+## Spring-Boot
+
+### 方式一：声明为Bean供Spring扫描注入
+
 ```java
-//方式一
 @Component
-public class CustomIdGenerator implements IdGenerator {
+public class CustomIdGenerator implements IdentifierGenerator {
     @Override
     public long nextId(Object entity) {
         //实现自定义ID生成...
         return System.currentTimeMillis();
     }
 }
+```
 
-//方式二
+### 方式二：使用配置类
+
+```java
 @Bean
 public IdGenerator idGenerator() {
     return new CustomIdGenerator();
 }
-
 ```
+
+### 方式三：通过MybatisPlusPropertiesCustomizer自定义
+
+```java
+@Bean
+public MybatisPlusPropertiesCustomizer plusPropertiesCustomizer() {
+    return plusProperties -> plusProperties.getGlobalConfig().setIdentifierGenerator(new CustomIdGenerator());
+}
+```
+
