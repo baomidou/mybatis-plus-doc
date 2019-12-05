@@ -1,7 +1,7 @@
 # 自定义ID生成器
 
 ::: tip
-自3.3.0开始,默认使用雪花算法。
+自3.3.0开始,默认使用雪花算法+UUID(不含中划线)
 :::
 
 ## Spring-Boot
@@ -34,6 +34,29 @@ public IdentifierGenerator idGenerator() {
 @Bean
 public MybatisPlusPropertiesCustomizer plusPropertiesCustomizer() {
     return plusProperties -> plusProperties.getGlobalConfig().setIdentifierGenerator(new CustomIdGenerator());
+}
+```
+
+## Spring
+
+### 方式一: XML配置
+
+```xml
+<bean name="customIdGenerator" class="com.baomidou.samples.incrementer.CustomIdGenerator"/>
+
+<bean id="globalConfig" class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+		<property name="identifierGenerator" ref="customIdGenerator"/>
+</bean>
+```
+
+### 方式二：注解配置
+
+```java
+@Bean
+public GlobalConfig globalConfig() {
+	GlobalConfig conf = new GlobalConfig();
+	conf.setIdentifierGenerator(new CustomIdGenerator());
+	return conf;
 }
 ```
 
