@@ -67,7 +67,7 @@ public MybatisPlusPropertiesCustomizer plusPropertiesCustomizer() {
    <property name="keyGenerator" ref="keyGenerator"/>
 </bean>
 
-<bean id="keyGenerator"class="com.baomidou.mybatisplus.extension.incrementer.H2KeyGenerator"/>
+<bean id="keyGenerator" class="com.baomidou.mybatisplus.extension.incrementer.H2KeyGenerator"/>
 ```
 
 ### 方式二：注解配置
