@@ -35,7 +35,7 @@ spring:
 - spy.properties 配置：
 ```xml
 #3.2.1以上使用
-modulelist=com.baomidou.mybatisplus.extension.p6spy.MybatisPlusLogFactory
+modulelist=com.baomidou.mybatisplus.extension.p6spy.MybatisPlusLogFactory,com.p6spy.engine.outage.P6OutageFactory
 #3.2.1以下使用或者不配置
 #modulelist=com.p6spy.engine.logging.P6LogFactory,com.p6spy.engine.outage.P6OutageFactory
 # 自定义日志打印
