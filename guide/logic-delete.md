@@ -8,6 +8,7 @@ SpringBoot 配置方式：
   mybatis-plus:
     global-config:
       db-config:
+        logic-delete-field: flag  #全局逻辑删除字段值 3.3.0开始支持，详情看下面。
         logic-delete-value: 1 # 逻辑已删除值(默认为 1)
         logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
   ```
@@ -44,6 +45,19 @@ SpringBoot 配置方式：
   删除时 update user set deleted=1 where id =1 and deleted=0
   查找时 select * from user where deleted=0
   ```
+  
+- 全局逻辑删除: 3.3.0开始支持
+  如果公司代码比较规范，比如统一了全局都是flag为逻辑删除字段。
+  使用此配置则不需要在实体类上添加 @TableLogic。
+  但如果实体类上有 @TableLogic 则以实体上的为准，忽略全局。  即先查找注解再查找全局，都没有则此表没有逻辑删除。
+
+  ```yaml
+  mybatis-plus:
+    global-config:
+      db-config:
+        logic-delete-field: flag  #全局逻辑删除字段值
+  ```
+  
   
 ::: tip 附件说明
 - 逻辑删除是为了方便数据恢复和保护数据本身价值等等的一种方案，但实际就是删除。
