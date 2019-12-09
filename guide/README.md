@@ -3,9 +3,8 @@
 [MyBatis-Plus](https://github.com/baomidou/mybatis-plus)（简称 MP）是一个 [MyBatis](http://www.mybatis.org/mybatis-3/) 的增强工具，在 MyBatis 的基础上只做增强不做改变，为简化开发、提高效率而生。
 
 <p class="demo">
-    <a href="https://www.aliyun.com/1111/2019/home?userCode=5wbjwd1y" target="_blank"><img style="width:216px;height:116px;" src="https://img.alicdn.com/tfs/TB166qCkXT7gK0jSZFpXXaTkpXa-750-400.png"/></a>
-    <br/><br/> 亲！请给 MP 投一票
-    <a href="https://www.oschina.net/project/top_cn_2019?sort=1" target="_blank">点击 2019 年度最受欢迎中国开源软件</a> Ctrl + F 输入 Mybatis-Plus 快速定位
+    <a href="https://www.aliyun.com/1212/2019/home?userCode=5wbjwd1y" target="_blank"><img style="width:216px;height:116px;" src="https://img.alicdn.com/tfs/TB1_rYHo7P2gK0jSZPxXXacQpXa-690-388.jpg"/></a>
+    <br/>
 </p>
 
 ::: tip 愿景
