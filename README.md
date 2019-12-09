@@ -54,7 +54,7 @@ export default {
       title: '【双12】主会场 低至1折',
       message: '新老用户都有，各种福利&折扣&代金券 新用户低至1折',
       type: 'success',
-      // showClose: false,
+      showClose: false,
       duration: 0,
       onClick: function() {
         Notification.closeAll()
