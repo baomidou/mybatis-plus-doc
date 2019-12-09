@@ -49,20 +49,18 @@ export default {
         codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('latest-version', versionInfo)
     }
     // Notify
-    /*
     this.$notify({
       offset: 50,
-      title: '请为MP投上一票！',
-      message: 'OSChina 2019年度最受欢迎中国开源软件评选投票火热进行中，希望能够投MP一票（点击消息即可进行投票）',
+      title: '【双12】主会场 低至1折',
+      message: '新老用户都有，各种福利&折扣&代金券 新用户低至1折',
       type: 'success',
-      showClose: false,
+      // showClose: false,
       duration: 0,
       onClick: function() {
         Notification.closeAll()
-        window.open("https://www.oschina.net/project/top_cn_2019")
+        window.open("https://www.aliyun.com/1212/2019/home?userCode=5wbjwd1y")
       }
     });
-    */
   }
 }
 </script>
