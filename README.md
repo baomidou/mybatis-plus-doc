@@ -49,6 +49,7 @@ export default {
         codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('latest-version', versionInfo)
     }
     // Notify
+    /*
     this.$notify({
       offset: 50,
       title: '请为MP投上一票！',
@@ -61,6 +62,7 @@ export default {
         window.open("https://www.oschina.net/project/top_cn_2019")
       }
     });
+    */
   }
 }
 </script>
