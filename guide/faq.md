@@ -80,7 +80,7 @@ private transient String createTime;
 - Spring MVC 配置（参考[mybatisplus-spring-mvc](https://gitee.com/baomidou/mybatisplus-spring-mvc/blob/dev/src/main/resources/spring/spring-mybatis.xml)）
 
 ```xml
-<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
     <property name="dataSource" ref="dataSource" />
     <property name="typeAliasesPackage" value="xxx.entity" />
     <property name="mapperLocations" value="classpath*:/mybatis/*/*.xml"/>
