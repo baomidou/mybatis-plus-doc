@@ -127,10 +127,16 @@ sidebarDepth: 3
 ### superControllerClass
 自定义继承的Controller类全称，带包名
 
+### enableLike（since 3.3.1）
+
+默认激活进行sql模糊表名匹配，关闭之后likeTable与notLikeTable将失效
+
+如果有sql语法兼容性问题的话，请手动设置为false
+
+已知无法使用：微软系（暂无环境，等待PR）
+
 ### include
 需要包含的表名，允许正则表达式（与exclude二选一配置）
-
-自3.3.0起，不在支持正则表达式,请使用[likeTable](#liketable)
 
 ### likeTable
 
@@ -138,8 +144,6 @@ sidebarDepth: 3
 
 ### exclude
 需要排除的表名，允许正则表达式
-
-自3.3.0起，不在支持正则表达式,请使用[notLikeTable](#notliketable)
 
 ### notLikeTable
 
