@@ -29,7 +29,7 @@
 >   - 与原生枚举混用
 >     - 需配置`defaultEnumTypeHandler`与 `typeEnumsPackage`
 
-# 1、申明通用枚举属性
+# 1、声明通用枚举属性
 
 
 > 方式一： 使用 @EnumValue 注解枚举属性 [完整示例](https://gitee.com/baomidou/mybatis-plus-samples/blob/master/mybatis-plus-sample-enum/src/main/java/com/baomidou/mybatisplus/samples/enums/enums/GradeEnum.java)
