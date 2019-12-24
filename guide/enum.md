@@ -98,28 +98,61 @@ mybatis-plus:
     typeEnumsPackage: com.baomidou.springboot.entity.enums
   ....
 ```
-# 3、JSON序列化处理
-## 一、Jackson
-	1.在需要响应描述字段的get方法上添加@JsonValue注解即可
+# 如何序列化枚举值为数据库存储值？
+## Jackson
 
-## 二、Fastjson
-1.全局处理方式
+### 一、重写toString方法
+
+#### springboot
+
+```java
+    @Bean
+    public Jackson2ObjectMapperBuilderCustomizer customizer(){
+        return builder -> builder.featuresToEnable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+    }
 ```
+
+#### jackson
+
+```java
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+```
+
+以上两种方式任选其一,然后在枚举中复写toString方法即可.
+
+### 二、注解处理
+
+```java
+public enum GradeEnum {
+
+    PRIMARY(1, "小学"),  SECONDORY(2, "中学"),  HIGH(3, "高中");
+
+    GradeEnum(int code, String descp) {
+        this.code = code;
+        this.descp = descp;
+    }
+
+    @EnumValue
+  	@JsonValue	//标记响应json值
+    private final int code;
+}
+```
+
+## Fastjson
+
+### 一、重写toString方法
+
+#### 全局处理方式
+
+```java
 		FastJsonConfig config = new FastJsonConfig();
-		//设置WriteEnumUsingToString
 		config.setSerializerFeatures(SerializerFeature.WriteEnumUsingToString);
-		converter.setFastJsonConfig(config);
 ```
-2.局部处理方式
-```	
+#### 局部处理方式
+
+```	java
 		@JSONField(serialzeFeatures= SerializerFeature.WriteEnumUsingToString)
 		private UserStatus status;
 ```
 以上两种方式任选其一,然后在枚举中复写toString方法即可.
-
-3.JavaBean方式序列化枚举 ,无需重写toString方法
-```	
-		@JSONType(serializeEnumAsJavaBean = true)
-		public enum GradeEnum {
-```
-
