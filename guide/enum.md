@@ -4,7 +4,7 @@
 
 解决了繁琐的配置，让 mybatis 优雅的使用枚举属性！
 
-> 自`3.1.0`开始,可配置默认枚举处理类来省略扫描通用枚举配置 [默认枚举配置](../config/#defaultEnumTypeHandler)
+> 自`3.1.0`开始，如果你无需使用原生枚举，可配置默认枚举来省略扫描通用枚举配置 [默认枚举配置](../config/#defaultEnumTypeHandler)
 >
 > - 升级说明:
 >
@@ -17,17 +17,6 @@
 > - 其他说明:
 >
 >   配置枚举包扫描的时候能提前注册使用注解枚举的缓存
->
-> - 推荐配置:
->
->   - 使用实现`IEnum`接口
->     - 推荐配置`defaultEnumTypeHandler`
->   - 使用注解枚举处理
->     - 推荐配置`typeEnumsPackage`
->   - 注解枚举处理与`IEnum`接口
->     - 推荐配置`typeEnumsPackage`
->   - 与原生枚举混用
->     - 需配置`defaultEnumTypeHandler`与 `typeEnumsPackage`
 
 # 1、声明通用枚举属性
 
