@@ -11,7 +11,7 @@ sidebarDepth: 3
 - 类型：`DataSourceConfig`
 - 默认值：`null`
 
-数据源配置，通过该配置，指定需要生成代码的具体数据库，具体请查看 [数据源配置](#数据源配置)
+数据源配置，通过该配置，指定需要生成代码的具体数据库，具体请查看 [数据源配置](#数据源-datasourceconfig-配置)
 
 
 ### strategy
@@ -43,7 +43,7 @@ sidebarDepth: 3
 - 类型：`GlobalConfig`
 - 默认值：`null`
 
-全局策略配置，具体请查看 [全局策略配置](#全局策略配置)
+全局策略配置，具体请查看 [全局策略配置](#全局策略-globalconfig-配置)
 
 
 ### injectionConfig
@@ -51,7 +51,7 @@ sidebarDepth: 3
 - 类型：`InjectionConfig`
 - 默认值：`null`
 
-注入配置，通过该配置，可注入自定义参数等操作以实现个性化操作，具体请查看 [注入配置](#注入配置)
+注入配置，通过该配置，可注入自定义参数等操作以实现个性化操作，具体请查看 [注入配置](#注入-injectionconfig-配置)
 
 ## 数据源 `dataSourceConfig` 配置
 
