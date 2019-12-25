@@ -446,3 +446,18 @@ private Boolean status;
 
 解决方案： 1. 坐等druid升级解决这个问题；2.保持mp版本3.1.0；3.紧跟mp版本，换掉druid数据源
 
+## mp版本从3.1.0及以下版本升级到高版本，JDK8日期新类型LocalDateTime等无法映射（报错）
+
+MP_3.1.0及之前的版本，依赖的是mybatis 3.5.0, 
+
+MP_3.1.1升级了mybatis的依赖到3.5.1， 而mybatis 3.5.1 对于新日期类型，需要JDBC driver支持JDBC 4.2 API.
+
+如果你的jdbc驱动版本不支持，那么就会出现新日期类型报错。
+
+参考 blog.mybatis.org
+```text
+There is one backward incompatible changes since 3.5.0.
+    Because of the fix for #1478 , LocalDateTypeHandler, LocalTimeTypeHandler and LocalDateTimeTypeHandler now require a JDBC driver that supports JDBC 4.2 API.
+    [EDIT] These type handlers no longer work with Druid. Please see #1516 .
+```
+
