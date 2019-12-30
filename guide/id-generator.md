@@ -3,6 +3,11 @@
 ::: tip
 
 自3.3.0开始,默认使用雪花算法+UUID(不含中划线)
+
+自定义示例工程：
+
+- spring-boot示例 ：[传送门](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-id-generator)
+
 :::
 
 | 方法     | 主键生成策略                                | 主键类型            | 说明                                                         |
@@ -19,8 +24,12 @@
 public class CustomIdGenerator implements IdentifierGenerator {
     @Override
     public Long nextId(Object entity) {
-        //实现自定义ID生成...
-        return System.currentTimeMillis();
+      	//可以将当前传入的class全类名来作为bizKey,或者提取参数来生成bizKey进行分布式Id调用生成.
+      	String bizKey = entity.getClass().getName();
+        //根据bizKey调用分布式ID生成
+        long id = ....;
+      	//返回生成的id值即可.
+        return id;
     }
 }
 ```
