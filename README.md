@@ -25,7 +25,7 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 
 ### 致谢
 
-- MyBatis-Plus 荣获[【2018 年度开源中国最受欢迎的中国软件】](https://www.oschina.net/question/2896879_2290300) TOP5，感谢各位支持者的一路同行，我们会秉承 【为简化开发而生】 这一理念继续前行！
+- MyBatis-Plus 荣获[【 2019 年度开源中国最受欢迎的软件，开发工具类 TOP 1 】](https://www.oschina.net/project/top_cn_2019)  ，感谢各位支持者的一路同行，我们会秉承 【为简化开发而生】 这一理念继续前行！
 - 感谢 【**[huaix](https://gitee.com/youthdream)**】 捐赠的域名（[https://mybatis.plus](https://mybatis.plus)），非常的契合 MyBatis-Plus，非常感谢！
 
 ### 广而告之
