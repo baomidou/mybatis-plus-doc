@@ -41,11 +41,13 @@
 | 值 | 描述 |
 | :-: | :-: |
 | AUTO | 数据库自增 |
-| INPUT | 自行输入 |
-| ID_WORKER | 分布式全局唯一ID 长整型类型 |
-| UUID | 32位UUID字符串 |
 | NONE | 无状态 |
-| ID_WORKER_STR | 分布式全局唯一ID 字符串类型 |
+| INPUT | 自行输入 |
+| ASSIGN_ID | 分配ID(主键类型为Number(Long和Integer)或String),使用接口`IdentifierGenerator`的方法`nextId`(默认实现类为`DefaultIdentifierGenerator`雪花算法)(since 3.3.0) |
+| ASSIGN_UUID | 分配UUID,主键类型为String,使用接口`IdentifierGenerator`的方法`nextUUID`(默认default方法)
+| ~~ID_WORKER~~ | 分布式全局唯一ID 长整型类型(please use `ASSIGN_ID`) |
+| ~~UUID~~ | 32位UUID字符串(please use `ASSIGN_UUID`) |
+| ~~ID_WORKER_STR~~ | 分布式全局唯一ID 字符串类型(please use `ASSIGN_ID`) |
 
 
 ## [@TableField](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableField.java)
