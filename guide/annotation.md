@@ -75,7 +75,6 @@ mp会自动构建一个`ResultMap`并注入到mybatis里(一般用不上).下面
 `jdbcType`和`typeHandler`如果不配合`@TableName#autoResultMap = true`一起使用,也只生效于 update 的sql.
 对于`typeHandler`如果你的字段类型和set进去的类型为`equals`关系,则只需要让你的`typeHandler`让Mybatis加载到即可,不需要使用注解
 :::
-| numericScale | String | 否 | "" | 指定小数点后保留的位数 |
 
 #### [FieldStrategy](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldStrategy.java)
 
