@@ -442,9 +442,9 @@ private Boolean status;
 
 现象： 集成druid数据源，使用3.1.0之前版本没问题，升级mp到3.1.1+后，运行时报错:java.sql.SQLFeatureNotSupportedException
 
-原因： mp3.1.1+使用了新版jdbc，LocalDateTime等新日期类型处理方式升级，但druid不支持，[参考issue](https://github.com/baomidou/mybatis-plus/issues/1245)
+原因： mp3.1.1+使用了新版jdbc，LocalDateTime等新日期类型处理方式升级，但druid在1.1.21版本之前不支持，[参考issue](https://github.com/baomidou/mybatis-plus/issues/1245)
 
-解决方案： 1. 坐等druid升级解决这个问题；2.保持mp版本3.1.0；3.紧跟mp版本，换掉druid数据源
+解决方案： 1. 升级druid到1.1.21解决这个问题；2.保持mp版本3.1.0；3.紧跟mp版本，换掉druid数据源
 
 ## mp版本从3.1.0及以下版本升级到高版本，JDK8日期新类型LocalDateTime等无法映射（报错）
 
