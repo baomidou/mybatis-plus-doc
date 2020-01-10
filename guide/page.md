@@ -7,12 +7,21 @@
 
 ```xml
 <!-- spring xml 方式 -->
-<plugins>
-    <plugin interceptor="com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor">
-        <property name="sqlParser" ref="自定义解析类、可以没有" />
-        <property name="dialectClazz" value="自定义方言类、可以没有" />
-    </plugin>
-</plugins>
+<property name="plugins">
+    <array>
+        <bean class="com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor">
+            <property name="sqlParser" ref="自定义解析类、可以没有"/>
+            <property name="dialectClazz" value="自定义方言类、可以没有"/>
+            <!-- COUNT SQL 解析.可以没有 -->
+            <property name="countSqlParser" ref="countSqlParser"/>
+        </bean>
+    </array>
+</property>
+
+<bean id="countSqlParser" class="com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize">
+    <!-- 设置为 true 可以优化部分 left join 的sql -->
+    <property name="optimizeJoin" value="true"/>
+</bean>
 ```
 
 ```java
@@ -29,6 +38,8 @@ public class MybatisPlusConfig {
         // paginationInterceptor.setOverflow(false);
         // 设置最大单页限制数量，默认 500 条，-1 不受限制
         // paginationInterceptor.setLimit(500);
+        // 开启 count 的 join 优化,只针对部分 left join
+        paginationInterceptor.setCountSqlParser(new JsqlParserCountOptimize(true));
         return paginationInterceptor;
     }
 }
@@ -40,18 +51,17 @@ public class MybatisPlusConfig {
 - UserMapper.java 方法内容
 
 ```java
-public interface UserMapper{//可以继承或者不继承BaseMapper
+public interface UserMapper {//可以继承或者不继承BaseMapper
     /**
      * <p>
      * 查询 : 根据state状态查询用户列表，分页显示
-     * 注意!!: 如果入参是有多个,需要加注解指定参数名才能在xml中取值
      * </p>
      *
      * @param page 分页对象,xml中可以从里面进行取值,传递参数 Page 即自动分页,必须放在第一位(你可以继承Page实现自己的分页对象)
      * @param state 状态
      * @return 分页对象
      */
-    IPage<User> selectPageVo(Page page, @Param("state") Integer state);
+    IPage<User> selectPageVo(Page<?> page, Integer state);
 }
 ```
 
