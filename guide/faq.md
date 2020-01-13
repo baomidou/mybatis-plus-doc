@@ -461,3 +461,16 @@ There is one backward incompatible changes since 3.5.0.
     [EDIT] These type handlers no longer work with Druid. Please see #1516 .
 ```
 
+## Failed to bind properties under 'mybatis-plus.configuration.incomplete-result-maps[0].assistant.configuration.mapped-statements[0].parameter-map.parameter-mappings[0]' to org.apache.ibatis.mapping.ParameterMapping
+
+springboot 2.2.0 之前无此问题, springboot 2.2.0 出现此问题
+
+现象: 1.本地启动无问题，打成war包部署到服务器报此问题
+
+原因：springboot 2.2.0 构造器注入的问题， mybatis 私有构造器不能绑定属性， 造成依赖mybatis的框架比如MP报错
+[参考issue]（https://github.com/spring-projects/spring-boot/issues/18670）
+此问题已在springboot2.2.1中修复
+
+解决方案：1.将springboot降级到2.1.x或升级到2.2.1起 (建议springboot2.2.2)
+
+
