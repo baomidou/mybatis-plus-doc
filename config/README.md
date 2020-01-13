@@ -237,27 +237,6 @@ MyBatis 自动映射时未知列或未知属性处理策略，通过该配置可
 
 是否控制台 print mybatis-plus 的 LOGO
 
-### ~~sqlParserCache~~(Deprecated 3.1.1,直接开启缓存)
-
-- 类型：`boolean`
-- 默认值：`false`
-
-是否缓存 Sql 解析，默认不缓存
-
-### workerId
-
-- 类型：`Long`
-- 默认值：`null`
-
-机器 ID 部分(影响雪花ID)
-
-### datacenterId
-
-- 类型：`Long`
-- 默认值：`null`
-
-数据标识 ID 部分(影响雪花ID)(workerId 和 datacenterId 一起配置才能重新初始化 Sequence)
-
 ### enableSqlRunner
 
 - 类型：`boolean`
@@ -286,10 +265,10 @@ SQL注入器(starter 下支持`@bean`注入)
 
 元对象字段填充控制器(starter 下支持`@bean`注入)
 
-### idGenerator(since 3.2.1)
+### idGenerator(since 3.3.0)
 
-- 类型：`com.baomidou.mybatisplus.core.incrementer.IdGenerator`
-- 默认值：`null`
+- 类型：`com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator`
+- 默认值：`com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator`
 
 Id生成器(starter 下支持`@bean`注入)
 
@@ -302,18 +281,10 @@ MyBatis-Plus 全局策略中的 DB 策略配置，具体请查看 [DbConfig](#Db
 
 ## DbConfig
 
-### ~~dbType~~(Deprecated 3.1.1,这个属性没什么用)
-
-- 类型：`com.baomidou.mybatisplus.annotation.DbType`
-- 默认值：`OTHER`
-
-数据库类型,默认值为`未知的数据库类型`
-如果值为`OTHER`,启动时会根据数据库连接 url 获取数据库类型;如果不是`OTHER`则不会自动获取数据库类型
-
 ### idType
 
 - 类型：`com.baomidou.mybatisplus.annotation.IdType`
-- 默认值：`ID_WORKER`
+- 默认值：`ASSIGN_ID`
 
 全局默认主键类型
 
@@ -324,19 +295,19 @@ MyBatis-Plus 全局策略中的 DB 策略配置，具体请查看 [DbConfig](#Db
 
 表名前缀
 
-### schema(since 3.1.1)
+### schema
 
 - 类型：`String`
 - 默认值：`null`
 
 schema
 
-### columnFormat(since 3.1.1)
+### columnFormat
 
 - 类型：`String`
 - 默认值：`null`
 
-字段 format(since 3.1.1),例: ``%s``,(对主键无效)
+字段 format,例: ``%s``,(对主键无效)
 
 ### tableUnderline
 
@@ -344,13 +315,6 @@ schema
 - 默认值：`true`
 
 表名、是否使用下划线命名，默认数据库表使用下划线命名
-
-### ~~columnLike~~(Deprecated 3.1.1)
-
-- 类型：`boolean`
-- 默认值：`false`
-
-是否开启 LIKE 查询，即根据 entity 自动生成的 where 条件中 String 类型字段 是否使用 LIKE，默认不开启
 
 ### capitalMode
 
@@ -380,18 +344,7 @@ schema
 
 逻辑未删除值,([逻辑删除](/guide/logic-delete.md)下有效)
 
-### ~~fieldStrategy~~(Deprecated 3.1.2,将用下面三个新的取代)
-
-- 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
-- 默认值：`NOT_NULL`
-
-字段验证策略
-
-::: tip 说明:
-该策略约定了如何产出注入的sql,涉及`insert`,`update`以及`wrapper`内部的`entity`属性生成的 where 条件
-:::
-
-### insertStrategy(since 3.1.2)
+### insertStrategy
 
 - 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
 - 默认值：`NOT_NULL`
@@ -404,7 +357,7 @@ schema
 没配则按 {@link #fieldStrategy} 为准
 :::
 
-### updateStrategy(since 3.1.2)
+### updateStrategy
 
 - 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
 - 默认值：`NOT_NULL`
