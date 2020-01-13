@@ -108,6 +108,8 @@
 - [ac-blog](https://github.com/memo012/ac-blog) ac博客网站
 - [spider-flow](https://gitee.com/jmxd/spider-flow) 新一代爬虫平台，以图形化方式定义爬虫流程，不写代码即可完成爬虫
 - [goodskill](https://github.com/techa03/goodsKill)：基于Dubbo + SpringBoot搭建的秒杀系统
+- [SpringBoot_MyBatisPlus](https://github.com/JoeyBling/SpringBoot_MyBatisPlus)：SpringBoot集成[MyBatisPlus](https://github.com/baomidou/mybatis-plus)
+- [bootplus](https://github.com/JoeyBling/bootplus)：基于`SpringBoot + Shiro + MyBatisPlus`的权限管理框架
 
 ## 接入企业
 
