@@ -110,6 +110,7 @@
 - [goodskill](https://github.com/techa03/goodsKill)：基于Dubbo + SpringBoot搭建的秒杀系统
 - [SpringBoot_MyBatisPlus](https://github.com/JoeyBling/SpringBoot_MyBatisPlus)：SpringBoot集成[MyBatisPlus](https://github.com/baomidou/mybatis-plus)
 - [bootplus](https://github.com/JoeyBling/bootplus)：基于`SpringBoot + Shiro + MyBatisPlus`的权限管理框架
+- [Dice](https://github.com/bihell/Dice)：一个Vue 2.x 和 SpringBoot 全家桶开发的前后端分离的个人内容管理系统：「博客」、「权限管理」、「代码段」、「媒体库」等。
 
 ## 接入企业
 
