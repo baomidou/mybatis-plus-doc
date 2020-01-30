@@ -1,15 +1,11 @@
-  MyBatis-Plus    
-
-[MyBatis-Plus](/)
-
-[GitHub](https://github.com/baomidou/mybatis-plus)
-
-![hero](/img/logo.png)
-
 MyBatis-Plus
 ============
 
 为简化开发而生
+
+[GitHub](https://github.com/baomidou/mybatis-plus)
+
+![hero](/img/logo.png)
 
 [快速开始 →](/guide/)
 
