@@ -1,11 +1,8 @@
 
-
-[GitHub](https://github.com/baomidou/mybatis-plus)
-
-(https://mybatis.plus/img/logo.png)
-
 MyBatis-Plus
 ============
+
+[GitHub](https://github.com/baomidou/mybatis-plus)
 
 为简化开发而生
 [快速开始 →](/guide/)
@@ -44,7 +41,6 @@ MyBatis-Plus
 *   [【全民云计算】云主机低至 2 折](https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=5wbjwd1y)
 
 Hosted by [Coding Pages](https://pages.coding.me) & [Github Pages](https://pages.github.com) & [Idea](http://www.jetbrains.com)
-
 
 Apache License 2.0 | © 2016-2018 baomidou
 
