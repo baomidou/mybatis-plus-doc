@@ -43,6 +43,7 @@ MyBatis-Plus
 
 Hosted by [Coding Pages](https://pages.coding.me) & [Github Pages](https://pages.github.com) & [Idea](http://www.jetbrains.com)
 
-Apache License 2.0 | © 2016-2018 baomidou
+## License
 
+Apache License 2.0 | © 2016-2020 baomidou
 
