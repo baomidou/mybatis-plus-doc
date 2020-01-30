@@ -2,7 +2,7 @@
 
 [GitHub](https://github.com/baomidou/mybatis-plus)
 
-https://mybatis.plus/img/logo.png
+(https://mybatis.plus/img/logo.png)
 
 MyBatis-Plus
 ============
