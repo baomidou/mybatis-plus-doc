@@ -5,7 +5,7 @@ MyBatis-Plus
 
 [GitHub](https://github.com/baomidou/mybatis-plus)
 
-![hero](/img/logo.png)
+![hero](https://mybatis.plus/img/logo.png)
 
 [快速开始 →](/guide/)
 
