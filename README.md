@@ -2,54 +2,6 @@
 
 [MyBatis-Plus](/)
 
-[指南](/guide/)
-
-[配置](/config/)
-
-生态
-
-*   [Kisso 单点登录](https://gitee.com/baomidou/kisso)
-*   [Lock4j 分布式锁](https://gitee.com/baomidou/lock4j-spring-boot-starter)
-*   [Dynamic Datasource 动态数据源](https://github.com/baomidou/dynamic-datasource-spring-boot-starter)
-*   [Jobs 分布式任务调度平台](https://github.com/baomidou/jobs)
-
-[更新日志](https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md)
-
-3.0 文档
-
-*   [3.X 文档](https://mybatis.plus)
-*   [2.X 文档](https://baomidou.gitee.io/mybatis-plus-doc/#/)
-
-Languages
-
-*   [简体中文](/)
-*   [English](/en/)
-
-[GitHub](https://github.com/baomidou/mybatis-plus)
-
-[指南](/guide/)
-
-[配置](/config/)
-
-生态
-
-*   [Kisso 单点登录](https://gitee.com/baomidou/kisso)
-*   [Lock4j 分布式锁](https://gitee.com/baomidou/lock4j-spring-boot-starter)
-*   [Dynamic Datasource 动态数据源](https://github.com/baomidou/dynamic-datasource-spring-boot-starter)
-*   [Jobs 分布式任务调度平台](https://github.com/baomidou/jobs)
-
-[更新日志](https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md)
-
-3.0 文档
-
-*   [3.X 文档](https://mybatis.plus)
-*   [2.X 文档](https://baomidou.gitee.io/mybatis-plus-doc/#/)
-
-Languages
-
-*   [简体中文](/)
-*   [English](/en/)
-
 [GitHub](https://github.com/baomidou/mybatis-plus)
 
 ![hero](/img/logo.png)
