@@ -1,69 +1,99 @@
----
-home: true
-heroImage: /img/logo.png
-actionText: 快速开始 →
-actionLink: /guide/
----
----
-features:
-  - title: 润物无声
-    details: 只做增强不做改变，引入它不会对现有工程产生影响，如丝般顺滑。
-  - title: 效率至上
-    details: 只需简单配置，即可快速进行 CRUD 操作，从而节省大量时间。
-  - title: 丰富功能
-    details: 热加载、代码生成、分页、性能分析等功能一应俱全。
-footer: Apache License 2.0 | © 2016-2018 baomidou
----
+  MyBatis-Plus    
 
-### 当前最新版本
+[MyBatis-Plus](/)
 
-```xml
-<dependency>
-    <groupId>com.baomidou</groupId>
-    <artifactId>mybatis-plus</artifactId>
-    <version>latest-version</version>
-</dependency>
-```
+[指南](/guide/)
 
-### 致谢
+[配置](/config/)
 
-- MyBatis-Plus 荣获[【 2019 年度开源中国最受欢迎的软件，开发工具类 TOP 1 】](https://www.oschina.net/project/top_cn_2019)  ，感谢各位支持者的一路同行，我们会秉承 【为简化开发而生】 这一理念继续前行！
-- 感谢 【**[huaix](https://gitee.com/youthdream)**】 捐赠的域名（[https://mybatis.plus](https://mybatis.plus)），非常的契合 MyBatis-Plus，非常感谢！
+生态
 
-### 广而告之
+*   [Kisso 单点登录](https://gitee.com/baomidou/kisso)
+*   [Lock4j 分布式锁](https://gitee.com/baomidou/lock4j-spring-boot-starter)
+*   [Dynamic Datasource 动态数据源](https://github.com/baomidou/dynamic-datasource-spring-boot-starter)
+*   [Jobs 分布式任务调度平台](https://github.com/baomidou/jobs)
 
-- [【全民云计算】云主机低至 2 折](https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=5wbjwd1y)
+[更新日志](https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md)
 
-<p align="center">
-Hosted by <a href="https://pages.coding.me" target="_blank" style="font-weight:bold">Coding Pages</a> & <a href="https://pages.github.com" target="_blank" style="font-weight:bold">Github Pages</a>  & <a href="http://www.jetbrains.com" target="_blank" style="font-weight:bold">Idea</a>
-</p>
+3.0 文档
 
-<script>
-import { Notification } from 'element-ui'
-export default {
-  mounted () {
-    var xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", "https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.json", false)
-    xmlHttp.send(null)
-    var versionInfo = JSON.parse(xmlHttp.responseText).value.replace('v', '')
-    var codeNodeList = document.querySelectorAll('code')
-    for (var i = 0; i < codeNodeList.length; i++) {
-        codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('latest-version', versionInfo)
-    }
-    /** Notify
-    this.$notify({
-      offset: 50,
-      title: '【双12】主会场 低至1折',
-      message: '新老用户都有，各种福利&折扣&代金券 新用户低至1折',
-      type: 'success',
-      showClose: false,
-      duration: 0,
-      onClick: function() {
-        Notification.closeAll()
-        window.open("https://www.aliyun.com/1212/2019/home?userCode=5wbjwd1y")
-      }
-    });
-    */
-  }
-}
-</script>
+*   [3.X 文档](https://mybatis.plus)
+*   [2.X 文档](https://baomidou.gitee.io/mybatis-plus-doc/#/)
+
+Languages
+
+*   [简体中文](/)
+*   [English](/en/)
+
+[GitHub](https://github.com/baomidou/mybatis-plus)
+
+[指南](/guide/)
+
+[配置](/config/)
+
+生态
+
+*   [Kisso 单点登录](https://gitee.com/baomidou/kisso)
+*   [Lock4j 分布式锁](https://gitee.com/baomidou/lock4j-spring-boot-starter)
+*   [Dynamic Datasource 动态数据源](https://github.com/baomidou/dynamic-datasource-spring-boot-starter)
+*   [Jobs 分布式任务调度平台](https://github.com/baomidou/jobs)
+
+[更新日志](https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md)
+
+3.0 文档
+
+*   [3.X 文档](https://mybatis.plus)
+*   [2.X 文档](https://baomidou.gitee.io/mybatis-plus-doc/#/)
+
+Languages
+
+*   [简体中文](/)
+*   [English](/en/)
+
+[GitHub](https://github.com/baomidou/mybatis-plus)
+
+![hero](/img/logo.png)
+
+MyBatis-Plus
+============
+
+为简化开发而生
+
+[快速开始 →](/guide/)
+
+润物无声
+----
+
+只做增强不做改变，引入它不会对现有工程产生影响，如丝般顺滑。
+
+效率至上
+----
+
+只需简单配置，即可快速进行 CRUD 操作，从而节省大量时间。
+
+丰富功能
+----
+
+热加载、代码生成、分页、性能分析等功能一应俱全。
+
+### [#](#当前最新版本) 当前最新版本
+
+    <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus</artifactId>
+        <version>latest-version</version>
+    </dependency>
+    
+
+### [#](#致谢) 致谢
+
+*   MyBatis-Plus 荣获[【 2019 年度开源中国最受欢迎的软件，开发工具类 TOP 1 】](https://www.oschina.net/project/top_cn_2019) ，感谢各位支持者的一路同行，我们会秉承 【为简化开发而生】 这一理念继续前行！
+*   感谢 【**[huaix](https://gitee.com/youthdream)** 】 捐赠的域名（[https://mybatis.plus](https://mybatis.plus) ），非常的契合 MyBatis-Plus，非常感谢！
+
+### [#](#广而告之) 广而告之
+
+*   [【全民云计算】云主机低至 2 折](https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=5wbjwd1y)
+
+Hosted by [Coding Pages](https://pages.coding.me) & [Github Pages](https://pages.github.com) & [Idea](http://www.jetbrains.com)
+
+Apache License 2.0 | © 2016-2018 baomidou
