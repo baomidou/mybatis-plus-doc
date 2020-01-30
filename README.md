@@ -3,7 +3,8 @@ home: true
 heroImage: /img/logo.png
 actionText: 快速开始 →
 actionLink: /guide/
-
+---
+---
 features:
   - title: 润物无声
     details: 只做增强不做改变，引入它不会对现有工程产生影响，如丝般顺滑。
