@@ -1,10 +1,10 @@
-[GitHub](https://github.com/baomidou/mybatis-plus)
 
 ![hero](/img/logo.png)
 
 MyBatis-Plus
 ============
 
+[GitHub](https://github.com/baomidou/mybatis-plus)
 
 为简化开发而生
 [快速开始 →](/guide/)
