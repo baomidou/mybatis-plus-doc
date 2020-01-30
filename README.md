@@ -1,6 +1,8 @@
 
+
 MyBatis-Plus
 ============
+<img src="https://mybatis.plus/img/logo.png"/>
 
 [GitHub](https://github.com/baomidou/mybatis-plus)
 
