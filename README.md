@@ -42,7 +42,7 @@ MyBatis-Plus
 ### [#](#广而告之) 广而告之
 
 *   [【全民云计算】云主机低至 2 折](https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=5wbjwd1y)
+<center>Hosted by [Coding Pages](https://pages.coding.me) & [Github Pages](https://pages.github.com) & [Idea](http://www.jetbrains.com)
+</center>
+<center>Apache License 2.0 | © 2016-2018 baomidou</center>
 
-Hosted by [Coding Pages](https://pages.coding.me) & [Github Pages](https://pages.github.com) & [Idea](http://www.jetbrains.com)
-
-Apache License 2.0 | © 2016-2018 baomidou
