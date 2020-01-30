@@ -1,12 +1,13 @@
-MyBatis-Plus
-============
 
-为简化开发而生
 
 [GitHub](https://github.com/baomidou/mybatis-plus)
 
 ![hero](https://mybatis.plus/img/logo.png)
 
+MyBatis-Plus
+============
+
+为简化开发而生
 [快速开始 →](/guide/)
 
 润物无声
