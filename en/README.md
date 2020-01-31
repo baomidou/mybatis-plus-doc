@@ -1,5 +1,5 @@
 
-![hero](mybatis-plus-doc/img/logo.png)
+![hero](https://github.com/loulanyue/mybatis-plus-doc/blob/master/img/logo.png)
 
 MyBatis-Plus
 ============
@@ -7,6 +7,7 @@ MyBatis-Plus
 [GitHub](https://github.com/baomidou/mybatis-plus)
 
 Born to simplify development
+
 [Get Started →](/guide/)
 
 Simple
@@ -24,7 +25,7 @@ Extensibility
 
 MyBatis-Plus has many useful plugins(e.g. code generator, auto paging, performance analysis and so on), it has provided everything you need. why not try?
 
-### [#](#The latest version) The latest version
+## The latest version
 
     <dependency>
         <groupId>com.baomidou</groupId>
