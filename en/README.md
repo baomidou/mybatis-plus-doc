@@ -1,5 +1,5 @@
 
-![hero](/img/logo.png)
+![hero](mybatis-plus-doc/img/logo.png)
 
 MyBatis-Plus
 ============
@@ -33,4 +33,6 @@ MyBatis-Plus has many useful plugins(e.g. code generator, auto paging, performan
     </dependency>
     
 
-### footer: Apache License 2.0 | © 2016-2020 baomidou
+## License
+
+Apache License 2.0 | © 2016-2020 baomidou
