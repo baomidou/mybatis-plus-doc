@@ -1,59 +1,36 @@
----
-home: true
-heroImage: /img/logo.png
-actionText: Get Started →
-actionLink: /guide/
-features:
-- title: Simple
-  details: MyBatis-Plus is an powerful enhanced tool for MyBatis. it provides many efficient operations for MyBatis. and you can seamlessly switch to MyBatis-Plus from MyBatis.
-- title: Powerful
-  details: MyBatis-Plus can automatically inject basic SQL fragments, have a powerful and flexible where condition wrapper, using it can save you a lot of development time.
-- title: Extensibility
-  details: MyBatis-Plus has many useful plugins(e.g. code generator, auto paging, performance analysis and so on), it has provided everything you need. why not try?
-footer: Apache License 2.0 | © 2016-2018 baomidou
----
 
-### The latest version
+![hero](/img/logo.png)
 
-```xml
-<dependency>
-    <groupId>com.baomidou</groupId>
-    <artifactId>mybatis-plus</artifactId>
-    <version>latest-version</version>
-</dependency>
-```
+MyBatis-Plus
+============
 
-<p align="center">
-Hosted by <a href="https://pages.coding.me" target="_blank" style="font-weight:bold">Coding Pages</a> & <a href="https://pages.github.com" target="_blank" style="font-weight:bold">Github Pages</a>
-</p>
+[GitHub](https://github.com/baomidou/mybatis-plus)
 
-<script>
-import { Notification } from 'element-ui'
-export default {
-  mounted () {
-    var xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", "https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.json", false)
-    xmlHttp.send(null)
-    var versionInfo = JSON.parse(xmlHttp.responseText).value.replace('v', '')
-    var codeNodeList = document.querySelectorAll('code')
-    for (var i = 0; i < codeNodeList.length; i++) {
-        codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('latest-version', versionInfo)
-    }
-    // Notify
-    /*
-    this.$notify({
-      offset: 50,
-      title: 'Please Vote For MyBatis-Plus!',
-      message: 'The most popular chinese open source software selection vote in 2019 is in progress, please vote for mybatis-plus (click this message will jump to vote page)',
-      type: 'success',
-      showClose: false,
-      duration: 0,
-      onClick: function() {
-        Notification.closeAll()
-        window.open("https://www.oschina.net/project/top_cn_2019")
-      }
-    });
-    */
-  }
-}
-</script>
+Born to simplify development
+[Get Started →](/guide/)
+
+Simple
+----
+
+MyBatis-Plus is an powerful enhanced tool for MyBatis. it provides many efficient operations for MyBatis. and you can seamlessly switch to MyBatis-Plus from MyBatis.
+
+Powerful
+----
+
+MyBatis-Plus can automatically inject basic SQL fragments, have a powerful and flexible where condition wrapper, using it can save you a lot of development time.
+
+Extensibility
+----
+
+MyBatis-Plus has many useful plugins(e.g. code generator, auto paging, performance analysis and so on), it has provided everything you need. why not try?
+
+### [#](#The latest version) The latest version
+
+    <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus</artifactId>
+        <version>latest-version</version>
+    </dependency>
+    
+
+### footer: Apache License 2.0 | © 2016-2020 baomidou
