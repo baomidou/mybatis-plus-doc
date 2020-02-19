@@ -1,8 +1,5 @@
-# 动态数据源
-
 <p align="center">
-
-<img src="https://s1.ax1x.com/2018/07/31/PwPVAA.png" border="0" />
+<img src="https://images.gitee.com/uploads/images/2019/0626/231046_f44892b9_709883.png" border="0" />
 
 </p>
 
@@ -11,10 +8,10 @@
 </p>
 
 <p align="center">
-    <a href="https://www.travis-ci.org/baomidou/dynamic-datasource-spring-boot-starter" target="_blank"/>
+    <a href="https://www.travis-ci.org/baomidou/dynamic-datasource-spring-boot-starter" target="_blank">
         <img src="https://www.travis-ci.org/baomidou/dynamic-datasource-spring-boot-starter.svg?branch=master" >
     <a href="http://mvnrepository.com/artifact/com.baomidou/dynamic-datasource-spring-boot-starter" target="_blank">
-        <img src="https://maven-badges.herokuapp.com/maven-central/com.baomidou/dynamic-datasource-spring-boot-starter/badge.svg" >
+        <img src="https://img.shields.io/maven-central/v/com.baomidou/dynamic-datasource-spring-boot-starter.svg" >
     </a>
     <a href="http://www.apache.org/licenses/LICENSE-2.0.html" target="_blank">
         <img src="http://img.shields.io/:license-apache-brightgreen.svg" >
@@ -27,63 +24,35 @@
     </a>
 </p>
 
-#### [Github](https://github.com/baomidou/dynamic-datasource-spring-boot-starter) | [码云Gitee](https://gitee.com/baomidou/dynamic-datasource-spring-boot-starter)
-
 # 简介
 
 dynamic-datasource-spring-boot-starter 是一个基于springboot的快速集成多数据源的启动器。
 
-其支持 **Jdk 1.7+,    SpringBoot 1.4.x  1.5.x   2.0.x**。最新版为<img src="https://maven-badges.herokuapp.com/maven-central/com.baomidou/dynamic-datasource-spring-boot-starter/badge.svg" >
+其支持 **Jdk 1.7+,    SpringBoot 1.4.x  1.5.x   2.0.x**。
 
-**示例项目** 可参考项目下的samples目录。
+**示例项目** 可参考项目下的samples目录。 
 
-**示例项目** 可参考项目下的samples目录。
-
-**示例项目** 可参考项目下的samples目录。
-
-# 优势
-
-网上关于动态数据源的切换的文档有很多，核心只有两种。
-
-1. 构建多套环境，优势是方便控制也容易集成一些简单的分布式事务，缺点是非动态同时代码量较多,配置难度大。
-2. 基于spring提供原生的 `AbstractRoutingDataSource` ，参考一些文档自己实现切换。
-
-如果你的数据源较少，场景不复杂，选择以上任意一种都可以。如果你需要更多特性，请尝试本动态数据源。
+# 特性
 
 1. 数据源分组，适用于多种场景 纯粹多库  读写分离  一主多从  混合模式。
-2. 简单集成Druid数据源监控多数据源，简单集成Mybatis-Plus简化单表，简单集成P6sy格式化sql，简单集成Jndi数据源。
-3. 简化Druid和HikariCp配置，提供全局参数配置。
-4. 提供自定义数据源来源(默认使用yml或properties配置)。
-5. 项目启动后能动态增减数据源。
-6. 使用spel动态参数解析数据源，如从session，header和参数中获取数据源。（多租户架构神器）
-7. 多层数据源嵌套切换。（一个业务ServiceA调用ServiceB，ServiceB调用ServiceC，每个Service都是不同的数据源）
-8. 使用正则匹配或spel表达式来切换数据源（实验性功能）。
-
-# 劣势
-
-不能使用多数据源事务（同一个数据源下能使用事务），网上其他方案也都不能提供。 
-
-如果你需要使用到分布式事务，那么你的架构应该到了微服务化的时候了。
-
-如果呼声强烈，项目达到800 star，作者考虑集成分布式事务。
-
-PS: 如果您只是几个数据库但是有强烈的需求分布式事务，建议还是使用传统方式自己构建多套环境集成atomic这类，网上百度很多。
+2. 内置敏感参数加密和启动初始化表结构schema数据库database。
+3. 提供对Druid，Mybatis-Plus，P6sy，Jndi的快速集成。
+4. 简化Druid和HikariCp配置，提供全局参数配置。
+5. 提供自定义数据源来源接口(默认使用yml或properties配置)。
+6. 提供项目启动后增减数据源方案。
+7. 提供Mybatis环境下的  **纯读写分离** 方案。
+8. 使用spel动态参数解析数据源，如从session，header或参数中获取数据源。（多租户架构神器）
+9. 提供多层数据源嵌套切换。（ServiceA >>>  ServiceB >>> ServiceC，每个Service都是不同的数据源）
+10. 提供 **不使用注解**  而   **使用 正则 或 spel**    来切换数据源方案（实验性功能）。
+11. **基于seata的分布式事务支持。**
 
 # 约定
 
 1. 本框架只做 **切换数据源** 这件核心的事情，并**不限制你的具体操作**，切换了数据源可以做任何CRUD。
 2. 配置文件所有以下划线 `_` 分割的数据源 **首部** 即为组的名称，相同组名称的数据源会放在一个组下。
-3. 切换数据源即可是组名，也可是具体数据源名称，切换时默认采用负载均衡机制切换。
-4. 默认的数据源名称为  **master** ，你可以通过spring.datasource.dynamic.primary修改。
+3. 切换数据源可以是组名，也可以是具体数据源名称。组名则切换时采用负载均衡算法切换。
+4. 默认的数据源名称为  **master** ，你可以通过 `spring.datasource.dynamic.primary` 修改。
 5. 方法上的注解优先于类上注解。
-
-# 建议
-
-强烈建议在 **主从模式** 下遵循普遍的规则，以便他人能更轻易理解你的代码。
-
-主数据库  **建议**   只执行 `INSERT`   `UPDATE`  `DELETE` 操作。
-
-从数据库  **建议**   只执行 `SELECT` 操作。
 
 # 使用方法
 
@@ -103,22 +72,28 @@ spring:
   datasource:
     dynamic:
       primary: master #设置默认的数据源或者数据源组,默认值即为master
+      strict: false #设置严格模式,默认false不启动. 启动后在未匹配到指定数据源时候回抛出异常,不启动会使用默认数据源.
       datasource:
         master:
-          username: root
-          password: 123456
-          driver-class-name: com.mysql.jdbc.Driver
           url: jdbc:mysql://xx.xx.xx.xx:3306/dynamic
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.jdbc.Driver
         slave_1:
-          username: root
-          password: 123456
-          driver-class-name: com.mysql.jdbc.Driver
           url: jdbc:mysql://xx.xx.xx.xx:3307/dynamic
-        slave_2:
           username: root
           password: 123456
           driver-class-name: com.mysql.jdbc.Driver
-          url: jdbc:mysql://xx.xx.xx.xx:3308/dynamic
+        slave_2:
+          url: ENC(xxxxx) # 内置加密,使用请查看详细文档
+          username: ENC(xxxxx)
+          password: ENC(xxxxx)
+          driver-class-name: com.mysql.jdbc.Driver
+          schema: db/schema.sql # 配置则生效,自动初始化表结构
+          data: db/data.sql # 配置则生效,自动初始化数据
+          continue-on-error: true # 默认true,初始化失败是否继续
+          separator: ";" # sql默认分号分隔符
+          
        #......省略
        #以上会配置一个默认库master，一个组slave下有两个子库slave_1,slave_2
 ```
@@ -140,7 +115,7 @@ spring:                               spring:                               spri
 
 **@DS** 可以注解在方法上和类上，**同时存在方法注解优先于类上注解**。
 
-注解在service实现或mapper接口方法上，但强烈不建议同时在service和mapper注解。 (可能会有问题)
+强烈建议只注解在service实现上。
 
 |     注解      |                   结果                   |
 | :-----------: | :--------------------------------------: |
@@ -166,36 +141,16 @@ public class UserServiceImpl implements UserService {
   }
 }
 ```
-在mybatis环境下也可注解在mapper接口层。
-
-```java
-@DS("slave")
-public interface UserMapper {
-
-  @Insert("INSERT INTO user (name,age) values (#{name},#{age})")
-  boolean addUser(@Param("name") String name, @Param("age") Integer age);
-
-  @Update("UPDATE user set name=#{name}, age=#{age} where id =#{id}")
-  boolean updateUser(@Param("id") Integer id, @Param("name") String name, @Param("age") Integer age);
-
-  @Delete("DELETE from user where id =#{id}")
-  boolean deleteUser(@Param("id") Integer id);
-
-  @Select("SELECT * FROM user")
-  @DS("slave_1")
-  List<User> selectAll();
-}
-```
 
 ---
 
+### 支持一下
 
-####                                                                                       赶紧集成体验一下吧！ 如果需要更多功能请继续往下看！
+![uSA83t.png](https://images.gitee.com/uploads/images/2019/0921/225754_ef8c21e8_709883.png)
+[![uSVpFJ.png](https://images.gitee.com/uploads/images/2019/0921/230525_be693c65_709883.png)](https://imgchr.com/i/uSVpFJ)
+
+#### 赶紧集成体验一下吧！ 如果需要更多功能请点击下面链接查看详细文档！
 
 ---
 
-
-
-- #### Druid集成，MybatisPlus集成，动态增减数据源等等更多更细致的文档在这里     [点击查看](https://gitee.com/baomidou/dynamic-datasource-spring-boot-starter/wikis/pages)
-
-- #### 项目Javadoc一览                  [点击查看](https://apidoc.gitee.com/baomidou/dynamic-datasource-spring-boot-starter/)
+[分布式事务，加密,Druid集成，MybatisPlus集成，动态增减数据源，自定义切换规则,纯读写分离插件等等更多更细致的文档在这里](https://github.com/baomidou/dynamic-datasource-spring-boot-starter/wiki)
