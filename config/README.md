@@ -199,12 +199,25 @@ MyBatis 自动映射时未知列或未知属性处理策略，通过该配置可
 - AutoMappingUnknownColumnBehavior.WARNING：以日志的形式打印相关警告信息
 - AutoMappingUnknownColumnBehavior.FAILING：当作映射失败处理，并抛出异常和详细信息
 
+### localCacheScope
+
+- 类型：`String`
+- 默认值：`SESSION`
+
+Mybatis一级缓存，默认为 SESSION。
+
+- SESSION session级别缓存，同一个session相同查询语句不会再次查询数据库
+- STATEMENT 关闭一级缓存
+
+单服务架构中（有且仅有只有一个程序提供相同服务），一级缓存开启不会影响业务，只会提高性能。
+微服务架构中需要关闭一级缓存，原因：Service1先查询数据，若之后Service2修改了数据，之后Service1又再次以同样的查询条件查询数据，因走缓存会出现查处的数据不是最新数据
+
 ### cacheEnabled
 
 - 类型：`boolean`
 - 默认值：`true`
 
-全局地开启或关闭配置文件中的所有映射器已经配置的任何缓存，默认为 true。
+开启Mybatis二级缓存，默认为 true。
 
 ### callSettersOnNulls
 
