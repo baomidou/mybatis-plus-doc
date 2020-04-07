@@ -4,49 +4,31 @@ SpringBoot 配置方式：
 
 - application.yml 加入配置(如果你的默认值和mp默认的一样,该配置可无):
 
-  ```yaml
-  mybatis-plus:
-    global-config:
-      db-config:
-        logic-delete-field: flag  #全局逻辑删除字段值 3.3.0开始支持，详情看下面。
-        logic-delete-value: 1 # 逻辑已删除值(默认为 1)
-        logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
-  ```
-
-- ~~注册 Bean~~(3.1.1开始不再需要这一步)：
-
-  ```java
-  import com.baomidou.mybatisplus.core.injector.ISqlInjector;
-  import com.baomidou.mybatisplus.extension.injector.LogicSqlInjector;
-  import org.springframework.context.annotation.Bean;
-  import org.springframework.context.annotation.Configuration;
-
-  @Configuration
-  public class MyBatisPlusConfiguration {
-
-      @Bean
-      public ISqlInjector sqlInjector() {
-          return new LogicSqlInjector();
-      }
-  }
-  ```
+```yaml
+mybatis-plus:
+global-config:
+  db-config:
+    logic-delete-field: flag  #全局逻辑删除字段值 3.3.0开始支持，详情看下面。
+    logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+    logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+```
 
 - 实体类字段上加上`@TableLogic`注解
 
-  ``` java
-  @TableLogic
-  private Integer deleted;
-  ```
+``` java
+@TableLogic
+private Integer deleted;
+```
   
 - 效果: 使用mp自带方法删除和查找都会附带逻辑删除功能 (自己写的xml不会)
 
-  ``` sql
-  example
-  删除时 update user set deleted=1 where id =1 and deleted=0
-  查找时 select * from user where deleted=0
-  ```
+``` sql
+example
+删除时 update user set deleted=1 where id =1 and deleted=0
+查找时 select * from user where deleted=0
+```
   
-- 全局逻辑删除: 3.3.0开始支持
+- 全局逻辑删除: begin 3.3.0
 
   如果公司代码比较规范，比如统一了全局都是flag为逻辑删除字段。
   
@@ -54,12 +36,12 @@ SpringBoot 配置方式：
   
   但如果实体类上有 @TableLogic 则以实体上的为准，忽略全局。  即先查找注解再查找全局，都没有则此表没有逻辑删除。
 
-  ```yaml
-  mybatis-plus:
-    global-config:
-      db-config:
-        logic-delete-field: flag  #全局逻辑删除字段值
-  ```
+```yaml
+mybatis-plus:
+global-config:
+  db-config:
+    logic-delete-field: flag  #全局逻辑删除字段值
+```
   
   
 ::: tip 附件说明
