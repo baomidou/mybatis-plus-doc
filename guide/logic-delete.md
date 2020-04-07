@@ -6,26 +6,31 @@ SpringBoot 配置方式：
 
 ```yaml
 mybatis-plus:
-global-config:
-  db-config:
-    logic-delete-field: flag  #全局逻辑删除字段值 3.3.0开始支持，详情看下面。
-    logic-delete-value: 1 # 逻辑已删除值(默认为 1)
-    logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+  global-config:
+    db-config:
+      logic-delete-field: flag  #全局逻辑删除字段值 3.3.0开始支持，详情看下面。
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 ```
 
 - 实体类字段上加上`@TableLogic`注解
 
-``` java
+```java
 @TableLogic
 private Integer deleted;
 ```
+
+::: tip 说明:
+- 字段支持所有数据类型(推荐使用 `Integer`,`Boolean`,`LocalDateTime`)
+- 如果使用`LocalDateTime`,建议逻辑未删除值设置为字符串`null`,逻辑删除值只支持数据库函数例如`now()`
+:::
   
 - 效果: 使用mp自带方法删除和查找都会附带逻辑删除功能 (自己写的xml不会)
 
 ``` sql
 example
-删除时 update user set deleted=1 where id =1 and deleted=0
-查找时 select * from user where deleted=0
+删除 update user set deleted=1 where id =1 and deleted=0
+查找 select * from user where deleted=0
 ```
   
 - 全局逻辑删除: begin 3.3.0
