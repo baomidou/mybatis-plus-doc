@@ -43,9 +43,9 @@ example
 
 ```yaml
 mybatis-plus:
-global-config:
-  db-config:
-    logic-delete-field: flag  #全局逻辑删除字段值
+  global-config:
+    db-config:
+      logic-delete-field: flag  #全局逻辑删除字段值
 ```
   
   
