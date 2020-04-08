@@ -408,5 +408,8 @@ List<MysqlData> getAll(@Param(Constants.WRAPPER) Wrapper wrapper);
 <select id="getAll" resultType="MysqlData">
 	SELECT * FROM mysql_data ${ew.customSqlSegment}
 </select>
-
 ```
+
+### kotlin使用wrapper
+> kotlin 可以使用 `QueryWrapper` 和 `UpdateWrapper` 但无法使用 `LambdaQueryWrapper` 和 `LambdaUpdateWrapper`  
+> 如果想使用 lambda 方式的 wrapper 请使用 `KtQueryWrapper` 和 `KtUpdateWrapper`
