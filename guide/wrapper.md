@@ -213,7 +213,7 @@ notInSql(boolean condition, R column, String inValue)
 ```
 - 字段 NOT IN ( sql语句 )
 - 例: `notInSql("age", "1,2,3,4,5,6")`--->`age not in (1,2,3,4,5,6)`
-- 例: `notInSql("id", "select id from table where id < 3")`--->`age not in (select id from table where id < 3)`
+- 例: `notInSql("id", "select id from table where id < 3")`--->`id not in (select id from table where id < 3)`
 
 ### groupBy
 ``` java{2}
