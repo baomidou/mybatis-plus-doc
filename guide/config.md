@@ -16,7 +16,7 @@ MyBatis-Plus 的配置异常的简单，我们仅需要一些简单的配置即�
     public class Application {
 
         public static void main(String[] args) {
-            SpringApplication.run(QuickStartApplication.class, args);
+            SpringApplication.run(Application.class, args);
         }
 
     }
