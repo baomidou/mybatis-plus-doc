@@ -473,4 +473,12 @@ springboot 2.2.0 之前无此问题, springboot 2.2.0 出现此问题
 
 解决方案：1.将springboot降级到2.1.x或升级到2.2.1起 (建议springboot2.2.2)
 
+## 分离打包部署出现ClassNotFoundException
 
+针对3.3.2以下版本：
+
+现象： 开发工具运行没问题，打包部署服务器执行lambda表达式出现ClassNotFoundException
+
+原因： 执行反序化时类加载器错误
+
+解决方案： 去除spring-boot-maven-plugin插件进行打包或升级至3.3.2，参考示例（[分离打包](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-assembly)）
