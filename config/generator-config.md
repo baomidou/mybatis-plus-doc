@@ -154,11 +154,17 @@ sidebarDepth: 3
 ### entityColumnConstant
 【实体】是否生成字段常量（默认 false）
 
-### entityBuilderModel
-【实体】是否为构建者模型（默认 false）
+### ~~entityBuilderModel~~
+【实体】是否为构建者模型（默认 false），自3.3.2开始更名为 [chainModel](#chainmodel（since-3-3-2）)
+
+### chainModel（since 3.3.2）
+
+【实体】是否为链式模型（默认 false）
 
 ### entityLombokModel
 【实体】是否为lombok模型（默认 false）
+
+3.3.2以下版本默认生成了链式模型，3.3.2以后，默认不生成，如有需要，请开启 [chainModel](#chainmodel（since-3-3-2）)
 
 ### entityBooleanColumnRemoveIsPrefix
 Boolean类型字段是否移除is前缀（默认 false）
