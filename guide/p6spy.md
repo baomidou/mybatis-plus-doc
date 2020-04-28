@@ -68,3 +68,19 @@ outagedetectioninterval=2
 - 批量操作打印重复的问题请使用MybatisPlusLogFactory (3.2.1新增）
 - 该插件有性能损耗，不建议生产环境使用。
 :::
+
+
+# 启动 mybatis 本身的 log 日志
+
+```
+# 方式一
+mybatis
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl 
+    
+# 方式二 application.yml 中增加配置，指定 mapper 文件所在的包
+logging:
+  level:
+    com.baomidou.example.mapper: debug
+```
+
