@@ -70,7 +70,7 @@ outagedetectioninterval=2
 :::
 
 
-# 启动 mybatis 本身的 log 日志
+> 启动 mybatis 本身的 log 日志
 
 ```
 # 方式一
