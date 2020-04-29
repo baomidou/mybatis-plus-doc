@@ -482,3 +482,18 @@ springboot 2.2.0 之前无此问题, springboot 2.2.0 出现此问题
 原因： 执行反序化时类加载器错误
 
 解决方案： 去除spring-boot-maven-plugin插件进行打包或升级至3.3.2，参考示例（[分离打包](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-assembly)）
+
+
+## 启动 mybatis 本身的 log 日志
+
+```yaml
+# 方式一
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl 
+    
+# 方式二 application.yml 中增加配置，指定 mapper 文件所在的包
+logging:
+  level:
+    com.baomidou.example.mapper: debug
+```
