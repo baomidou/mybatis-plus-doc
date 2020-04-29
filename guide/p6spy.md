@@ -25,7 +25,7 @@ compile group: 'p6spy', name: 'p6spy', version: '最新版本'
 
 - application.yml 配置：
 
-```xml
+```yaml
 spring:
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
@@ -33,7 +33,7 @@ spring:
     ...
 ```
 - spy.properties 配置：
-```xml
+```properties
 #3.2.1以上使用
 modulelist=com.baomidou.mybatisplus.extension.p6spy.MybatisPlusLogFactory,com.p6spy.engine.outage.P6OutageFactory
 #3.2.1以下使用或者不配置
@@ -72,9 +72,9 @@ outagedetectioninterval=2
 
 > 启动 mybatis 本身的 log 日志
 
-```
+```yaml
 # 方式一
-mybatis
+mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl 
     
