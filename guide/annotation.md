@@ -35,7 +35,7 @@ mp会自动构建一个`ResultMap`并注入到mybatis里(一般用不上).下面
 | :-: | :-: | :-: | :-: | :-: |
 | value | String | 否 | "" | 主键字段名 |
 | type | Enum | 否 | IdType.NONE | 主键类型 |
-  
+
 #### [IdType](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/IdType.java)
 
 | 值 | 描述 |
@@ -55,7 +55,7 @@ mp会自动构建一个`ResultMap`并注入到mybatis里(一般用不上).下面
 
 | 属性 | 类型 | 必须指定 | 默认值 | 描述 |
 | :-: | :-: | :-: | :-: | :-: |
-| value | String | 否 | "" | 字段名 |
+| value | String | 否 | "" | 数据库字段名 |
 | el | String | 否 | "" | 映射为原生 `#{ ... }` 逻辑,相当于写在 xml 里的 `#{ ... }` 部分 |
 | exist | boolean | 否 | true | 是否为数据库表字段 |
 | condition | String | 否 | "" | 字段 `where` 实体查询比较条件,有值设置则按设置的值为准,没有则为默认全局的 `%s=#{%s}`,[参考](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java) |
