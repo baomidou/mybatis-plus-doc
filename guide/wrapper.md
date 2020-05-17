@@ -187,7 +187,7 @@ in(boolean condition, R column, Object... values)
 notIn(R column, Collection<?> value)
 notIn(boolean condition, R column, Collection<?> value)
 ```
-- 字段 IN (value.get(0), value.get(1), ...)
+- 字段 NOT IN (value.get(0), value.get(1), ...)
 - 例: `notIn("age",{1,2,3})`--->`age not in (1,2,3)`
 
 ``` java{2}
