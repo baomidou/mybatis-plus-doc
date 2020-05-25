@@ -163,8 +163,8 @@ function genGuideSidebar(isZh) {
                 "performance-analysis-plugin",
                 "p6spy",
                 "optimistic-locker-plugin",
+                "safety",
                 "dynamic-datasource",
-                "dts",
                 "tenant",
                 "dynamic-table-name-parser",
                 "mybatisx-idea-plugin"
