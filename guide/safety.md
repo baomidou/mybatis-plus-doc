@@ -31,7 +31,7 @@ String result = AES.encrypt(data, randomKey);
 如何使用：
 
 ```
-// Java 启动参数（ idea 设置 Program arguments ）
+// Jar 启动参数（ idea 设置 Program arguments ）
 --mpw.key=d1104d7c2b606f0b
 ```
 
