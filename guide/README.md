@@ -113,6 +113,7 @@
 - [Dice](https://github.com/bihell/Dice)：一个Vue 2.x 和 SpringBoot 全家桶开发的前后端分离的个人内容管理系统：「博客」、「权限管理」、「代码段」、「媒体库」等。
 - [thyme-boot](https://gitee.com/thyme-boot/thyme-boot)：基于SpringBoot+Layui+Vue的快速后台开发框架
 - [zuihou-admin-cloud](https://gitee.com/zuihou111/zuihou-admin-cloud)：基于SpringCloud的SaaS微服务脚手架
+- [mybatis-plus-generator-ui](https://github.com/davidfantasy/mybatis-plus-generator-ui)：基于mybatis-plus-generator的图形化交互式代码生成工具
 ## 接入企业
 
 ::: tip
