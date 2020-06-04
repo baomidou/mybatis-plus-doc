@@ -32,7 +32,7 @@
 
 ## 支持数据库
 
-- mysql 、 mariadb  、  oracle  、  db2  、  h2  、  hsql  、  sqlite  、  postgresql  、  sqlserver
+- mysql 、 mariadb  、  oracle  、  db2  、  h2  、  hsql  、  sqlite  、  postgresql  、  sqlserver 、 presto  
 
 - 达梦数据库  、 虚谷数据库  、  人大金仓数据库
 
