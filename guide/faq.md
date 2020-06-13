@@ -304,8 +304,6 @@ mapper.selectList(
 
 我们建议缓存放到 service 层，你可以自定义自己的 BaseServiceImpl 重写注解父类方法，继承自己的实现。
 
-当然如果你是一个极端分子，请使用 CachePaginationInterceptor 替换默认分页，这样支持分页缓存。
-
 ## mapper 层二级缓存刷新问题
 
 如果你按照 mybatis 的方式配置第三方二级缓存，并且使用 2.0.9 以上的版本，则会发现自带的方法无法更新缓存内容，那么请按如下方式解决（二选一）：
