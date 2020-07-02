@@ -255,6 +255,14 @@ having(boolean condition, String sqlHaving, Object... params)
 - 例: `having("sum(age) > 10")`--->`having sum(age) > 10`
 - 例: `having("sum(age) > {0}", 11)`--->`having sum(age) > 11`
 
+### func
+``` java{2}
+func(Consumer<Children> consumer)
+func(boolean condition, Consumer<Children> consumer)
+```
+- func 方法(主要方便在出现if...else下调用不同方法能不断链)
+- 例: `func(i -> if(true) {i.eq("id", 1)} else {i.ne("id", 1)})`
+
 ### or
 ``` java{2}
 or()
@@ -351,26 +359,6 @@ select(Class<T> entityClass, Predicate<TableFieldInfo> predicate)
 :::
 - 例: `select("id", "name", "age")`
 - 例: `select(i -> i.getProperty().startsWith("test"))`
-
-### excludeColumns <Badge text="@Deprecated" type="error"/>
-- 排除查询字段
-::: warning 
-已从`3.0.5`版本上移除此方法!
-:::
-
-## LambdaQueryChainWrapper
-::: tip 说明:
-这个Wrapper只适用于Service类的lambdaQuery()链式调用使用，具体参考下方的使用说明
-:::
-
-### 举例
-```java
-userService.lambdaQuery().like(User::getName,"a").list().forEach(System.out::println);
-//service.lambdaQuery()返回的是LambdaQueryChainWrapper,只在这个链式调用场景下使用，以下情况下使用会出错
-LambdaQueryChainWrapper<User> chainWrapper =userService.lambdaQuery();
-chainWrapper.like(User::getName, "a");
-userService.list(chainWrapper);//会出异常，不过可以避免：userService.list(chainWrapper.getWrapper())
-```
 
 ## UpdateWrapper
 ::: tip 说明:
