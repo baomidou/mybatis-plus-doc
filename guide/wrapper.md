@@ -358,6 +358,20 @@ select(Class<T> entityClass, Predicate<TableFieldInfo> predicate)
 已从`3.0.5`版本上移除此方法!
 :::
 
+## LambdaQueryChainWrapper
+::: tip 说明:
+这个Wrapper只适用于Service类的lambdaQuery()链式调用使用，具体参考下方的使用说明
+:::
+
+### 举例
+```java
+userService.lambdaQuery().like(User::getName,"a").list().forEach(System.out::println);
+//service.lambdaQuery()返回的是LambdaQueryChainWrapper,只在这个链式调用场景下使用，以下情况下使用会出错
+LambdaQueryChainWrapper<User> chainWrapper =userService.lambdaQuery();
+chainWrapper.like(User::getName, "a");
+userService.list(chainWrapper);//会出异常，不过可以避免：userService.list(chainWrapper.getWrapper())
+```
+
 ## UpdateWrapper
 ::: tip 说明:
 继承自 `AbstractWrapper` ,自身的内部属性 `entity` 也用于生成 where 条件  
