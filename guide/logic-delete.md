@@ -33,7 +33,7 @@ example
 查找 select * from user where deleted=0
 ```
   
-- 全局逻辑删除: begin 3.3.0
+- 全局逻辑删除: since 3.3.0
 
   如果公司代码比较规范，比如统一了全局都是flag为逻辑删除字段。
   
@@ -57,3 +57,17 @@ mybatis-plus:
 
 - 若确需查找删除数据，如老板需要查看历史所有数据的统计汇总信息，请单独手写sql。
 :::
+
+::: tip 效果说明:
+自动注入的`method`里,除了 insert 外的 select update 操作均会屏蔽 逻辑删除字段 的相关自动逻辑
+既在sql内自动追加条件只能对未删除数据进行 select 和 update 
+:::
+
+## 常见问题:
+
+> Q1: 如何 insert ?
+> A1:
+>> 1. 字段在数据库定义默认值(推荐)
+>> 2. insert 前自己 set 值  
+>> 3. 使用自动填充功能  
+
