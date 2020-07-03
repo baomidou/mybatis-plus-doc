@@ -1,21 +1,30 @@
 # 逻辑删除
 
-SpringBoot 配置方式：
+::: tip 效果:
+只对自动注入的sql起效:
+- insert 的不作限制
+- select 的会追加条件过滤掉已删除数据,且使用 wrapper.entity 生成的where条件会忽略该字段
+- update 的也会追加条件防止更新到已删除数据,且使用 wrapper.entity 生成的where条件会忽略该字段
+- deleted 会转变为 update
+:::
 
-- application.yml 加入配置(如果你的默认值和mp默认的一样,该配置可无):
+## 使用方法：
 
+### 步骤1: 配置`com.baomidou.mybatisplus.core.config.GlobalConfig$DbConfig`
+
+- 例: application.yml
 ```yaml
 mybatis-plus:
   global-config:
     db-config:
-      logic-delete-field: flag  #全局逻辑删除字段值 3.3.0开始支持，详情看下面。
+      logic-delete-field: flag  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
       logic-delete-value: 1 # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 ```
 
-- 实体类字段上加上`@TableLogic`注解
+### 步骤2: 实体类字段上加上`@TableLogic`注解
 
-```java
+``` java
 @TableLogic
 private Integer deleted;
 ```
@@ -58,16 +67,10 @@ mybatis-plus:
 - 若确需查找删除数据，如老板需要查看历史所有数据的统计汇总信息，请单独手写sql。
 :::
 
-::: tip 效果说明:
-自动注入的`method`里,除了 insert 外的 select update 操作均会屏蔽 逻辑删除字段 的相关自动逻辑
-既在sql内自动追加条件只能对未删除数据进行 select 和 update 
-:::
-
 ## 常见问题:
 
-> Q1: 如何 insert ?
-> A1:
->> 1. 字段在数据库定义默认值(推荐)
->> 2. insert 前自己 set 值  
->> 3. 使用自动填充功能  
+#### 如何 insert ?
+> 1. 字段在数据库定义默认值(推荐)
+> 2. insert 前自己 set 值
+> 3. 使用自动填充功能
 
