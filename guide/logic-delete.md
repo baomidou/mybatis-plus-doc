@@ -43,8 +43,12 @@ private Integer deleted;
 
 ## 常见问题:
 
-#### 如何 insert ?
+#### 1. 如何 insert ?
 > 1. 字段在数据库定义默认值(推荐)
 > 2. insert 前自己 set 值
 > 3. 使用自动填充功能
 
+#### 2. 删除接口自动填充功能失效
+> 1. 使用 `update` 方法并: `UpdateWrapper.set(column, value)`(推荐)
+> 2. 使用 `update` 方法并: `UpdateWrapper.setSql("column=value")`
+> 3. 使用[Sql注入器](/guide/sql-injector.md)注入`com.baomidou.mybatisplus.extension.injector.methods.LogicDeleteByIdWithFill`并使用(推荐)

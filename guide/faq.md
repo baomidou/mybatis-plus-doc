@@ -371,45 +371,6 @@ wrapper.last("limit 1");
 - 目前的解决方案：循环预处理批量提交，虽然性能比单 SQL 慢但是可以解决以上问题。
 
 
-## 逻辑删除下 自动填充 功能没有效果
-
-- 自动填充的实现方式是填充到入参的`entity`内,由于`baseMapper`提供的删除接口入参不是`entity`所以逻辑删除无效
-- 如果你想要使用自动填充有效:
-  - 方式一: 使用update方法:`UpdateWrapper.set("logicDeleteColumn","deleteValue")`
-  - 方式二: 配合[Sql注入器](/guide/sql-injector.md)  
-并使用我们提供的`com.baomidou.mybatisplus.extension.injector.methods.LogicDeleteByIdWithFill`类  
-注意该类只能填充指定了自动填充的字段,其他字段无效
-
-- 方式2下: Java Config Bean 配置
-  
-  1. 配置自定义的 SqlInjector
-    ``` java
-    @Bean
-    public LogicSqlInjector logicSqlInjector(){
-        return new LogicSqlInjector() {
-            /**
-             * 注入自定义全局方法
-             */
-            @Override
-            public List<AbstractMethod> getMethodList() {
-                List<AbstractMethod> methodList = super.getMethodList();
-                methodList.add(new LogicDeleteByIdWithFill());
-                return methodList;
-            }
-        };
-    }
-    ```
-  2. 配置自己的全局 baseMapper 并使用
-    ```java
-    public interface MyBaseMapper<T> extends BaseMapper<T> {
-    
-        /**
-         * 自定义全局方法
-         */
-        int deleteByIdWithFill(T entity);
-    }
-    ```
-
 ## 3.x数据库关键字如何处理？
 
 在以前的版本是自动识别关键字进行处理的，但是3.x移除了这个功能。
