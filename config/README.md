@@ -385,7 +385,7 @@ entity 的字段(property)的 format,只有在 column as property 这种情况�
 
 字段验证策略之 update,在 update 的时候的字段验证策略
 
-### selectStrategy(since 3.1.2)
+### selectStrategy
 
 - 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
 - 默认值：`NOT_NULL`
