@@ -58,7 +58,7 @@ MyBatis 配置文件位置，如果您有单独的 MyBatis 配置，请将其路
 ### mapperLocations
 
 - 类型：`String[]`
-- 默认值：`[]`
+- 默认值：`["classpath*:/mapper/**/*.xml"]`
 
 MyBatis Mapper 所对应的 XML 文件位置，如果您在 Mapper 中有自定义方法(XML 中有自定义实现)，需要进行该配置，告诉 Mapper 所对应的 XML 文件位置
 
@@ -132,8 +132,8 @@ TypeHandler 通常用于自定义类型转换。
 
 #### globalConfig
 
-- 类型：`GlobalConfig`
-- 默认值：`null`
+- 类型：`com.baomidou.mybatisplus.core.config.GlobalConfig`
+- 默认值：`GlobalConfig::new`
 
 MyBatis-Plus 全局策略配置，具体请查看 [GlobalConfig](#GlobalConfig)
 
@@ -278,7 +278,7 @@ SQL注入器(starter 下支持`@bean`注入)
 
 元对象字段填充控制器(starter 下支持`@bean`注入)
 
-### idGenerator(since 3.3.0)
+### identifierGenerator(since 3.3.0)
 
 - 类型：`com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator`
 - 默认值：`com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator`
@@ -287,7 +287,7 @@ Id生成器(starter 下支持`@bean`注入)
 
 ### dbConfig
 
-- 类型：`com.baomidou.mybatisplus.annotation.DbConfig`
+- 类型：`com.baomidou.mybatisplus.core.config.GlobalConfig$DbConfig`
 - 默认值：`null`
 
 MyBatis-Plus 全局策略中的 DB 策略配置，具体请查看 [DbConfig](#DbConfig)
@@ -322,19 +322,26 @@ schema
 
 字段 format,例: ``%s``,(对主键无效)
 
+### propertyFormat(since 3.3.0)
+
+- 类型：`String`
+- 默认值：`null`
+
+entity 的字段(property)的 format,只有在 column as property 这种情况下生效例: ``%s``,(对主键无效)
+
 ### tableUnderline
 
 - 类型：`boolean`
 - 默认值：`true`
 
-表名、是否使用下划线命名，默认数据库表使用下划线命名
+表名是否使用驼峰转下划线命名,只对表名生效
 
 ### capitalMode
 
 - 类型：`boolean`
 - 默认值：`false`
 
-是否开启大写命名，默认不开启
+大写命名,对表名和字段名均生效
 
 ### keyGenerator
 
@@ -342,6 +349,13 @@ schema
 - 默认值：`null`
 
 表主键生成器(starter 下支持`@bean`注入)
+
+### logicDeleteField
+
+- 类型：`String`
+- 默认值：`null`
+
+全局的entity的逻辑删除字段属性名,([逻辑删除](/guide/logic-delete.md)下有效)
 
 ### logicDeleteValue
 
@@ -362,36 +376,18 @@ schema
 - 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
 - 默认值：`NOT_NULL`
 
-字段验证策略之 insert
-
-::: tip 说明:
-在 insert 的时候的字段验证策略
-目前没有默认值,等 {@link #fieldStrategy} 完全去除掉,会给个默认值 NOT_NULL
-没配则按 {@link #fieldStrategy} 为准
-:::
+字段验证策略之 insert,在 insert 的时候的字段验证策略
 
 ### updateStrategy
 
 - 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
 - 默认值：`NOT_NULL`
 
-字段验证策略之 update
-
-::: tip 说明:
-在 update 的时候的字段验证策略
-目前没有默认值,等 {@link #fieldStrategy} 完全去除掉,会给个默认值 NOT_NULL
-没配则按 {@link #fieldStrategy} 为准
-:::
+字段验证策略之 update,在 update 的时候的字段验证策略
 
 ### selectStrategy(since 3.1.2)
 
 - 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
 - 默认值：`NOT_NULL`
 
-字段验证策略之 select
-
-::: tip 说明:
-在 select 的时候的字段验证策略: wrapper 根据内部 entity 生成的 where 条件
-目前没有默认值,等 {@link #fieldStrategy} 完全去除掉,会给个默认值 NOT_NULL
-没配则按 {@link #fieldStrategy} 为准
-:::
+字段验证策略之 select,在 select 的时候的字段验证策略既 wrapper 根据内部 entity 生成的 where 条件
