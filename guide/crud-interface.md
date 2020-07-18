@@ -151,13 +151,13 @@ List<Object> listObjs(Wrapper<T> queryWrapper);
 ### Page
 
 ``` java
-// 无条件翻页查询
+// 无条件分页查询
 IPage<T> page(IPage<T> page);
-// 翻页查询
+// 条件分页查询
 IPage<T> page(IPage<T> page, Wrapper<T> queryWrapper);
-// 无条件翻页查询
+// 无条件分页查询
 IPage<Map<String, Object>> pageMaps(IPage<T> page);
-// 翻页查询
+// 条件分页查询
 IPage<Map<String, Object>> pageMaps(IPage<T> page, Wrapper<T> queryWrapper);
 ```
 ##### 参数说明
