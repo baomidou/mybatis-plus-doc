@@ -156,6 +156,7 @@ function genGuideSidebar(isZh) {
                 "logic-delete",
                 "enum",
                 "typehandler",
+                "interceptor",
                 "auto-fill-metainfo",
                 "sql-injector",
                 "block-attack-sql-parser",

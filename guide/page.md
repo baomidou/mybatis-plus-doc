@@ -26,7 +26,6 @@
 
 ```java
 //Spring boot方式
-@EnableTransactionManagement
 @Configuration
 @MapperScan("com.baomidou.cloud.service.*.mapper*")
 public class MybatisPlusConfig {
