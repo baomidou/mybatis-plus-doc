@@ -353,7 +353,7 @@ select(Class<T> entityClass, Predicate<TableFieldInfo> predicate)
 ```
 - 设置查询字段
 ::: tip 说明:
-以上方分法为两类.  
+以上方法分为两类.  
 第二类方法为:过滤查询字段(主键除外),入参不包含 class 的调用前需要`wrapper`内的`entity`属性有值!
 这两类方法重复调用以最后一次为准  
 :::
