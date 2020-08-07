@@ -28,7 +28,6 @@ Hosted by <a href="https://pages.coding.me" target="_blank" style="font-weight:b
 </p>
 
 <script>
-import { Notification } from 'element-ui'
 export default {
   mounted () {
     var xmlHttp = new XMLHttpRequest()
@@ -39,21 +38,6 @@ export default {
     for (var i = 0; i < codeNodeList.length; i++) {
         codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('latest-version', versionInfo)
     }
-    // Notify
-    /*
-    this.$notify({
-      offset: 50,
-      title: 'Please Vote For MyBatis-Plus!',
-      message: 'The most popular chinese open source software selection vote in 2019 is in progress, please vote for mybatis-plus (click this message will jump to vote page)',
-      type: 'success',
-      showClose: false,
-      duration: 0,
-      onClick: function() {
-        Notification.closeAll()
-        window.open("https://www.oschina.net/project/top_cn_2019")
-      }
-    });
-    */
   }
 }
 </script>

@@ -37,7 +37,6 @@ Hosted by <a href="https://pages.coding.me" target="_blank" style="font-weight:b
 </p>
 
 <script>
-import { Notification } from 'element-ui'
 export default {
   mounted () {
     var xmlHttp = new XMLHttpRequest()
@@ -48,20 +47,6 @@ export default {
     for (var i = 0; i < codeNodeList.length; i++) {
         codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('latest-version', versionInfo)
     }
-    /** Notify
-    this.$notify({
-      offset: 50,
-      title: '【双12】主会场 低至1折',
-      message: '新老用户都有，各种福利&折扣&代金券 新用户低至1折',
-      type: 'success',
-      showClose: false,
-      duration: 0,
-      onClick: function() {
-        Notification.closeAll()
-        window.open("https://www.aliyun.com/1212/2019/home?userCode=5wbjwd1y")
-      }
-    });
-    */
   }
 }
 </script>
