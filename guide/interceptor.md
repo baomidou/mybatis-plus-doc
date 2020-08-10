@@ -1,9 +1,8 @@
 # 内置插件(since 3.3.3(暂未发布正式版))
 
-## 主体
-> MybatisPlusInterceptor
+主体插件: MybatisPlusInterceptor  
+该插件内部插件集:
 
-### 子体
 - 分页插件: PaginationInnerInterceptor
 - 多租户插件: TenantLineInnerInterceptor
 - 动态表名插件: DynamicTableNameInnerInterceptor
@@ -15,11 +14,10 @@
 新提供的插件不得和同功能的旧插件一同使用
 :::
 
-### 使用方式(以分页插件举例)
+## 使用方式(以分页插件举例)
 
-#### spring-mvc
+### spring-mvc
 ``` xml
-<!-- spring xml 方式 -->
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
     <!-- 其他属性 略 --> 
     <property name="configuration" ref="configuration"/>
@@ -49,7 +47,7 @@
 </bean>
 ```
 
-#### spring-boot
+### spring-boot
 ``` java
 @Configuration
 @MapperScan("scan.your.mapper.package")
