@@ -4,7 +4,7 @@
     <div style="padding: 0 1.5rem;">
       <Adsense
         data-ad-client="ca-pub-4147143076931995"
-        data-ad-slot="1234567890">
+        data-ad-slot="1866407052">
       </Adsense>
     </div>
   </div>
