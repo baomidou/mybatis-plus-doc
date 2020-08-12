@@ -7,11 +7,7 @@
     "build": "vuepress build"
   },
   "devDependencies": {
-    "vuepress": "^1.5.3"
-  },
-  "dependencies": {
-    "vue-google-adsense": "^1.8.3",
-    "vue-script2": "^2.1.0",
-    "vuepress-plugin-lastest-version": "^0.1.5"
+    "vuepress": "^1.5.3",
+    "vuepress-plugin-lastest-version": "^0.1.6"
   }
 }

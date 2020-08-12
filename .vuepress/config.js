@@ -21,7 +21,16 @@ module.exports = {
       description: "Born To Simplify Development"
     }
   },
-  head: [["link", { rel: "icon", href: `/favicon.ico` }]],
+  head: [["link", { rel: "icon", href: `/favicon.ico` }],
+    [
+      "script",
+      {
+        "data-ad-client": "ca-pub-4147143076931995",
+        async: true,
+        src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+      }
+    ]
+  ],
   themeConfig: {
     repo: "baomidou/mybatis-plus",
     docsRepo: "baomidou/mybatis-plus-doc",
