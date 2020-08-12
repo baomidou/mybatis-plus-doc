@@ -27,7 +27,7 @@ module.exports = {
       {
         "data-ad-client": "ca-pub-4147143076931995",
         async: true,
-        src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+        src: "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
       }
     ]
   ],
