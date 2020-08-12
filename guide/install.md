@@ -19,14 +19,14 @@ Maven：
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus-boot-starter</artifactId>
-    <version>starter-latest-version</version>
+    <version>latest-version</version>
 </dependency>
 ```
 
 Gradle：
 
 ```groovy
-compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: 'starter-latest-version'
+compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: 'latest-version'
 ```
 
 ### Spring MVC
@@ -73,24 +73,3 @@ repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 ```
-
-<script>
-export default {
-  mounted () {
-   var xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", "https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus-boot-starter.json", false)
-    xmlHttp.send(null)
-    var starterVersionInfo = JSON.parse(xmlHttp.responseText).value.replace('v', '')
-
-    var xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", "https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.json", false)
-    xmlHttp.send(null)
-    var versionInfo = JSON.parse(xmlHttp.responseText).value.replace('v', '')
-    
-    var codeNodeList = document.querySelectorAll('code')
-    for (var i = 0; i < codeNodeList.length; i++) {
-        codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('starter-latest-version', starterVersionInfo).replace('latest-version', versionInfo)
-    }
-  }
-}
-</script>

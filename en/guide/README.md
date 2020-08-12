@@ -10,7 +10,6 @@ Our Vision is to be the best Partner of Mybatis, just like Game: [Contra](/img/c
     <img src="/img/relationship-with-mybatis.png"/>
 </p>
 
-
 ## Features
 
 - **Non-invasion**：No change but enhancement, no effect for current project by importing MP

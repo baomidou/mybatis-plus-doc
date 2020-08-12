@@ -6,20 +6,20 @@ module.exports = {
   markdown: {
     externalLinks: {
       target: "_blank",
-      rel: "noopener noreferrer",
-    },
+      rel: "noopener noreferrer"
+    }
   },
   locales: {
     "/": {
       lang: "zh-CN",
       title: "MyBatis-Plus",
-      description: "为简化开发而生",
+      description: "为简化开发而生"
     },
     "/en/": {
       lang: "en-US",
       title: "MyBatis-Plus",
-      description: "Born To Simplify Development",
-    },
+      description: "Born To Simplify Development"
+    }
   },
   head: [["link", { rel: "icon", href: `/favicon.ico` }]],
   themeConfig: {
@@ -35,57 +35,57 @@ module.exports = {
         nav: [
           {
             text: "指南",
-            link: "/guide/",
+            link: "/guide/"
           },
           {
             text: "配置",
-            link: "/config/",
+            link: "/config/"
           },
           {
             text: "生态",
             items: [
               {
                 text: "Kisso 单点登录",
-                link: "https://gitee.com/baomidou/kisso",
+                link: "https://gitee.com/baomidou/kisso"
               },
               {
                 text: "Lock4j 分布式锁",
-                link: "https://gitee.com/baomidou/lock4j-spring-boot-starter",
+                link: "https://gitee.com/baomidou/lock4j-spring-boot-starter"
               },
               {
                 text: "Dynamic Datasource 动态数据源",
                 link:
-                  "https://github.com/baomidou/dynamic-datasource-spring-boot-starter",
+                  "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
               },
               {
                 text: "Jobs 分布式任务调度平台",
-                link: "https://github.com/baomidou/jobs",
-              },
-            ],
+                link: "https://github.com/baomidou/jobs"
+              }
+            ]
           },
           {
             text: "更新日志",
             link:
-              "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md",
+              "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
           },
           {
             text: "3.0 文档",
             items: [
               {
                 text: "3.X 文档",
-                link: "https://mybatis.plus",
+                link: "https://mybatis.plus"
               },
               {
                 text: "2.X 文档",
-                link: "https://baomidou.gitee.io/mybatis-plus-doc/#/",
-              },
-            ],
-          },
+                link: "https://baomidou.gitee.io/mybatis-plus-doc/#/"
+              }
+            ]
+          }
         ],
         sidebar: {
           "/guide/": genGuideSidebar(true),
-          "/config/": genConfigSidebar(true),
-        },
+          "/config/": genConfigSidebar(true)
+        }
       },
       "/en/": {
         label: "English",
@@ -95,47 +95,56 @@ module.exports = {
         nav: [
           {
             text: "Guide",
-            link: "/en/guide/",
+            link: "/en/guide/"
           },
           {
             text: "Config",
-            link: "/en/config/",
+            link: "/en/config/"
           },
           {
             text: "Ecosystem",
             items: [
               {
                 text: "Kisso",
-                link: "https://gitee.com/baomidou/kisso",
+                link: "https://gitee.com/baomidou/kisso"
               },
               {
                 text: "Lock4j",
-                link: "https://gitee.com/baomidou/lock4j-spring-boot-starter",
+                link: "https://gitee.com/baomidou/lock4j-spring-boot-starter"
               },
               {
                 text: "Dynamic Datasource",
                 link:
-                  "https://github.com/baomidou/dynamic-datasource-spring-boot-starter",
+                  "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
               },
               {
                 text: "Jobs Scheduling Platform",
-                link: "https://github.com/baomidou/jobs",
-              },
-            ],
+                link: "https://github.com/baomidou/jobs"
+              }
+            ]
           },
           {
             text: "Changelog",
             link:
-              "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md",
-          },
+              "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
+          }
         ],
         sidebar: {
           "/en/guide/": genGuideSidebar(false),
-          "/en/config/": genConfigSidebar(false),
-        },
-      },
-    },
+          "/en/config/": genConfigSidebar(false)
+        }
+      }
+    }
   },
+  plugins: [
+    [
+      "lastest-version",
+      {
+        type: "maven",
+        repo: "com.baomidou/mybatis-plus"
+      }
+    ]
+  ]
 };
 
 function genGuideSidebar(isZh) {
@@ -143,7 +152,7 @@ function genGuideSidebar(isZh) {
     {
       title: isZh ? "快速入门" : "Getting Start",
       collapsable: false,
-      children: ["", "quick-start", "install", "config", "annotation"],
+      children: ["", "quick-start", "install", "config", "annotation"]
     },
     {
       title: isZh ? "核心功能" : "Core",
@@ -154,8 +163,8 @@ function genGuideSidebar(isZh) {
         "wrapper",
         "page",
         "sequence",
-        "id-generator",
-      ],
+        "id-generator"
+      ]
     },
     {
       title: isZh ? "插件扩展" : "Plugin",
@@ -174,14 +183,14 @@ function genGuideSidebar(isZh) {
         "dynamic-datasource",
         "tenant",
         "dynamic-table-name-parser",
-        "mybatisx-idea-plugin",
-      ],
+        "mybatisx-idea-plugin"
+      ]
     },
     {
       title: "FAQ",
       collapsable: false,
-      children: ["faq", "donate"],
-    },
+      children: ["faq", "donate"]
+    }
   ];
 }
 
@@ -190,7 +199,7 @@ function genConfigSidebar(isZh) {
     {
       title: isZh ? "配置" : "Config",
       collapsable: false,
-      children: ["", "generator-config"],
-    },
+      children: ["", "generator-config"]
+    }
   ];
 }

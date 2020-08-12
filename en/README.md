@@ -26,18 +26,3 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 <p align="center">
 Hosted by <a href="https://pages.coding.me" target="_blank" style="font-weight:bold">Coding Pages</a> & <a href="https://pages.github.com" target="_blank" style="font-weight:bold">Github Pages</a>
 </p>
-
-<script>
-export default {
-  mounted () {
-    var xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", "https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.json", false)
-    xmlHttp.send(null)
-    var versionInfo = JSON.parse(xmlHttp.responseText).value.replace('v', '')
-    var codeNodeList = document.querySelectorAll('code')
-    for (var i = 0; i < codeNodeList.length; i++) {
-        codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('latest-version', versionInfo)
-    }
-  }
-}
-</script>
