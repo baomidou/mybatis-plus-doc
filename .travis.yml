@@ -23,6 +23,9 @@ env:
 before_install:
   - export TZ=Asia/Shanghai
 
+install:
+  - yarn
+
 script:
   - yarn run build
 
