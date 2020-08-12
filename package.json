@@ -12,6 +12,6 @@
   "dependencies": {
     "vue-google-adsense": "^1.8.3",
     "vue-script2": "^2.1.0",
-    "vuepress-plugin-lastest-version": "^0.1.4"
+    "vuepress-plugin-lastest-version": "^0.1.5"
   }
 }
