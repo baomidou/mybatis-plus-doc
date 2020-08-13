@@ -7528,10 +7528,10 @@ vuepress-plugin-container@^2.0.2:
   dependencies:
     markdown-it-container "^2.0.0"
 
-vuepress-plugin-lastest-version@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/vuepress-plugin-lastest-version/-/vuepress-plugin-lastest-version-0.1.6.tgz#2d12993b42d283941aaf7e7bc3de30a7eaa11ff2"
-  integrity sha512-kx4kKa0ug4FMcs/jxs6Nq/6CzEcaRP10ColUqFQrtnoeJROoT6bTW/Kh8QK878Oec7DWC8KYvb9YBWsEOexscw==
+vuepress-plugin-lastest-version@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/vuepress-plugin-lastest-version/-/vuepress-plugin-lastest-version-0.1.7.tgz#48dd911b99a235c121130dc7ce2c982870f143e0"
+  integrity sha512-tE60q2+oxzSSrxV0iE4BvVaEOCzitGz8G/Px2PHdOBWw4Mwa/1CTP+P+8w2ER9kxsAVu9Z1wLVUjJjgq/w9QEA==
   dependencies:
     cross-fetch "^3.0.5"
 
