@@ -122,3 +122,68 @@ List<User> selectPageVo(IPage<User> page, Integer state);
 > 如果返回类型是 IPage 则入参的 IPage 不能为null,因为 返回的IPage == 入参的IPage  
 > 如果返回类型是 List 则入参的 IPage 可以为 null(为 null 则不分页),但需要你手动 入参的IPage.setRecords(返回的 List);  
 > 如果 xml 需要从 page 里取值,需要 `page.属性` 获取
+
+
+## 多租户插件: TenantLineInnerInterceptor
+
+### 属性介绍
+
+| 属性名 | 类型 | 默认值 | 描述 |
+| :-: | :-: | :-: | :-: |
+| tenantLineHandler | TenantLineHandler |  | 租户处理器（ TenantId 行级 ） |
+
+```java
+public interface TenantLineHandler {
+
+    /**
+     * 获取租户 ID 值表达式，只支持单个 ID 值
+     * <p>
+     *
+     * @return 租户 ID 值表达式
+     */
+    Expression getTenantId();
+
+    /**
+     * 获取租户字段名
+     * <p>
+     * 默认字段名叫: tenant_id
+     *
+     * @return 租户字段名
+     */
+    default String getTenantIdColumn() {
+        return "tenant_id";
+    }
+
+    /**
+     * 根据表名判断是否忽略拼接多租户条件
+     * <p>
+     * 默认都要进行解析并拼接多租户条件
+     *
+     * @param tableName 表名
+     * @return 是否忽略, true:表示忽略，false:需要解析并拼接多租户条件
+     */
+    default boolean ignoreTable(String tableName) {
+        return false;
+    }
+}
+```
+
+::: tip 说明:
+多租户 != 权限过滤,不要乱用,租户之间是完全隔离的!!!
+启用多租户后所有执行的method的sql都会进行处理.
+自写的sql请按规范书写(sql涉及到多个表的每个表都要给别名,特别是 inner join 的要写标准的 inner join)
+:::
+
+
+## 相关注解 @InterceptorIgnore
+
+| 属性名 | 类型 | 默认值 | 描述 |
+| :-: | :-: | :-: | :-: |
+| tenantLine | String | "" | 行级租户 |
+| dynamicTableName | String | "" | 动态表名 |
+| blockAttack | String | "" | 攻击 SQL 阻断解析器,防止全表更新与删除 |
+| illegalSql | String | "" | 垃圾SQL拦截 |
+
+> 各属性代表对应的插件  
+> 各属性不给值则默认为false  
+> 更多说明详见源码注释
