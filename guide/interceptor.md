@@ -110,7 +110,7 @@ public class MybatisPlusConfig {
 ``` java
 IPage<User> selectPageVo(IPage<?> page, Integer state);
 // or
-List<User> selectPageVo(IPage<?> page, Integer state);
+List<User> selectPageVo(IPage<User> page, Integer state);
 ```
 
 ```xml
