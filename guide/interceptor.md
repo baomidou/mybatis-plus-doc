@@ -169,8 +169,8 @@ public interface TenantLineHandler {
 ```
 
 ::: tip 说明:
-多租户 != 权限过滤,不要乱用,租户之间是完全隔离的!!!
-启用多租户后所有执行的method的sql都会进行处理.
+多租户 != 权限过滤,不要乱用,租户之间是完全隔离的!!!  
+启用多租户后所有执行的method的sql都会进行处理.  
 自写的sql请按规范书写(sql涉及到多个表的每个表都要给别名,特别是 inner join 的要写标准的 inner join)
 :::
 
