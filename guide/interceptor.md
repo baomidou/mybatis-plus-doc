@@ -70,6 +70,19 @@ public class MybatisPlusConfig {
 }
 ```
 
+### mybatis-config.xml
+
+```xml
+<plugins>
+  <plugin interceptor="com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor">
+    <property name="@page" value="com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor"/>
+    <property name="page:dbType" value="h2"/>
+  </plugin>
+</plugins>
+```
+
+> property 的配置说明详见 `MybatisPlusInterceptor#setProperties` 的源码方法注释
+
 ::: tip 注意:
 如果内部插件都是使用,需要注意顺序关系,建议使用如下顺序
 - 多租户插件,动态表名插件
@@ -95,7 +108,9 @@ public class MybatisPlusConfig {
 ### 自定义的 mapper#method 使用分页
 
 ``` java
-IPage<User> selectPageVo(Page<?> page, Integer state);
+IPage<User> selectPageVo(IPage<?> page, Integer state);
+// or
+List<User> selectPageVo(IPage<?> page, Integer state);
 ```
 
 ```xml
@@ -104,5 +119,6 @@ IPage<User> selectPageVo(Page<?> page, Integer state);
 </select>
 ```
 
-> 入参 page 是个 IPage(不能为null,因为 返回的IPage == 入参的IPage)  
+> 如果返回类型是 IPage 则入参的 IPage 不能为null,因为 返回的IPage == 入参的IPage  
+> 如果返回类型是 List 则入参的 IPage 可以为 null(为 null 则不分页),但需要你手动 入参的IPage.setRecords(返回的 List); 
 > 如果 xml 需要从 page 里取值,需要 `page.属性` 获取
