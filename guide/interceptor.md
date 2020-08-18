@@ -1,4 +1,4 @@
-# 内置插件(since 3.3.3(暂未发布正式版))
+# 内置插件(since 3.4.0(暂未发布正式版))
 
 主体插件: MybatisPlusInterceptor  
 该插件内部插件集:
