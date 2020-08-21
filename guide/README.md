@@ -73,7 +73,6 @@
 - [Crab](https://gitee.com/atcrab/crab)：WEB 极速开发框架
 - [KangarooAdmin](https://git.oschina.net/zhougaojun/KangarooAdmin)：轻量级权限管理框架
 - [iBase4J](https://git.oschina.net/iBase4J/iBase4J)：Java 分布式快速开发基础平台
-- [framework](https://git.oschina.net/sunhan521/framework)：后台管理框架
 - [BMS](https://git.oschina.net/eric.xu/BMS)：基础权限开发框架
 - [spring-shiro-training](https://git.oschina.net/wangzhixuan/spring-shiro-training)：简单实用的权限脚手架
 - [center](https://git.oschina.net/willenfoo/center)：系统管理中心系统
@@ -82,9 +81,7 @@
 - [guns](http://git.oschina.net/naan1993/guns)：guns 后台管理系统
 - [maple](https://git.oschina.net/blind/maple)：maple 企业信息化的开发基础平台
 - [jeeweb-mybatis](https://gitee.com/dataact/jeeweb)：JeeWeb 敏捷开发平台
-- [youngcms](https://gitee.com/fumiao/youngcms)：CMS 平台
 - [king-admin](https://github.com/oukingtim/king-admin)：前后端分离的基础权限管理后台
-- [jeefast](https://gitee.com/theodo/jeefast)：前后端分离 Vue 快速开发平台
 - [bing-upms](https://gitee.com/xiaobingby/bing-upms)：SpringBoot + Shiro +FreeMarker 制作的通用权限管理
 - [slife](https://gitee.com/jamen/slife)：SpringBoot 企业级快速开发脚手架
 - [pig](https://gitee.com/log4j/pig)：微服务 Spring Cloud 架构
@@ -96,7 +93,6 @@
 - [renren-security](https://gitee.com/renrenio/renren-security)：人人权限系统
 - [freeter-admin](https://gitee.com/xcOschina/freeter-admin)：飞特后台管理系统
 - [vblog](https://gitee.com/seu-lfh/vblog)：VBlog 博客系统
-- [jiiiiiin-security](https://github.com/Jiiiiiin/jiiiiiin-security)：jiiiiiin权限系统
 - [hdw-dubbo](https://github.com/tumao2/hdw-dubbo)：HDW快速开发平台
 - [pybbs](https://github.com/tomoya92/pybbs)：更好用的Java语言社区(论坛)
 - [SmallBun](https://gitee.com/leshalv/smallbun)：SmallBun企业级开发脚手架
