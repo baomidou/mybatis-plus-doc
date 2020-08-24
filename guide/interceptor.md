@@ -1,4 +1,4 @@
-# 内置插件(since 3.4.0(暂未发布正式版))
+# 内置插件(since 3.4.0)
 
 主体插件: MybatisPlusInterceptor  
 该插件内部插件集:
@@ -199,6 +199,10 @@ private Integer version;
 - 仅支持 `updateById(id)` 与 `update(entity, wrapper)` 方法
 - **在 `update(entity, wrapper)` 方法下, `wrapper` 不能复用!!!**
 :::
+
+## 防止全表更新与删除插件: BlockAttackInnerInterceptor
+
+> 针对 update 和 delete 语句
 
 ## 相关注解 @InterceptorIgnore
 
