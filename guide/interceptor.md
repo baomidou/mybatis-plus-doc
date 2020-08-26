@@ -204,7 +204,7 @@ private Integer version;
 
 > 针对 update 和 delete 语句
 
-## 相关注解 @InterceptorIgnore
+## 拦截忽略注解 @InterceptorIgnore
 
 | 属性名 | 类型 | 默认值 | 描述 |
 | :-: | :-: | :-: | :-: |
@@ -213,6 +213,7 @@ private Integer version;
 | blockAttack | String | "" | 攻击 SQL 阻断解析器,防止全表更新与删除 |
 | illegalSql | String | "" | 垃圾SQL拦截 |
 
-> 各属性代表对应的插件  
-> 各属性不给值则默认为false  
+> 该注解作用于 xxMapper.java 方法之上
+> 各属性代表对应的插件
+> 各属性不给值则默认为false 设置为 true 忽略拦截
 > 更多说明详见源码注释
