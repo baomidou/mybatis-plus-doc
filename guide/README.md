@@ -112,6 +112,7 @@
 - [mybatis-plus-generator-ui](https://github.com/davidfantasy/mybatis-plus-generator-ui)：基于mybatis-plus-generator的图形化交互式代码生成工具
 - [zealsay](https://docs.zealsay.com)：基于spring boot + nuxt服务端渲染的前后端分离快速开发脚手架
 - [ballcat](https://github.com/Hccake/ballcat)：😸基于 Spring Boot + Ant Design Vue 的快速开发脚手架
+- [tropical-fish](https://github.com/gnanquanmama/tropical-fish)：基于 Spring Boot + Mybatis-Plus 的快速开发脚手架
 
 ## 接入企业
 
