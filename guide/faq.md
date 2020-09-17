@@ -456,3 +456,8 @@ logging:
   level:
     com.baomidou.example.mapper: debug
 ```
+
+## 参照文档使用自定义SQL时报错: There is no getter for property named 'ew' in 'class com.baomidou.mybatisplus.core.conditions.query.QueryWrapper'
+原因: 文档上没有注明需要导入哪个包下的@Param, 而在MybatisPlus和Spring等框架同时使用时, ide提示导包时第一项很可能不是`mybaits`的@Param, 初次遇到该问题可能找不到排查的方向.
+
+解决方案: 请检查所使用的@Param包是否正确`org.apache.ibatis.annotations.Param`.
