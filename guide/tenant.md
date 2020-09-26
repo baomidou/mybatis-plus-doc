@@ -28,11 +28,13 @@ public PaginationInterceptor paginationInterceptor() {
             // select since: 3.3.2，参数 true 表示为 select 下的 where 条件,false 表示 insert/update/delete 下的条件
             // 只有 select 下才允许多参(ValueListExpression),否则只支持单参
             if (!select) {
+                // teantId = 1
                 return new LongValue(1);
             }
-            ValueListExpression expression = new ValueListExpression();
-            ExpressionList list = new ExpressionList(new LongValue(1), new LongValue(2));
-            expression.setExpressionList(list);
+            // teantId in (1, 2)
+            InExpression expression = new InExpression();
+            expression.setLeftExpression(new Column(getTenantIdColumn()));
+            expression.setRightItemsList(new ExpressionList(new LongValue(1), new LongValue(2)));
             return expression;
         }
 
