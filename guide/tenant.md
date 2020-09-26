@@ -70,7 +70,7 @@ public PaginationInterceptor paginationInterceptor() {
 }
 ```
 
-- 相关 SQL 解析如多租户可通过 `@SqlParser(filter=true)` 注解 mapper 方法之上排除多租户 SQL 解析，不在自动添加租户条件。
+- 相关 SQL 解析如多租户可通过 `@SqlParser(filter=true)` 注解 mapper 方法之上排除多租户 SQL 解析，注解后 SQL 不再自动添加租户条件。
 
 ```java
 @SqlParser(filter=true)
