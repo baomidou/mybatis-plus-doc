@@ -456,3 +456,12 @@ logging:
   level:
     com.baomidou.example.mapper: debug
 ```
+
+
+## 如何 update 时 column=column+1
+
+``` java
+@TableField(update="%s+1",updateStrategy=FieldStrategy.IGNORED)
+private Integer column;
+```
+> 该方式绑定在 entity 上,baseMapper提供的 `update(entity,updateWrapper)` 中的`entity`不能null,而且所有的update方法均不能再改变此值为指定值
