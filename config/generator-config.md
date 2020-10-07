@@ -135,7 +135,7 @@ sidebarDepth: 3
 
 如果有sql语法兼容性问题的话，请手动设置为false
 
-已知无法使用：微软系，达梦，MyCat中间件， [支持情况传送门](https://github.com/baomidou/mybatis-plus/issues/2102)
+已知无法使用：MyCat中间件， [支持情况传送门](https://github.com/baomidou/mybatis-plus/issues/2102)
 
 ### include
 需要包含的表名，当enableSqlFilter为false时，允许正则表达式（与exclude二选一配置）
