@@ -199,10 +199,10 @@ function genGuideSidebar(isZh) {
       collapsable: false,
       children: [
         "mybatis-interceptor",
-        "mybatis-interceptor-pagination",
-        "mybatis-interceptor-optimistic-locker",
-        "mybatis-interceptor-tenant-line",
-        "mybatis-interceptor-block-attack"
+        "interceptor-pagination",
+        "interceptor-optimistic-locker",
+        "interceptor-tenant-line",
+        "interceptor-block-attack"
       ]
     },
     {
