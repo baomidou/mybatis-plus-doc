@@ -182,7 +182,6 @@ function genGuideSidebar(isZh) {
         "logic-delete",
         "enum",
         "typehandler",
-        "interceptor",
         "auto-fill-metainfo",
         "sql-injector",
         "block-attack-sql-parser",
@@ -193,6 +192,17 @@ function genGuideSidebar(isZh) {
         "tenant",
         "dynamic-table-name-parser",
         "mybatisx-idea-plugin"
+      ]
+    },
+    {
+      title: isZh ? "Mybatis 插件" : "Mybatis Plugin",
+      collapsable: false,
+      children: [
+        "mybatis-interceptor",
+        "mybatis-interceptor-pagination",
+        "mybatis-interceptor-optimistic-locker",
+        "mybatis-interceptor-tenant-line",
+        "mybatis-interceptor-block-attack"
       ]
     },
     {
