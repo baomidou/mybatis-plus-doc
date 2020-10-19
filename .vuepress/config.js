@@ -176,7 +176,7 @@ function genGuideSidebar(isZh) {
       ]
     },
     {
-      title: isZh ? "插件扩展" : "Plugin",
+      title: isZh ? "扩展" : "Expand",
       collapsable: false,
       children: [
         "logic-delete",
