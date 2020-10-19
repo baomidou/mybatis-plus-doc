@@ -1,17 +1,33 @@
-# 内置插件(since 3.4.0)
+# 插件主体(since 3.4.0)
 
-主体插件: MybatisPlusInterceptor  
-该插件内部插件集:
+##  MybatisPlusInterceptor 
 
-- 分页插件: PaginationInnerInterceptor
-- 多租户插件: TenantLineInnerInterceptor
-- 动态表名插件: DynamicTableNameInnerInterceptor
-- 乐观锁插件: OptimisticLockerInnerInterceptor
-- sql性能规范插件: IllegalSQLInnerInterceptor
-- 防止全表更新与删除插件: BlockAttackInnerInterceptor
+该插件是核心插件,目前代理了 `Executor#query` 和 `Executor#update` 和 `StatementHandler#prepare` 方法
+
+### 属性
+
+> `private List<InnerInterceptor> interceptors = new ArrayList<>();`
+
+### InnerInterceptor
+
+我们提供的插件都将基于此接口来实现功能
+
+目前已有的功能:
+
+- 自动分页: PaginationInnerInterceptor
+- 多租户: TenantLineInnerInterceptor
+- 动态表名: DynamicTableNameInnerInterceptor
+- 乐观锁: OptimisticLockerInnerInterceptor
+- sql性能规范: IllegalSQLInnerInterceptor
+- 防止全表更新与删除: BlockAttackInnerInterceptor
 
 ::: tip 注意:
-新提供的插件不得和同功能的旧插件一同使用
+使用多个功能需要注意顺序关系,建议使用如下顺序
+- 多租户,动态表名
+- 分页,乐观锁
+- sql性能规范,防止全表更新与删除
+
+总结: 对sql进行单次改造的优先放入,不对sql进行改造的最后放入
 :::
 
 ## 使用方式(以分页插件举例)
@@ -83,75 +99,17 @@ public class MybatisPlusConfig {
 
 > property 的配置说明详见 `MybatisPlusInterceptor#setProperties` 的源码方法注释
 
-::: tip 注意:
-如果内部插件都是使用,需要注意顺序关系,建议使用如下顺序
-- 多租户插件,动态表名插件
-- 分页插件,乐观锁插件
-- sql性能规范插件,防止全表更新与删除插件
 
-总结: 对sql进行单次改造的优先放入,不对sql进行改造的最后放入
-:::
-
-## 分页插件: PaginationInnerInterceptor
-
-### 属性介绍
+## 拦截忽略注解 @InterceptorIgnore
 
 | 属性名 | 类型 | 默认值 | 描述 |
 | :-: | :-: | :-: | :-: |
-| overflow | boolean | false | 溢出总页数后是否进行处理(默认不处理,参见 `插件#continuePage` 方法) |
-| maxLimit | Long |  | 单页分页条数限制(默认无限制,参见 `插件#handlerLimit` 方法) |
-| dbType | DbType |  | 数据库类型(根据类型获取应使用的分页方言,参见 `插件#findIDialect` 方法) |
-| dialect | IDialect |  | 方言实现类(参见 `插件#findIDialect` 方法) |
+| tenantLine | String | "" | 行级租户 |
+| dynamicTableName | String | "" | 动态表名 |
+| blockAttack | String | "" | 攻击 SQL 阻断解析器,防止全表更新与删除 |
+| illegalSql | String | "" | 垃圾SQL拦截 |
 
-> 建议单一数据库类型的均设置 dbType
-
-### 自定义的 mapper#method 使用分页
-
-``` java
-IPage<User> selectPageVo(IPage<?> page, Integer state);
-// or
-List<User> selectPageVo(IPage<User> page, Integer state);
-```
-
-```xml
-<select id="selectPageVo" resultType="com.baomidou.cloud.entity.UserVo">
-    SELECT id,name FROM user WHERE state=#{state}
-</select>
-```
-
-> 如果返回类型是 IPage 则入参的 IPage 不能为null,因为 返回的IPage == 入参的IPage  
-> 如果返回类型是 List 则入参的 IPage 可以为 null(为 null 则不分页),但需要你手动 入参的IPage.setRecords(返回的 List);  
-> 如果 xml 需要从 page 里取值,需要 `page.属性` 获取
-
-
-
-
-## 乐观锁插件: OptimisticLockerInnerInterceptor
-
-> 当要更新一条记录的时候，希望这条记录没有被别人更新  
-> 乐观锁实现方式：  
->> - 取出记录时，获取当前version  
->> - 更新时，带上这个version  
->> - 执行更新时， set version = newVersion where version = oldVersion  
->> - 如果version不对，就更新失败  
-
-### 使用方法
-
-字段上加上`@Version`注解
-
-``` java
-@Version
-private Integer version;
-```
-
-::: tip 说明:
-- **支持的数据类型只有:int,Integer,long,Long,Date,Timestamp,LocalDateTime**
-- 整数类型下 `newVersion = oldVersion + 1`
-- `newVersion` 会回写到 `entity` 中
-- 仅支持 `updateById(id)` 与 `update(entity, wrapper)` 方法
-- **在 `update(entity, wrapper)` 方法下, `wrapper` 不能复用!!!**
-:::
-
-
-
-
+> 该注解作用于 xxMapper.java 方法之上
+> 各属性代表对应的插件
+> 各属性不给值则默认为 false 设置为 true 忽略拦截
+> 更多说明详见源码注释

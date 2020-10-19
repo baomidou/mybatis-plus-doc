@@ -198,7 +198,7 @@ function genGuideSidebar(isZh) {
       title: isZh ? "Mybatis 插件" : "Mybatis Plugin",
       collapsable: false,
       children: [
-        "mybatis-interceptor",
+        "interceptor",
         "interceptor-pagination",
         "interceptor-optimistic-locker",
         "interceptor-tenant-line",
