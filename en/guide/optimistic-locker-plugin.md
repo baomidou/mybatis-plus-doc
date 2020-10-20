@@ -1,1 +1,0 @@
-# Optimistic Locker Plugin

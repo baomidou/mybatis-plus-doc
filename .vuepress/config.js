@@ -185,7 +185,6 @@ function genGuideSidebar(isZh) {
         "auto-fill-metainfo",
         "sql-injector",
         "p6spy",
-        "optimistic-locker-plugin",
         "safety",
         "dynamic-datasource",
         "dynamic-table-name-parser",
