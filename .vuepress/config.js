@@ -187,7 +187,6 @@ function genGuideSidebar(isZh) {
         "p6spy",
         "safety",
         "dynamic-datasource",
-        "dynamic-table-name-parser",
         "mybatisx-idea-plugin"
       ]
     },
@@ -199,7 +198,8 @@ function genGuideSidebar(isZh) {
         "interceptor-pagination",
         "interceptor-optimistic-locker",
         "interceptor-tenant-line",
-        "interceptor-block-attack"
+        "interceptor-block-attack",
+        "interceptor-dynamic-table-name"
       ]
     },
     {
