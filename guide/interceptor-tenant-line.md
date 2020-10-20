@@ -2,6 +2,10 @@
 
 ## TenantLineInnerInterceptor
 
+示例工程：
+
+👉 [mybatis-plus-sample-tenant](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-tenant)
+
 ### 属性介绍
 
 | 属性名 | 类型 | 默认值 | 描述 |
