@@ -184,7 +184,6 @@ function genGuideSidebar(isZh) {
         "typehandler",
         "auto-fill-metainfo",
         "sql-injector",
-        "block-attack-sql-parser",
         "p6spy",
         "optimistic-locker-plugin",
         "safety",

@@ -1,1 +1,0 @@
-# Block attack sql parser
