@@ -15,6 +15,20 @@ MybatisX 是一款基于 IDEA 的快速开发插件，为效率而生。
 - Mapper 方法自动生成 XML
   ![relationship](/img/mybatisx-001.gif)
 
+## JPA 提示
+
+生成新增
+  ![relationship](/img/mybatisx-tip-insert.gif)
+  
+生成查询
+  ![relationship](/img/mybatisx-tip-select.gif)
+  
+生成修改
+  ![relationship](/img/mybatisx-tip-update.gif)
+  
+生成删除
+  ![relationship](/img/mybatisx-tip-delete.gif)
+  
 ## 计划支持
 
 - 连接数据源之后 xml 里自动提示字段
