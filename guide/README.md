@@ -113,7 +113,7 @@
 - [zealsay](https://docs.zealsay.com)：基于spring boot + nuxt服务端渲染的前后端分离快速开发脚手架
 - [ballcat](https://github.com/Hccake/ballcat)：😸基于 Spring Boot + Ant Design Vue 的快速开发脚手架
 - [tropical-fish](https://github.com/gnanquanmama/tropical-fish)：基于 Spring Boot + Mybatis-Plus 的快速开发脚手架
-
+- [J2eeFAST](https://gitee.com/zhouhuanOGP/J2EEFAST)：J2eeFAST 开源平台
 ## 接入企业
 
 ::: tip
