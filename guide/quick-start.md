@@ -162,7 +162,7 @@ public interface UserMapper extends BaseMapper<User> {
 @SpringBootTest
 public class SampleTest {
 
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
     @Test
