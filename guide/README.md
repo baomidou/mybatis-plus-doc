@@ -115,6 +115,8 @@
 - [tropical-fish](https://github.com/gnanquanmama/tropical-fish)：基于 Spring Boot + Mybatis-Plus 的快速开发脚手架
 - [J2eeFAST](https://gitee.com/zhouhuanOGP/J2EEFAST)：J2eeFAST 开源平台
 - [MateCloud](https://github.com/matevip/matecloud): Spring Cloud Alibaba微服务＋VUE快速脚手架，让你只专注于业务
+- [OPSLI](https://github.com/hiparker/opsli-boot): OPSLI 快速开发平台
+
 ## 接入企业
 
 ::: tip
