@@ -19,7 +19,7 @@
 
 ### 方式一：声明为Bean供Spring扫描注入
 
-```java
+``` java
 @Component
 public class CustomIdGenerator implements IdentifierGenerator {
     @Override
@@ -36,7 +36,7 @@ public class CustomIdGenerator implements IdentifierGenerator {
 
 ### 方式二：使用配置类
 
-```java
+``` java
 @Bean
 public IdentifierGenerator idGenerator() {
     return new CustomIdGenerator();
@@ -45,7 +45,7 @@ public IdentifierGenerator idGenerator() {
 
 ### 方式三：通过MybatisPlusPropertiesCustomizer自定义
 
-```java
+``` java
 @Bean
 public MybatisPlusPropertiesCustomizer plusPropertiesCustomizer() {
     return plusProperties -> plusProperties.getGlobalConfig().setIdentifierGenerator(new CustomIdGenerator());
@@ -66,7 +66,7 @@ public MybatisPlusPropertiesCustomizer plusPropertiesCustomizer() {
 
 ### 方式二：注解配置
 
-```java
+``` java
 @Bean
 public GlobalConfig globalConfig() {
 	GlobalConfig conf = new GlobalConfig();
