@@ -2,6 +2,11 @@
 
 ## PaginationInnerInterceptor
 
+### 支持的数据库
+- mysql 、mariadb 、oracle 、db2 、h2 、hsql 、sqlite 、postgresql 、sqlserver 、presto 、Gauss 、Firebird
+
+- Phoenix 、clickhouse 、Sybase ASE 、 OceanBase 、达梦数据库 、虚谷数据库 、人大金仓数据库 、南大通用数据库
+
 ### 属性介绍
 
 | 属性名 | 类型 | 默认值 | 描述 |

@@ -32,9 +32,7 @@
 
 ## 支持数据库
 
-- mysql 、mariadb 、oracle 、db2 、h2 、hsql 、sqlite 、postgresql 、sqlserver 、presto 、Gauss 、Firebird
-
-- Phoenix 、clickhouse 、Sybase ASE 、 OceanBase 、达梦数据库 、虚谷数据库 、人大金仓数据库 、南大通用数据库 、
+> 任何能使用 `mybatis` 进行 crud, 并且支持标准 sql 的数据库
 
 
 ## 框架结构
