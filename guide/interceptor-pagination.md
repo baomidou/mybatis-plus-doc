@@ -35,3 +35,8 @@ List<User> selectPageVo(IPage<User> page, Integer state);
 > 如果返回类型是 IPage 则入参的 IPage 不能为null,因为 返回的IPage == 入参的IPage  
 > 如果返回类型是 List 则入参的 IPage 可以为 null(为 null 则不分页),但需要你手动 入参的IPage.setRecords(返回的 List);  
 > 如果 xml 需要从 page 里取值,需要 `page.属性` 获取
+
+### 其他:
+
+> 生成 countSql 会在 `left join` 的表不参与 `where` 条件的情况下,把 `left join` 优化掉  
+> 所以建议任何带有 `left join` 的sql,都写标准sql既给于表一个别名,字段也要 `别名.字段`
