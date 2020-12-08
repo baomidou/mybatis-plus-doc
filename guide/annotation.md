@@ -16,6 +16,7 @@
 | keepGlobalPrefix | boolean | 否 | false | 是否保持使用全局的 tablePrefix 的值(如果设置了全局 tablePrefix 且自行设置了 value 的值) |
 | resultMap | String | 否 | "" | xml 中 resultMap 的 id |
 | autoResultMap | boolean | 否 | false | 是否自动构建 resultMap 并使用(如果设置 resultMap 则不会进行 resultMap 的自动构建并注入) |
+| excludeProperty | String[] | 否 | {} | 需要排除的属性名(@since 3.3.1) |
 
 ::: warning 关于`autoResultMap`的说明:
 mp会自动构建一个`ResultMap`并注入到mybatis里(一般用不上).下面讲两句:
