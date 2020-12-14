@@ -21,7 +21,8 @@ module.exports = {
       description: "Born To Simplify Development"
     }
   },
-  head: [["link", { rel: "icon", href: `/favicon.ico` }],
+  head: [
+    ["link", { rel: "icon", href: `/favicon.ico` }],
     [
       "script",
       {
@@ -51,6 +52,10 @@ module.exports = {
             link: "/config/"
           },
           {
+            text: "更新日志",
+            link: "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
+          },
+          {
             text: "生态",
             items: [
               {
@@ -63,8 +68,7 @@ module.exports = {
               },
               {
                 text: "Dynamic Datasource 动态数据源",
-                link:
-                  "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
+                link: "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
               },
               {
                 text: "Jobs 分布式任务调度平台",
@@ -73,20 +77,11 @@ module.exports = {
             ]
           },
           {
-            text: "更新日志",
-            link:
-              "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
-          },
-          {
-            text: "3.0 文档",
+            text: "资源",
             items: [
               {
-                text: "3.X 文档",
-                link: "https://mybatis.plus"
-              },
-              {
-                text: "2.X 文档",
-                link: "https://baomidou.gitee.io/mybatis-plus-doc/#/"
+                text: "Awesome MyBatis-Plus",
+                link: "https://github.com/baomidou/awesome-mybatis-plus/blob/master/README.md"
               }
             ]
           }
@@ -123,8 +118,7 @@ module.exports = {
               },
               {
                 text: "Dynamic Datasource",
-                link:
-                  "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
+                link: "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
               },
               {
                 text: "Jobs Scheduling Platform",
@@ -134,8 +128,7 @@ module.exports = {
           },
           {
             text: "Changelog",
-            link:
-              "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
+            link: "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
           }
         ],
         sidebar: {
