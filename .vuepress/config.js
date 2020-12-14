@@ -106,6 +106,10 @@ module.exports = {
             link: "/en/config/"
           },
           {
+            text: "Changelog",
+            link: "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
+          },
+          {
             text: "Ecosystem",
             items: [
               {
@@ -127,8 +131,13 @@ module.exports = {
             ]
           },
           {
-            text: "Changelog",
-            link: "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
+            text: "Resources",
+            items: [
+              {
+                text: "Awesome MyBatis-Plus",
+                link: "https://github.com/baomidou/awesome-mybatis-plus/blob/master/README.md"
+              }
+            ]
           }
         ],
         sidebar: {
