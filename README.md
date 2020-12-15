@@ -25,7 +25,7 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 
 ### 致谢
 
-- MyBatis-Plus 已连续4年（[2017](https://www.oschina.net/project/top_cn_2017)、[2018](https://www.oschina.net/project/top_cn_2018)、[2019](https://www.oschina.net/project/top_cn_2019)、[2020](https://www.oschina.net/project/top_cn_2020)）获得“OSC年度最受欢迎中国开源软件”殊荣，感谢各位支持者的一路同行，我们会秉承 【为简化开发而生】 这一理念砥砺前行！
+- MyBatis-Plus 已连续 4 年（[2017](https://www.oschina.net/project/top_cn_2017)、[2018](https://www.oschina.net/project/top_cn_2018)、[2019](https://www.oschina.net/project/top_cn_2019)、[2020](https://www.oschina.net/project/top_cn_2020)）获得“OSC 年度最受欢迎中国开源软件”殊荣，感谢各位支持者的一路同行，我们会秉承 【为简化开发而生】 这一理念砥砺前行！
 - 感谢 【**[huaix](https://gitee.com/youthdream)**】 捐赠的域名（[https://mybatis.plus](https://mybatis.plus)），非常的契合 MyBatis-Plus，非常感谢！
 
 <p align="center">
