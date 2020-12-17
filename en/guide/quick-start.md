@@ -92,7 +92,7 @@ Import `spring-boot-starter`、`spring-boot-starter-test`、`mybatis-plus-boot-s
     <dependency>
         <groupId>com.baomidou</groupId>
         <artifactId>mybatis-plus-boot-starter</artifactId>
-        <version>starter-latest-version</version>
+        <version>mybatis-plus-boot-starter-latest-version</version>
     </dependency>
     <dependency>
         <groupId>com.h2database</groupId>
@@ -201,22 +201,3 @@ We have achieved CURD for table `User` by the few steps above, even no XML file!
 It's very simple to integrate `Mybatis-Plus`, just import `starter` and configure mapper's package.
 
 But the powerful functions are far more than these. Keep going!
-
-<script>
-export default {
-  mounted () {
-    var xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", "https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus-boot-starter.json", false)
-    xmlHttp.send(null)
-    var starterVersionInfo = JSON.parse(xmlHttp.responseText).value.replace('v', '')
-    xmlHttp.open("GET", "https://img.shields.io/maven-central/v/org.springframework.boot/spring-boot-starter-parent.json", false)
-    xmlHttp.send(null)
-    var springVersionInfo = JSON.parse(xmlHttp.responseText).value.replace('v', '')
-    var codeNodeList = document.querySelectorAll('code')
-    for (var i = 0; i < codeNodeList.length; i++) {
-        codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('starter-latest-version', starterVersionInfo)
-        codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('spring-latest-version', springVersionInfo)
-    }
-  }
-}
-</script>

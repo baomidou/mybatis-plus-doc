@@ -8,6 +8,6 @@
   },
   "devDependencies": {
     "vuepress": "^1.7.1",
-    "vuepress-plugin-lastest-version": "^0.2.0"
+    "vuepress-plugin-lastest-version": "^0.2.2"
   }
 }

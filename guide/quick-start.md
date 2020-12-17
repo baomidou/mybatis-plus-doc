@@ -92,7 +92,7 @@ INSERT INTO user (id, name, age, email) VALUES
     <dependency>
         <groupId>com.baomidou</groupId>
         <artifactId>mybatis-plus-boot-starter</artifactId>
-        <version>starter-latest-version</version>
+        <version>mybatis-plus-boot-starter-latest-version</version>
     </dependency>
     <dependency>
         <groupId>com.h2database</groupId>
@@ -201,22 +201,3 @@ User(id=5, name=Billie, age=24, email=test5@baomidou.com)
 从以上步骤中，我们可以看到集成`MyBatis-Plus`非常的简单，只需要引入 starter 工程，并配置 mapper 扫描路径即可。
 
 但 MyBatis-Plus 的强大远不止这些功能，想要详细了解 MyBatis-Plus 的强大功能？那就继续往下看吧！
-
-<script>
-export default {
-  mounted () {
-    var xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", "https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus-boot-starter.json", false)
-    xmlHttp.send(null)
-    var starterVersionInfo = JSON.parse(xmlHttp.responseText).value.replace('v', '')
-    xmlHttp.open("GET", "https://img.shields.io/maven-central/v/org.springframework.boot/spring-boot-starter-parent.json", false)
-    xmlHttp.send(null)
-    var springVersionInfo = JSON.parse(xmlHttp.responseText).value.replace('v', '')
-    var codeNodeList = document.querySelectorAll('code')
-    for (var i = 0; i < codeNodeList.length; i++) {
-        codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('starter-latest-version', starterVersionInfo)
-        codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('spring-latest-version', springVersionInfo)
-    }
-  }
-}
-</script>

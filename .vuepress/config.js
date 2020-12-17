@@ -53,7 +53,8 @@ module.exports = {
           },
           {
             text: "更新日志",
-            link: "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
+            link:
+              "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
           },
           {
             text: "生态",
@@ -68,7 +69,8 @@ module.exports = {
               },
               {
                 text: "Dynamic Datasource 动态数据源",
-                link: "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
+                link:
+                  "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
               },
               {
                 text: "Jobs 分布式任务调度平台",
@@ -81,7 +83,8 @@ module.exports = {
             items: [
               {
                 text: "Awesome MyBatis-Plus",
-                link: "https://github.com/baomidou/awesome-mybatis-plus/blob/master/README.md"
+                link:
+                  "https://github.com/baomidou/awesome-mybatis-plus/blob/master/README.md"
               }
             ]
           }
@@ -107,7 +110,8 @@ module.exports = {
           },
           {
             text: "Changelog",
-            link: "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
+            link:
+              "https://github.com/baomidou/mybatis-plus/blob/3.0/CHANGELOG.md"
           },
           {
             text: "Ecosystem",
@@ -122,7 +126,8 @@ module.exports = {
               },
               {
                 text: "Dynamic Datasource",
-                link: "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
+                link:
+                  "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
               },
               {
                 text: "Jobs Scheduling Platform",
@@ -135,7 +140,8 @@ module.exports = {
             items: [
               {
                 text: "Awesome MyBatis-Plus",
-                link: "https://github.com/baomidou/awesome-mybatis-plus/blob/master/README.md"
+                link:
+                  "https://github.com/baomidou/awesome-mybatis-plus/blob/master/README.md"
               }
             ]
           }
@@ -151,8 +157,23 @@ module.exports = {
     [
       "lastest-version",
       {
-        type: "maven",
-        repo: "com.baomidou/mybatis-plus"
+        repos: [
+          {
+            keywords: "mybatis-plus-latest-version",
+            type: "maven",
+            repo: "com.baomidou/mybatis-plus"
+          },
+          {
+            keywords: "mybatis-plus-boot-starter-latest-version",
+            type: "maven",
+            repo: "com.baomidou/mybatis-plus-boot-starter"
+          },
+          {
+            keywords: "spring-latest-version",
+            type: "maven",
+            repo: "org.springframework.boot/spring-boot-starter-parent"
+          }
+        ]
       }
     ]
   ]

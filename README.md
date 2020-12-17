@@ -19,7 +19,7 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus</artifactId>
-    <version>latest-version</version>
+    <version>mybatis-plus-latest-version</version>
 </dependency>
 ```
 

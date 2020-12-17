@@ -19,14 +19,14 @@ Maven：
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus-boot-starter</artifactId>
-    <version>latest-version</version>
+    <version>mybatis-plus-latest-version</version>
 </dependency>
 ```
 
 Gradle：
 
 ```groovy
-compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: 'latest-version'
+compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: 'mybatis-plus-latest-version'
 ```
 
 ### Spring MVC
@@ -37,14 +37,14 @@ Maven:
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus</artifactId>
-    <version>latest-version</version>
+    <version>mybatis-plus-latest-version</version>
 </dependency>
 ```
 
 Gradle：
 
 ```groovy
-compile group: 'com.baomidou', name: 'mybatis-plus', version: 'latest-version'
+compile group: 'com.baomidou', name: 'mybatis-plus', version: 'mybatis-plus-latest-version'
 ```
 
 ---
