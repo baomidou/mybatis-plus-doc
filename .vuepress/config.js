@@ -60,23 +60,30 @@ module.exports = {
             text: "生态",
             items: [
               {
+                text: "MybatisX插件",
+                link: "https://github.com/baomidou/MybatisX",
+              },
+              {
+                text: "多数据源",
+                link: "https://dynamic-datasource.com",
+              },
+              {
+                text: "Shuan 权限组件",
+                link: "https://gitee.com/baomidou/shaun",
+              },
+              {
                 text: "Kisso 单点登录",
-                link: "https://gitee.com/baomidou/kisso"
+                link: "https://github.com/baomidou/kisso",
               },
               {
                 text: "Lock4j 分布式锁",
-                link: "https://gitee.com/baomidou/lock4j-spring-boot-starter"
+                link: "https://gitee.com/baomidou/lock4j-spring-boot-starter",
               },
               {
-                text: "Dynamic Datasource 动态数据源",
-                link:
-                  "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
+                text: "kaptcha 验证码启动器",
+                link: "https://gitee.com/baomidou/kaptcha-spring-boot-starter",
               },
-              {
-                text: "Jobs 分布式任务调度平台",
-                link: "https://github.com/baomidou/jobs"
-              }
-            ]
+            ],
           },
           {
             text: "资源",
