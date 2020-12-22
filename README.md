@@ -27,7 +27,7 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 
 - [MybatisX](https://github.com/baomidou/MybatisX) - 一款全免费且强大的IDEA插件，支持跳转，自动补全生成sql，代码生成。
 - [dynamic-datasource](https://dynamic-datasource.com) - 基于springboot的多数据源组件，功能强悍，支持seata分布式事务。
-- [Shuan](https://gitee.com/baomidou/shaun) - 基于pac4J,主要面向前后端分离的简约权限组件。https://github.com/baomidou/kisso
+- [Shuan](https://gitee.com/baomidou/shaun) - 基于pac4J,主要面向前后端分离的简约权限组件。
 - [kisso](https://github.com/baomidou/kisso) - 基于cookie的单点登录组件。
 - [Lock4j](https://gitee.com/baomidou/lock4j-spring-boot-starter) - 基于springboot同时支持redisTemplate,redission,zookeeper的分布式锁组件。
 - [Kaptcha](https://gitee.com/baomidou/kaptcha-spring-boot-starter) - 基于springboot和Google kaptcha的简单验证码组件，简单验证码就选它。
