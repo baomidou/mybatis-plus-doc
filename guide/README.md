@@ -2,11 +2,6 @@
 
 [MyBatis-Plus](https://github.com/baomidou/mybatis-plus)（简称 MP）是一个 [MyBatis](http://www.mybatis.org/mybatis-3/) 的增强工具，在 MyBatis 的基础上只做增强不做改变，为简化开发、提高效率而生。
 
-<p class="demo">
-    <a href="https://www.aliyun.com/1212/2019/home?userCode=5wbjwd1y" target="_blank"><img style="width:216px;height:116px;" src="https://img.alicdn.com/tfs/TB1_rYHo7P2gK0jSZPxXXacQpXa-690-388.jpg"/></a>
-    <br/>
-</p>
-
 ::: tip 愿景
 我们的愿景是成为 MyBatis 最好的搭档，就像 [魂斗罗](/img/contra.jpg) 中的 1P、2P，基友搭配，效率翻倍。
 :::
