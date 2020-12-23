@@ -4,7 +4,8 @@ sidebarDepth: 3
 
 # 条件构造器
 ::: tip 说明:
-- 以下出现的第一个入参`boolean condition`表示该条件**是否**加入最后生成的sql中
+- 以下出现的第一个入参`boolean condition`表示该条件**是否**加入最后生成的sql中，例如：query.like(StringUtils.isNotBlank(name), Entity::getName, name)
+     .eq(age!=null && age >= 0, Entity::getAge, age)
 - 以下代码块内的多个方法均为从上往下补全个别`boolean`类型的入参,默认为`true`
 - 以下出现的泛型`Param`均为`Wrapper`的子类实例(均具有`AbstractWrapper`的所有方法)
 - 以下方法在入参中出现的`R`为泛型,在普通wrapper中是`String`,在LambdaWrapper中是**函数**(例:`Entity::getId`,`Entity`为实体类,`getId`为字段`id`的**getMethod**)
