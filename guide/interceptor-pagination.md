@@ -21,13 +21,15 @@
 ### 自定义的 mapper#method 使用分页
 
 ``` java
-IPage<User> selectPageVo(IPage<?> page, Integer state);
+IPage<UserVo> selectPageVo(IPage<?> page, Integer state);
+// or (class MyPage extends Ipage<UserVo>{ private Integer state; })
+MyPage selectPageVo(MyPage page);
 // or
-List<User> selectPageVo(IPage<User> page, Integer state);
+List<UserVo> selectPageVo(IPage<UserVo> page, Integer state);
 ```
 
 ```xml
-<select id="selectPageVo" resultType="com.baomidou.cloud.entity.UserVo">
+<select id="selectPageVo" resultType="xxx.xxx.xxx.UserVo">
     SELECT id,name FROM user WHERE state=#{state}
 </select>
 ```
