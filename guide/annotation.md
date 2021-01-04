@@ -113,13 +113,9 @@ mp会自动构建一个`ResultMap`并注入到mybatis里(一般用不上).下面
 | delval | String | 否 | "" | 逻辑删除值 |
 
 
-## [@SqlParser](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlParser.java)
+## [~~@SqlParser~~](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlParser.java)
 
-- 描述：租户注解,支持method上以及mapper接口上
-
-| 属性 | 类型 | 必须指定 | 默认值 | 描述 |
-| :-: | :-: | :-: | :-: | :-: |
-| filter | boolean | 否 | false | true: 表示过滤SQL解析，即不会进入ISqlParser解析链，否则会进解析链并追加例如tenant_id等条件 |
+> see @InterceptorIgnore
 
 
 ## [@KeySequence](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/KeySequence.java)
@@ -131,3 +127,8 @@ mp会自动构建一个`ResultMap`并注入到mybatis里(一般用不上).下面
 | :-: | :-: | :-: | :-: | :-: |
 | value | String | 否 | "" | 序列名 |
 | clazz | Class | 否 | Long.class | id的类型, 可以指定String.class，这样返回的Sequence值是字符串"1" |
+
+
+## [@InterceptorIgnore](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/InterceptorIgnore.java)
+
+> see [插件主体](/guide/interceptor.md)
