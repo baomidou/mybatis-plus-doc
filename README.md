@@ -25,12 +25,12 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 
 ### 苞米豆生态圈
 
-- [MybatisX](https://github.com/baomidou/MybatisX) - 一款全免费且强大的IDEA插件，支持跳转，自动补全生成sql，代码生成。
-- [dynamic-datasource](https://dynamic-datasource.com) - 基于springboot的多数据源组件，功能强悍，支持seata分布式事务。
-- [Shuan](https://gitee.com/baomidou/shaun) - 基于pac4J,主要面向前后端分离的简约权限组件。
-- [kisso](https://github.com/baomidou/kisso) - 基于cookie的单点登录组件。
-- [Lock4j](https://gitee.com/baomidou/lock4j-spring-boot-starter) - 基于springboot同时支持redisTemplate,redission,zookeeper的分布式锁组件。
-- [Kaptcha](https://gitee.com/baomidou/kaptcha-spring-boot-starter) - 基于springboot和Google kaptcha的简单验证码组件，简单验证码就选它。
+- [MybatisX](https://github.com/baomidou/MybatisX) - 一款全免费且强大的 IDEA 插件，支持跳转，自动补全生成 SQL，代码生成。
+- [dynamic-datasource](https://dynamic-datasource.com) - 基于 SpringBoot 的多数据源组件，功能强悍，支持 Seata 分布式事务。
+- [Shuan](https://gitee.com/baomidou/shaun) - 基于 Pac4J，主要面向前后端分离的简约权限组件。
+- [kisso](https://github.com/baomidou/kisso) - 基于 Cookie 的单点登录组件。
+- [Lock4j](https://gitee.com/baomidou/lock4j-spring-boot-starter) - 基于 SpringBoot 同时支持 RedisTemplate、Redission、Zookeeper 的分布式锁组件。
+- [Kaptcha](https://gitee.com/baomidou/kaptcha-spring-boot-starter) - 基于 SpringBoot 和 Google Kaptcha 的简单验证码组件，简单验证码就选它。
 
 ### 致谢
 
@@ -39,4 +39,6 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 
 <p align="center">
 Hosted by <a href="https://pages.coding.me" target="_blank" style="font-weight:bold">Coding Pages</a> & <a href="https://pages.github.com" target="_blank" style="font-weight:bold">Github Pages</a>  & <a href="http://www.jetbrains.com" target="_blank" style="font-weight:bold">Idea</a>
+<br/>
+<a href="http://beian.miit.gov.cn/" target=_blank>渝ICP备2021000141号</a>
 </p>
