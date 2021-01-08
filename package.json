@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "vuepress": "^1.8.0",
-    "vuepress-plugin-lastest-version": "^0.2.3"
+    "vuepress-plugin-lastest-version": "^0.2.3",
+    "vuepress-plugin-baidu-tongji-analytics": "^1.0.2"
   }
 }

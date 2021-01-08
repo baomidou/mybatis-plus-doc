@@ -7572,6 +7572,11 @@ vuepress-html-webpack-plugin@^3.2.0:
     toposort "^1.0.0"
     util.promisify "1.0.0"
 
+vuepress-plugin-baidu-tongji-analytics@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/vuepress-plugin-baidu-tongji-analytics/-/vuepress-plugin-baidu-tongji-analytics-1.0.2.tgz#7ac884c7c31213e9458cac76f6ac79775a74d8aa"
+  integrity sha512-nrlExfAGnLhnniLdK4XAup2o2ZeE/lGT8jLJMAmFCD7AvDvf6Dl2hZ6LSK/8lS0p7ByUUCY4NGagqeqLn8N5mQ==
+
 vuepress-plugin-container@^2.0.2:
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/vuepress-plugin-container/-/vuepress-plugin-container-2.1.5.tgz#37fff05662fedbd63ffd3a5463b2592c7a7f3133"

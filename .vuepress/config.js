@@ -156,6 +156,9 @@ module.exports = {
     ['@vuepress/google-analytics', {
       ga: 'UA-85414008-1'
     }],
+    ['vuepress-plugin-baidu-tongji-analytics', {
+      key: '577e65b88c06c034335c395caa4b6205'
+    }]
     ['lastest-version', {
       repos: [
         {
