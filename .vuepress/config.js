@@ -1,7 +1,5 @@
 module.exports = {
-  port: "3000",
   dest: "docs",
-  ga: "UA-85414008-1",
   base: "/",
   markdown: {
     externalLinks: {
@@ -23,14 +21,7 @@ module.exports = {
   },
   head: [
     ["link", { rel: "icon", href: `/favicon.ico` }],
-    [
-      "script",
-      {
-        "data-ad-client": "ca-pub-4147143076931995",
-        async: true,
-        src: "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-      }
-    ]
+    ["script", { "data-ad-client": "ca-pub-4147143076931995", async: true, src: "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" }]
   ],
   themeConfig: {
     repo: "baomidou/mybatis-plus",
@@ -161,28 +152,29 @@ module.exports = {
     }
   },
   plugins: [
-    [
-      "lastest-version",
-      {
-        repos: [
-          {
-            keywords: "mybatis-plus-latest-version",
-            type: "maven",
-            repo: "com.baomidou/mybatis-plus"
-          },
-          {
-            keywords: "mybatis-plus-boot-starter-latest-version",
-            type: "maven",
-            repo: "com.baomidou/mybatis-plus-boot-starter"
-          },
-          {
-            keywords: "spring-latest-version",
-            type: "maven",
-            repo: "org.springframework.boot/spring-boot-starter-parent"
-          }
-        ]
-      }
-    ]
+    ['@vuepress/back-to-top', true],
+    ['@vuepress/google-analytics', {
+      ga: 'UA-85414008-1'
+    }],
+    ['lastest-version', {
+      repos: [
+        {
+          keywords: "mybatis-plus-latest-version",
+          type: "maven",
+          repo: "com.baomidou/mybatis-plus"
+        },
+        {
+          keywords: "mybatis-plus-boot-starter-latest-version",
+          type: "maven",
+          repo: "com.baomidou/mybatis-plus-boot-starter"
+        },
+        {
+          keywords: "spring-latest-version",
+          type: "maven",
+          repo: "org.springframework.boot/spring-boot-starter-parent"
+        }
+      ]
+    }]
   ]
 };
 

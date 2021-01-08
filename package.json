@@ -7,7 +7,7 @@
     "build": "vuepress build"
   },
   "devDependencies": {
-    "vuepress": "^1.7.1",
+    "vuepress": "^1.8.0",
     "vuepress-plugin-lastest-version": "^0.2.3"
   }
 }
