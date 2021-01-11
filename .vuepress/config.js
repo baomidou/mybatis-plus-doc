@@ -212,7 +212,7 @@ function genGuideSidebar(isZh) {
       ]
     },
     {
-      title: isZh ? "Mybatis 插件" : "Mybatis Plugin",
+      title: isZh ? "插件" : "Plugin",
       collapsable: false,
       children: [
         "interceptor",
