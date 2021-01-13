@@ -22,7 +22,7 @@ MyBatis-Plus 的配置异常的简单，我们仅需要一些简单的配置即�
     }
     ```
 
-- Spring MVC 工程：
+- Spring 工程：
 
   - 配置 MapperScan
 
