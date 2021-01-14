@@ -297,22 +297,22 @@ Integer selectCount(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 ## mapper 层 选装件
 
 ::: tip 说明:
-选装件位于 `com.baomidou.mybatisplus.extension.injector.methods.additional` 包下
+选装件位于 `com.baomidou.mybatisplus.extension.injector.methods` 包下
 需要配合[Sql 注入器](sql-injector.md)使用,[案例](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-sql-injector)  
-使用详细见[源码注释](https://gitee.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/additional)
+使用详细见[源码注释](https://gitee.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods)
 :::
 
-### [AlwaysUpdateSomeColumnById](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/additional/AlwaysUpdateSomeColumnById.java)
+### [AlwaysUpdateSomeColumnById](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/AlwaysUpdateSomeColumnById.java)
 ``` java
 int alwaysUpdateSomeColumnById(T entity);
 ```
 
-### [insertBatchSomeColumn](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/additional/InsertBatchSomeColumn.java)
+### [insertBatchSomeColumn](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/InsertBatchSomeColumn.java)
 ``` java
 int insertBatchSomeColumn(List<T> entityList);
 ```
 
-### [deleteByIdWithFill](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/additional/LogicDeleteByIdWithFill.java)
+### [deleteByIdWithFill](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/LogicDeleteByIdWithFill.java)
 ``` java
 int deleteByIdWithFill(T entity);
 ```
