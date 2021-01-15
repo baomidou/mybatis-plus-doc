@@ -71,8 +71,8 @@ INSERT INTO user (id, name, age, email) VALUES
     <relativePath/>
 </parent>
 ```
-
-引入 `spring-boot-starter`、`spring-boot-starter-test`、`mybatis-plus-boot-starter`、`lombok`、`h2` 依赖：
+引入 `spring-boot-starter`、`spring-boot-starter-test`、`mybatis-plus-boot-starter`、`h2` 依赖：
+> Latest Version:[![Maven Central](https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.svg?style=flat-square)](https://search.maven.org/search?q=g:com.baomidou%20a:mybatis-*)
 ```xml {18}
 <dependencies>
     <dependency>
@@ -85,14 +85,9 @@ INSERT INTO user (id, name, age, email) VALUES
         <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <optional>true</optional>
-    </dependency>
-    <dependency>
         <groupId>com.baomidou</groupId>
         <artifactId>mybatis-plus-boot-starter</artifactId>
-        <version>mybatis-plus-boot-starter-latest-version</version>
+        <version>Latest Version</version>
     </dependency>
     <dependency>
         <groupId>com.h2database</groupId>
