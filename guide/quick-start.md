@@ -72,7 +72,7 @@ INSERT INTO user (id, name, age, email) VALUES
 </parent>
 ```
 引入 `spring-boot-starter`、`spring-boot-starter-test`、`mybatis-plus-boot-starter`、`h2` 依赖：
-> Latest Version:[![Maven Central](https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.svg?style=flat-square)](https://search.maven.org/search?q=g:com.baomidou%20a:mybatis-*)
+> Latest Version: [![Maven Central](https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.svg)](https://search.maven.org/search?q=g:com.baomidou%20a:mybatis-*)
 ```xml {18}
 <dependencies>
     <dependency>
