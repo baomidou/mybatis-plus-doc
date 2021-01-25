@@ -75,7 +75,7 @@ boolean removeByIds(Collection<? extends Serializable> idList);
 ``` java
 // 根据 UpdateWrapper 条件，更新记录 需要设置sqlset
 boolean update(Wrapper<T> updateWrapper);
-// 根据 whereEntity 条件，更新记录
+// 根据 updateWrapper 条件，更新记录
 boolean update(T entity, Wrapper<T> updateWrapper);
 // 根据 ID 选择修改
 boolean updateById(T entity);
