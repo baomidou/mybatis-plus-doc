@@ -75,8 +75,8 @@ boolean removeByIds(Collection<? extends Serializable> idList);
 ``` java
 // 根据 UpdateWrapper 条件，更新记录 需要设置sqlset
 boolean update(Wrapper<T> updateWrapper);
-// 根据 updateWrapper 条件，更新记录
-boolean update(T entity, Wrapper<T> updateWrapper);
+// 根据 whereWrapper 条件，更新记录
+boolean update(T updateEntity, Wrapper<T> whereWrapper);
 // 根据 ID 选择修改
 boolean updateById(T entity);
 // 根据ID 批量更新
@@ -248,8 +248,8 @@ int deleteByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
 
 ### Update
 ``` java
-// 根据 whereEntity 条件，更新记录
-int update(@Param(Constants.ENTITY) T entity, @Param(Constants.WRAPPER) Wrapper<T> updateWrapper);
+// 根据 whereWrapper 条件，更新记录
+int update(@Param(Constants.ENTITY) T updateEntity, @Param(Constants.WRAPPER) Wrapper<T> whereWrapper);
 // 根据 ID 修改
 int updateById(@Param(Constants.ENTITY) T entity);
 ```
