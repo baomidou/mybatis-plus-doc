@@ -68,7 +68,7 @@ module.exports = {
               },
               {
                 text: "Lock4j 分布式锁",
-                link: "https://gitee.com/baomidou/lock4j-spring-boot-starter",
+                link: "https://gitee.com/baomidou/lock4j",
               },
               {
                 text: "kaptcha 验证码启动器",
@@ -120,7 +120,7 @@ module.exports = {
               },
               {
                 text: "Lock4j",
-                link: "https://gitee.com/baomidou/lock4j-spring-boot-starter"
+                link: "https://gitee.com/baomidou/lock4j"
               },
               {
                 text: "Dynamic Datasource",
