@@ -415,3 +415,20 @@ List<MysqlData> getAll(Wrapper ew);
 ### kotlin使用wrapper
 > kotlin 可以使用 `QueryWrapper` 和 `UpdateWrapper` 但无法使用 `LambdaQueryWrapper` 和 `LambdaUpdateWrapper`  
 > 如果想使用 lambda 方式的 wrapper 请使用 `KtQueryWrapper` 和 `KtUpdateWrapper`
+
+### 链式调用 lambda 式
+``` java
+// 区分:
+// 链式调用 普通
+UpdateChainWrapper<T> update();
+// 链式调用 lambda 式。注意：不支持 Kotlin 
+LambdaUpdateChainWrapper<T> lambdaUpdate();
+
+// 等价示例：
+query().eq("id", value).one();
+lambdaQuery().eq(Entity::getId, value).one();
+
+// 等价示例：
+update().eq("id", value).remove();
+lambdaUpdate().eq(Entity::getId, value).remove();
+```
