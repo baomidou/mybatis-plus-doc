@@ -30,6 +30,7 @@
 @MapperScan("com.baomidou.cloud.service.*.mapper*")
 public class MybatisPlusConfig {
 
+    // 旧版
     @Bean
     public PaginationInterceptor paginationInterceptor() {
         PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
@@ -41,6 +42,15 @@ public class MybatisPlusConfig {
         paginationInterceptor.setCountSqlParser(new JsqlParserCountOptimize(true));
         return paginationInterceptor;
     }
+    
+    // 最新版
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.H2));
+        return interceptor;
+    }
+    
 }
 
 ```
