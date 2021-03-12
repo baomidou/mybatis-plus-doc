@@ -38,7 +38,7 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 - 感谢 【**[huaix](https://gitee.com/youthdream)**】 捐赠的域名（[https://mybatis.plus](https://mybatis.plus)），非常的契合 MyBatis-Plus，非常感谢！
 
 <p align="center">
-Hosted by <a href="https://pages.coding.me" target="_blank" style="font-weight:bold">Coding Pages</a> & <a href="https://pages.github.com" target="_blank" style="font-weight:bold">Github Pages</a>  & <a href="http://www.jetbrains.com" target="_blank" style="font-weight:bold">Idea</a> & <a href="https://mmbizurl.cn/s/DhhQ87YrB" target="_blank" style="font-weight:bold">YunGouOS</a>
+Hosted by <a href="https://pages.coding.me" target="_blank" style="font-weight:bold">Coding Pages</a> & <a href="https://pages.github.com" target="_blank" style="font-weight:bold">Github Pages</a>  & <a href="http://www.jetbrains.com" target="_blank" style="font-weight:bold">Idea</a> & <a href="https://dwz.cn/KSo8RB2Q" target="_blank" style="font-weight:bold">YunGouOS</a>
 <br/>
 <a href="http://beian.miit.gov.cn/" target=_blank>渝ICP备2021000141号</a>
 </p>
