@@ -25,3 +25,30 @@ private Integer version;
 - 仅支持 `updateById(id)` 与 `update(entity, wrapper)` 方法
 - **在 `update(entity, wrapper)` 方法下, `wrapper` 不能复用!!!**
 :::
+
+示例：
+
+```java
+// Spring Boot 方式
+@Configuration
+@MapperScan("按需修改")
+public class MybatisPlusConfig {
+    /**
+     * 旧版
+     */
+    @Bean
+    public OptimisticLockerInterceptor optimisticLockerInterceptor() {
+        return new OptimisticLockerInterceptor();
+    }
+    
+    /**
+     * 新版
+     */
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
+        mybatisPlusInterceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+        return mybatisPlusInterceptor;
+    }
+}
+```
