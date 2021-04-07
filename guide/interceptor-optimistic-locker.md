@@ -4,14 +4,44 @@
 
 > 当要更新一条记录的时候，希望这条记录没有被别人更新  
 > 乐观锁实现方式：  
->> - 取出记录时，获取当前version  
->> - 更新时，带上这个version  
->> - 执行更新时， set version = newVersion where version = oldVersion  
->> - 如果version不对，就更新失败  
+>
+> > - 取出记录时，获取当前version  
+> > - 更新时，带上这个version  
+> > - 执行更新时， set version = newVersion where version = oldVersion  
+> > - 如果version不对，就更新失败  
 
-### 使用方法
 
-字段上加上`@Version`注解
+
+**乐观锁配置需要两步**
+
+### 1.配置插件
+
+spring xml方式:
+
+```xml
+<bean class="com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor" id="optimisticLockerInnerInterceptor"/>
+
+<bean id="mybatisPlusInterceptor" class="com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor">
+    <property name="interceptors">
+        <list>
+            <ref bean="optimisticLockerInnerInterceptor"/>
+        </list>
+    </property>
+</bean>
+```
+
+spring boot注解方式:
+
+```java
+@Bean
+public MybatisPlusInterceptor mybatisPlusInterceptor() {
+    MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+    interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+    return interceptor;
+}
+```
+
+### 2.在实体类的字段上加上`@Version`注解
 
 ``` java
 @Version
