@@ -312,7 +312,7 @@ int alwaysUpdateSomeColumnById(T entity);
 int insertBatchSomeColumn(List<T> entityList);
 ```
 
-### [deleteByIdWithFill](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/LogicDeleteByIdWithFill.java)
+### [logicDeleteByIdWithFill](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/LogicDeleteByIdWithFill.java)
 ``` java
-int deleteByIdWithFill(T entity);
+int logicDeleteByIdWithFill(T entity);
 ```
