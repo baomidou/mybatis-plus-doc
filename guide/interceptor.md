@@ -32,7 +32,7 @@
 
 ## 使用方式(以分页插件举例)
 
-### spring-mvc
+### spring
 ``` xml
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
     <!-- 其他属性 略 --> 
