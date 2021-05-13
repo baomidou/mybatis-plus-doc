@@ -1,66 +1,40 @@
 # 多数据源
 
-<p align="center">
-	<strong>一个基于springboot的快速集成多数据源的启动器</strong>
-</p>
-
-<p align="center">
-    <a href="https://www.travis-ci.org/baomidou/dynamic-datasource-spring-boot-starter" target="_blank">
-        <img src="https://www.travis-ci.org/baomidou/dynamic-datasource-spring-boot-starter.svg?branch=master" >
-    <a href="http://mvnrepository.com/artifact/com.baomidou/dynamic-datasource-spring-boot-starter" target="_blank">
-        <img src="https://img.shields.io/maven-central/v/com.baomidou/dynamic-datasource-spring-boot-starter.svg" >
-    </a>
-    <a href="http://www.apache.org/licenses/LICENSE-2.0.html" target="_blank">
-        <img src="http://img.shields.io/:license-apache-brightgreen.svg" >
-    </a>
-    <a>
-        <img src="https://img.shields.io/badge/JDK-1.7+-green.svg" >
-    </a>
-    <a>
-        <img src="https://img.shields.io/badge/springBoot-1.5.x__2.x.x-green.svg" >
-    </a>
-    <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=ded31006508b57d2d732c81266dd2c26e33283f84464e2c294309d90b9674992"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="dynamic-sring-boot-starter" title="dynamic-sring-boot-starter"></a>
-</p>
-
-# 简介
+# 基础必读
 
 dynamic-datasource-spring-boot-starter 是一个基于springboot的快速集成多数据源的启动器。
 
-其支持 **Jdk 1.7+,    SpringBoot 1.4.x  1.5.x   2.x.x**。
+其支持 **Jdk 1.7+,    SpringBoot 1.5.x 和  2.x.x**。
 
-## 文档 | Documentation
+## 特性
 
-[中文](http://dynamic-datasource.com/)  | [English](http://dynamic-datasource.com/en)
+- 支持 **数据源分组** ，适用于多种场景 纯粹多库  读写分离  一主多从  混合模式。
+- 支持数据库敏感配置信息 **加密**  ENC()。
+- 支持每个数据库独立初始化表结构schema和数据库database。
+- 支持无数据源启动，支持懒加载数据源（需要的时候再创建连接）。
+- 支持 **自定义注解** ，需继承DS(3.2.0+)。
+- 提供并简化对Druid，HikariCp，Mybatis-Plus，Quartz，ShardingJdbc，P6sy，Jndi组件的快速集成。
+- 提供 **自定义数据源来源** 方案（如全从数据库加载）。
+- 提供项目启动后 **动态增加移除数据源** 方案。
+- 提供Mybatis环境下的  **纯读写分离** 方案。
+- 提供使用 **spel动态参数** 解析数据源方案。内置spel，session，header，支持自定义。
+- 支持  **多层数据源嵌套切换** 。（ServiceA >>>  ServiceB >>> ServiceC）。
+- 提供  **基于seata的分布式事务方案。** 附：不支持原生spring事务。
+- 提供  **本地多数据源事务方案。** 附：不支持原生spring事务。
 
-# 特性
+## 约定（必看）
 
-1. 支持 **数据源分组** ，适用于多种场景 纯粹多库  读写分离  一主多从  混合模式。
-2. 支持数据库敏感配置信息 **加密**  ENC()。
-3. 支持每个数据库独立初始化表结构schema和数据库database。
-4. 支持 **自定义注解** ，需继承DS(3.2.0+)。
-5. 提供对Druid，Mybatis-Plus，P6sy，Jndi的快速集成。
-6. 简化Druid和HikariCp配置，提供 **全局参数配置** 。配置一次，全局通用。
-7. 提供 **自定义数据源来源** 方案。
-8. 提供项目启动后 **动态增加移除数据源** 方案。
-9. 提供Mybatis环境下的  **纯读写分离** 方案。
-10. 提供使用 **spel动态参数** 解析数据源方案。内置spel，session，header，支持自定义。
-11. 支持  **多层数据源嵌套切换** 。（ServiceA >>>  ServiceB >>> ServiceC）。
-12. 提供对shiro，sharding-jdbc,quartz等第三方库集成的方案,注意事项和示例。
-13. 提供  **基于seata的分布式事务方案。** 附：不支持原生spring事务。
-14. 提供  **本地多数据源事务方案。** 附：不支持原生spring事务。
-
-# 约定
-
-1. 本框架只做 **切换数据源** 这件核心的事情，并**不限制你的具体操作**，切换了数据源可以做任何CRUD。
+1. 本框架只做 **切换数据源** 这件核心的事情。
 2. 配置文件所有以下划线 `_` 分割的数据源 **首部** 即为组的名称，相同组名称的数据源会放在一个组下。
 3. 切换数据源可以是组名，也可以是具体数据源名称。组名则切换时采用负载均衡算法切换。
 4. 默认的数据源名称为  **master** ，你可以通过 `spring.datasource.dynamic.primary` 修改。
 5. 方法上的注解优先于类上注解。
-6. 强烈建议只在service的类和方法上添加注解，不建议在mapper上添加注解。
 
-# 使用方法
+## 使用方法
 
 1. 引入dynamic-datasource-spring-boot-starter。
+<a href="http://mvnrepository.com/artifact/com.baomidou/dynamic-datasource-spring-boot-starter" target="_blank">
+<img src="https://img.shields.io/maven-central/v/com.baomidou/dynamic-datasource-spring-boot-starter.svg" ></a>
 
 ```xml
 <dependency>
@@ -93,10 +67,6 @@ spring:
           username: ENC(xxxxx)
           password: ENC(xxxxx)
           driver-class-name: com.mysql.jdbc.Driver
-          schema: db/schema.sql # 配置则生效,自动初始化表结构
-          data: db/data.sql # 配置则生效,自动初始化数据
-          continue-on-error: true # 默认true,初始化失败是否继续
-          separator: ";" # sql默认分号分隔符
           
        #......省略
        #以上会配置一个默认库master，一个组slave下有两个子库slave_1,slave_2
