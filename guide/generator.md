@@ -155,7 +155,7 @@ MyBatis-Plus 从 `3.0.3` 之后移除了代码生成器与模板引擎的默认�
   <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-generator</artifactId>
-      <version>latest-version</version>
+      <version>3.4.1</version>
   </dependency>
   ```
 
