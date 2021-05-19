@@ -56,7 +56,7 @@ module.exports = {
               },
               {
                 text: "多数据源",
-                link: "https://dynamic-datasource.com",
+                link: "https://gitee.com/baomidou/dynamic-datasource-spring-boot-starter",
               },
               {
                 text: "Shuan 权限组件",
