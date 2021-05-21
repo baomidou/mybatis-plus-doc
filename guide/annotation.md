@@ -132,3 +132,14 @@ mp会自动构建一个`ResultMap`并注入到mybatis里(一般用不上).下面
 ## [@InterceptorIgnore](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/InterceptorIgnore.java)
 
 > see [插件主体](/guide/interceptor.md)
+
+## [@OrderBy](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/OrderBy.java)
+
+- 描述：内置 SQL 默认指定排序，优先级低于 wrapper 条件查询
+
+| 属性 | 类型 | 必须指定 | 默认值 | 描述 |
+| :-: | :-: | :-: | :-: | :-: |
+| isDesc | boolean | 否 | 是 | 是否倒序查询 |
+| sort | sort | 否 | Short.MAX_VALUE | 数字越小越靠前 |
+
+
