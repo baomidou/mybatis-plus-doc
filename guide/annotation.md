@@ -140,6 +140,6 @@ mp会自动构建一个`ResultMap`并注入到mybatis里(一般用不上).下面
 | 属性 | 类型 | 必须指定 | 默认值 | 描述 |
 | :-: | :-: | :-: | :-: | :-: |
 | isDesc | boolean | 否 | 是 | 是否倒序查询 |
-| sort | sort | 否 | Short.MAX_VALUE | 数字越小越靠前 |
+| sort | short | 否 | Short.MAX_VALUE | 数字越小越靠前 |
 
 
