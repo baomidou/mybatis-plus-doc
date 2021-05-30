@@ -153,7 +153,6 @@ public interface UserMapper extends BaseMapper<User> {
 添加测试类，进行功能测试：
 
 ```java
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class SampleTest {
 
