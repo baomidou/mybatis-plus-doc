@@ -41,4 +41,4 @@ List<UserVo> selectPageVo(IPage<UserVo> page, Integer state);
 ### 其他:
 
 > 生成 countSql 会在 `left join` 的表不参与 `where` 条件的情况下,把 `left join` 优化掉  
-> 所以建议任何带有 `left join` 的sql,都写标准sql既给于表一个别名,字段也要 `别名.字段`
+> 所以建议任何带有 `left join` 的sql,都写标准sql,即给于表一个别名,字段也要 `别名.字段`
