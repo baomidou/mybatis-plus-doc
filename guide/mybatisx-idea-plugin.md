@@ -62,30 +62,40 @@ Scratches and Consoles -> Extensions -> MybatisX
  ![代码生成模板配置](/img/mybatisx-template-setting.jpg)
  
 自定义模板内容
-```
-类信息
-tableClass.fullClassName 类的全称(包括包名)
-tableClass.shortClassName 类的简称
-tableClass.tableName 表名
-tableClass.pkFields  表的所有主键字段
-tableClass.allFields 表的所有字段
-tableClass.baseFields 排除主键和blob的所有字段
-tableClass.baseBlobFields 排除主键的所有字段
-tableClass.remark 表注释
+
+名称 | 含义
+---|---
+tableClass.fullClassName | 类的全称(包括包名)
+tableClass.shortClassName | 类的简称
+tableClass.tableName | 表名
+tableClass.pkFields | 表的所有主键字段
+tableClass.allFields | 表的所有字段
+tableClass.baseFields | 排除主键和blob的所有字段
+tableClass.baseBlobFields | 排除主键的所有字段
+tableClass.remark | 表注释
 
 字段信息
-field.fieldName 字段名称
-field.columnName 列名称
-field.jdbcType  jdbc类型
-field.remark 字段注释
+
+名称 | 含义
+---|---
+field.fieldName | 字段名称
+field.columnName | 列名称
+field.jdbcType | jdbc类型
+field.columnLength | 列段长度
+field.columnScale | 列的精度
+field.columnIsArray | 字段类型是不是数组类型
+field.shortTypeName | java类型短名称, 通常用于定义字段
+field.fullTypeName | java类型的长名称, 通常用于导入
+field.remark | 字段注释
 
 配置信息
-baseInfo.configName 配置名称
-baseInfo.configFile 配置文件名称
-baseInfo.fileName 配置名称
-baseInfo.suffix 后缀
-baseInfo.packageName 包名
-baseInfo.templateText 模板内容
-baseInfo.basePath 相对模块的资源文件路径
 
-```
+名称 | 含义
+---|---
+baseInfo.shortClassName | 配置名称
+baseInfo.tableName | 配置文件名称
+baseInfo.pkFields | 配置名称
+baseInfo.allFields | 后缀
+baseInfo.baseFields | 包名
+baseInfo.baseBlobFields | 模板内容
+baseInfo.remark | 相对模块的资源文件路径
