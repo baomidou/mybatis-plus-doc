@@ -1,6 +1,6 @@
 # Guide
 
-[MyBatis-Plus](https://github.com/baomidou/mybatis-plus)（MP for short）is an powerful enhanced tool for [MyBatis](http://www.mybatis.org/mybatis-3/) , Born To Simplify Development.
+[MyBatis-Plus](https://github.com/baomidou/mybatis-plus)（MP for short）is an powerful enhanced tool for [MyBatis](https://www.mybatis.org/mybatis-3/) , Born To Simplify Development.
 
 ::: tip Vision
 Our Vision is to be the best Partner of Mybatis, just like Game: [Contra](/img/contra.jpg) , 1P&2P cooperate with doubled efficiency.
