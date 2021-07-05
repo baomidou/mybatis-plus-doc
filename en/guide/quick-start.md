@@ -54,7 +54,7 @@ What should we do for CRUD by MP?
 
 ## Initialization
 
-Create a project of Spring Boot(will use [H2 Database](http://www.h2database.com) for showcase by default)
+Create a project of Spring Boot(will use [H2 Database](https://www.h2database.com) for showcase by default)
 
 ::: tip
 You can use [Spring Initializer](https://start.spring.io/) for Spring Boot Quick Start

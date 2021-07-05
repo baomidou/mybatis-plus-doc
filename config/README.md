@@ -53,7 +53,7 @@ Spring MVC：
 - 类型：`String`
 - 默认值：`null`
 
-MyBatis 配置文件位置，如果您有单独的 MyBatis 配置，请将其路径配置到 `configLocation` 中.MyBatis Configuration 的具体内容请参考[MyBatis 官方文档](http://www.mybatis.org/mybatis-3/zh/configuration.html)
+MyBatis 配置文件位置，如果您有单独的 MyBatis 配置，请将其路径配置到 `configLocation` 中.MyBatis Configuration 的具体内容请参考[MyBatis 官方文档](https://www.mybatis.org/mybatis-3/zh/configuration.html)
 
 ### mapperLocations
 
