@@ -87,6 +87,8 @@ field.columnIsArray | 字段类型是不是数组类型
 field.shortTypeName | java类型短名称, 通常用于定义字段
 field.fullTypeName | java类型的长名称, 通常用于导入
 field.remark | 字段注释
+field.autoIncrement | 是否自增
+field.nullable | 是否允许为空
 
 配置信息
 
