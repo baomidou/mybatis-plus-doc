@@ -1,11 +1,6 @@
 # 多数据源
 
 <p align="center">
-<img src="https://images.gitee.com/uploads/images/2019/0626/231046_f44892b9_709883.png" border="0" />
-
-</p>
-
-<p align="center">
 	<strong>一个基于springboot的快速集成多数据源的启动器</strong>
 </p>
 
@@ -13,11 +8,14 @@
     <a >
         <img src="https://github.com/baomidou/dynamic-datasource-spring-boot-starter/workflows/CodeQL/badge.svg?branch=master" >
     </a>
+   <a>
+        <img src="https://badgen.net/github/stars/baomidou/dynamic-datasource-spring-boot-starter" >
+    </a>
     <a href="https://mvnrepository.com/artifact/com.baomidou/dynamic-datasource-spring-boot-starter" target="_blank">
         <img src="https://img.shields.io/maven-central/v/com.baomidou/dynamic-datasource-spring-boot-starter.svg" >
     </a>
     <a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank">
-        <img src="https://img.shields.io/:license-apache-brightgreen.svg" >
+        <img src="http://img.shields.io/:license-apache-brightgreen.svg" >
     </a>
     <a>
         <img src="https://img.shields.io/badge/JDK-1.7+-green.svg" >
@@ -25,18 +23,24 @@
     <a>
         <img src="https://img.shields.io/badge/springBoot-1.5.x__2.x.x-green.svg" >
     </a>
-    <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=ded31006508b57d2d732c81266dd2c26e33283f84464e2c294309d90b9674992"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="dynamic-sring-boot-starter" title="dynamic-sring-boot-starter"></a>
+    <a href="https://www.jetbrains.com">
+        <img src="https://img.shields.io/badge/IntelliJ%20IDEA-support-blue.svg" >
+    </a>
+    <a>
+        <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" >
+    </a>
+    <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=ded31006508b57d2d732c81266dd2c26e33283f84464e2c294309d90b9674992"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="dynamic-sring-boot-starter" title="dynamic-sring-boot-starter"></a>
 </p>
 
 # 简介
 
 dynamic-datasource-spring-boot-starter 是一个基于springboot的快速集成多数据源的启动器。
 
-其支持 **Jdk 1.7+,    SpringBoot 1.4.x  1.5.x   2.x.x**。
+其支持 **Jdk 1.7+, SpringBoot 1.4.x 1.5.x 2.x.x**。
 
 ## 文档 | Documentation
 
-[详细文档](https://www.kancloud.cn/tracy5546/dynamic-datasource/2264611)
+详细文档 https://www.kancloud.cn/tracy5546/dynamic-datasource/2264611
 
 # 特性
 
@@ -45,14 +49,15 @@ dynamic-datasource-spring-boot-starter 是一个基于springboot的快速集成�
 - 支持每个数据库独立初始化表结构schema和数据库database。
 - 支持无数据源启动，支持懒加载数据源（需要的时候再创建连接）。
 - 支持 **自定义注解** ，需继承DS(3.2.0+)。
-- 提供并简化对Druid，HikariCp，Mybatis-Plus，Quartz，ShardingJdbc，P6sy，Jndi组件的快速集成。
+- 提供并简化对Druid，HikariCp，BeeCp,Dbcp2的快速集成。
+- 提供对Mybatis-Plus，Quartz，ShardingJdbc，P6sy，Jndi等组件的集成方案。
 - 提供 **自定义数据源来源** 方案（如全从数据库加载）。
 - 提供项目启动后 **动态增加移除数据源** 方案。
 - 提供Mybatis环境下的  **纯读写分离** 方案。
 - 提供使用 **spel动态参数** 解析数据源方案。内置spel，session，header，支持自定义。
 - 支持  **多层数据源嵌套切换** 。（ServiceA >>>  ServiceB >>> ServiceC）。
-- 提供  **基于seata的分布式事务方案。** 附：不支持原生spring事务。
-- 提供  **本地多数据源事务方案。** 附：不支持原生spring事务。
+- 提供  **基于seata的分布式事务方案。
+- 提供  **本地多数据源事务方案。**
 
 # 约定
 
@@ -98,7 +103,6 @@ spring:
           username: ENC(xxxxx)
           password: ENC(xxxxx)
           driver-class-name: com.mysql.jdbc.Driver
-          
        #......省略
        #以上会配置一个默认库master，一个组slave下有两个子库slave_1,slave_2
 ```
