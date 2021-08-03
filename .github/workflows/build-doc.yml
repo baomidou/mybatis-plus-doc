@@ -18,6 +18,7 @@ jobs:
           node-version: '14.x'
       - run: yarn --frozen-lockfile
       - run: yarn run build
+      - run: rm -rf ./.git
       - run: git clone https://$CODING_USER:$CODING_TOKEN@$CODING_REPO ./old-docs
       - run: cp -r ./old-docs/.git ./docs 
       - run: cd ./docs
