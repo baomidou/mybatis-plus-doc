@@ -6,6 +6,10 @@ on:
 
 jobs:
   build:
+    env:
+      CODING_REPO: e.coding.net/yangyang0507/mybatis-plus-doc.git
+      CODING_USER: ${{ secrets.CODING_USER }}
+      CODING_TOKEN: ${{ secrets.CODING_TOKEN }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,9 +20,9 @@ jobs:
       - run: yarn run build
       - run: git config user.name "D.Yang"
       - run: git config user.email "koyangslash@gmail.com"
-      - run: git clone https://${{secrets.CODING_USER}}:${{secrets.CODING_TOKEN}}@e.coding.net/yangyang0507/mybatis-plus-doc.git ./old-docs
+      - run: git clone https://${CODING_USER}:${CODING_TOKEN}@${CODING_REPO} ./old-docs
       - run: cp -r ./old-docs/.git ./docs 
       - run: cd ./docs
       - run: git add -A
       - run: git commit -m "deploy at `date +\"%Y-%m-%d %H:%M:%S\"`"
-      - run: git push --force --quiet "https://${{secrets.CODING_USER}}:${{secrets.CODING_TOKEN}}@e.coding.net/yangyang0507/mybatis-plus-doc.git" master:master
+      - run: git push --force --quiet "https://${CODING_USER}:${CODING_TOKEN}@${CODING_REPO}" master:master
