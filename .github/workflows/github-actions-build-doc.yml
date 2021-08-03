@@ -16,9 +16,9 @@ jobs:
       - run: yarn run build
       - run: git config user.name "D.Yang"
       - run: git config user.email "koyangslash@gmail.com"
-      - run: git clone https://koyangslash%40gmail.com:${secrets.CODING_TOKEN}@e.coding.net/yangyang0507/mybatis-plus-doc.git ./old-docs
+      - run: git clone https://koyangslash%40gmail.com:${{secrets.CODING_TOKEN}}@e.coding.net/yangyang0507/mybatis-plus-doc.git ./old-docs
       - run: cp -r ./old-docs/.git ./docs 
       - run: cd ./docs
       - run: git add -A
       - run: git commit -m "deploy at `date +\"%Y-%m-%d %H:%M:%S\"`"
-      - run: git push --force --quiet "https://koyangslash%40gmail.com:${secrets.CODING_TOKEN}@e.coding.net/yangyang0507/mybatis-plus-doc.git" master:master
+      - run: git push --force --quiet "https://koyangslash%40gmail.com:${{secrets.CODING_TOKEN}}@e.coding.net/yangyang0507/mybatis-plus-doc.git" master:master
