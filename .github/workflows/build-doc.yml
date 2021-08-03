@@ -18,13 +18,11 @@ jobs:
           node-version: '14.x'
       - run: yarn --frozen-lockfile
       - run: yarn run build
-      - run: git config user.name "D.Yang"
-      - run: git config user.email "koyangslash@gmail.com"
       - run: git clone https://$CODING_USER:$CODING_TOKEN@$CODING_REPO ./old-docs
       - run: cp -r ./old-docs/.git ./docs 
       - run: cd ./docs
+      - run: git config user.name "D.Yang"
+      - run: git config user.email "koyangslash@gmail.com"
       - run: git add -A
       - run: git commit -m "deploy at `date +\"%Y-%m-%d %H:%M:%S\"`"
-      - run: git remote add old https://$CODING_USER:$CODING_TOKEN@$CODING_REPO
-      - run: git fetch --unshallow old
       - run: git push --force --quiet "https://$CODING_USER:$CODING_TOKEN@$CODING_REPO" master:master
