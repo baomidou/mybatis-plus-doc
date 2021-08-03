@@ -19,6 +19,7 @@ jobs:
       - run: yarn --frozen-lockfile
       - run: yarn run build
       - run: ls -a
+      - run: pwd
       # - run: rm -rf .git
       # - run: cd ./docs
       # - run: git init
