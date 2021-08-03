@@ -27,7 +27,7 @@ jobs:
         env:
           GITHUB_EMAIL: "koyangslash@gmail.com"
           GITHUB_USERNAME: "D.Yang"
-          PUBLISH_REPO: https://$CODING_USER:$CODING_TOKEN@$CODING_REPO
+          PUBLISH_REPO: https://${{ secrets.CODING_USER }}:${{ secrets.CODING_TOKEN }}@e.coding.net/yangyang0507/mybatis-plus-doc.git
           PUBLISH_BRANCH: master
           PUBLISH_DIR: ./docs
           # DEPLOY_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
