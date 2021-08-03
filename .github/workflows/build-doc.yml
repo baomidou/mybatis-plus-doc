@@ -16,11 +16,9 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '14.x'
+      - run: git submodule add https://$CODING_USER:$CODING_TOKEN@$CODING_REPO ./docs
       - run: yarn --frozen-lockfile
       - run: yarn run build
-      - run: rm -rf ./.git
-      - run: git clone https://$CODING_USER:$CODING_TOKEN@$CODING_REPO ./old-docs
-      - run: cp -r ./old-docs/.git ./docs 
       - run: cd ./docs
       - run: git config user.name "D.Yang"
       - run: git config user.email "koyangslash@gmail.com"
