@@ -18,8 +18,8 @@ jobs:
           node-version: '14.x'
       - run: yarn --frozen-lockfile
       - run: yarn run build
-      - run: cp -r ./docs ../docs
-      - run: cd ../docs
+      - run: rm -rf .git
+      - run: cd ./docs
       - run: git init
       - run: git remote add origin "https://$CODING_REPO"
       - run: git config user.name "D.Yang"
