@@ -6,10 +6,6 @@ on:
 
 jobs:
   build:
-    env:
-      CODING_REPO: e.coding.net/yangyang0507/mybatis-plus-doc.git
-      CODING_USER: ${{ secrets.CODING_USER }}
-      CODING_TOKEN: ${{ secrets.CODING_TOKEN }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,14 +26,3 @@ jobs:
           PUBLISH_REPO: https://${{ secrets.CODING_USER }}:${{ secrets.CODING_TOKEN }}@e.coding.net/yangyang0507/mybatis-plus-doc.git
           PUBLISH_BRANCH: master
           PUBLISH_DIR: ./docs
-          # DEPLOY_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
-      # - run: rm -rf .git
-      # - run: cd ./docs
-      # - run: git init
-      # - run: git remote add origin "https://$CODING_REPO"
-      # - run: git config user.name "D.Yang"
-      # - run: git config user.email "koyangslash@gmail.com"
-      # - run: git add -A
-      # - run: git status
-      # - run: git commit -m "deploy at `date +\"%Y-%m-%d %H:%M:%S\"`"
-      # - run: git push --force --quiet "https://$CODING_USER:$CODING_TOKEN@$CODING_REPO" master:master
