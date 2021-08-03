@@ -1,0 +1,24 @@
+name: Build Doc
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - run: yarn --frozen-lockfile
+      - run: yarn run build
+      - run: git config user.name "D.Yang"
+      - run: git config user.email "koyangslash@gmail.com"
+      - run: git clone https://yangyang0507:${secrets.CODING_TOKEN}@e.coding.net/yangyang0507/mybatis-plus-doc.git ./old-docs
+      - run: cp -r ./old-docs/.git ./docs 
+      - run: cd ./docs
+      - run: git add -A
+      - run: git commit -m "deploy at `date +\"%Y-%m-%d %H:%M:%S\"`"
+      - run: git push --force --quiet "https://yangyang0507:${secrets.CODING_TOKEN}@e.coding.net/yangyang0507/mybatis-plus-doc.git" master:master
