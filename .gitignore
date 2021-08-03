@@ -15,3 +15,5 @@ Thumbs.db
 
 # Node files
 node_modules/
+docs/
+old-docs/
