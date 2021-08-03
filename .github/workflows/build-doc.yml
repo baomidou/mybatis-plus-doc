@@ -25,5 +25,6 @@ jobs:
       - run: git config user.name "D.Yang"
       - run: git config user.email "koyangslash@gmail.com"
       - run: git add -A
+      - run: git status
       - run: git commit -m "deploy at `date +\"%Y-%m-%d %H:%M:%S\"`"
       - run: git push --force --quiet "https://$CODING_USER:$CODING_TOKEN@$CODING_REPO" master:master
