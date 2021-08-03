@@ -25,6 +25,6 @@ jobs:
       - run: cd ./docs
       - run: git add -A
       - run: git commit -m "deploy at `date +\"%Y-%m-%d %H:%M:%S\"`"
-      - run: git remote add origin https://$CODING_USER:$CODING_TOKEN@$CODING_REPO
-      - run: git fetch --unshallow origin
+      - run: git remote add old https://$CODING_USER:$CODING_TOKEN@$CODING_REPO
+      - run: git fetch --unshallow old
       - run: git push --force --quiet "https://$CODING_USER:$CODING_TOKEN@$CODING_REPO" master:master
