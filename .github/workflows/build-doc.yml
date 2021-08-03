@@ -12,14 +12,25 @@ jobs:
       CODING_TOKEN: ${{ secrets.CODING_TOKEN }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup node.js
+        uses: actions/setup-node@v1
         with:
           node-version: '14.x'
-      - run: yarn --frozen-lockfile
-      - run: yarn run build
-      - run: ls -a
-      - run: pwd
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+      - name: Build docs
+        run: yarn run build
+      - name: Deploy docs
+        uses: AnonyStar/git-push@v2
+        env:
+          GITHUB_EMAIL: "koyangslash@gmail.com"
+          GITHUB_USERNAME: "D.Yang"
+          PUBLISH_REPO: https://$CODING_USER:$CODING_TOKEN@$CODING_REPO
+          PUBLISH_BRANCH: master
+          PUBLISH_DIR: ./docs
+          # DEPLOY_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
       # - run: rm -rf .git
       # - run: cd ./docs
       # - run: git init
