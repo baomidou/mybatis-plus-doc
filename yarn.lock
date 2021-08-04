@@ -2487,13 +2487,6 @@ create-hmac@^1.1.0, create-hmac@^1.1.4, create-hmac@^1.1.7:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-cross-fetch@^3.0.5:
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.0.6.tgz#3a4040bc8941e653e0e9cf17f29ebcd177d3365c"
-  integrity sha512-KBPUbqgFjzWlVcURG+Svp9TlhA5uliYtiNx/0r8nv0pdypeQCRJ9IaSIc3q/x3q8t3F75cHuwxVql1HFGHCNJQ==
-  dependencies:
-    node-fetch "2.6.1"
-
 cross-spawn@^6.0.0, cross-spawn@^6.0.5:
   version "6.0.5"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
@@ -5125,11 +5118,6 @@ no-case@^2.2.0:
   dependencies:
     lower-case "^1.1.1"
 
-node-fetch@2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
-  integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
-
 node-forge@^0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.10.0.tgz#32dea2afb3e9926f02ee5ce8794902691a676bf3"
@@ -7578,13 +7566,6 @@ vuepress-plugin-container@^2.0.2:
   dependencies:
     "@vuepress/shared-utils" "^1.2.0"
     markdown-it-container "^2.0.0"
-
-vuepress-plugin-lastest-version@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/vuepress-plugin-lastest-version/-/vuepress-plugin-lastest-version-0.2.3.tgz#146328c317872ac00c9f97ea02fea892f6a3b9de"
-  integrity sha512-4nRQAEWlH0RgAGWqVNyjxI7FL4SjdaqlMmfWMfNXPNHhnI9GK440NpwLYJlGisJWYHKgz9JCXAGB4Ll3T0KHEQ==
-  dependencies:
-    cross-fetch "^3.0.5"
 
 vuepress-plugin-smooth-scroll@^0.0.3:
   version "0.0.3"

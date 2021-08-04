@@ -154,26 +154,7 @@ module.exports = {
   plugins: [
     ['@vuepress/back-to-top', true],
     ['@vuepress/google-analytics', { ga: 'UA-85414008-1' }],
-    ['baidu-tongji-analytics', { key: '577e65b88c06c034335c395caa4b6205' }],
-    ['lastest-version', {
-      repos: [
-        {
-          keywords: "mybatis-plus-latest-version",
-          type: "maven",
-          repo: "com.baomidou/mybatis-plus"
-        },
-        {
-          keywords: "mybatis-plus-boot-starter-latest-version",
-          type: "maven",
-          repo: "com.baomidou/mybatis-plus-boot-starter"
-        },
-        {
-          keywords: "spring-latest-version",
-          type: "maven",
-          repo: "org.springframework.boot/spring-boot-starter-parent"
-        }
-      ]
-    }]
+    ['baidu-tongji-analytics', { key: '577e65b88c06c034335c395caa4b6205' }]
   ]
 };
 
