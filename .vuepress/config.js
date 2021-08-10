@@ -59,6 +59,10 @@ module.exports = {
                 link: "https://gitee.com/baomidou/dynamic-datasource-spring-boot-starter",
               },
               {
+                text: "MP 企业级模块",
+                link: "https://gitee.com/baomidou/mybatis-mate-examples",
+              },
+              {
                 text: "Shuan 权限组件",
                 link: "https://gitee.com/baomidou/shaun",
               },
@@ -128,6 +132,10 @@ module.exports = {
                   "https://github.com/baomidou/dynamic-datasource-spring-boot-starter"
               },
               {
+                text: "Mybatis Mate",
+                link: "https://gitee.com/baomidou/mybatis-mate-examples",
+              },
+              {
                 text: "Jobs Scheduling Platform",
                 link: "https://github.com/baomidou/jobs"
               }
@@ -189,7 +197,8 @@ function genGuideSidebar(isZh) {
         "p6spy",
         "safety",
         "dynamic-datasource",
-        "mybatisx-idea-plugin"
+        "mybatisx-idea-plugin",
+        "mybatis-mate"
       ]
     },
     {
