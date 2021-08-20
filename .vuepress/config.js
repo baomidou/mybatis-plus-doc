@@ -21,7 +21,7 @@ module.exports = {
   },
   head: [
     ["link", { rel: "icon", href: `/favicon.ico` }],
-    ["script", { "data-ad-client": "ca-pub-4147143076931995", async: true, src: "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" }]
+    ["script", { "crossorigin": "anonymous", async: true, src: "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4147143076931995" }]
   ],
   themeConfig: {
     repo: "baomidou/mybatis-plus",
