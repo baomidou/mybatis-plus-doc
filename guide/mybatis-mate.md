@@ -25,6 +25,26 @@ mybatis-mate 为 mp 企业级模块，旨在更敏捷优雅处理数据。
 ```
 
 
+## 数据范围（数据权限）
+
+- 行级粒度权限控制，例如：上级部门可以查看子部门信息。
+
+``` java
+// 测试 test 类型数据权限范围，混合分页模式
+@DataScope(type = "test", value = {
+        // 关联表 user 别名 u 指定部门字段权限
+        @DataColumn(alias = "u", name = "department_id"),
+        // 关联表 user 别名 u 指定手机号字段（自己判断处理）
+        @DataColumn(alias = "u", name = "mobile")
+})
+@Select("select u.* from user u")
+List<User> selectTestList(IPage<User> page, Long id, @Param("name") String username);
+
+// 测试数据权限，最终执行 SQL 语句
+SELECT u.* FROM user u WHERE (u.department_id IN ('1', '2', '3', '5')) AND u.mobile LIKE '%1533%' LIMIT 1,10
+```
+
+
 ## 表结构自动维护
 
 - 数据库 Schema 初始化，升级 SQL 自动维护，区别于 `flyway` 支持分表库、可控制代码执行 SQL 脚本
