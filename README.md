@@ -23,9 +23,13 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 </dependency>
 ```
 
+### 赞助商
+< a href='https://ccfast.cc/from=baomidou' target=_blank >< img src='https://ccfast.cc/adimg/ccflowAD_Title.png' /></ a>
+
 ### 苞米豆生态圈
 
 - [MybatisX](https://github.com/baomidou/MybatisX) - 一款全免费且强大的 IDEA 插件，支持跳转，自动补全生成 SQL，代码生成。
+- [mybatis-mate](https://gitee.com/baomidou/mybatis-mate-examples) -  为 mp 企业级模块，支持分库分表，数据审计、字段加密，数据绑定，数据权限，表结构自动生成 SQL 维护 等。
 - [dynamic-datasource](https://dynamic-datasource.com) - 基于 SpringBoot 的多数据源组件，功能强悍，支持 Seata 分布式事务。
 - [Shuan](https://gitee.com/baomidou/shaun) - 基于 pac4j-jwt 的 WEB 安全组件, 快速集成。
 - [kisso](https://github.com/baomidou/kisso) - 基于 Cookie 的单点登录组件。
