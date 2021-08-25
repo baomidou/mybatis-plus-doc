@@ -73,12 +73,13 @@ ddlScript.run(new StringReader("DELETE FROM user;\n" +
 ```
 
 
-## 字段数据字典自动映射
+## 字段数据绑定（字典回写）
 
 - 数据库 `sex` 值 `0`、`1` 自动映射为 `男`、`女`
+- 可以绑定映射为对象，例如：根据订单ID 映射 订单对象或者编号
 
 ```java
-@FieldDict(type = "user_sex", target = "sexText")
+@FieldBind(type = "user_sex", target = "sexText")
 private Integer sex;
 // 绑定显示属性，非表字典（排除）
 @TableField(exist = false)
