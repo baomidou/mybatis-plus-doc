@@ -24,7 +24,7 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 ```
 
 ### 赞助商
-[![ccflow](https://ccfast.cc/adimg/ccflowAD_Title.png)](https://ccfast.cc/from=baomidou)
+[![ccflow](https://ccfast.cc/adimg/ccflowAD_Title.png)](https://ccfast.cc?from=baomidou)
 
 ### 苞米豆生态圈
 
