@@ -10,6 +10,9 @@
     <img src="/img/relationship-with-mybatis.png"/>
 </p>
 
+### 赞助商（测试）
+[![ccflow](https://ccfast.cc/adimg/ccflowAD_Title.png)](https://ccfast.cc?from=baomidou)
+
 ## 特性
 
 - **无侵入**：只做增强不做改变，引入它不会对现有工程产生影响，如丝般顺滑
