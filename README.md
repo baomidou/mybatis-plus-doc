@@ -23,9 +23,6 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 </dependency>
 ```
 
-### 赞助商
-[![ccflow](https://ccfast.cc/adimg/ccflowAD_Title.png)](https://ccfast.cc?from=baomidou)
-
 ### 苞米豆生态圈
 
 - [MybatisX](https://github.com/baomidou/MybatisX) - 一款全免费且强大的 IDEA 插件，支持跳转，自动补全生成 SQL，代码生成。
