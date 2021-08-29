@@ -38,7 +38,7 @@ mybatis-plus:
 
 ``` java
 @TableLogic
-private Integer deleted;
+private Integer flag;
 ```
 
 ## 常见问题:
