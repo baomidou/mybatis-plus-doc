@@ -3,9 +3,14 @@
 ## PaginationInnerInterceptor
 
 ### 支持的数据库
-- mysql 、mariadb 、oracle 、db2 、h2 、hsql 、sqlite 、postgresql 、sqlserver 、presto 、Gauss 、Firebird
 
-- Phoenix 、clickhouse 、Sybase ASE 、 OceanBase 、达梦数据库 、虚谷数据库 、人大金仓数据库 、南大通用数据库
+- mysql，oracle，db2，h2，hsql，sqlite，postgresql，sqlserver，Phoenix，Gauss
+，clickhouse，Sybase，OceanBase，Firebird，cubrid，goldilocks，csiidb
+
+- 达梦数据库，虚谷数据库，人大金仓数据库，南大通用(华库)数据库，南大通用数据库，神通数据库，瀚高数据库
+
+👉 [如果没有支持你需要的数据库，点击参考 Pull Request 我们会第一时间审核](https://github.com/baomidou/mybatis-plus/pull/1550/files)
+
 
 ### 属性介绍
 
