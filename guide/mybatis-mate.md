@@ -156,7 +156,7 @@ public class DataBind implements IDataBind {
 | MD5_32 | 32 位 md5 算法 |
 | MD5_16 | 16 位 md5 算法 |
 | AES | AES 对称算法 |
-| SM4 | 国密 SM4 算法 |
+| SM4 | 国密 SM4 算法（密钥 SM4.generateKey() 生成） |
 | PBEWithMD5AndDES | 混合算法 |
 | PBEWithMD5AndTripleDES | 混合算法 |
 | PBEWithHMACSHA512AndAES_256 | 混合算法 |
