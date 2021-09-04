@@ -27,7 +27,13 @@
 
 ## 支持数据库
 
-> 任何能使用 `mybatis` 进行 CRUD, 并且支持标准 SQL 的数据库
+> 任何能使用 `mybatis` 进行 CRUD, 并且支持标准 SQL 的数据库，具体支持情况如下，如果不在下列表查看分页部分教程 PR 您的支持。
+
+- mysql，oracle，db2，h2，hsql，sqlite，postgresql，sqlserver，Phoenix，Gauss
+，clickhouse，Sybase，OceanBase，Firebird，cubrid，goldilocks，csiidb
+
+- 达梦数据库，虚谷数据库，人大金仓数据库，南大通用(华库)数据库，南大通用数据库，神通数据库，瀚高数据库
+
 
 ## 框架结构
 
