@@ -167,6 +167,7 @@ public class DataBind implements IDataBind {
 MD5 算法为不可逆算法，存储数据库及查询结果都是密文
 SM4 算法必须依赖 bouncycastle 加密库
 混合算法必须依赖 jasypt 加密库
+【注意】查询返回加密对象必须包含`加密注解`信息，单纯的返回某个 String 或者 List 某个集合是无法解密的。
 :::
 
 - 注解 `FieldEncrypt` 实现数据加解密，支持多种加密算法
