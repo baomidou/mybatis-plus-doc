@@ -155,13 +155,19 @@ public class DataBind implements IDataBind {
 | :-: | :-: |
 | MD5_32 | 32 位 md5 算法 |
 | MD5_16 | 16 位 md5 算法 |
+| BASE64 | 64个字符来表示任意二进制数据算法 |
 | AES | AES 对称算法 |
-| SM4 | 国密 SM4 算法（密钥 SM4.generateKey() 生成） |
+| RSA | 非对称加密算法 |
+| SM2 | 国密 SM2 非对称加密算法，基于ECC |
+| SM3 | 国密 SM3 消息摘要算法，可以用MD5作为对比理解 |
+| SM4 | 国密 SM4 对称加密算法，无线局域网标准的分组数据算法 |
 | PBEWithMD5AndDES | 混合算法 |
 | PBEWithMD5AndTripleDES | 混合算法 |
 | PBEWithHMACSHA512AndAES_256 | 混合算法 |
 | PBEWithSHA1AndDESede | 混合算法 |
 | PBEWithSHA1AndRC2_40 | 混合算法 |
+
+👉 [国密SM2.3.4算法使用规范](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/%E5%9B%BD%E5%AF%86SM2.3.4%E7%AE%97%E6%B3%95%E4%BD%BF%E7%94%A8%E8%A7%84%E8%8C%83)
 
 ::: warning
 MD5 算法为不可逆算法，存储数据库及查询结果都是密文
@@ -208,6 +214,8 @@ public class SensitiveStrategyConfig {
     }
 }
 
+// 跳过脱密处理，用于编辑场景
+RequestDataTransfer.skipSensitive();
 ```
 
 
