@@ -37,7 +37,9 @@ String result = AES.encrypt(data, randomKey);
 
 - 数据安全：
 
-待完善
+👉 [字段加密解密](https://baomidou.com/guide/mybatis-mate.html#%E5%AD%97%E6%AE%B5%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86)
+
+👉 [字段脱敏](https://baomidou.com/guide/mybatis-mate.html#%E5%AD%97%E6%AE%B5%E8%84%B1%E6%95%8F)
 
 ::: warning 注意！
 - 加密配置必须以 mpw: 字符串开头
