@@ -27,6 +27,14 @@ mybatis-mate 为 mp 企业级模块，旨在更敏捷优雅处理数据。
 ```
 
 
+## 数据敏感词过滤
+
+👉 [mybatis-mate-sensitive-words](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sensitive-words)
+
+- 数据敏感词过滤（AC算法）配置完处理器，框架自动处理请求的所有字符串敏感词过滤，支持嵌套关键词让敏感词无处遁形。
+- 数据库自维护敏感词库（免费、可控），默认加载缓存词根支持指定重新加载词库。
+
+
 ## 数据范围（数据权限）
 
 👉 [mybatis-mate-dict](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-dict)
