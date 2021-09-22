@@ -15,7 +15,7 @@ MybatisX 是一款基于 IDEA 的快速开发插件，为效率而生。
  ![跳转](/img/mybatisx-jump.gif)
  
  
-**生成代码(需先在idea配置Datebase配置数据源)**
+**生成代码(需先在idea配置Database配置数据源)**
  ![生成代码](/img/mybatisx-generate.gif)
  
 **重置模板**
