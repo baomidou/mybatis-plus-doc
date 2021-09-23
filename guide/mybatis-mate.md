@@ -227,7 +227,7 @@ RequestDataTransfer.skipSensitive();
 ```
 
 
-## 数据库分库分表（读写分离）
+## 多数据源分库分表（读写分离）
 
 👉 [mybatis-mate-sharding](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding)
 
@@ -277,3 +277,8 @@ public interface UserMapper extends BaseMapper<User> {
 // 切换到 mysql 从库 node2 节点
 ShardingKey.change("mysqlnode2");
 ```
+
+
+## 多数据源事务（ jta atomikos）
+
+👉 [mybatis-mate-sharding-jta-atomikos](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding-jta-atomikos)
