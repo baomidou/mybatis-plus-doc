@@ -29,7 +29,7 @@ Gradle：
 compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: 'mybatis-plus-latest-version'
 ```
 
-### Spring MVC
+### Spring
 
 Maven:
 
