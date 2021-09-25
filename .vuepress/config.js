@@ -178,6 +178,7 @@ function genGuideSidebar(isZh) {
       collapsable: false,
       children: [
         "generator",
+        "generator-new",
         "crud-interface",
         "wrapper",
         "page",
