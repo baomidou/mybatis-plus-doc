@@ -11,6 +11,7 @@ sidebarDepth: 3
 [👉 点击查看最新版本](https://search.maven.org/artifact/com.baomidou/mybatis-plus-generator)
 
 ``` xml
+// 注意！！当前包未传递依赖 mp 包，需要自己引入
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus-generator</artifactId>
