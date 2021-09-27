@@ -6,6 +6,9 @@ sidebarDepth: 3
 
 [👉 源码](https://github.com/baomidou/generator)
 
+
+## 快速入门
+
 ### 安装
 
 [👉 点击查看最新版本](https://search.maven.org/artifact/com.baomidou/mybatis-plus-generator)
@@ -71,9 +74,9 @@ FastAutoGenerator.create(DATA_SOURCE_CONFIG)
 * [H2CodeGeneratorTest](https://github.com/baomidou/generator/blob/develop/mybatis-plus-generator/src/test/java/com/baomidou/mybatisplus/generator/samples/H2CodeGeneratorTest.java)
 * [FastAutoGeneratorTest](https://github.com/baomidou/generator/blob/develop/mybatis-plus-generator/src/test/java/com/baomidou/mybatisplus/generator/samples/FastAutoGeneratorTest.java)
 
-### 说明
+## 说明
 
-#### 数据库配置(DataSourceConfig)
+### 数据库配置(DataSourceConfig)
 
 ##### 基础配置
 
@@ -130,7 +133,7 @@ new GlobalConfig.Builder().
     .build();
 ```
 
-#### 包配置(PackageConfig)
+### 包配置(PackageConfig)
 
 | 方法                              | 说明              | 示例                                                   |
 | --------------------------------- | ----------------- | ------------------------------------------------------ |
@@ -160,7 +163,7 @@ new PackageConfig.Builder()
     .build();
 ```
 
-#### 模板配置(TemplateConfig)
+### 模板配置(TemplateConfig)
 
 | 方法                     | 说明                      | 示例                        |
 | ------------------------ | ------------------------- | --------------------------- |
@@ -186,7 +189,7 @@ new TemplateConfig.Builder()
     .build();
 ```
 
-#### 注入配置(InjectionConfig)
+### 注入配置(InjectionConfig)
 
 | 方法                   | 说明                     | 示例                                                |
 | ----------------------------------------------------------- | ----------------- | ----------------------------------------------------------- |
@@ -204,7 +207,7 @@ new InjectionConfig.Builder()
     .build();
 ```
 
-#### 策略配置(StrategyConfig)
+### 策略配置(StrategyConfig)
 
 | 方法                      | 说明                     | 示例                                                              |
 | ------------------------- | ------------------------ | ----------------------------------------------------------------- |
