@@ -53,7 +53,12 @@ FastAutoGenerator.create(DATA_SOURCE_CONFIG)
     // 包配置
     .packageConfig((scanner, builder) -> builder.parent(scanner.apply("请输入包名？")))
     // 策略配置
-    .strategyConfig(builder -> builder.addInclude("t_simple"))
+    .strategyConfig(builder -> builder.addInclude(Arrays.asList(scanner
+                        .apply("请输入表名，多个英文逗号分隔？").split(",")))
+                        .controllerBuilder().enableRestStyle().enableHyphenStyle()
+                        .entityBuilder().enableLombok().addTableFills(
+                                new Column("create_time", FieldFill.INSERT)
+                        ).build())
     /*
         模板引擎配置，默认 Velocity 可选模板引擎 Beetl 或 Freemarker
        .templateEngine(new BeetlTemplateEngine())
