@@ -122,7 +122,7 @@ new DataSourceConfig.Builder("jdbc:mysql://127.0.0.1:3306/mybatis-plus","root","
 | commentDate(String) | 注释日期          | 默认值: yyyy-MM-dd                                      |
 
 ```java
-new GlobalConfig.Builder().
+new GlobalConfig.Builder()
     .fileOverride()
     .outputDir("/opt/baomidou")
     .author("baomidou")
