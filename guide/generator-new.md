@@ -6,6 +6,7 @@ sidebarDepth: 3
 
 [👉 源码](https://github.com/baomidou/generator)
 
+[👉 视频教程详解 关注、点赞、投币、评论](https://space.bilibili.com/483260422)
 
 ## 快速入门
 
