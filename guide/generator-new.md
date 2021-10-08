@@ -57,8 +57,7 @@ FastAutoGenerator.create(DATA_SOURCE_CONFIG)
     // 包配置
     .packageConfig((scanner, builder) -> builder.parent(scanner.apply("请输入包名？")))
     // 策略配置
-    .strategyConfig(builder -> builder.addInclude(Arrays.asList(scanner
-                        .apply("请输入表名，多个英文逗号分隔？").split(",")))
+    .strategyConfig((scanner, builder) -> builder.addInclude(getTables(scanner.apply("请输入表名，多个英文逗号分隔？所有输入 all")))
                         .controllerBuilder().enableRestStyle().enableHyphenStyle()
                         .entityBuilder().enableLombok().addTableFills(
                                 new Column("create_time", FieldFill.INSERT)
@@ -69,6 +68,12 @@ FastAutoGenerator.create(DATA_SOURCE_CONFIG)
        .templateEngine(new FreemarkerTemplateEngine())
      */
     .execute();
+
+
+// 处理 all 情况
+protected static List<String> getTables(String tables) {
+    return "all".equals(tables) ? Collections.emptyList() : Arrays.asList(tables.split(","));
+}
 ```
 
 * `更多例子可查看test包下面的samples`
