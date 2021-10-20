@@ -7,7 +7,7 @@ mybatis-mate 为 mp 企业级模块，旨在更敏捷优雅处理数据。
 
 - mybatis-mate 示例 ：[传送门](https://gitee.com/baomidou/mybatis-mate-examples)
 
-- 微信公众号发文介绍 mybatis-mate 的联系作者可以免费获得永久授权证书一份
+- 微信公众号发文介绍 mybatis-mate 的软文，联系作者可以免费获得永久授权证书一份
 
 :::
 
