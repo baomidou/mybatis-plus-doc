@@ -281,6 +281,10 @@ public interface UserMapper extends BaseMapper<User> {
 ShardingKey.change("mysqlnode2");
 ```
 
+## 动态数据源加载卸载
+
+👉 [mybatis-mate-sharding-dynamic](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding-dynamic)
+
 
 ## 多数据源事务（ jta atomikos）
 
