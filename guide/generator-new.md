@@ -165,7 +165,7 @@ new PackageConfig.Builder()
     .mapperXml("mapper.xml")
     .controller("controller")
     .other("other")
-    .pathInfo(Collections.singletonMap(OutputFile.mapperXml, "D://")
+    .pathInfo(Collections.singletonMap(OutputFile.mapperXml, "D://"))
     .build();
 ```
 
