@@ -32,6 +32,7 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 - [kisso](https://github.com/baomidou/kisso) - 基于 Cookie 的单点登录组件。
 - [Lock4j](https://gitee.com/baomidou/lock4j) - 基于 SpringBoot 同时支持 RedisTemplate、Redission、Zookeeper 的分布式锁组件。
 - [Kaptcha](https://gitee.com/baomidou/kaptcha-spring-boot-starter) - 基于 SpringBoot 和 Google Kaptcha 的简单验证码组件，简单验证码就选它。
+- [Aizuda 爱组搭](https://gitee.com/aizuda) - 低代码开发平台组件库。
 
 ### 致谢
 
