@@ -78,6 +78,10 @@ module.exports = {
                 text: "kaptcha 验证码启动器",
                 link: "https://gitee.com/baomidou/kaptcha-spring-boot-starter",
               },
+              {
+                text: "Aizuda 爱组搭 ~ 低代码开发平台组件库",
+                link: "https://gitee.com/aizuda",
+              },
             ],
           },
           {
