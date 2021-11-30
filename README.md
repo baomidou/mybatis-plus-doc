@@ -39,7 +39,7 @@ footer: Apache License 2.0 | © 2016-2018 baomidou
 - MyBatis-Plus 已连续 4 年（[2017](https://www.oschina.net/project/top_cn_2017)、[2018](https://www.oschina.net/project/top_cn_2018)、[2019](https://www.oschina.net/project/top_cn_2019)、[2020](https://www.oschina.net/project/top_cn_2020)）获得“OSC 年度最受欢迎中国开源软件”殊荣，感谢各位支持者的一路同行，我们会秉承 【为简化开发而生】 这一理念砥砺前行！
 
 <p align="center">
-<a href="http://baomidou.com" target="_blank" style="font-weight:bold">BaoMiDou</a> & <a href="https://aizuda.com" target="_blank" style="font-weight:bold">AiZuDa</a> & <a href="https://www.jetbrains.com" target="_blank" style="font-weight:bold">Idea</a>
+<a href="http://baomidou.com" target="_blank" style="font-weight:bold">BaoMiDou</a> & <a href="http://aizuda.com" target="_blank" style="font-weight:bold">AiZuDa</a> & <a href="https://www.jetbrains.com" target="_blank" style="font-weight:bold">Idea</a>
 <br/>
 <a href="http://beian.miit.gov.cn/" target=_blank>渝ICP备2021000141号</a>
 </p>
