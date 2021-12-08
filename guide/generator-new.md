@@ -258,7 +258,7 @@ new StrategyConfig.Builder()
 | enableChainModel                   | 开启链式模型                      | 默认值:false                                           |
 | enableLombok                       | 开启 lombok 模型                  | 默认值:false                                           |
 | enableRemoveIsPrefix               | 开启 Boolean 类型字段移除 is 前缀 | 默认值:false                                           |
-| enableTableFieldAnnotationEnable   | 开启生成实体时生成字段注解        | 默认值:false                                           |
+| enableTableFieldAnnotation         | 开启生成实体时生成字段注解        | 默认值:false                                           |
 | enableActiveRecord                 | 开启 ActiveRecord 模型            | 默认值:false                                           |
 | versionColumnName(String)          | 乐观锁字段名(数据库)              |                                                        |
 | versionPropertyName(String)        | 乐观锁属性名(实体)                |                                                        |
