@@ -40,7 +40,7 @@ mybatis-mate 为 mp 企业级模块，旨在更敏捷优雅处理数据。
 
 ## 数据范围（数据权限）
 
-👉 [mybatis-mate-dict](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-dict)
+👉 [mybatis-mate-datascope](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-datascope)
 
 - 注解 @DataScope
 
