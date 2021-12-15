@@ -59,7 +59,7 @@ module.exports = {
   windowRB: `
     <div class="wwads-cn wwads-vertical" data-id="135" style="max-width:200px;"></div>
     <script>
-        var ele = document.querySelector('.wwads-vertical').closest('.custom-html-window .custom-wrapper');
+        var ele = document.querySelector('.wwads-vertical').parent.parent;
         ele.style.maxHeight = 'unset';
         ele.firstChild.remove();
     </script>
