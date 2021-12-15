@@ -10,8 +10,8 @@ npm run build
 cd docs/.vuepress/dist
 
 # 部署到Coding
-echo 'baomidou.com' > CNAME  # 自定义域名
-echo 'google.com, pub-4147143076931995, DIRECT, f08c47fec0942fa0' > ads.txt # 谷歌广告相关文件
+echo "baomidou.com" > CNAME
+echo "google.com, pub-4147143076931995, DIRECT, f08c47fec0942fa0" > ads.txt
 
 msg="来自Github Actions的自动部署，更新于$(date "+%Y-%m-%d %H:%M:%S")"
 codingUrl=https://${CODING_USER}:${CODING_TOKEN}@e.coding.net/yangyang0507/mybatis-plus-doc.git

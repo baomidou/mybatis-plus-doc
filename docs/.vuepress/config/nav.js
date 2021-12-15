@@ -12,7 +12,7 @@ module.exports = [
   },
   {
     text: "配置",
-    link: "/pages/a20ce8/",
+    link: "/pages/56bac0/",
     items: [
       { text: "使用配置", link: "/pages/56bac0/" },
       { text: "代码生成器配置新", link: "/pages/981406/" },
