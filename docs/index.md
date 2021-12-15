@@ -65,7 +65,7 @@ postList: none
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus</artifactId>
-    <version>mybatis-plus-latest-version</version>
+    <version>latest-version</version>
 </dependency>
 ```
 
@@ -75,7 +75,7 @@ postList: none
 - [Mybatis-Mate](https://gitee.com/baomidou/mybatis-mate-examples) - 为 MyBatis-Plus 企业级模块，支持分库分表、数据审计、字段加密、数据绑定、数据权限、表结构自动生成 SQL 维护等高级特性。
 - [Dynamic-Datasource](https://dynamic-datasource.com) - 基于 SpringBoot 的多数据源组件，功能强悍，支持 Seata 分布式事务。
 - [Shuan](https://gitee.com/baomidou/shaun) - 基于 Pac4J-JWT 的 WEB 安全组件, 快速集成。
-- [kisso](https://github.com/baomidou/kisso) - 基于 Cookie 的单点登录组件。
+- [Kisso](https://github.com/baomidou/kisso) - 基于 Cookie 的单点登录组件。
 - [Lock4j](https://gitee.com/baomidou/lock4j) - 基于 SpringBoot 同时支持 RedisTemplate、Redission、Zookeeper 的分布式锁组件。
 - [Kaptcha](https://gitee.com/baomidou/kaptcha-spring-boot-starter) - 基于 SpringBoot 和 Google Kaptcha 的简单验证码组件，简单验证码就选它。
 - [Aizuda 爱组搭](https://gitee.com/aizuda) - 低代码开发平台组件库。
@@ -98,3 +98,18 @@ MyBatis-Plus 已连续 4 年（[2017](https://www.oschina.net/project/top_cn_201
 ### 教程、案例、使用者名单
 
 请移步至 [Awesome-MyBatis-Plus](https://github.com/baomidou/awesome-mybatis-plus) 查看。
+
+<script>
+export default {
+  mounted () {
+    var xmlHttp = new XMLHttpRequest()
+    xmlHttp.open("GET", "https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.json", false)
+    xmlHttp.send(null)
+    var mpVersion = JSON.parse(xmlHttp.responseText).value.replace('v', '')
+    var codeNodeList = document.querySelectorAll('code')
+    for (var i = 0; i < codeNodeList.length; i++) {
+        codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('latest-version', mpVersion)
+    }
+  }
+}
+</script>
