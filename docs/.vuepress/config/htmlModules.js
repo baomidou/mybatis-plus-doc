@@ -61,7 +61,6 @@ module.exports = {
     <script>
         var ele = document.querySelector('.wwads-vertical').parentElement.parentElement;
         ele.style.maxHeight = 'unset';
-        ele.firstChild.remove();
     </script>
   `
 };
