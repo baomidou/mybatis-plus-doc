@@ -54,5 +54,5 @@
 // 万维
 module.exports = {
   pageT: `<div class="wwads-cn wwads-horizontal" data-id="135" style="width:100%;max-height:90px;"></div>`,
-  windowRB: `<div class="wwads-cn wwads-vertical" data-id="135" style="max-width:200px"></div>`
+  windowRB: `<div class="wwads-cn wwads-vertical" data-id="135" style="max-width:200px;max-height:unset"></div>`
 };
