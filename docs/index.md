@@ -5,7 +5,7 @@ heroText: MyBatis-Plus
 tagline: 🚀为简化开发而生
 actionText: 快速开始 →
 actionLink: /pages/24112f/
-bannerBg: none # auto => 网格纹背景(有bodyBgImg时无背景)，默认 | none => 无 | '大图地址' | background: 自定义背景样式       提示：如发现文本颜色不适应你的背景时可以到palette.styl修改$bannerTextColor变量
+bannerBg: none
 
 features: # 可选的
   - title: 润物无声
@@ -17,6 +17,7 @@ features: # 可选的
 
 postList: none
 ---
+
 <p align="center">
   <a class="become-sponsor" href="/pages/4fedc2">支持这个项目</a>
 </p>
@@ -70,14 +71,14 @@ postList: none
 
 ### 苞米豆生态圈
 
-* [MybatisX](https://github.com/baomidou/MybatisX) - 一款全免费且强大的 IDEA 插件，支持跳转，自动补全生成 SQL，代码生成。
-* [Mybatis-Mate](https://gitee.com/baomidou/mybatis-mate-examples) -  为 MyBatis-Plus 企业级模块，支持分库分表、数据审计、字段加密、数据绑定、数据权限、表结构自动生成 SQL 维护等高级特性。
-* [Dynamic-Datasource](https://dynamic-datasource.com) - 基于 SpringBoot 的多数据源组件，功能强悍，支持 Seata 分布式事务。
-* [Shuan](https://gitee.com/baomidou/shaun) - 基于 Pac4J-JWT 的 WEB 安全组件, 快速集成。
-* [kisso](https://github.com/baomidou/kisso) - 基于 Cookie 的单点登录组件。
-* [Lock4j](https://gitee.com/baomidou/lock4j) - 基于 SpringBoot 同时支持 RedisTemplate、Redission、Zookeeper 的分布式锁组件。
-* [Kaptcha](https://gitee.com/baomidou/kaptcha-spring-boot-starter) - 基于 SpringBoot 和 Google Kaptcha 的简单验证码组件，简单验证码就选它。
-* [Aizuda 爱组搭](https://gitee.com/aizuda) - 低代码开发平台组件库。
+- [MybatisX](https://github.com/baomidou/MybatisX) - 一款全免费且强大的 IDEA 插件，支持跳转，自动补全生成 SQL，代码生成。
+- [Mybatis-Mate](https://gitee.com/baomidou/mybatis-mate-examples) - 为 MyBatis-Plus 企业级模块，支持分库分表、数据审计、字段加密、数据绑定、数据权限、表结构自动生成 SQL 维护等高级特性。
+- [Dynamic-Datasource](https://dynamic-datasource.com) - 基于 SpringBoot 的多数据源组件，功能强悍，支持 Seata 分布式事务。
+- [Shuan](https://gitee.com/baomidou/shaun) - 基于 Pac4J-JWT 的 WEB 安全组件, 快速集成。
+- [kisso](https://github.com/baomidou/kisso) - 基于 Cookie 的单点登录组件。
+- [Lock4j](https://gitee.com/baomidou/lock4j) - 基于 SpringBoot 同时支持 RedisTemplate、Redission、Zookeeper 的分布式锁组件。
+- [Kaptcha](https://gitee.com/baomidou/kaptcha-spring-boot-starter) - 基于 SpringBoot 和 Google Kaptcha 的简单验证码组件，简单验证码就选它。
+- [Aizuda 爱组搭](https://gitee.com/aizuda) - 低代码开发平台组件库。
 
 ### 致谢
 
