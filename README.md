@@ -1,6 +1,16 @@
 # MyBatis-Plus 官方文档库
 
 <p align="center">
+  <a href="https://github.com/baomidou/mybatis-plus">
+   <img alt="Mybatis-Plus-Logo" src="https://raw.githubusercontent.com/baomidou/logo/master/mybatis-plus-logo-new-mini.png">
+  </a>
+</p>
+
+<p align="center">
+  Born To Simplify Development
+</p>
+
+<p align="center">
   <a href="https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.baomidou%22%20AND%20a%3A%22mybatis-plus%22">
     <img alt="maven" class="no-zoom" src="https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.svg?style=for-the-badge">
   </a>
@@ -30,7 +40,7 @@
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus</artifactId>
-    <version>mybatis-plus-latest-version</version>
+    <version>latest-version</version>
 </dependency>
 ```
 
@@ -40,7 +50,7 @@
 - [Mybatis-Mate](https://gitee.com/baomidou/mybatis-mate-examples) - 为 MyBatis-Plus 企业级模块，支持分库分表、数据审计、字段加密、数据绑定、数据权限、表结构自动生成 SQL 维护等高级特性。
 - [Dynamic-Datasource](https://dynamic-datasource.com) - 基于 SpringBoot 的多数据源组件，功能强悍，支持 Seata 分布式事务。
 - [Shuan](https://gitee.com/baomidou/shaun) - 基于 Pac4J-JWT 的 WEB 安全组件, 快速集成。
-- [kisso](https://github.com/baomidou/kisso) - 基于 Cookie 的单点登录组件。
+- [Kisso](https://github.com/baomidou/kisso) - 基于 Cookie 的单点登录组件。
 - [Lock4j](https://gitee.com/baomidou/lock4j) - 基于 SpringBoot 同时支持 RedisTemplate、Redission、Zookeeper 的分布式锁组件。
 - [Kaptcha](https://gitee.com/baomidou/kaptcha-spring-boot-starter) - 基于 SpringBoot 和 Google Kaptcha 的简单验证码组件，简单验证码就选它。
 - [Aizuda 爱组搭](https://gitee.com/aizuda) - 低代码开发平台组件库。
