@@ -53,6 +53,15 @@
 
 // 万维
 module.exports = {
-  pageB: `<div class="wwads-cn wwads-horizontal" data-id="135" style="width:100%;max-height:90px;"></div>`,
-  windowRB: `<div class="wwads-cn wwads-vertical" data-id="135" style="max-width:200px;max-height:unset;"></div>`
+  pageB: `
+    <div class="wwads-cn wwads-horizontal" data-id="135" style="width:100%;max-height:90px;"></div>
+  `,
+  windowRB: `
+    <div class="wwads-cn wwads-vertical" data-id="135" style="max-width:200px;"></div>
+    <script>
+        var ele = document.querySelector('.wwads-vertical').closest('.custom-html-window .custom-wrapper');
+        ele.style.maxHeight = 'unset';
+        ele.firstChild.remove();
+    </script>
+  `
 };

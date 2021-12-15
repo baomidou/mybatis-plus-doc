@@ -53,12 +53,18 @@ module.exports = {
     createYear: 2016,
     copyrightInfo: [
       '<a href="http://baomidou.com" target="_blank" style="font-weight:bold">Team Baomidou</a>',
-      " | ",
+      ' | ',
       'Sponsored by <a href="https://www.jetbrains.com" target="_blank" style="font-weight:bold">JetBrains</a>',
-      " | ",
+      ' | ',
       '<a href="http://beian.miit.gov.cn/" target=_blank>渝ICP备2021000141号</a>',
-      '<p>友情链接：<a href="http://aizuda.com" target="_blank" style="font-weight:bold">AiZuDa</a> | <a href="https://dyang.top/" target="_blank" style="font-weight:bold">D.Yang</a></p>'
-    ].join("")
+      '<p>友情链接：',
+      '<a href="http://aizuda.com" target="_blank" style="font-weight:bold">AiZuDa</a>',
+      ' | ',
+      '<a href="https://dyang.top/" target="_blank" style="font-weight:bold">D.Yang</a>',
+      ' | ',
+      '<a href="https://blog.nancheung.com/" target="_blank" style="font-weight:bold">NanCheung</a>',
+      '</p>'
+    ].join('')
   },
   htmlModules
 };
