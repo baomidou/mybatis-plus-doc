@@ -1,1 +1,0 @@
-# Performance Analysis Plugin

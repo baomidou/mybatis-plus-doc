@@ -13,7 +13,15 @@ gem
 .DS_Store
 Thumbs.db
 
-# Node files
-node_modules/
-docs/
-old-docs/
+# NPM
+package-lock.json
+node_modules
+
+# YARN
+yarn.lock
+
+# VuePress
+docs/.vuepress/dist
+
+# Baidu Push
+urls.txt
