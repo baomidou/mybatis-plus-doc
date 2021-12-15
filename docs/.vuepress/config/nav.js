@@ -21,5 +21,6 @@ module.exports = [
   },
   { text: "生态", link: "/pages/24ae02/" },
   { text: "问答", link: "/pages/f84a74/" },
-  { text: "💖支持", link: "/pages/4fedc2/" }
+  { text: "💖支持", link: "/pages/4fedc2/" },
+  { text: "🚀低代码平台", link: "/pages/3fedc2/" }
 ];
