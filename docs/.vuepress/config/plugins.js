@@ -71,6 +71,7 @@ module.exports = [
       }
     }
   ],
+  // 谷歌统计
   [
     "@vuepress/google-analytics",
     {

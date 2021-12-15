@@ -10,9 +10,11 @@ module.exports = {
   searchMaxSuggestions: 10,
   lastUpdated: "上次更新",
 
+  docsRepo: "baomidou/mybatis-plus-doc",
   docsDir: "docs",
+  docsBranch: "master",
   editLinks: true,
-  editLinkText: "编辑",
+  editLinkText: "帮助我们改善此页面！",
 
   // Vdoing Theme Config
   sidebar: { mode: "structuring", collapsable: false },
@@ -49,6 +51,7 @@ module.exports = {
       }
     ]
   },
+
   footer: {
     createYear: 2016,
     copyrightInfo: [
@@ -66,5 +69,6 @@ module.exports = {
       '</p>'
     ].join('')
   },
+
   htmlModules
 };
