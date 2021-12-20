@@ -21,8 +21,5 @@
     "vuepress-plugin-zooming": "^1.1.7",
     "vuepress-theme-vdoing": "^1.8.1",
     "yamljs": "^0.3.0"
-  },
-  "dependencies": {
-    "vue-toasted": "^1.1.28"
   }
 }

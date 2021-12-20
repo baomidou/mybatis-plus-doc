@@ -1,5 +1,4 @@
 // import vue from 'vue/dist/vue.esm.browser'
-import Toasted from 'vue-toasted';
 
 export default ({
   Vue, // VuePress 正在使用的 Vue 构造函数
@@ -8,5 +7,4 @@ export default ({
   siteData // 站点元数据
 }) => {
   // window.Vue = vue // 使页面中可以使用Vue构造函数 （使页面中的vue demo生效）
-  Vue.use(Toasted)
 }
