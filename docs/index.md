@@ -19,9 +19,6 @@ postList: none
 ---
 
 <p align="center">
-  <a class="become-sponsor" href="https://www.oschina.net/project/top_cn_2021?id=36" target="_blank">MyBatis-Plus 正在参与“2021年度 OSC 中国开源项目”评选，请为我们投上宝贵的一票，谢谢！</a>
-  <br/>
-  <br/>
   <a class="become-sponsor" href="/pages/4fedc2">支持这个项目</a>
 </p>
 
@@ -113,6 +110,17 @@ export default {
     for (var i = 0; i < codeNodeList.length; i++) {
         codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('latest-version', mpVersion)
     }
+    let toast = this.$toasted.show("MyBatis-Plus 正在参与“2021年度 OSC 中国开源项目”评选，请为我们投上宝贵的一票，谢谢！", {
+      theme: "outline",
+      position: "top-right",
+      duration : 5000,
+      action : {
+          text : '点此去投票',
+          onClick : (e, toastObject) => {
+              window.open("https://www.oschina.net/project/top_cn_2021?id=36", "_target")
+          }
+      }
+    });
   }
 }
 </script>

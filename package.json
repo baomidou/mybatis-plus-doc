@@ -22,5 +22,7 @@
     "vuepress-theme-vdoing": "^1.8.1",
     "yamljs": "^0.3.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "vue-toasted": "^1.1.28"
+  }
 }
