@@ -36,23 +36,23 @@ postList: none
 <br/>
 
 <p align="center">
-  <a href="https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.baomidou%22%20AND%20a%3A%22mybatis-plus%22">
+  <a href="https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.baomidou%22%20AND%20a%3A%22mybatis-plus%22" target="_blank">
     <img alt="maven" class="no-zoom" src="https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.svg?style=for-the-badge">
   </a>
 
-  <a href="https://github.com/baomidou/mybatis-plus">
+  <a href="https://github.com/baomidou/mybatis-plus" target="_blank"
     <img alt="star" class="no-zoom" src="https://img.shields.io/github/stars/baomidou/mybatis-plus?style=for-the-badge">
   </a>
 
-  <a href="https://github.com/baomidou/mybatis-plus">
+  <a href="https://github.com/baomidou/mybatis-plus" target="_blank">
     <img alt="fork" class="no-zoom" src="https://img.shields.io/github/forks/baomidou/mybatis-plus?style=for-the-badge">
   </a>
 
-  <a href="https://github.com/baomidou/mybatis-plus/commits/3.0">
+  <a href="https://github.com/baomidou/mybatis-plus/commits/3.0" target="_blank">
     <img alt="commit" class="no-zoom" src="https://img.shields.io/github/commit-activity/y/baomidou/mybatis-plus?style=for-the-badge">
   </a>
 
-  <a href="https://www.apache.org/licenses/LICENSE-2.0">
+  <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">
     <img alt="code style" class="no-zoom" src="https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=for-the-badge">
   </a>
 </p>
@@ -110,17 +110,6 @@ export default {
     for (var i = 0; i < codeNodeList.length; i++) {
         codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('latest-version', mpVersion)
     }
-    let toast = this.$toasted.show("MyBatis-Plus 正在参与“2021年度 OSC 中国开源项目”评选，请为我们投上宝贵的一票，谢谢！", {
-      theme: "outline",
-      position: "top-right",
-      duration : 5000,
-      action : {
-          text : '点此去投票',
-          onClick : (e, toastObject) => {
-              window.open("https://www.oschina.net/project/top_cn_2021?id=36", "_target")
-          }
-      }
-    });
   }
 }
 </script>
