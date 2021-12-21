@@ -40,7 +40,7 @@ postList: none
     <img alt="maven" class="no-zoom" src="https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.svg?style=for-the-badge">
   </a>
 
-  <a href="https://github.com/baomidou/mybatis-plus" target="_blank"
+  <a href="https://github.com/baomidou/mybatis-plus" target="_blank">
     <img alt="star" class="no-zoom" src="https://img.shields.io/github/stars/baomidou/mybatis-plus?style=for-the-badge">
   </a>
 
