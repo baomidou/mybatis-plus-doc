@@ -59,7 +59,7 @@ module.exports = [
 
     //check if wwads' fire function was blocked after document is ready with 3s timeout (waiting the ad loading)
     docReady(function () {
-      vote();
+      // vote();
 
       setTimeout(function () {
         if( window._AdBlockInit === undefined ){
