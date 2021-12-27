@@ -18,7 +18,7 @@ package-lock.json
 node_modules
 
 # YARN
-yarn.lock
+# yarn.lock
 
 # VuePress
 docs/.vuepress/dist
