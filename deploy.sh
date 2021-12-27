@@ -4,7 +4,7 @@
 set -e
 
 # 生成文档
-npm run build
+yarn run build
 
 # 进入生成的文件夹
 cd docs/.vuepress/dist

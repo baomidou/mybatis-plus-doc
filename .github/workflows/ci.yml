@@ -24,4 +24,4 @@ jobs:
         env:
           CODING_USER: ${{ secrets.CODING_USER }}
           CODING_TOKEN: ${{ secrets.CODING_TOKEN }}
-        run: npm install && npm run deploy
+        run: yarn --frozen-lockfile && yarn run deploy
