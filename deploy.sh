@@ -14,7 +14,7 @@ git clone $codingUrl $dir
 
 cd $dir
 rm -rf assets/ blog/ img/ pages/
-cd ..
+cd ../../..
 
 # 生成文档
 yarn run build
