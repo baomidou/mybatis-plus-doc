@@ -10,7 +10,8 @@ yarn run build
 cd docs/.vuepress/dist
 
 # 部署到Coding
-echo "baomidou.com\nwww.baomidou.com" > CNAME
+echo "baomidou.com" > CNAME
+echo "www.baomidou.com" >> CNAME
 echo "google.com, pub-4147143076931995, DIRECT, f08c47fec0942fa0" > ads.txt
 
 msg="来自Github Actions的自动部署，更新于$(TZ=UTC-8 date "+%Y-%m-%d %H:%M:%S")"
