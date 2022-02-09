@@ -6,8 +6,7 @@
     "build": "vuepress build docs",
     "deploy": "bash deploy.sh",
     "updateTheme": "npm uninstall vuepress-theme-vdoing && rm -rf node_modules && npm i && npm i vuepress-theme-vdoing -D",
-    "editFm": "node utils/editFrontmatter.js",
-    "clear": "bash clear.sh"
+    "editFm": "node utils/editFrontmatter.js"
   },
   "devDependencies": {
     "@vuepress/plugin-google-analytics": "^1.8.2",
