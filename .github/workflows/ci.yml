@@ -33,5 +33,3 @@ jobs:
           secret_key: ${{ secrets.TENCENT_CLOUD_SECRET_KEY }}
           bucket: ${{ secrets.TENCENT_CLOUD_BUCKET }}
           region: ap-beijing
-      - name: Clear project
-        run: yarn run clear
