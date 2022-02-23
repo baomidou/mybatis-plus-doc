@@ -59,6 +59,12 @@ postList: none
 
 <br/>
 
+### 🎖特别用户
+
+<a href="https://www.jnpfsoft.com/index.html?from=MyBatis-Plus" target="_blank">
+  <img class="no-zoom" height="80" src="/img/sponsors-sprk2.svg">
+</a>
+
 ### 当前最新版本
 
 ```xml

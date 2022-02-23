@@ -53,6 +53,11 @@
 
 // 万维
 module.exports = {
+  sidebarT: `
+    <a href="https://www.jnpfsoft.com/index.html?from=MyBatis-Plus" target="_blank">
+      <img class="no-zoom" height="80" src="/img/sponsors-sprk1.svg">
+    </a>
+  `,
   pageB: `
     <div class="wwads-cn wwads-horizontal" data-id="135" style="width:100%;max-height:90px;"></div>
   `,
