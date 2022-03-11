@@ -65,7 +65,9 @@ module.exports = {
       ' | ',
       '<a href="https://dyang.top/" target="_blank" style="font-weight:bold">D.Yang</a>',
       ' | ',
-      '<a href="https://blog.nancheung.com/" target="_blank" style="font-weight:bold">NanCheung</a>',
+      '<a href="https://blog.nancheung.com/" target="_blank" style="font-weight:bold">NanCheung</a>', 
+      ' | ',
+      '<a href="http://apidocs.cn/blog/" target="_blank" style="font-weight:bold">apidocsBlog</a>',
       '</p>'
     ].join('')
   },
