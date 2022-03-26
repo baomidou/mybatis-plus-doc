@@ -61,7 +61,7 @@ module.exports = {
       ' | ',
       '<a href="http://beian.miit.gov.cn/" target=_blank>渝ICP备2021000141号</a>',
       '<p>友情链接：',
-      '<a href="http://aizuda.com" target="_blank" style="font-weight:bold">AiZuDa</a>',
+      '<a href="http://aizuda.com?from=MybatisPlus" target="_blank" style="font-weight:bold">AiZuDa</a>',
       ' | ',
       '<a href="https://dyang.top/" target="_blank" style="font-weight:bold">D.Yang</a>',
       ' | ',

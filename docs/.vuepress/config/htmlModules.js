@@ -57,7 +57,7 @@ module.exports = {
     <a href="https://www.jnpfsoft.com/index.html?from=MyBatis-Plus" target="_blank">
       <img class="no-zoom" height="80" src="/img/sponsors-sprk1.svg">
     </a>
-    <a href="http://aizuda.com" target="_blank">
+    <a href="http://aizuda.com?from=MybatisPlus" target="_blank">
       <img class="no-zoom" height="80" src="/img/aizuda.png">
     </a>
   `,
