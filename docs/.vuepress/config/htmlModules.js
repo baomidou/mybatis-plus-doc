@@ -54,6 +54,9 @@
 // 万维
 module.exports = {
   sidebarT: `
+    <a href="https://www.diboot.com/?from=mp" target="_blank">
+      <img class="no-zoom" height="80" src="https://www.diboot.com/diboot_slogon.png">
+    </a>
     <a href="https://www.jnpfsoft.com/index.html?from=MyBatis-Plus" target="_blank">
       <img class="no-zoom" height="80" src="/img/sponsors-sprk1.svg">
     </a>
