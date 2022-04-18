@@ -18,18 +18,6 @@
   <a href="https://github.com/baomidou/mybatis-plus">
     <img alt="star" class="no-zoom" src="https://img.shields.io/github/stars/baomidou/mybatis-plus?style=for-the-badge">
   </a>
-
-  <a href="https://github.com/baomidou/mybatis-plus">
-    <img alt="fork" class="no-zoom" src="https://img.shields.io/github/forks/baomidou/mybatis-plus?style=for-the-badge">
-  </a>
-
-  <a href="https://github.com/baomidou/mybatis-plus/commits/3.0">
-    <img alt="commit" class="no-zoom" src="https://img.shields.io/github/commit-activity/y/baomidou/mybatis-plus?style=for-the-badge">
-  </a>
-
-  <a href="https://www.apache.org/licenses/LICENSE-2.0">
-    <img alt="code style" class="no-zoom" src="https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=for-the-badge">
-  </a>
 </p>
 
 <br/>
