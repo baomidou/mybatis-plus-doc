@@ -34,31 +34,6 @@ postList: none
 </style>
 
 <br/>
-
-<p align="center">
-  <a href="https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.baomidou%22%20AND%20a%3A%22mybatis-plus%22" target="_blank">
-    <img alt="maven" class="no-zoom" src="https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.svg?style=for-the-badge">
-  </a>
-
-  <a href="https://github.com/baomidou/mybatis-plus" target="_blank">
-    <img alt="star" class="no-zoom" src="https://img.shields.io/github/stars/baomidou/mybatis-plus?style=for-the-badge">
-  </a>
-
-  <a href="https://github.com/baomidou/mybatis-plus" target="_blank">
-    <img alt="fork" class="no-zoom" src="https://img.shields.io/github/forks/baomidou/mybatis-plus?style=for-the-badge">
-  </a>
-
-  <a href="https://github.com/baomidou/mybatis-plus/commits/3.0" target="_blank">
-    <img alt="commit" class="no-zoom" src="https://img.shields.io/github/commit-activity/y/baomidou/mybatis-plus?style=for-the-badge">
-  </a>
-
-  <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">
-    <img alt="code style" class="no-zoom" src="https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=for-the-badge">
-  </a>
-</p>
-
-<br/>
-
 ### 🎖特别用户
 
 <a href="https://www.diboot.com/?from=mp" target="_blank">
