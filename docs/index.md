@@ -54,7 +54,7 @@ postList: none
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus</artifactId>
-    <version>latest-version</version>
+    <version>3.5.1</version>
 </dependency>
 ```
 
@@ -87,18 +87,3 @@ MyBatis-Plus 已连续 5 年（[2017](https://www.oschina.net/project/top_cn_201
 ### 教程、案例、使用者名单
 
 请移步至 [Awesome-MyBatis-Plus](https://github.com/baomidou/awesome-mybatis-plus) 查看。
-
-<script>
-export default {
-  mounted () {
-    var xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", "https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.json", false)
-    xmlHttp.send(null)
-    var mpVersion = JSON.parse(xmlHttp.responseText).value.replace('v', '')
-    var codeNodeList = document.querySelectorAll('code')
-    for (var i = 0; i < codeNodeList.length; i++) {
-        codeNodeList[i].innerHTML = codeNodeList[i].innerHTML.replace('latest-version', mpVersion)
-    }
-  }
-}
-</script>
