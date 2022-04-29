@@ -41,10 +41,6 @@ postList: none
   <img class="no-zoom" height="80" src="https://www.diboot.com/diboot_slogon.png">
 </a>
 
-<a href="https://www.jnpfsoft.com/index.html?from=MyBatis-Plus" target="_blank">
-  <img class="no-zoom" height="80" src="/img/sponsors-sprk2.svg">
-</a>
-
 <a href="http://aizuda.com?from=MybatisPlus" target="_blank">
   <img class="no-zoom" height="80" src="/img/aizuda.png">
 </a>
