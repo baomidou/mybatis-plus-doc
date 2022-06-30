@@ -67,7 +67,7 @@ postList: none
 - [Aizuda 爱组搭](https://gitee.com/aizuda) - 低代码开发平台组件库。
 
 
-### 有情连接
+### 友情链接
 - [easy-es](https://easy-es.cn/) - ElasticSearch搜索引擎ORM框架
 
 
