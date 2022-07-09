@@ -41,7 +41,11 @@ postList: none
   <img class="no-zoom" height="80" src="https://www.diboot.com/diboot_slogon.png">
 </a>
 
-<a href="http://aizuda.com?from=MybatisPlus" target="_blank">
+<a href="https://www.developers.pub/?from=mp" target="_blank">
+  <img class="no-zoom" height="80" src="https://static.developers.pub/6bc6d868e961422caff00980fec4d450.png">
+</a>
+
+<a href="http://aizuda.com?from=mp" target="_blank">
   <img class="no-zoom" height="80" src="/img/aizuda.png">
 </a>
 
