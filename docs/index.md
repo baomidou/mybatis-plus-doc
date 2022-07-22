@@ -42,7 +42,7 @@ postList: none
 </a>
 
 <a href="https://www.developers.pub/?from=mp" target="_blank">
-  <img class="no-zoom" height="80" src="https://static.developers.pub/6bc6d868e961422caff00980fec4d450.png">
+  <img class="no-zoom" height="80" src="https://static.developers.pub/86feb94f2aaf474882697919020749c1.png">
 </a>
 
 <a href="http://aizuda.com?from=mp" target="_blank">
@@ -70,11 +70,6 @@ postList: none
 - [Kaptcha](https://gitee.com/baomidou/kaptcha-spring-boot-starter) - 基于 SpringBoot 和 Google Kaptcha 的简单验证码组件，简单验证码就选它。
 - [Aizuda 爱组搭](https://gitee.com/aizuda) - 低代码开发平台组件库。
 
-
-### 友情链接
-- [easy-es](https://easy-es.cn/) - ElasticSearch搜索引擎ORM框架
-
-
 ### 致谢
 
 MyBatis-Plus 已连续 5 年（[2017](https://www.oschina.net/project/top_cn_2017)、[2018](https://www.oschina.net/project/top_cn_2018)、[2019](https://www.oschina.net/project/top_cn_2019)、[2020](https://www.oschina.net/project/top_cn_2020)、[2021](https://www.oschina.net/project/top_cn_2021)）获得“OSC 年度最受欢迎中国开源软件”殊荣，感谢各位支持者的一路同行，我们会秉承 【为简化开发而生】 这一理念砥砺前行！
@@ -93,3 +88,7 @@ MyBatis-Plus 已连续 5 年（[2017](https://www.oschina.net/project/top_cn_201
 ### 教程、案例、使用者名单
 
 请移步至 [Awesome-MyBatis-Plus](https://github.com/baomidou/awesome-mybatis-plus) 查看。
+
+### 友情链接
+- [easy-es](https://easy-es.cn/)
+- [layui-vue](http://www.layui-vue.com/)
