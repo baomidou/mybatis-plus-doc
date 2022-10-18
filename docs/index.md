@@ -41,6 +41,10 @@ postList: none
   <img class="no-zoom" height="80" width="224" src="https://www.diboot.com/diboot_slogon.png">
 </a>
 
+<a href="https://www.eoapi.io/?utm_source=sponsor&utm_campaign=s-mbp" target="_blank">
+  <img class="no-zoom" height="80" width="224" src="/img/eoapi.gif">
+</a>
+
 <a href="https://www.developers.pub/?from=mp" target="_blank">
   <img class="no-zoom" height="80" width="224" src="https://static.developers.pub/86feb94f2aaf474882697919020749c1.png">
 </a>
