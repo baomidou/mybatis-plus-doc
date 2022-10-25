@@ -71,7 +71,7 @@ module.exports = {
     <div class="wwads-cn wwads-horizontal" data-id="135" style="width:100%;max-height:90px;"></div>
   `,
   windowRB: `
-    <div class="wwads-cn wwads-vertical wwads-sticky" data-id="135" style="max-width:200px;"></div>
+    <div class="wwads-cn wwads-vertical wwads-sticky" data-id="135" style="max-width:200px;margin-bottom:150px"></div>
     <script>
         var ele = document.querySelector('.wwads-vertical').parentElement.parentElement;
         ele.style.maxHeight = 'unset';
