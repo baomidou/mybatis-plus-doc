@@ -55,7 +55,7 @@
 module.exports = {
   sidebarT: `
     <a href="https://www.diboot.com/?from=mp" target="_blank">
-      <img class="no-zoom" height="80" width="224" src="https://www.diboot.com/diboot_slogon.png">
+      <img class="no-zoom" height="80" width="224" src="/img/diboot.gif">
     </a>
     <a href="https://www.eoapi.io/?utm_source=sponsor&utm_campaign=s-mbp" target="_blank">
       <img class="no-zoom" height="80" width="224" src="/img/eoapi.gif">
