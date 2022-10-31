@@ -67,8 +67,16 @@ module.exports = {
       <img class="no-zoom" height="80" width="224" src="/img/aizuda.png">
     </a>
   `,
-  pageB: `
-    <div class="wwads-cn wwads-horizontal" data-id="135" style="width:100%;max-height:90px;"></div>
+  pageT: `
+    <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-4147143076931995"
+        data-ad-slot="1866407052"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
   `,
   windowRB: `
     <div class="wwads-cn wwads-vertical wwads-sticky" data-id="135" style="max-width:200px;margin-right:90px"></div>

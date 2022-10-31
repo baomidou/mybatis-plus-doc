@@ -10,15 +10,14 @@ module.exports = [
     }
   ],
   ["meta", { name: "theme-color", content: "#11a8cd" }],
-  // [
-  //   "script",
-  //   {
-  //     crossorigin: "anonymous",
-  //     async: true,
-  //     src:
-  //       "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4147143076931995"
-  //   }
-  // ],
+  [
+    "script",
+    {
+      crossorigin: "anonymous",
+      async: true,
+      src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4147143076931995"
+    }
+  ],
   ["script", { async: true, src: "https://cdn.wwads.cn/js/makemoney.js" }],
   ['script', {}, `
     // 万维广告“禁止”广告拦截
