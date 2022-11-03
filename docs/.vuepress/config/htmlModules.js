@@ -93,7 +93,7 @@ module.exports = {
   `,
   windowRB: `
     <ins class="adsbygoogle"
-        style="display:inline-block;width:160px;height:160px"
+        style="display:inline-block;width:180px;height:200px"
         data-ad-client="ca-pub-4147143076931995"
         data-ad-slot="1866407052"></ins>
     <script>
