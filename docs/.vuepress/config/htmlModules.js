@@ -69,6 +69,27 @@ module.exports = {
   `,
   pageT: `
     <div class="wwads-cn wwads-horizontal" data-id="135" style="width:100%;max-height:90px;"></div>
+    <style>
+      .page-wwads{
+        width:100%!important;
+        min-height: 0;
+        margin: 0;
+      }
+      .page-wwads .wwads-img img{
+        width:80px!important;
+      }
+      .page-wwads .wwads-poweredby{
+        width: 40px;
+        position: absolute;
+        right: 25px;
+        bottom: 3px;
+      }
+      .wwads-content .wwads-text, .page-wwads .wwads-text{
+        height: 100%;
+        padding-top: 5px;
+        display: block;
+      }
+    </style>
   `,
   windowRB: `
     <ins class="adsbygoogle"
