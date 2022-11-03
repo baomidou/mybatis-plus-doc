@@ -68,22 +68,15 @@ module.exports = {
     </a>
   `,
   pageT: `
-    <ins class="adsbygoogle"
-        style="display:block"
-        data-ad-client="ca-pub-4147143076931995"
-        data-ad-slot="1866407052"
-        data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <div class="wwads-cn wwads-horizontal" data-id="135" style="width:100%;max-height:90px;"></div>
   `,
   windowRB: `
-    <div class="wwads-cn wwads-vertical wwads-sticky" data-id="135" style="max-width:200px;margin-right:90px"></div>
+    <ins class="adsbygoogle"
+        style="display:inline-block;width:160px;height:160px"
+        data-ad-client="ca-pub-4147143076931995"
+        data-ad-slot="1866407052"></ins>
     <script>
-        var ele = document.querySelector('.wwads-vertical').parentElement.parentElement;
-        ele.style.maxHeight = 'unset';
-        ele.firstChild.hidden = true;
+        (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
   `
 };
