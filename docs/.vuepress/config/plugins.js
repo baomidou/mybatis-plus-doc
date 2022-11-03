@@ -38,9 +38,11 @@ module.exports = [
       hm: "577e65b88c06c034335c395caa4b6205"
     }
   ],
+  // 百度 SEO 优化
+  ["vuepress-plugin-baidu-autopush", {}],
   // 代码块复制
   [
-    "one-click-copy",
+    ("one-click-copy",
     {
       copySelector: [
         'div[class*="language-"] pre',
@@ -49,7 +51,7 @@ module.exports = [
       copyMessage: "复制成功",
       duration: 1000,
       showInMobile: false
-    }
+    })
   ],
   // 图片缩放
   [
@@ -77,5 +79,12 @@ module.exports = [
     {
       ga: "UA-85414008-1"
     }
-  ]
+  ],
+  // 网站地图
+  [
+    "sitemap",
+    {
+      hostname: 'https://baomidou.com',
+    },
+  ],
 ];
