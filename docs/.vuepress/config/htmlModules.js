@@ -68,7 +68,7 @@ module.exports = {
     </a>
   `,
   pageT: `
-    <div class="wwads-cn wwads-horizontal" data-id="135" style="width:100%;max-height:90px;"></div>
+    <div class="wwads-cn wwads-horizontal page-wwads" data-id="135" style="width:100%;max-height:90px;"></div>
     <style>
       .page-wwads{
         width:100%!important;
