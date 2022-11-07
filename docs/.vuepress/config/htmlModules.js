@@ -93,9 +93,10 @@ module.exports = {
   `,
   windowRB: `
     <ins class="adsbygoogle"
-        style="display:inline-block;width:180px;height:200px"
+        style="display:block"
         data-ad-client="ca-pub-4147143076931995"
-        data-ad-slot="1866407052"></ins>
+        data-ad-slot="1866407052"
+        data-ad-format="auto"></ins>
     <script>
         (adsbygoogle = window.adsbygoogle || []).push({});
     </script>

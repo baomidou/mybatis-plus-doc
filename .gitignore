@@ -6,6 +6,9 @@
 out
 gem
 
+# Fleet project files
+.fleet/
+
 # VS Code project files
 .vscode/
 
