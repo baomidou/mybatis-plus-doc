@@ -59,7 +59,7 @@ module.exports = {
       ' | ',
       'Sponsored by <a href="https://www.jetbrains.com" target="_blank" style="font-weight:bold">JetBrains</a>',
       ' | ',
-      '<a href="http://beian.miit.gov.cn/" target=_blank>渝ICP备2021000141号</a>',
+      '<a href="http://beian.miit.gov.cn/" target=_blank>渝ICP备2021000141号-1</a>',
       '<p>友情链接：',
       '<a href="http://aizuda.com?from=MybatisPlus" target="_blank" style="font-weight:bold">AiZuDa</a>',
       ' | ',
