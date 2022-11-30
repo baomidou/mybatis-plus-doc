@@ -64,7 +64,7 @@ module.exports = {
       <img class="no-zoom" height="70" width="224" src="/img/aizuda.png">
     </a>
     <a href="http://github.crmeb.net/u/MyBatis-Plus" target="_blank">
-      <img class="no-zoom" height="70" width="224" src="/img/crmeb.gif">
+      <img class="no-zoom" height="70" width="224" src="/img/crmeb2.gif">
     </a>
   `,
   pageT: `

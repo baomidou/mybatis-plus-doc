@@ -50,7 +50,7 @@ postList: none
 </a>
 
 <a href="http://github.crmeb.net/u/MyBatis-Plus" target="_blank">
-  <img class="no-zoom" height="70" width="224" src="/img/crmeb.gif">
+  <img class="no-zoom" height="70" width="224" src="/img/crmeb2.gif">
 </a>
 
 ### 当前最新版本
