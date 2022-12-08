@@ -38,7 +38,7 @@ postList: none
 ### 🎖特别用户
 
 <a href="https://www.diboot.com/?from=mp" target="_blank">
-  <img class="no-zoom" height="70" width="224" src="/img/diboot.gif">
+  <img class="no-zoom" height="70" width="224" src="https://www.diboot.com/diboot_slogon.png">
 </a>
 
 <a href="https://www.developers.pub/?from=mp" target="_blank">
