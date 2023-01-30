@@ -54,21 +54,10 @@
 // 万维
 module.exports = {
   sidebarT: `
-    <a href="https://www.diboot.com/?from=mp" target="_blank">
-      <img class="no-zoom" height="70" width="224" src="https://www.diboot.com/diboot_slogon.png">
-    </a>
-    <a href="https://www.developers.pub/?from=mp" target="_blank">
-      <img class="no-zoom" height="70" width="224" src="https://static.developers.pub/86feb94f2aaf474882697919020749c1.png">
-    </a>
-    <a href="http://aizuda.com?from=mp" target="_blank">
-      <img class="no-zoom" height="70" width="224" src="/img/aizuda.png">
-    </a>
-    <a href="http://github.crmeb.net/u/MyBatis-Plus" target="_blank">
-      <img class="no-zoom" height="70" width="224" src="/img/crmeb3.gif">
-    </a>
+    
   `,
   pageT: `
-    <div class="wwads-cn wwads-horizontal page-wwads" data-id="135" style="width:100%;max-height:90px;"></div>
+    <div class="wwads-cn wwads-horizontal page-wwads" data-id="135"></div>
     <style>
       .page-wwads{
         width:100%!important;
@@ -93,11 +82,11 @@ module.exports = {
   `,
   windowRB: `
     <ins class="adsbygoogle"
-        style="display:block"
-        data-ad-client="ca-pub-4147143076931995"
-        data-ad-slot="1866407052"
-        data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
+    style="display:block"
+    data-ad-client="ca-pub-4147143076931995"
+    data-ad-slot="1866407052"
+    data-ad-format="auto"
+    data-full-width-responsive="true"></ins>
     <script>
         (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
