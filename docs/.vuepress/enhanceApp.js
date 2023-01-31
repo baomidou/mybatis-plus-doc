@@ -52,7 +52,7 @@ export default ({
         if (!sidebarTop) return;
         sidebarArray = shuffle(sidebarArray);
         let _html = `<div style="width:230px;margin:0 auto"> 
-            ${sidebarArray.slice(0, 3).join("")}
+            ${sidebarArray.slice(0, 4).join("")}
             <br/> 
             <span style='color: gray;font-size: smaller;'>广告采用随机方式显示</span>
             <span style='color: #E01E5A;font-size: smaller;font-weight: bolder;float: right'>❤️<a href='/pages/4fedc2/'>成为赞助商</a></span>
