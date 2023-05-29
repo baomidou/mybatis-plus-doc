@@ -59,7 +59,7 @@ postList: none
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus</artifactId>
-    <version>3.5.2</version>
+    <version>3.5.3.1</version>
 </dependency>
 ```
 
