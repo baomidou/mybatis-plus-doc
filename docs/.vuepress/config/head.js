@@ -18,6 +18,20 @@ module.exports = [
       src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4147143076931995"
     }
   ],
+  [
+    "script", 
+    {
+      async: true,
+      src: "https://www.googletagmanager.com/gtag/js?id=G-7Y35RMZFVD"
+    }
+  ],
+  ["script", {}, `
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-7Y35RMZFVD');
+  `]
   ["script", { async: true, src: "https://cdn.wwads.cn/js/makemoney.js" }],
   ['script', {}, `
     // 万维广告“禁止”广告拦截
