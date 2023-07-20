@@ -50,7 +50,13 @@
 
 ## 代码托管
 
-> **[Gitee](https://gitee.com/baomidou/mybatis-plus)** | **[Github](https://github.com/baomidou/mybatis-plus)**
+<a target="_blank" href="https://gitee.com/baomidou/mybatis-plus">
+  <img src="https://aizanzhu.aizuda.com/v1/badge/svg?url=https://gitee.com/baomidou/mybatis-plus">
+</a>
+
+<a target="_blank" href="https://github.com/baomidou/mybatis-plus">
+  <img src="https://aizanzhu.aizuda.com/v1/badge/svg?url=https://github.com/baomidou/mybatis-plus">
+</a>
 
 ## 参与贡献
 
