@@ -32,6 +32,16 @@
 </dependency>
 ```
 
+## 代码托管
+
+<a href="https://gitee.com/baomidou/mybatis-plus" target="_blank">
+  <img src="https://aizanzhu.aizuda.com/v1/badge/svg?url=https://gitee.com/baomidou/mybatis-plus">
+</a>
+
+<a href="https://github.com/baomidou/mybatis-plus" target="_blank">
+  <img src="https://aizanzhu.aizuda.com/v1/badge/svg?url=https://github.com/baomidou/mybatis-plus">
+</a>
+
 ## 苞米豆生态圈
 
 - [MybatisX](https://github.com/baomidou/MybatisX) - 一款全免费且强大的 IDEA 插件，支持跳转，自动补全生成 SQL，代码生成。
@@ -48,15 +58,6 @@
 
 - MyBatis-Plus 已连续 5 年（[2017](https://www.oschina.net/project/top_cn_2017)、[2018](https://www.oschina.net/project/top_cn_2018)、[2019](https://www.oschina.net/project/top_cn_2019)、[2020](https://www.oschina.net/project/top_cn_2020)、[2021](https://www.oschina.net/project/top_cn_2021)）获得“OSC 年度最受欢迎中国开源软件”殊荣，感谢各位支持者的一路同行，我们会秉承 【为简化开发而生】 这一理念砥砺前行！
 
-## 代码托管
-
-<a target="_blank" href="https://gitee.com/baomidou/mybatis-plus">
-  <img src="https://aizanzhu.aizuda.com/v1/badge/svg?url=https://gitee.com/baomidou/mybatis-plus">
-</a>
-
-<a target="_blank" href="https://github.com/baomidou/mybatis-plus">
-  <img src="https://aizanzhu.aizuda.com/v1/badge/svg?url=https://github.com/baomidou/mybatis-plus">
-</a>
 
 ## 参与贡献
 
