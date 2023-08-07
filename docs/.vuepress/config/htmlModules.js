@@ -80,13 +80,24 @@ module.exports = {
       }
     </style>
   `,
+  pateB: `
+    <ins class="adsbygoogle"
+      style="display:block; text-align:center;"
+      data-ad-layout="in-article"
+      data-ad-format="fluid"
+      data-ad-client="ca-pub-4147143076931995"
+      data-ad-slot="2399110311"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  `,
   windowRB: `
     <ins class="adsbygoogle"
-    style="display:inline-block;width:200px;height:200px"
-    data-ad-client="ca-pub-4147143076931995"
-    data-ad-slot="1866407052"></ins>
+      style="display:inline-block;width:200px;height:200px"
+      data-ad-client="ca-pub-4147143076931995"
+      data-ad-slot="1866407052"></ins>
     <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
+      (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
   `
 };
