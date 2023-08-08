@@ -80,7 +80,7 @@ module.exports = {
       }
     </style>
   `,
-  pateB: `
+  pageB: `
     <ins class="adsbygoogle"
       style="display:block; text-align:center;"
       data-ad-layout="in-article"
@@ -93,7 +93,7 @@ module.exports = {
   `,
   windowRB: `
     <ins class="adsbygoogle"
-      style="display:inline-block;width:200px;height:200px"
+      style="display:inline-block;width:200px;height:300px"
       data-ad-client="ca-pub-4147143076931995"
       data-ad-slot="1866407052"></ins>
     <script>
