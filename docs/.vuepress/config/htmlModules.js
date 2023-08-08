@@ -82,11 +82,9 @@ module.exports = {
   `,
   pageB: `
     <ins class="adsbygoogle"
-      style="display:block; text-align:center;"
-      data-ad-layout="in-article"
-      data-ad-format="fluid"
+      style="display:inline-block;width:860px;height:90px"
       data-ad-client="ca-pub-4147143076931995"
-      data-ad-slot="2399110311"></ins>
+      data-ad-slot="6574899324"></ins>
     <script>
       (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
