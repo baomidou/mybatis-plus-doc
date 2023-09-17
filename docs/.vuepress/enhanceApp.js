@@ -6,7 +6,7 @@ let sidebarArray = [
   `<a href="https://www.developers.pub/?from=mp" target="_blank">
      <img class="no-zoom" style="width:100%;" src="https://static.developers.pub/86feb94f2aaf474882697919020749c1.png">
    </a>`,
-  `<a href="http://aizuda.com?from=mp" target="_blank">
+  `<a href="https://gitee.com/aizuda/flowlong?from=mp" target="_blank">
      <img class="no-zoom" style="width:100%;" src="/img/aizuda.png">
    </a>`,
   `<a href="http://github.crmeb.net/u/MyBatis-Plus" target="_blank">
