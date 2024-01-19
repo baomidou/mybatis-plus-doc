@@ -41,10 +41,6 @@ postList: none
   <img class="no-zoom" height="70" width="224" src="https://www.diboot.com/diboot_slogon.png">
 </a>
 
-<a href="https://www.developers.pub/?from=mp" target="_blank">
-  <img class="no-zoom" height="70" width="224" src="https://static.developers.pub/86feb94f2aaf474882697919020749c1.png">
-</a>
-
 <a href="https://gitee.com/aizuda/flowlong?from=mp" target="_blank">
   <img class="no-zoom" height="70" width="224" src="/img/aizuda.png">
 </a>
@@ -73,6 +69,7 @@ postList: none
 - [Lock4j](https://gitee.com/baomidou/lock4j) - 基于 SpringBoot 同时支持 RedisTemplate、Redission、Zookeeper 的分布式锁组件。
 - [Kaptcha](https://gitee.com/baomidou/kaptcha-spring-boot-starter) - 基于 SpringBoot 和 Google Kaptcha 的简单验证码组件，简单验证码就选它。
 - [Aizuda 爱组搭](https://gitee.com/aizuda) - 低代码开发平台组件库。
+- [Easy-Retry](https://www.easyretry.com/) - 分布式重试服务平台。
 
 ### 致谢
 
