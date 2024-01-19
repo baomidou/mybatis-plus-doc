@@ -18,44 +18,9 @@
  * ②注：windowLB 和 windowRB：1.展示区块宽高最大是200*200px。2.请给自定义元素定一个不超过200px的固定宽高。3.在屏宽小于960px时无论如何都不会显示。
  */
 
-// Adsense
-// module.exports = {
-//   sidebarB: `<!-- 正方形 -->
-//       <ins class="adsbygoogle"
-//           style="display:block"
-//           data-ad-client="ca-pub-4147143076931995"
-//           data-ad-slot="1866407052"
-//           data-ad-format="auto"
-//           data-full-width-responsive="true"></ins>
-//       <script>
-//           (adsbygoogle = window.adsbygoogle || []).push({});
-//       </script>`,
-//   pageB: `<!-- 横向自适应 -->
-//       <ins class="adsbygoogle"
-//           style="display:block"
-//           data-ad-client="ca-pub-4147143076931995"
-//           data-ad-slot="1866407052"
-//           data-ad-format="auto"
-//           data-full-width-responsive="true"></ins>
-//       <script>
-//           (adsbygoogle = window.adsbygoogle || []).push({});
-//       </script>`,
-//   windowRB: `<!-- 固定160*160px -->
-//       <ins class="adsbygoogle"
-//           style="display:inline-block;width:160px;height:160px"
-//           data-ad-client="ca-pub-4147143076931995"
-//           data-ad-slot="1866407052"></ins>
-//       <script>
-//           (adsbygoogle = window.adsbygoogle || []).push({});
-//       </script>
-//       `
-// };
-
 // 万维
 module.exports = {
-  sidebarT: `
-    
-  `,
+  sidebarT: ``,
   pageT: `
     <div class="wwads-cn wwads-horizontal page-wwads" data-id="135"></div>
     <style>
@@ -80,22 +45,6 @@ module.exports = {
       }
     </style>
   `,
-  pageB: `
-    <ins class="adsbygoogle"
-      style="display:inline-block;width:860px;height:90px"
-      data-ad-client="ca-pub-4147143076931995"
-      data-ad-slot="6574899324"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  `,
-  windowRB: `
-    <ins class="adsbygoogle"
-      style="display:inline-block;width:200px;height:300px"
-      data-ad-client="ca-pub-4147143076931995"
-      data-ad-slot="1866407052"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  `
+  pageB: ``,
+  windowRB: ``
 };
