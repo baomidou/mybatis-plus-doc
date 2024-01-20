@@ -20,7 +20,8 @@
 
 // 万维
 module.exports = {
-  sidebarT: ``,
+  sidebarT: `
+  `,
   pageT: `
     <div class="wwads-cn wwads-horizontal page-wwads" data-id="135"></div>
     <style>
@@ -45,6 +46,8 @@ module.exports = {
       }
     </style>
   `,
-  pageB: ``,
-  windowRB: ``
+  pageB: `
+  `,
+  windowRB: `
+  `
 };
