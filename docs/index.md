@@ -91,5 +91,6 @@ MyBatis-Plus 已连续 5 年（[2017](https://www.oschina.net/project/top_cn_201
 请移步至 [Awesome-MyBatis-Plus](https://github.com/baomidou/awesome-mybatis-plus) 查看。
 
 ### 友情链接
-> [easy-es](https://easy-es.cn/) | [layui-vue](http://www.layui-vue.com/) | [jpom](https://jpom.top/) | [springdoc](https://springdoc.cn/) | [sa-token](https://sa-token.cc/) | [RuleGo](https://rulego.cc)
+
+> [AiZuDa](http://aizuda.com?from=MybatisPlus) | [easy-es](https://easy-es.cn/) | [layui-vue](http://www.layui-vue.com/) | [jpom](https://jpom.top/) | [springdoc](https://springdoc.cn/) | [sa-token](https://sa-token.cc/) | [RuleGo](https://rulego.cc) | [NanCheung](https://blog.nancheung.com/) | [apidocsBlog](http://apidocs.cn/blog/)
 

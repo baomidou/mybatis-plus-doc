@@ -58,17 +58,10 @@ module.exports = {
       '<a href="http://baomidou.com" target="_blank" style="font-weight:bold">Team Baomidou</a>',
       ' | ',
       'Sponsored by <a href="https://www.jetbrains.com" target="_blank" style="font-weight:bold">JetBrains</a>',
+      '<br/>',
+      '<a href="http://beian.miit.gov.cn/" rel="noreferrer" target=_blank>渝ICP备2021000141号-1</a>',
       ' | ',
-      '<a href="http://beian.miit.gov.cn/" target=_blank>渝ICP备2021000141号-1</a>',
-      '<p>友情链接：',
-      '<a href="http://aizuda.com?from=MybatisPlus" target="_blank" style="font-weight:bold">AiZuDa</a>',
-      ' | ',
-      '<a href="https://dyang.top/" target="_blank" style="font-weight:bold">D.Yang</a>',
-      ' | ',
-      '<a href="https://blog.nancheung.com/" target="_blank" style="font-weight:bold">NanCheung</a>', 
-      ' | ',
-      '<a href="http://apidocs.cn/blog/" target="_blank" style="font-weight:bold">apidocsBlog</a>',
-      '</p>'
+      '<a href="https://beian.mps.gov.cn/#/query/webSearch?code=50011302222097" rel="noreferrer" target="_blank">渝公网安备50011302222097</a>',
     ].join('')
   },
 
