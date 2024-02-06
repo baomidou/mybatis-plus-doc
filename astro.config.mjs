@@ -6,33 +6,80 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "MyBatis-Plus",
-	  logo: {
-		src: './src/assets/logo.svg',
-	  },
-	  customCss: [
-        './src/styles/custom.css',
-      ],
-	  components: {
-        Footer: './src/components/Footer.astro',
+      logo: {
+        src: "./src/assets/logo.svg",
+      },
+      customCss: ["./src/styles/custom.css"],
+      components: {
+        Footer: "./src/components/Footer.astro",
       },
       locales: {
-        root: { label: '简体中文', lang: 'zh-CN' },
-        en: { label: 'English', lang: 'en' },
+        root: { label: "简体中文", lang: "zh-CN" },
+        en: { label: "English", lang: "en" },
       },
       social: {
         github: "https://github.com/baomidou/mybatis-plus",
       },
       sidebar: [
+        { label: "简介", link: "/introduce", translations: { en: "Introduce" } },
         {
-          label: "Guides",
+          label: "从这里开始",
+          translations: {
+            en: "Start Here",
+          },
           items: [
-            // Each item here is one entry in the navigation menu.
-            { label: "Example Guide", link: "/guides/example/" },
+            {
+              label: "快速开始",
+              link: "/getting-started",
+              translations: {
+                en: "Getting Started",
+              },
+            },
+            {
+              label: "安装",
+              link: "/getting-started/install",
+              translations: {
+                en: "Install",
+              },
+            },
           ],
         },
         {
-          label: "Reference",
+          label: "指南",
+          translations: {
+            en: "Guides",
+          },
+          autogenerate: { directory: "guides" },
+        },
+        {
+          label: "配置",
           autogenerate: { directory: "reference" },
+        },
+        {
+          label: "资源",
+          translations: {
+            en: "Resources",
+          },
+          items: [
+            {
+              label: "常见问题",
+              translations: {
+                en: "Questions",
+              },
+              link: "/guides/components/",
+            },
+            { label: "Internationalization (i18n)", link: "/guides/i18n/" },
+            {
+              label: "低代码平台",
+              items: [
+                { label: "数据处理模块", link: "/guides/css-and-tailwind/" },
+                { label: "单体开发平台", link: "/guides/css-and-tailwind/" },
+                { label: "微服务开发平台", link: "/guides/css-and-tailwind/" },
+                { label: "一体化开发平台", link: "/guides/css-and-tailwind/" },
+              ],
+            },
+            { label: "更新日志", link: "/guides/i18n/" },
+          ],
         },
       ],
     }),
