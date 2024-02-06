@@ -59,7 +59,7 @@ title: 简介
 
 - 贡献代码：代码地址 [MyBatis-Plus](https://github.com/baomidou/mybatis-plus) ，欢迎提交 Issue 或者 Pull Requests
 - 维护文档：文档地址 [MyBatis-Plus-Doc](https://github.com/baomidou/mybatis-plus-doc) ，欢迎参与翻译和修订
-- 授权说明：[MyBatis-Plus LOGO 官方授权沟通邮件](/document/Request-for-use-MyBatis-Ninja-LOGO-which-with-blue-color.pdf)
+- 授权说明：[MyBatis-Plus LOGO 官方授权沟通邮件](/document/logo-request.html)
 
 ## 教程、案例、使用者名单
 
