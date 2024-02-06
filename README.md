@@ -34,13 +34,8 @@
 
 ## 代码托管
 
-<a href="https://gitee.com/baomidou/mybatis-plus" target="_blank">
-  <img src="https://aizanzhu.aizuda.com/v1/badge/svg?url=https://gitee.com/baomidou/mybatis-plus">
-</a>
-
-<a href="https://github.com/baomidou/mybatis-plus" target="_blank">
-  <img src="https://aizanzhu.aizuda.com/v1/badge/svg?url=https://github.com/baomidou/mybatis-plus">
-</a>
+- **[Github](https://github.com/baomidou/mybatis-plus)**
+- **[Gitee](https://gitee.com/baomidou/mybatis-plus)**
 
 ## 苞米豆生态圈
 
@@ -57,7 +52,6 @@
 ## 致谢
 
 - MyBatis-Plus 已连续 5 年（[2017](https://www.oschina.net/project/top_cn_2017)、[2018](https://www.oschina.net/project/top_cn_2018)、[2019](https://www.oschina.net/project/top_cn_2019)、[2020](https://www.oschina.net/project/top_cn_2020)、[2021](https://www.oschina.net/project/top_cn_2021)）获得“OSC 年度最受欢迎中国开源软件”殊荣，感谢各位支持者的一路同行，我们会秉承 【为简化开发而生】 这一理念砥砺前行！
-
 
 ## 参与贡献
 

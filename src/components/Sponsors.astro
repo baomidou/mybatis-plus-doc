@@ -1,0 +1,72 @@
+---
+// 赞助商数据，LOGO 放置在 public/
+const sponsors = [
+  {
+    name: "DiBoot",
+    logo: "/images/sponsors/diboot.png",
+    url: "https://www.diboot.com/?from=mp",
+  },
+  {
+    name: "FlowLong",
+    logo: "/images/sponsors/flowlong.png",
+    url: "https://gitee.com/aizuda/flowlong?from=mp",
+  },
+  {
+    name: "CRMEB",
+    logo: "/images/sponsors/crmeb.gif",
+    url: "http://github.crmeb.net/u/MyBatis-Plus",
+  },
+];
+---
+
+<style>
+  .sponsors {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .sponsor-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .sponsor img {
+    width: 200px;
+    height: 60px;
+  }
+
+  .become-sponsor {
+    padding: 8px 20px;
+    display: inline-block;
+    border-radius: 30px;
+    box-sizing: border-box;
+    border: 1px solid #11a8cd;
+  }
+
+  .become-sponsor a {
+    color: #666;
+    text-decoration: none;
+  }
+</style>
+
+<div class="sponsors">
+  <div class="sponsor-list">
+    {
+      sponsors.map((sponsor) => (
+        <a
+          href={sponsor.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="sponsor"
+        >
+          <img src={sponsor.logo} alt={sponsor.name} title={sponsor.name} />
+        </a>
+      ))
+    }
+  </div>
+  <div class="become-sponsor">
+    <a class="become-sponsor-link" href="https://www.baomidou.com">成为赞助商</a>
+  </div>
+</div>

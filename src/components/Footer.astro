@@ -1,0 +1,39 @@
+---
+import type { Props } from "@astrojs/starlight/props";
+import Default from "@astrojs/starlight/components/Footer.astro";
+
+const yearText = new Date().getFullYear().toString();
+---
+
+<style>
+  footer {
+    padding: 5rem 1.5rem 2.5rem;
+    text-align: center;
+    color: #666;
+    box-sizing: border-box;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+  }
+
+  footer a {
+    color: #666;
+    text-decoration: none;
+  }
+
+  footer a:hover {
+    color: var(--sl-color-text-accent);
+    text-decoration: none;
+  }
+</style>
+
+<Default {...Astro.props}>
+  <slot />
+</Default>
+
+<footer>
+  Copyright © 2016-{yearText} <a href="http://baomidou.com" target="_blank" style="font-weight:bold">Baomidou</a> 
+  <br />
+  Power by <a href="https://starlight.astro.build" target="_blank" style="font-weight:bold">Astro Starlight</a> | Sponsored by <a href="https://www.jetbrains.com" target="_blank" style="font-weight:bold">JetBrains</a>
+  <br />
+  <a href="http://beian.miit.gov.cn/" rel="noreferrer" target="_blank">渝ICP备2021000141号-1</a> | <a href="https://beian.mps.gov.cn/#/query/webSearch?code=50011302222097" rel="noreferrer" target="_blank">渝公网安备50011302222097</a>
+</footer>
