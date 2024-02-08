@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
+import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
@@ -9,19 +10,31 @@ export default defineConfig({
       logo: {
         src: "./src/assets/logo.svg",
       },
-      customCss: ["./src/styles/custom.css"],
+      customCss: ["./src/styles/tailwind.css", "./src/styles/custom.css"],
       components: {
         Footer: "./src/components/Footer.astro",
       },
       locales: {
-        root: { label: "简体中文", lang: "zh-CN" },
-        en: { label: "English", lang: "en" },
+        root: {
+          label: "简体中文",
+          lang: "zh-CN",
+        },
+        en: {
+          label: "English",
+          lang: "en",
+        },
       },
       social: {
         github: "https://github.com/baomidou/mybatis-plus",
       },
       sidebar: [
-        { label: "简介", link: "/introduce", translations: { en: "Introduce" } },
+        {
+          label: "简介",
+          link: "/introduce",
+          translations: {
+            en: "Introduce",
+          },
+        },
         {
           label: "从这里开始",
           translations: {
@@ -49,11 +62,15 @@ export default defineConfig({
           translations: {
             en: "Guides",
           },
-          autogenerate: { directory: "guides" },
+          autogenerate: {
+            directory: "guides",
+          },
         },
         {
           label: "配置",
-          autogenerate: { directory: "reference" },
+          autogenerate: {
+            directory: "reference",
+          },
         },
         {
           label: "资源",
@@ -68,20 +85,42 @@ export default defineConfig({
               },
               link: "/guides/components/",
             },
-            { label: "Internationalization (i18n)", link: "/guides/i18n/" },
+            {
+              label: "Internationalization (i18n)",
+              link: "/guides/i18n/",
+            },
             {
               label: "低代码平台",
               items: [
-                { label: "数据处理模块", link: "/guides/css-and-tailwind/" },
-                { label: "单体开发平台", link: "/guides/css-and-tailwind/" },
-                { label: "微服务开发平台", link: "/guides/css-and-tailwind/" },
-                { label: "一体化开发平台", link: "/guides/css-and-tailwind/" },
+                {
+                  label: "数据处理模块",
+                  link: "/guides/css-and-tailwind/",
+                },
+                {
+                  label: "单体开发平台",
+                  link: "/guides/css-and-tailwind/",
+                },
+                {
+                  label: "微服务开发平台",
+                  link: "/guides/css-and-tailwind/",
+                },
+                {
+                  label: "一体化开发平台",
+                  link: "/guides/css-and-tailwind/",
+                },
               ],
             },
-            { label: "更新日志", link: "/guides/i18n/" },
+            {
+              label: "更新日志",
+              link: "/guides/i18n/",
+            },
           ],
         },
       ],
+    }),
+    tailwind({
+      // 禁用默认的基础样式
+      applyBaseStyles: false,
     }),
   ],
 });
