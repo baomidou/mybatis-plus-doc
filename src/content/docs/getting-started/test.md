@@ -1,8 +1,5 @@
 ---
 title: 快速测试
-date: 2021-12-16 09:00:01
-permalink: /pages/b7dae0/
-article: false
 ---
 
 自动导入 MyBatis-Plus 测试所需相关配置，通过 `@MybatisPlusTest` 注解快速配置测试类。

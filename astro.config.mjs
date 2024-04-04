@@ -18,7 +18,7 @@ export default defineConfig({
         en: { label: "English", lang: "en" },
       },
       social: {
-        github: "https://github.com/baomidou/mybatis-plus",
+        github: "https://github.com/baomidou/mybatis-plus"
       },
       sidebar: [
         { label: "简介", link: "/introduce", translations: { en: "Introduce" } },
@@ -40,6 +40,20 @@ export default defineConfig({
               link: "/getting-started/install",
               translations: {
                 en: "Install",
+              },
+            },
+            {
+              label: "配置",
+              link: "/getting-started/config",
+              translations: {
+                en: "Config",
+              },
+            },
+            {
+              label: "注解",
+              link: "/getting-started/annotation",
+              translations: {
+                en: "Annotation",
               },
             },
           ],

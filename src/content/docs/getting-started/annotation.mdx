@@ -1,18 +1,27 @@
 ---
 title: 注解
-date: 2021-12-14 18:09:29
-permalink: /pages/223848/
-article: false
 ---
 
-本文将介绍 `MybatisPlus` 注解包相关类详解（更多详细描述可点击查看源码注释）
+import Badge from "../../../components/Badge.astro";
 
-> 注解类包源码：👉 [mybatis-plus-annotation](https://gitee.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation)
+本文详细介绍了 MyBatisPlus 注解的用法及属性，提供了源码链接以便深入理解。欢迎通过下方链接查看注解类的源码。
 
-## [@TableName](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableName.java)
+> 源码链接：👉 [mybatis-plus-annotation](https://github.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation)
 
-- 描述：表名注解，标识实体类对应的表
-- 使用位置：实体类
+## @TableName - 定义表名
+
+`@TableName` 注解用于标识实体类对应的数据库表名。
+
+**源码链接：** [`@TableName`](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableName.java)
+
+**使用位置：** 实体类
+
+**注解属性：**
+
+- value：表名
+    - 类型：String
+
+示例代码
 
 ```java {1}
 @TableName("sys_user")
@@ -31,7 +40,7 @@ public class User {
 | keepGlobalPrefix | boolean  | 否       | false  | 是否保持使用全局的 tablePrefix 的值（当全局 tablePrefix 生效时）                          |
 | resultMap        | String   | 否       | ""     | xml 中 resultMap 的 id（用于满足特定类型的实体类对象绑定）                                |
 | autoResultMap    | boolean  | 否       | false  | 是否自动构建 resultMap 并使用（如果设置 resultMap 则不会进行 resultMap 的自动构建与注入） |
-| excludeProperty  | String[] | 否       | {}     | 需要排除的属性名 <Badge text="@since 3.3.1" type="tip" vertical="middle"/>                |
+| excludeProperty  | String[] | 否       | {}     | 需要排除的属性名 <Badge text="@since 3.3.1"/>                                             |
 
 **关于 `autoResultMap` 的说明：**
 
@@ -96,21 +105,21 @@ public class User {
 }
 ```
 
-| 属性             | 类型                         | 必须指定 | 默认值                   | 描述                                                                                                                                                                                                                                          |
-| :--------------- | :--------------------------- | :------- | :----------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value            | String                       | 否       | ""                       | 数据库字段名                                                                                                                                                                                                                                  |
-| exist            | boolean                      | 否       | true                     | 是否为数据库表字段                                                                                                                                                                                                                            |
-| condition        | String                       | 否       | ""                       | 字段 `where` 实体查询比较条件，有值设置则按设置的值为准，没有则为默认全局的 `%s=#{%s}`，[参考](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java) |
-| update           | String                       | 否       | ""                       | 字段 `update set` 部分注入，例如：当在version字段上注解`update="%s+1"` 表示更新时会 `set version=version+1` （该属性优先级高于 `el` 属性）                                                                                                                         |
-| insertStrategy   | Enum                         | 否       | FieldStrategy.DEFAULT    | 举例：NOT_NULL <br/> `insert into table_a(<if test="columnProperty != null">column</if>) values (<if test="columnProperty != null">#{columnProperty}</if>)`                                                                                   |
-| updateStrategy   | Enum                         | 否       | FieldStrategy.DEFAULT    | 举例：IGNORED <br/> `update table_a set column=#{columnProperty}`                                                                                                                                                                             |
-| whereStrategy    | Enum                         | 否       | FieldStrategy.DEFAULT    | 举例：NOT_EMPTY <br/> `where <if test="columnProperty != null and columnProperty!=''">column=#{columnProperty}</if>`                                                                                                                          |
-| fill             | Enum                         | 否       | FieldFill.DEFAULT        | 字段自动填充策略                                                                                                                                                                                                                              |
-| select           | boolean                      | 否       | true                     | 是否进行 select 查询                                                                                                                                                                                                                          |
-| keepGlobalFormat | boolean                      | 否       | false                    | 是否保持使用全局的 format 进行处理                                                                                                                                                                                                            |
-| jdbcType         | JdbcType                     | 否       | JdbcType.UNDEFINED       | JDBC 类型 (该默认值不代表会按照该值生效)                                                                                                                                                                                                      |
-| typeHandler      | Class<? extends TypeHandler> | 否       | UnknownTypeHandler.class | 类型处理器 (该默认值不代表会按照该值生效)                                                                                                                                                                                                     |
-| numericScale     | String                       | 否       | ""                       | 指定小数点后保留的位数                                                                                                                                                                                                                        |
+| 属性             | 类型                           | 必须指定 | 默认值                   | 描述                                                                                                                                                                                                                                          |
+| :--------------- | :----------------------------- | :------- | :----------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value            | String                         | 否       | ""                       | 数据库字段名                                                                                                                                                                                                                                  |
+| exist            | boolean                        | 否       | true                     | 是否为数据库表字段                                                                                                                                                                                                                            |
+| condition        | String                         | 否       | ""                       | 字段 `where` 实体查询比较条件，有值设置则按设置的值为准，没有则为默认全局的 `%s=#{%s}`，[参考](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java) |
+| update           | String                         | 否       | ""                       | 字段 `update set` 部分注入，例如：当在 version 字段上注解`update="%s+1"` 表示更新时会 `set version=version+1` （该属性优先级高于 `el` 属性）                                                                                                  |
+| insertStrategy   | Enum                           | 否       | FieldStrategy.DEFAULT    | 举例：NOT_NULL <br/> `insert into table_a(<if test="columnProperty != null">column</if>) values (<if test="columnProperty != null">#{columnProperty}</if>)`                                                                                   |
+| updateStrategy   | Enum                           | 否       | FieldStrategy.DEFAULT    | 举例：IGNORED <br/> `update table_a set column=#{columnProperty}`                                                                                                                                                                             |
+| whereStrategy    | Enum                           | 否       | FieldStrategy.DEFAULT    | 举例：NOT_EMPTY <br/> `where <if test="columnProperty != null and columnProperty!=''">column=#{columnProperty}</if>`                                                                                                                          |
+| fill             | Enum                           | 否       | FieldFill.DEFAULT        | 字段自动填充策略                                                                                                                                                                                                                              |
+| select           | boolean                        | 否       | true                     | 是否进行 select 查询                                                                                                                                                                                                                          |
+| keepGlobalFormat | boolean                        | 否       | false                    | 是否保持使用全局的 format 进行处理                                                                                                                                                                                                            |
+| jdbcType         | JdbcType                       | 否       | JdbcType.UNDEFINED       | JDBC 类型 (该默认值不代表会按照该值生效)                                                                                                                                                                                                      |
+| typeHandler      | `Class<? extends TypeHandler>` | 否       | UnknownTypeHandler.class | 类型处理器 (该默认值不代表会按照该值生效)                                                                                                                                                                                                     |
+| numericScale     | String                         | 否       | ""                       | 指定小数点后保留的位数                                                                                                                                                                                                                        |
 
 ::: warning 关于`jdbcType`和`typeHandler`以及`numericScale`的说明:
 `numericScale`只生效于 update 的 sql.
@@ -120,14 +129,14 @@ public class User {
 
 ### [FieldStrategy](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldStrategy.java)
 
-| 值        | 描述                                                        |
-| :-------- | :---------------------------------------------------------- |
-| IGNORED（已弃用） | 忽略判断，效果等同于"ALWAYS"                             |
-| ALWAYS    | 总是加入SQL，无论字段值是否为NULL                               |
-| NOT_NULL  | 非 NULL 判断                                                |
-| NOT_EMPTY | 非空判断(只对字符串类型字段,其他类型字段依然为非 NULL 判断)        |
-| DEFAULT   | 追随全局配置                                                |
-| NEVER     | 不加入SQL|
+| 值                | 描述                                                        |
+| :---------------- | :---------------------------------------------------------- |
+| IGNORED（已弃用） | 忽略判断，效果等同于"ALWAYS"                                |
+| ALWAYS            | 总是加入 SQL，无论字段值是否为 NULL                         |
+| NOT_NULL          | 非 NULL 判断                                                |
+| NOT_EMPTY         | 非空判断(只对字符串类型字段,其他类型字段依然为非 NULL 判断) |
+| DEFAULT           | 追随全局配置                                                |
+| NEVER             | 不加入 SQL                                                  |
 
 ### [FieldFill](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldFill.java)
 
@@ -164,16 +173,16 @@ public class User {
 - 描述：序列主键策略 `oracle`
 - 属性：value、dbType
 
-| 属性  | 类型   | 必须指定 | 默认值     | 描述                                                                |
-| :---- | :----- | :------- | :--------- | :------------------------------------------------------------------ |
-| value | String | 否       | ""         | 序列名                                                              |
-| dbType | Enum  | 否       | DbType.OTHER | 数据库类型，未配置默认使用注入 IKeyGenerator 实现，多个实现必须指定|
+| 属性   | 类型   | 必须指定 | 默认值       | 描述                                                                |
+| :----- | :----- | :------- | :----------- | :------------------------------------------------------------------ |
+| value  | String | 否       | ""           | 序列名                                                              |
+| dbType | Enum   | 否       | DbType.OTHER | 数据库类型，未配置默认使用注入 IKeyGenerator 实现，多个实现必须指定 |
 
 ## [@InterceptorIgnore](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/InterceptorIgnore.java)
 
-- `value` 值为 `1` | `yes` | `on` 视为忽略，例如 `@InterceptorIgnore(tenantLine = "1")` 
+- `value` 值为 `1` | `yes` | `on` 视为忽略，例如 `@InterceptorIgnore(tenantLine = "1")`
 
-- `value` 值为  `0` | `false` | `off` | `空值不变` 视为正常执行。
+- `value` 值为 `0` | `false` | `off` | `空值不变` 视为正常执行。
 
 > see [插件主体](/pages/2976a3/)
 
@@ -181,7 +190,7 @@ public class User {
 
 - 描述：内置 SQL 默认指定排序，优先级低于 wrapper 条件查询
 
-| 属性   | 类型    | 必须指定 | 默认值          | 描述           |
-| :----- | :------ | :------- | :-------------- | :------------- |
-| asc | boolean | 否       | true            | 是否倒序查询   |
-| sort   | short   | 否       | Short.MAX_VALUE | 数字越小越靠前 |
+| 属性 | 类型    | 必须指定 | 默认值          | 描述           |
+| :--- | :------ | :------- | :-------------- | :------------- |
+| asc  | boolean | 否       | true            | 是否倒序查询   |
+| sort | short   | 否       | Short.MAX_VALUE | 数字越小越靠前 |

@@ -1,14 +1,11 @@
 ---
 title: 配置
-date: 2021-12-14 18:08:57
-permalink: /pages/3b5af0/
-article: false
 ---
 
-MyBatis-Plus 的配置异常的简单，我们仅需要一些简单的配置即可使用 MyBatis-Plus 的强大功能！
+集成 MyBatis-Plus 非常的简单，我们仅需要一些简单的配置即可使用 MyBatis-Plus 的强大功能！
 
-::: tip
-在讲解配置之前，请确保您已经安装了 MyBatis-Plus，如果您尚未安装，请查看 [安装](/pages/bab2db/) 一章。
+:::tip
+在讲解配置之前，请确保您已经安装了 MyBatis-Plus，如果您尚未安装，请查看 [安装](/getting-started/install) 一章。
 :::
 
 ## Spring Boot 工程
