@@ -5,68 +5,96 @@ const sponsors = [
     name: "DiBoot",
     logo: "/images/sponsors/diboot.png",
     url: "https://www.diboot.com/?from=mp",
+    description:
+      "DiBoot 是一个基于 Spring Boot 2.x 的快速开发平台，内置了常用功能，包括：系统权限管理",
   },
   {
     name: "FlowLong",
     logo: "/images/sponsors/flowlong.png",
     url: "https://gitee.com/aizuda/flowlong?from=mp",
+    description:
+      "FlowLong 是一个基于 Spring Boot 2.x 的快速开发平台，内置了常用功能，包括：系统权限",
   },
   {
     name: "CRMEB",
     logo: "/images/sponsors/crmeb.gif",
     url: "http://github.crmeb.net/u/MyBatis-Plus",
+    description:
+      "CRMEB 是一个基于 Spring Boot 2.x 的快速开发平台，内置了常用功能，包括：系统",
   },
 ];
 ---
 
 <style>
-  .sponsors {
-    text-align: center;
-    padding: 20px;
-  }
-
-  .sponsor-list {
+  .card-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+    justify-content: space-around;
+    margin: 20px;
   }
-
-  .sponsor img {
-    width: 200px;
-    height: 60px;
+  .card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+    width: 300px;
   }
-
-  .become-sponsor {
-    padding: 8px 20px;
-    display: inline-block;
-    border-radius: 30px;
-    box-sizing: border-box;
-    border: 1px solid #11a8cd;
+  .card:hover {
+    transform: translateY(-10px);
+    cursor: pointer;
   }
-
-  .become-sponsor a {
-    color: #666;
+  .card img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+  .card-title {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+  }
+  .card-text {
+    margin-bottom: 15px;
+  }
+  .button {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    text-align: center;
     text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+  }
+  .button:hover {
+    background-color: #555555;
+    color: white;
   }
 </style>
 
-<div class="sponsors">
-  <div class="sponsor-list">
+<div class="no-content">
+  <div class="card-container">
     {
       sponsors.map((sponsor) => (
-        <a
-          href={sponsor.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="sponsor"
-        >
-          <img src={sponsor.logo} alt={sponsor.name} title={sponsor.name} />
-        </a>
+        <div class="card">
+          <img src={sponsor.logo} alt={sponsor.name} />
+          <h3 class="card-title">{sponsor.name}</h3>
+          <p class="card-text">{sponsor.description}</p>
+          <a href={sponsor.url} class="button">
+            了解更多
+          </a>
+        </div>
       ))
     }
   </div>
+
   <div class="become-sponsor">
-    <a class="become-sponsor-link" href="https://www.baomidou.com">成为赞助商</a>
+    <a class="become-sponsor-link" href="https://www.baomidou.com">成为赞助商</a
+    >
   </div>
 </div>
