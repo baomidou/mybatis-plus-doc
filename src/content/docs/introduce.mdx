@@ -2,23 +2,16 @@
 title: 简介
 ---
 
+import SupportDb from '../../components/SupportDb.astro';
+import Partner from '../../components/Partner.astro';
+
 [MyBatis-Plus](https://github.com/baomidou/mybatis-plus)（简称 MP）是一个 [MyBatis](https://www.mybatis.org/mybatis-3/) 的增强工具，在 MyBatis 的基础上只做增强不做改变，为简化开发、提高效率而生。
 
 :::tip[愿景]
 我们的愿景是成为 MyBatis 最好的搭档，就像 **魂斗罗** 中的 1P、2P，基友搭配，效率翻倍。
 :::
 
-<p class="demo">
-    <img src="/images/content/relationship-with-mybatis.png"/>
-</p>
-
-<style>
-  .demo{
-    padding: 1rem 1.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-</style>
+<Partner />
 
 ## 特性
 
@@ -37,12 +30,13 @@ title: 简介
 
 ## 支持数据库
 
-> 任何能使用 `MyBatis` 进行 CRUD, 并且支持标准 SQL 的数据库，具体支持情况如下，如果不在下列表查看分页部分教程 PR 您的支持。
+<SupportDb />
 
-- MySQL，Oracle，DB2，H2，HSQL，SQLite，PostgreSQL，SQLServer，Phoenix，Gauss
-  ，ClickHouse，Sybase，OceanBase，Firebird，Cubrid，Goldilocks，csiidb，informix，TDengine，redshift
+:::tip
+任何能使用 `MyBatis` 进行增删改查，并且支持标准 SQL 的数据库应该都在 MyBatis-Plus 的支持范围内，具体支持情况如上。
 
-- 达梦数据库，虚谷数据库，人大金仓数据库，南大通用(华库)数据库，南大通用数据库，神通数据库，瀚高数据库，优炫数据库，星瑞格数据库
+如果您想要的数据库类型不在上面的列表，欢迎给我们 PR 您的数据库方言。
+:::
 
 ## 框架结构
 

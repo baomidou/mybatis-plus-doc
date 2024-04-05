@@ -1,0 +1,64 @@
+---
+const linkList = [
+    {
+        name: 'D.Yang',
+        logo: '/images/link/dyang.png',
+        url: 'https://dyang.top/'
+    },
+    {
+        name: '爱组搭',
+        logo: '/images/link/aizuda.png',
+        url: 'http://aizuda.com/?from=MybatisPlus'
+    },
+    {
+        name: 'EasyES',
+        logo: '/images/link/esay-es.svg',
+        url: 'https://www.easy-es.cn/'
+    },
+    {
+        name: 'Layui-Vue',
+        logo: '/images/link/layui-vue.png',
+        url: 'http://www.layui-vue.com/'
+    },
+    {
+        name: 'JPom',
+        logo: '/images/link/jpom.svg',
+        url: 'https://jpom.top/'
+    },
+    {
+        name: 'SpringDoc',
+        logo: '/images/link/springdoc.webp',
+        url: 'https://springdoc.cn/'
+    },
+    {
+        name: 'Sa-Token',
+        logo: '/images/link/sa-token.png',
+        url: 'https://sa-token.cc/'
+    },
+    {
+        name: 'RuleGo',
+        logo: '/images/link/rulego.png',
+        url: 'https://rulego.cc/'
+    },
+    {
+        name: 'NanCheung',
+        logo: '/images/link/nan-cheung.jpg',
+        url: 'https://blog.nancheung.com/'
+    },
+    {
+        name: 'ApiDocs',
+        logo: '/images/link/api-docs.png',
+        url: 'https://apidocs.cn/'
+    },
+]
+---
+
+<div class="flex flex-wrap items-center justify-center dark:bg-gray-800 gap-2">
+    {linkList.map(db => (
+            <a href={db.url} target="_blank" rel="noopener noreferrer"
+               class="w-1/6 min-w-[160px] border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150 flex items-center justify-center gap-2 px-4 py-2 no-underline text-current hover:no-underline">
+                <img src={db.logo} alt={db.name + " logo"} class="w-6 h-6">
+                <span class="text-slate-700">{db.name}</span>
+            </a>
+    ))}
+</div>

@@ -1,0 +1,154 @@
+---
+const supportDbList = [
+    {
+        name: 'PostgreSQL',
+        logo: '/images/db/postgresql.svg',
+        url: 'https://www.postgresql.org/'
+    },
+    {
+        name: 'MySQL',
+        logo: '/images/db/mysql.svg',
+        url: 'https://www.mysql.com/'
+    },
+    {
+        name: 'MariaDB',
+        logo: '/images/db/mariadb.svg',
+        url: 'https://mariadb.org/'
+    },
+    {
+        name: 'Oracle',
+        logo: '/images/db/oracle.svg',
+        url: 'https://www.oracle.com/database/'
+    },
+    {
+        name: 'GaussDB',
+        logo: '/images/db/gauss.png',
+        url: 'https://www.huawei.com/en/cloud/gaussdb'
+    },
+    {
+        name: 'OceanBase',
+        logo: '/images/db/oceanbase.png',
+        url: 'https://www.oceanbase.com/'
+    },
+    {
+        name: 'SQLite',
+        logo: '/images/db/sqlite.svg',
+        url: 'https://www.sqlite.org/'
+    },
+    {
+        name: 'SQL Server',
+        logo: '/images/db/sqlserver.svg',
+        url: 'https://www.microsoft.com/en-us/sql-server'
+    },
+    {
+        name: 'H2',
+        logo: '/images/db/h2.svg',
+        url: 'https://www.h2database.com/'
+    },
+    {
+        name: 'DB2',
+        logo: '/images/db/db2.png',
+        url: 'https://www.ibm.com/analytics/db2'
+    },
+    {
+        name: 'HSQL',
+        logo: '/images/db/hsql.webp',
+        url: 'https://hsqldb.org/'
+    },
+    {
+        name: 'Phoenix',
+        logo: '/images/db/phoenix.svg',
+        url: 'https://phoenix.apache.org/'
+    },
+    {
+        name: 'ClickHouse',
+        logo: '/images/db/clickhouse.svg',
+        url: 'https://clickhouse.tech/'
+    },
+    {
+        name: 'Sybase',
+        logo: '/images/db/sybase.svg',
+        url: 'https://www.sap.com/products/sybase.html'
+    },
+    {
+        name: 'Firebird',
+        logo: '/images/db/firebird.png',
+        url: 'https://firebirdsql.org/'
+    },
+    {
+        name: 'Cubird',
+        logo: '/images/db/cubird.png',
+        url: 'https://www.cubrid.org/'
+    },
+    {
+        name: 'Goldilocks',
+        logo: '/images/db/goldilocks.svg',
+        url: 'https://www.sunjesoft.co.kr/'
+    },
+    {
+        name: 'Informix',
+        logo: '/images/db/informix.svg',
+        url: 'https://www.ibm.com/products/informix'
+    },
+    {
+        name: 'TDengine',
+        logo: '/images/db/tdengine.svg',
+        url: 'https://tdengine.com/'
+    },
+    {
+        name: 'RedShift',
+        logo: '/images/db/redshift.png',
+        url: 'https://aws.amazon.com/redshift/'
+    },
+    {
+        name: '达梦',
+        logo: '/images/db/dameng.svg',
+        url: 'https://www.dameng.com/'
+    },
+    {
+        name: '人大金仓',
+        logo: '/images/db/kingbase.png',
+        url: 'https://www.kingbase.com.cn/'
+    },
+    {
+        name: '南大通用',
+        logo: '/images/db/gbase.svg',
+        url: 'https://www.gbase.cn/'
+    },
+    {
+        name: '瀚高',
+        logo: '/images/db/highgo.svg',
+        url: 'https://www.highgo.com/'
+    },
+    {
+        name: '神州通用',
+        logo: '/images/db/shenzhoutongyong.png',
+        url: 'http://shentongdata.com/index.php'
+    },
+    {
+        name: '虚谷',
+        logo: '/images/db/xugu.png',
+        url: 'https://www.xugudb.com/'
+    },
+    {
+        name: '优炫',
+        logo: '/images/db/youxuan.png',
+        url: 'https://www.uxsino.com/'
+    },
+    {
+        name: '星瑞格',
+        logo: '/images/db/xingruige.png',
+        url: 'http://www.sinoregal.cn/'
+    }
+]
+---
+
+<div class="flex flex-wrap items-center justify-center dark:bg-gray-800 gap-2">
+    {supportDbList.map(db => (
+            <a href={db.url} target="_blank" rel="noopener noreferrer"
+               class="w-1/6 min-w-[160px] border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150 flex items-center justify-center gap-2 px-4 py-2 no-underline text-current hover:no-underline">
+                <img src={db.logo} alt={db.name + " logo"} class="w-6 h-6">
+                <span class="text-slate-700">{db.name}</span>
+            </a>
+    ))}
+</div>
