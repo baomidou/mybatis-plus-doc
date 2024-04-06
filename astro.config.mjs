@@ -14,9 +14,8 @@ export default defineConfig({
             components: {
                 Footer: "./src/components/Footer.astro",
             },
-            defaultLocale: 'zh-cn',
             locales: {
-                'zh-cn': {
+                root: {
                     label: "简体中文",
                     lang: "zh-CN",
                 },
