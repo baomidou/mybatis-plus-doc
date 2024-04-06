@@ -1,10 +1,11 @@
 ---
 import Default from "@astrojs/starlight/components/Footer.astro";
+import type { StarlightRouteData } from "@astrojs/starlight/utils/route-data";
 
 const yearText = new Date().getFullYear().toString();
 ---
 
-<Default {...Astro.props}>
+<Default {...(Astro.props as StarlightRouteData)}>
     <slot/>
 </Default>
 

@@ -5,9 +5,8 @@ import {Tabs, TabItem, Code} from "@astrojs/starlight/components";
 export interface Props {
     groupId: string;
     artifactId: string;
-    snapshot: boolean
 }
-const {groupId, artifactId, snapshot} = Astro.props as Props;
+const {groupId, artifactId} = Astro.props as Props;
 
 // 调用中央库 API 返回最新的 Jar 包版本信息
 const fetchJarVersion = async (groupId: string, artifactId: string) => {

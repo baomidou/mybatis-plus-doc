@@ -2,26 +2,15 @@
 title: 注解
 ---
 
-import Badge from "../../../components/Badge.astro";
+import Badge from "../../../../components/Badge.astro";
 
 本文详细介绍了 MyBatisPlus 注解的用法及属性，提供了源码链接以便深入理解。欢迎通过下方链接查看注解类的源码。
 
 > 源码链接：👉 [mybatis-plus-annotation](https://github.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation)
 
-## @TableName - 定义表名
+## `@TableName`
 
 `@TableName` 注解用于标识实体类对应的数据库表名。
-
-**源码链接：** [`@TableName`](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableName.java)
-
-**使用位置：** 实体类
-
-**注解属性：**
-
-- value：表名
-    - 类型：String
-
-示例代码
 
 ```java {1}
 @TableName("sys_user")
@@ -33,32 +22,80 @@ public class User {
 }
 ```
 
-| 属性             | 类型     | 必须指定 | 默认值 | 描述                                                                                      |
-| :--------------- | :------- | :------- | :----- | :---------------------------------------------------------------------------------------- |
-| value            | String   | 否       | ""     | 表名                                                                                      |
-| schema           | String   | 否       | ""     | schema                                                                                    |
-| keepGlobalPrefix | boolean  | 否       | false  | 是否保持使用全局的 tablePrefix 的值（当全局 tablePrefix 生效时）                          |
-| resultMap        | String   | 否       | ""     | xml 中 resultMap 的 id（用于满足特定类型的实体类对象绑定）                                |
-| autoResultMap    | boolean  | 否       | false  | 是否自动构建 resultMap 并使用（如果设置 resultMap 则不会进行 resultMap 的自动构建与注入） |
-| excludeProperty  | String[] | 否       | {}     | 需要排除的属性名 <Badge text="@since 3.3.1"/>                                             |
+### value
 
-**关于 `autoResultMap` 的说明：**
+<p>
+    **类型：** `String` <br/>
+    **默认值：** `""` <br/>
+</p>
+
+填写当前实体类所对应的数据库表名。
+
+### schema
+
+<p>
+    **类型：** `String` <br/>
+    **默认值：** `""` <br/>
+</p>
+
+填写数据库对应的 `Schema`，通常不用填写。
+
+### keepGlobalPrefix
+
+<p>
+    **类型：** `boolean` <br/>
+    **默认值：** `false` <br/>
+</p>
+
+在全局 `tablePrefix` 配置生效时是否保持使用全局的 `tablePrefix` 的值。
+
+### resultMap
+
+<p>
+    **类型：** `String` <br/>
+    **默认值：** `""` <br/>
+</p>
+
+填写 `XML` 中 `ResultMap` 的 `id`，用于满足特定类型的实体类对象绑定。
+
+### autoResultMap
+
+<p>
+    **类型：** `boolean` <br/>
+    **默认值：** `false` <br/>
+</p>
+
+是否自动构建 `resultMap`。
+
+:::note
+如果设置 `resultMap` 则不会进行 `resultMap` 的自动构建与注入
+:::
 
 MP 会自动构建一个 `resultMap` 并注入到 MyBatis 里（一般用不上），请注意以下内容：
 
-因为 MP 底层是 MyBatis，所以 MP 只是帮您注入了常用 CRUD 到 MyBatis 里，注入之前是动态的（根据您的 Entity 字段以及注解变化而变化），但是注入之后是静态的（等于 XML 配置中的内容）。
+因为 MP 底层是 MyBatis，所以 MP 只是帮您注入了常用 `CRUD` 到 MyBatis 里，注入之前是动态的（根据您的 `Entity` 字段以及注解变化而变化），但是注入之后是静态的（等于 `XML` 配置中的内容）。
 
-而对于 `typeHandler` 属性，MyBatis 只支持写在 2 个地方:
+在使用 `resultMap` 相关的操作时，需要注意 `typeHandler` 相关的处理，因为 MyBatis 只支持将 `typeHandler` 写在 2 个地方:
 
-1. 定义在 resultMap 里，作用于查询结果的封装
-2. 定义在 `insert` 和 `update` 语句的 `#{property}` 中的 `property` 后面（例：`#{property,typehandler=xxx.xxx.xxx}`），并且只作用于当前 `设置值`
+1. 定义在 resultMap 里，作用于查询结果的封装。
+2. 定义在 `insert` 和 `update` 语句的 `#{property}` 中的 `property` 后面（例：`#{property,typehandler=xxx.xxx.xxx}`），并且只作用于当前设置值。
 
 除了以上两种直接指定 `typeHandler` 的形式，MyBatis 有一个全局扫描自定义 `typeHandler` 包的配置，原理是根据您的 `property` 类型去找其对应的 `typeHandler` 并使用。
 
-## [@TableId](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableId.java)
 
-- 描述：主键注解
-- 使用位置：实体类主键字段
+### excludeProperty
+
+<p>
+    **类型：** `String[]` <br/>
+    **默认值：** `{}` <br/>
+    **添加于：** <Badge text="@since 3.3.1" vertical="middle"/> <br/>
+</p>
+
+指定需要排除的属性名。
+
+## `@TableId`
+
+`@TableId` 注解用于标识实体类的主键字段。
 
 ```java {3}
 @TableName("sys_user")
@@ -71,23 +108,33 @@ public class User {
 }
 ```
 
-| 属性  | 类型   | 必须指定 | 默认值      | 描述         |
-| :---- | :----- | :------- | :---------- | :----------- |
-| value | String | 否       | ""          | 主键字段名   |
-| type  | Enum   | 否       | IdType.NONE | 指定主键类型 |
+### value
+<p>
+    **类型：** `String` <br/>
+    **默认值：** `""` <br/>
+</p>
 
-### [IdType](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/IdType.java)
+指定当前表主键字段名。如果不设置，将使用实体类的字段名作为数据库表的主键字段。
 
-| 值                | 描述                                                                                                                                                            |
-| :---------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| AUTO              | 数据库 ID 自增                                                                                                                                                  |
-| NONE              | 无状态，该类型为未设置主键类型（注解里等于跟随全局，全局里约等于 INPUT）                                                                                        |
-| INPUT             | insert 前自行 set 主键值                                                                                                                                        |
-| ASSIGN_ID         | 分配 ID(主键类型为 Number(Long 和 Integer)或 String)(since 3.3.0),使用接口`IdentifierGenerator`的方法`nextId`(默认实现类为`DefaultIdentifierGenerator`雪花算法) |
-| ASSIGN_UUID       | 分配 UUID,主键类型为 String(since 3.3.0),使用接口`IdentifierGenerator`的方法`nextUUID`(默认 default 方法)                                                       |
-| ~~ID_WORKER~~     | 分布式全局唯一 ID 长整型类型(please use `ASSIGN_ID`)                                                                                                            |
-| ~~UUID~~          | 32 位 UUID 字符串(please use `ASSIGN_UUID`)                                                                                                                     |
-| ~~ID_WORKER_STR~~ | 分布式全局唯一 ID 字符串类型(please use `ASSIGN_ID`)                                                                                                            |
+### type
+<p>
+    **类型：** `Enum` <br/>
+    **默认值：** `IdType.NONE` <br/>
+</p>
+
+指定主键的生成策略。
+
+`IdType` 详细的类型定义如下：
+
+- `IdType.AUTO`：数据库 ID 自增。
+- `IdType.NONE`：无状态，未设置主键类型，如果全局配置中有 IdType 相关的配置，则会跟随全局配置。
+- `IdType.INPUT`：数据库插入操作前自行设置主键值。
+- `IdType.ASSIGN_ID`：自动分配 `ID`，适用于 `Long`、`Integer`、`String` 类型的主键。默认使用雪花算法通过 `IdentifierGenerator` 的 `nextId` 实现。<Badge text="@since 3.3.0"/>
+- `IdType.ASSIGN_UUID`：自动分配 `UUID`，适用于 `String` 类型的主键。默认实现为 `IdentifierGenerator` 的 `nextUUID` 方法。<Badge text="@since 3.3.0"/>
+
+:::note
+请注意，已弃用的ID类型（如 `ID_WORKER`, `UUID`, `ID_WORKER_STR`）应避免使用，并使用 `ASSIGN_ID` 或 `ASSIGN_UUID` 代替。
+:::
 
 ## [@TableField](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableField.java)
 

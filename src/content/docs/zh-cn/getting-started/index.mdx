@@ -2,7 +2,7 @@
 title: 快速开始
 ---
 
-import LastedDependency from '../../../components/LastedDependency.astro';
+import LastedDependency from '../../../../components/LastedDependency.astro';
 
 我们将通过一个简单的 Demo 来阐述 MyBatis-Plus 的强大功能，在此之前，我们假设您已经：
 
@@ -14,13 +14,13 @@ import LastedDependency from '../../../components/LastedDependency.astro';
 
 现有一张 User 表，其表结构如下：
 
-| id  | name   | age | email              |
-| --- | ------ | --- | ------------------ |
-| 1   | Jone   | 18  | test1@baomidou.com |
-| 2   | Jack   | 20  | test2@baomidou.com |
-| 3   | Tom    | 28  | test3@baomidou.com |
-| 4   | Sandy  | 21  | test4@baomidou.com |
-| 5   | Billie | 24  | test5@baomidou.com |
+| id | name   | age | email              |
+|----|--------|-----|--------------------|
+| 1  | Jone   | 18  | test1@baomidou.com |
+| 2  | Jack   | 20  | test2@baomidou.com |
+| 3  | Tom    | 28  | test3@baomidou.com |
+| 4  | Sandy  | 21  | test4@baomidou.com |
+| 5  | Billie | 24  | test5@baomidou.com |
 
 其对应的数据库 Schema 脚本如下：
 
@@ -68,7 +68,7 @@ INSERT INTO `user` (id, name, age, email) VALUES
 
 引入 MyBatis-Plus Starter 依赖
 
-<LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-boot-starter" />
+<LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-boot-starter"/>
 
 
 ## 配置
