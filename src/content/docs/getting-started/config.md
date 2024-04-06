@@ -1,5 +1,7 @@
 ---
 title: 配置
+sidebar:
+  order: 3
 ---
 
 集成 MyBatis-Plus 非常的简单，我们仅需要一些简单的配置即可使用 MyBatis-Plus 的强大功能！

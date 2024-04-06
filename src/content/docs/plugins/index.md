@@ -1,0 +1,145 @@
+---
+title: 插件主体
+date: 2021-12-14 19:11:32
+permalink: /pages/2976a3/
+article: false
+---
+
+:::warning
+版本要求：3.4.0 版本以上
+:::
+
+## MybatisPlusInterceptor
+
+该插件是核心插件,目前代理了 `Executor#query` 和 `Executor#update` 和 `StatementHandler#prepare` 方法
+
+### 属性
+
+> `private List<InnerInterceptor> interceptors = new ArrayList<>();`
+
+### InnerInterceptor
+
+我们提供的插件都将基于此接口来实现功能
+
+目前已有的功能:
+
+- 自动分页: PaginationInnerInterceptor
+- 多租户: TenantLineInnerInterceptor
+- 动态表名: DynamicTableNameInnerInterceptor
+- 乐观锁: OptimisticLockerInnerInterceptor
+- sql 性能规范: IllegalSQLInnerInterceptor
+- 防止全表更新与删除: BlockAttackInnerInterceptor
+
+::: tip 注意:
+使用多个功能需要注意顺序关系,建议使用如下顺序
+
+- 多租户,动态表名
+- 分页,乐观锁
+- sql 性能规范,防止全表更新与删除
+
+总结: 对 sql 进行单次改造的优先放入,不对 sql 进行改造的最后放入
+:::
+
+## 使用方式(以分页插件举例)
+
+### spring
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+    <!-- 其他属性 略 -->
+    <property name="configuration" ref="configuration"/>
+    <property name="plugins">
+        <array>
+            <ref bean="mybatisPlusInterceptor"/>
+        </array>
+    </property>
+</bean>
+
+<bean id="mybatisPlusInterceptor" class="com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor">
+    <property name="interceptors">
+        <list>
+            <ref bean="paginationInnerInterceptor"/>
+        </list>
+    </property>
+</bean>
+
+<bean id="paginationInnerInterceptor" class="com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor">
+    <!-- 对于单一数据库类型来说,都建议配置该值,避免每次分页都去抓取数据库类型 -->
+    <constructor-arg name="dbType" value="H2"/>
+</bean>
+```
+
+### spring-boot
+
+```java
+@Configuration
+@MapperScan("scan.your.mapper.package")
+public class MybatisPlusConfig {
+
+    /**
+     * 添加分页插件
+     */
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.H2));
+        return interceptor;
+    }
+}
+```
+
+### mybatis-config.xml
+
+```xml
+<plugins>
+  <plugin interceptor="com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor">
+    <property name="@page" value="com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor"/>
+    <property name="page:dbType" value="h2"/>
+  </plugin>
+</plugins>
+```
+
+> property 的配置说明详见 `MybatisPlusInterceptor#setProperties` 的源码方法注释
+
+## 拦截忽略注解 @InterceptorIgnore
+
+|      属性名      |  类型  | 默认值 |                  描述                  |
+| :--------------: | :----: | :----: | :------------------------------------: |
+|    tenantLine    | String |   ""   |                行级租户                |
+| dynamicTableName | String |   ""   |                动态表名                |
+|   blockAttack    | String |   ""   | 攻击 SQL 阻断解析器,防止全表更新与删除 |
+|    illegalSql    | String |   ""   |             垃圾 SQL 拦截              |
+
+> 该注解作用于 xxMapper.java 方法之上
+> 各属性代表对应的插件
+> 各属性不给值则默认为 false 设置为 true 忽略拦截
+> 更多说明详见源码注释
+
+## 手动设置拦截器忽略执行策略
+
+> 该申明权限大于注解权限，相对注解更加灵活。注意，需要手动关闭调用方法!  `3.5.3 +` 版本支持
+
+```java
+// 设置忽略租户插件
+InterceptorIgnoreHelper.handle(IgnoreStrategy.builder().tenantLine(true).build());
+
+// 执行逻辑 ..
+        
+// 关闭忽略策略
+InterceptorIgnoreHelper.clearIgnoreStrategy();
+```
+
+## 本地缓存 SQL 解析
+
+- 缓存 SQL 解析，对分页 SQL 优化、租户等插件有效
+
+```java
+// 静态注入缓存处理类
+static {
+    // 默认支持序列化 FstSerialCaffeineJsqlParseCache，JdkSerialCaffeineJsqlParseCache
+    JsqlParserGlobal.setJsqlParseCache(new JdkSerialCaffeineJsqlParseCache(
+      (cache) -> cache.maximumSize(1024)
+      .expireAfterWrite(5, TimeUnit.SECONDS))
+    );
+}
+```

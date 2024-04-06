@@ -1,0 +1,83 @@
+---
+title: 防全表更新与删除插件
+date: 2022-10-31 10:55:24
+permalink: /pages/c571bc/
+article: false
+---
+
+## BlockAttackInnerInterceptor
+
+> 针对 update 和 delete 语句
+> 作用: 阻止恶意的全表更新删除
+
+
+
+
+
+注入MybatisPlusInterceptor类，并配置BlockAttackInnerInterceptor拦截器
+
+```java
+@Configuration
+public class MybatisPlusConfig {
+  @Bean
+  public MybatisPlusInterceptor mybatisPlusInterceptor() {
+    MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+    interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
+    return interceptor;
+  }
+}
+```
+
+
+
+测试示例（全表更新)
+
+```java
+@SpringBootTest
+public class QueryWrapperTest {
+
+  @Autowired
+  private UserService userService;
+
+  /**
+  + SQL：UPDATE user  SET name=?,email=?;
+  */
+  @Test
+  public void test() {
+    User user = new User();
+    user.setId(999L);
+    user.setName("custom_name");
+    user.setEmail("xxx@mail.com");
+    // com.baomidou.mybatisplus.core.exceptions.MybatisPlusException: Prohibition of table update operation
+    userService.saveOrUpdate(user, null);
+  }
+}
+```
+
+
+
+测试示例（部分更新)
+
+```java
+@SpringBootTest
+public class QueryWrapperTest {
+
+  @Autowired
+  private UserService userService;
+
+  /**
+  + SQL：UPDATE user  SET name=?, email=? WHERE id = ?;
+  */
+  @Test
+  public void test() {
+    LambdaUpdateWrapper<User> wrapper = new LambdaUpdateWrapper<>();
+    wrapper.eq(User::getId, 1);
+    User user = new User();
+    user.setId(10L);
+    user.setName("custom_name");
+    user.setEmail("xxx@mail.com");
+    userService.saveOrUpdate(user, wrapper);
+  }}
+```
+
+

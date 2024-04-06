@@ -1,0 +1,67 @@
+---
+title: 逻辑删除
+date: 2021-12-14 19:04:17
+permalink: /pages/6b03c5/
+article: false
+---
+
+::: tip 说明:
+只对自动注入的 sql 起效:
+
+- 插入: 不作限制
+- 查找: 追加 where 条件过滤掉已删除数据,如果使用 wrapper.entity 生成的 where 条件也会自动追加该字段
+- 更新: 追加 where 条件防止更新到已删除数据,如果使用 wrapper.entity 生成的 where 条件也会自动追加该字段
+- 删除: 转变为 更新
+
+例如:
+
+- 删除: `update user set deleted=1 where id = 1 and deleted=0`
+- 查找: `select id,name,deleted from user where deleted=0`
+
+字段类型支持说明:
+
+- 支持所有数据类型(推荐使用 `Integer`,`Boolean`,`LocalDateTime`)
+- 如果数据库字段使用`datetime`,逻辑未删除值和已删除值支持配置为字符串`null`,另一个值支持配置为函数来获取值如`now()`
+
+附录:
+
+- 逻辑删除是为了方便数据恢复和保护数据本身价值等等的一种方案，但实际就是删除。
+- 如果你需要频繁查出来看就不应使用逻辑删除，而是以一个状态去表示。
+  :::
+
+## 使用方法
+
+### 步骤 1: 配置`com.baomidou.mybatisplus.core.config.GlobalConfig$DbConfig`
+
+- 例: application.yml
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: flag # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+```
+
+### 步骤 2: 实体类字段上加上`@TableLogic`注解
+
+```java
+@TableLogic
+private Integer deleted;
+```
+
+## 常见问题
+
+### 1. 如何 insert ?
+
+> 1. 字段在数据库定义默认值(推荐)
+> 2. insert 前自己 set 值
+> 3. 使用 [自动填充功能](/pages/4c6bcf/)
+
+### 2. 删除接口自动填充功能失效
+
+> 1. 使用 `deleteById` 方法(推荐)
+> 2. 使用 `update` 方法并: `UpdateWrapper.set(column, value)`(推荐)
+> 3. 使用 `update` 方法并: `UpdateWrapper.setSql("column=value")`
+> 4. 使用 [Sql 注入器](/pages/42ea4a/) 注入 `com.baomidou.mybatisplus.extension.injector.methods.LogicDeleteByIdWithFill` 并使用(3.5.0版本已废弃，推荐使用deleteById)
