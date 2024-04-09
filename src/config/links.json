@@ -1,0 +1,52 @@
+[
+    {
+        "name": "D.Yang",
+        "logo": "/images/link/dyang.png",
+        "url": "https://dyang.top/"
+    },
+    {
+        "name": "爱组搭",
+        "logo": "/images/link/aizuda.png",
+        "url": "http://aizuda.com/?from=MybatisPlus"
+    },
+    {
+        "name": "EasyES",
+        "logo": "/images/link/esay-es.svg",
+        "url": "https://www.easy-es.cn/"
+    },
+    {
+        "name": "Layui-Vue",
+        "logo": "/images/link/layui-vue.png",
+        "url": "http://www.layui-vue.com/"
+    },
+    {
+        "name": "JPom",
+        "logo": "/images/link/jpom.svg",
+        "url": "https://jpom.top/"
+    },
+    {
+        "name": "SpringDoc",
+        "logo": "/images/link/springdoc.webp",
+        "url": "https://springdoc.cn/"
+    },
+    {
+        "name": "Sa-Token",
+        "logo": "/images/link/sa-token.png",
+        "url": "https://sa-token.cc/"
+    },
+    {
+        "name": "RuleGo",
+        "logo": "/images/link/rulego.png",
+        "url": "https://rulego.cc/"
+    },
+    {
+        "name": "NanCheung",
+        "logo": "/images/link/nan-cheung.jpg",
+        "url": "https://blog.nancheung.com/"
+    },
+    {
+        "name": "ApiDocs",
+        "logo": "/images/link/api-docs.png",
+        "url": "https://apidocs.cn/"
+    }
+]

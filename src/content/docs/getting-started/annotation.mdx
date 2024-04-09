@@ -3,16 +3,22 @@ title: 注解
 sidebar:
   order: 4
 ---
-
-import Badge from "../../../components/Badge.astro";
+import { LinkCard } from '@astrojs/starlight/components';
+import Badge from "@/components/Badge.astro";
 
 本文详细介绍了 MyBatisPlus 注解的用法及属性，提供了源码链接以便深入理解。欢迎通过下方链接查看注解类的源码。
 
-> 源码链接：👉 [mybatis-plus-annotation](https://github.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation)
+<LinkCard
+  title="MyBatis-Plus Annotation 源码"
+  description="源码中包含较为完整的注释，可以查看源码了解功能。"
+  href="https://github.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation"
+/>
 
-## `@TableName`
+## @TableName
 
-`@TableName` 注解用于标识实体类对应的数据库表名。
+用于标识实体类对应的数据库表名。
+- 当您的实体类与数据库表名不一致时，请使用该注解指定表名。
+- 当您的实体类与数据库表名一致，且实体类是数据库表名的驼峰写法时，该注解可省略。
 
 ```java {1}
 @TableName("sys_user")
@@ -51,6 +57,8 @@ public class User {
 
 在全局 `tablePrefix` 配置生效时是否保持使用全局的 `tablePrefix` 的值。
 
+> 全局 `tablePrefix` 配置：TODO
+
 ### resultMap
 
 <p>
@@ -70,7 +78,7 @@ public class User {
 是否自动构建 `resultMap`。
 
 :::note
-如果设置 `resultMap` 则不会进行 `resultMap` 的自动构建与注入
+如果已经设置 `resultMap`，配置该属性不生效，不会进行 `resultMap` 的自动构建与注入。
 :::
 
 MP 会自动构建一个 `resultMap` 并注入到 MyBatis 里（一般用不上），请注意以下内容：

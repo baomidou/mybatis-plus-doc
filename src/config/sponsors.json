@@ -1,0 +1,23 @@
+[
+    {
+        "title": "DiBoot",
+        "subtitle": "低代码开发平台",
+        "description": "高效赋能开发者，多数功能不手写",
+        "logo": "/images/sponsors/diboot.png",
+        "link": "https://www.diboot.com/?from=mp"
+    },
+    {
+        "title": "FlowLong",
+        "subtitle": "飞龙工作流引擎",
+        "description": "为中国特色审批流打造的国产JSON流程引擎",
+        "logo": "/images/sponsors/flowlong.png",
+        "link": "https://gitee.com/aizuda/flowlong?from=mp"
+    },
+    {
+        "title": "CRMEB",
+        "subtitle": "Java 营销电商系统",
+        "description": "赋能开发者，让商城开发事半功倍",
+        "logo": "/images/sponsors/crmeb.webp",
+        "link": "https://github.crmeb.net/u/MyBatis-Plus"
+    }
+]
