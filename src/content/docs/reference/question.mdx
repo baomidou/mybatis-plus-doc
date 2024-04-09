@@ -1,10 +1,15 @@
 ---
-title: 问答
+title: 常见问题
 ---
 
-[[toc]]
+import Accordion from '@/shortcodes/Accordion.svelte';
 
-## 如何排除非表中字段？
+本文档收录了 MyBatis-Plus 使用时遇到的各种常见问题，如果您在使用 MyBatis-Plus 的时候遇到了问题，请您优先查看本文档。
+
+--------------------------------------------
+
+<br/>
+<Accordion client:load title={'如何排除非表中字段？'}>
 
 以下三种方式选择一种即可：
 
@@ -27,7 +32,10 @@ title: 问答
   private String noColumn;
   ```
 
-## 排除实体父类属性
+</Accordion>
+
+
+<Accordion client:load title={'如何排除实体父类属性？'}>
 
 使用 `transient` 修饰需要排除的父类属性
 
@@ -38,9 +46,12 @@ title: 问答
 private transient String createTime;
 ```
 
-## 出现 `Invalid bound statement (not found)` 异常
+</Accordion>
 
-> 不要怀疑，正视自己，这个异常肯定是你插入的姿势不对……
+
+<Accordion client:load title={'出现 `Invalid bound statement (not found)` 异常'}>
+
+出现该异常通常是由于配置不对或者 Mapper 没扫描到导致的，解决方案如下：
 
 - 检查是不是引入 jar 冲突
 
@@ -76,7 +87,10 @@ private transient String createTime;
 
 - IDEA 默认的 build 步骤可能会引起 mapper 文件无法正常编译到对应的 resources 文件夹中，请检查 build 之后相关资源文件夹是否有对应的 xml 文件，如果没有，请调整 IDEA 的 build 设置，推荐调整为 Maven 或 Gradle 的 build
 
-## 自定义 SQL 无法执行
+</Accordion>
+
+
+<Accordion client:load title={'自定义 SQL 无法执行'}>
 
 问题描述：指在 XML 中里面自定义 SQL，却无法调用。本功能同 `MyBatis` 一样需要配置 XML 扫描路径：
 
@@ -121,9 +135,11 @@ mybatis-plus:
   </build>
   ```
 
-::: tip
+:::note
 注意！Maven 多模块项目的扫描路径需以 `classpath*:` 开头 （即加载多个 jar 包下的 XML 文件）
 :::
+
+</Accordion>
 
 ## 启动时异常问题排查
 

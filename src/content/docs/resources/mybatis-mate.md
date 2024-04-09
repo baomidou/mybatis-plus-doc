@@ -1,9 +1,8 @@
 ---
 title: 数据处理低代码解决方案
 description: Mybatis企业级开源低代码应用开发平台
-permalink: /pages/1fedc1/
-date: 2021-12-17
-article: false
+sidebar:
+  hidden: true
 ---
 
 ## [MyBatis-Mate 企业级数据处理模块](https://baomidou.com/pages/1864e1)

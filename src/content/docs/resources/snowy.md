@@ -1,6 +1,8 @@
 ---
 title: SpringBoot低代码快速开发平台
 description: SpringBoot企业级开源低代码应用开发平台_低代码微服务开发管理平台
+sidebar:
+  hidden: true
 ---
 
 ::: center

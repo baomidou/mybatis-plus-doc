@@ -3,6 +3,7 @@ title: 注解
 sidebar:
   order: 4
 ---
+
 import { LinkCard } from '@astrojs/starlight/components';
 import Badge from "@/components/Badge.astro";
 
@@ -83,7 +84,7 @@ public class User {
 
 MP 会自动构建一个 `resultMap` 并注入到 MyBatis 里（一般用不上），请注意以下内容：
 
-因为 MP 底层是 MyBatis，所以 MP 只是帮您注入了常用 `CRUD` 到 MyBatis 里，注入之前是动态的（根据您的 `Entity` 字段以及注解变化而变化），但是注入之后是静态的（等于 `XML` 配置中的内容）。
+因为 MP 底层是 MyBatis，所以 MP 只是帮您注入了常用 `CRUD` 到 MyBatis 里，注入之前是**动态**的（根据您的 `Entity` 字段以及注解变化而变化），但是注入之后是**静态**的（等于 `XML` 配置中的内容）。
 
 在使用 `resultMap` 相关的操作时，需要注意 `typeHandler` 相关的处理，因为 MyBatis 只支持将 `typeHandler` 写在 2 个地方:
 

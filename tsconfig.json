@@ -4,10 +4,17 @@
     "baseUrl": ".",
     "paths": {
       "@/components/*": ["./src/components/*"],
+      "@/shortcodes/*": ["./src/shortcodes/*"],
       "@/config/*": ["./src/config/*"],
       "@/*": ["./src/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.astro"],
-  "exclude": ["node_modules"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.astro"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

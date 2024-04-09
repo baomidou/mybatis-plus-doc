@@ -1,9 +1,8 @@
 ---
 title: SpringCloud低代码快速开发平台
 description: SpringCloud企业级开源低代码应用开发平台_低代码微服务开发管理平台
-permalink: /pages/3fedc1/
-date: 2021-12-17
-article: false
+sidebar:
+  hidden: true
 ---
 
 ## [PIG 微服务开发平台](https://pig4cloud.com)

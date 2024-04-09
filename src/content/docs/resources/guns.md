@@ -1,9 +1,8 @@
 ---
 title: 插件式一体化开发平台
 description: Guns是一个现代化的Java应用开发框架_插件式一体化开发平台
-permalink: /pages/4fedc1/
-date: 20212-05-22
-article: false
+sidebar:
+  hidden: true
 ---
 
 ::: center

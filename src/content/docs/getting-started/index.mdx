@@ -27,6 +27,8 @@ import LastedDependency from '@/components/LastedDependency.astro';
 其对应的数据库 Schema 脚本如下：
 
 ```sql
+<!-- schema-h2.sql -->
+
 DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user`
@@ -42,6 +44,8 @@ CREATE TABLE `user`
 其对应的数据库 Data 脚本如下：
 
 ```sql
+<!-- data-h2.sql -->
+
 DELETE FROM `user`;
 
 INSERT INTO `user` (id, name, age, email) VALUES
@@ -78,6 +82,8 @@ INSERT INTO `user` (id, name, age, email) VALUES
 在 `application.yml` 配置文件中添加 H2 数据库的相关配置：
 
 ```yaml
+<!-- application.yml -->
+
 # DataSource Config
 spring:
   datasource:
@@ -95,6 +101,8 @@ spring:
 在 Spring Boot 启动类中添加 `@MapperScan` 注解，扫描 Mapper 文件夹：
 
 ```java {2}
+<!-- Application.java -->
+
 @SpringBootApplication
 @MapperScan("com.baomidou.mybatisplus.samples.quickstart.mapper")
 public class Application {
@@ -111,6 +119,8 @@ public class Application {
 编写实体类 `User.java`：
 
 ```java
+<!-- User.java -->
+
 @Data
 public class User {
     private Long id;
