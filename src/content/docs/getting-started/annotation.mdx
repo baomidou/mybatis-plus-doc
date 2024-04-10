@@ -82,17 +82,16 @@ public class User {
 如果已经设置 `resultMap`，配置该属性不生效，不会进行 `resultMap` 的自动构建与注入。
 :::
 
-MP 会自动构建一个 `resultMap` 并注入到 MyBatis 里（一般用不上），请注意以下内容：
+MyBatis-Plus 会自动构建一个 resultMap 并注入到 MyBatis 中。请注意以下内容：
 
-因为 MP 底层是 MyBatis，所以 MP 只是帮您注入了常用 `CRUD` 到 MyBatis 里，注入之前是**动态**的（根据您的 `Entity` 字段以及注解变化而变化），但是注入之后是**静态**的（等于 `XML` 配置中的内容）。
+由于 MyBatis-Plus 底层是基于 MyBatis 的，因此 MyBatis-Plus 会根据您的实体类字段和注解变化动态地注入常用的 CRUD 操作到 MyBatis 中。但一旦注入完成，生成的内容就是静态的，等同于 XML 配置中的内容。
 
-在使用 `resultMap` 相关的操作时，需要注意 `typeHandler` 相关的处理，因为 MyBatis 只支持将 `typeHandler` 写在 2 个地方:
+在使用与 resultMap 相关的操作时，请注意 typeHandler 的处理。MyBatis 只支持将 typeHandler 写在两个地方：
 
-1. 定义在 resultMap 里，作用于查询结果的封装。
-2. 定义在 `insert` 和 `update` 语句的 `#{property}` 中的 `property` 后面（例：`#{property,typehandler=xxx.xxx.xxx}`），并且只作用于当前设置值。
+- 定义在 resultMap 中，作用于查询结果的封装。
+- 定义在 insert 和 update 语句的 `#{property}` 中的 property 后面，例如：`#{property,typehandler=xxx.xxx.xxx}`，并且只作用于当前设置的值。
 
-除了以上两种直接指定 `typeHandler` 的形式，MyBatis 有一个全局扫描自定义 `typeHandler` 包的配置，原理是根据您的 `property` 类型去找其对应的 `typeHandler` 并使用。
-
+除了以上两种直接指定 typeHandler 的形式，MyBatis 还有一个全局扫描自定义 typeHandler 包的配置，原理是根据您的属性类型去找其对应的 typeHandler 并使用。
 
 ### excludeProperty
 
@@ -104,9 +103,9 @@ MP 会自动构建一个 `resultMap` 并注入到 MyBatis 里（一般用不上�
 
 指定需要排除的属性名。
 
-## `@TableId`
+## @TableId
 
-`@TableId` 注解用于标识实体类的主键字段。
+用于标识实体类的主键字段。
 
 ```java {3}
 @TableName("sys_user")
@@ -141,7 +140,7 @@ public class User {
 - `IdType.NONE`：无状态，未设置主键类型，如果全局配置中有 IdType 相关的配置，则会跟随全局配置。
 - `IdType.INPUT`：数据库插入操作前自行设置主键值。
 - `IdType.ASSIGN_ID`：自动分配 `ID`，适用于 `Long`、`Integer`、`String` 类型的主键。默认使用雪花算法通过 `IdentifierGenerator` 的 `nextId` 实现。<Badge text="@since 3.3.0"/>
-- `IdType.ASSIGN_UUID`：自动分配 `UUID`，适用于 `String` 类型的主键。默认实现为 `IdentifierGenerator` 的 `nextUUID` 方法。<Badge text="@since 3.3.0"/>
+- `IdType.ASSIGN_UUID`：自动分配 `UUID`，适用于 `String` 类型的主键。默认实现为 `IdentifierGenerator` 的 `nextUUID` 方法。<Badge text="@since 3.3.0"/>、
 
 :::note
 请注意，已弃用的ID类型（如 `ID_WORKER`, `UUID`, `ID_WORKER_STR`）应避免使用，并使用 `ASSIGN_ID` 或 `ASSIGN_UUID` 代替。
