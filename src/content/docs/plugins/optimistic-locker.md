@@ -1,8 +1,7 @@
 ---
 title: 乐观锁插件
-date: 2021-12-14 19:12:21
-permalink: /pages/0d93c0/
-article: false
+sidebar:
+  order: 3
 ---
 
 ## OptimisticLockerInnerInterceptor

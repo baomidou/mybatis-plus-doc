@@ -1,8 +1,7 @@
 ---
 title: 数据权限插件
-date: 2023-08-07 17:39:50
-permalink: /pages/1a87dp/
-article: false
+sidebar:
+  order: 4
 ---
 
 ## DataPermissionInterceptor

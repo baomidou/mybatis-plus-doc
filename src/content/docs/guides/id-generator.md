@@ -1,8 +1,7 @@
 ---
 title: 自定义ID生成器
-date: 2021-12-14 19:03:10
-permalink: /pages/568eb2/
-article: false
+sidebar:
+  order: 12
 ---
 
 ::: tip

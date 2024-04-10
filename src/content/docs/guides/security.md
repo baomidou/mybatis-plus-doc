@@ -1,8 +1,7 @@
 ---
 title: 数据安全保护
-date: 2021-12-14 19:09:20
-permalink: /pages/e0a5ce/
-article: false
+sidebar:
+  order: 16
 ---
 
 > 该功能为了保护数据库配置及数据安全，在一定的程度上控制开发人员流动导致敏感信息泄露。

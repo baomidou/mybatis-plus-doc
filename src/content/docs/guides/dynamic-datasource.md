@@ -1,8 +1,7 @@
 ---
-title: 多数据源
-date: 2021-12-14 19:08:10
-permalink: /pages/a61e1b/
-article: false
+title: 多数据源支持
+sidebar:
+  order: 14
 ---
 
 多数据源既动态数据源，项目开发逐渐扩大，单个数据源、单一数据源已经无法满足需求项目的支撑需求。

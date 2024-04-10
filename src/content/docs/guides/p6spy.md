@@ -1,8 +1,7 @@
 ---
-title: 执行SQL分析打印
-date: 2021-12-14 19:07:39
-permalink: /pages/833fab/
-article: false
+title: SQL分析与打印
+sidebar:
+  order: 15
 ---
 
 > 该功能依赖 `p6spy` 组件，完美的输出打印 SQL 及执行时长 `3.1.0` 以上版本

@@ -20,14 +20,14 @@
         "url": "https://www.oracle.com/database/"
     },
     {
-        "name": "GaussDB",
-        "logo": "/images/db/gauss.png",
-        "url": "https://www.huawei.com/en/cloud/gaussdb"
-    },
-    {
         "name": "OceanBase",
         "logo": "/images/db/oceanbase.png",
         "url": "https://www.oceanbase.com/"
+    },
+    {
+        "name": "GaussDB",
+        "logo": "/images/db/gauss.png",
+        "url": "https://www.huawei.com/en/cloud/gaussdb"
     },
     {
         "name": "SQLite",

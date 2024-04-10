@@ -1,8 +1,7 @@
 ---
-title: 代码生成器配置旧
-date: 2021-12-14 19:15:26
-permalink: /pages/061573/
-article: false
+title: 代码生成器配置
+sidebar:
+  order: 3
 ---
 
 ## 基本配置

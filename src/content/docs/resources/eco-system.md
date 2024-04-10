@@ -1,5 +1,7 @@
 ---
 title: 开源生态
+sidebar:
+  order: 1
 ---
 
 ## Baomidou 开源团队其余作品

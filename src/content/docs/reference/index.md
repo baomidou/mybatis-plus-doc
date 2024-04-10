@@ -1,8 +1,7 @@
 ---
 title: 使用配置
-date: 2021-12-14 19:15:07
-permalink: /pages/56bac0/
-article: false
+sidebar:
+  order: 1
 ---
 
 本文讲解了`MyBatis-Plus`在使用过程中的配置选项，其中，部分配置继承自`MyBatis`原生所支持的配置

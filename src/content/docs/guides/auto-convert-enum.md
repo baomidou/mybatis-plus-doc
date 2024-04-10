@@ -1,8 +1,7 @@
 ---
-title: 通用枚举
-date: 2021-12-14 19:05:31
-permalink: /pages/8390a4/
-article: false
+title: 自动映射枚举
+sidebar:
+  order: 8
 ---
 
 解决了繁琐的配置，让 mybatis 优雅的使用枚举属性！

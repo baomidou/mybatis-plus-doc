@@ -1,8 +1,7 @@
 ---
 title: 字段类型处理器
-date: 2021-12-14 19:06:04
-permalink: /pages/fd41d8/
-article: false
+sidebar:
+  order: 18
 ---
 
 > 类型处理器，用于 JavaType 与 JdbcType 之间的转换，用于 PreparedStatement 设置参数值和从 ResultSet 或 CallableStatement 中取出一个值，本文讲解 `mybatis-plus` 内置常用类型处理器如何通过`TableField`注解快速注入到 `mybatis` 容器中。

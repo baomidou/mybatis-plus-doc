@@ -1,8 +1,7 @@
 ---
-title: 主键策略
-date: 2021-12-14 19:02:09
-permalink: /pages/e131bd/
-article: false
+title: 主键生成策略
+sidebar:
+  order: 11
 ---
 
 ::: tip

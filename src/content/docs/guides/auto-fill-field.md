@@ -1,9 +1,7 @@
 ---
-title: 自动填充功能
-date: 2021-12-14 19:06:36
-permalink: /pages/4c6bcf/
-article: false
-
+title: 自动填充字段
+sidebar:
+  order: 9
 ---
 
 示例工程：

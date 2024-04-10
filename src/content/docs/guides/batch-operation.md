@@ -1,8 +1,7 @@
 ---
 title: 批量操作
-date: 2023-10-24 23:49:00
-permalink: /pages/33c2c2/
-article: false
+sidebar:
+  order: 7
 ---
 # 批量操作
 

@@ -1,8 +1,9 @@
 ---
-title: 代码生成器配置新
-date: 2021-12-15 09:04:00
-permalink: /pages/981406/
-article: false
+title: 代码生成器配置
+sidebar:
+  order: 2
+  badge:
+    text: New
 ---
 
 ## 数据库配置(DataSourceConfig)

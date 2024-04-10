@@ -1,8 +1,7 @@
 ---
 title: 非法SQL拦截插件
-date: 2023-08-07 17:39:50
-permalink: /pages/3c87is/
-article: false
+sidebar:
+  order: 7
 ---
 
 ## IllegalSQLInnerInterceptor

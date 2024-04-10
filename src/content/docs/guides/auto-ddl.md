@@ -1,8 +1,7 @@
 ---
-title: 脚本自动维护
-date: 2022-12-25 18:33:00
-permalink: /pages/1812u1/
-article: false
+title: 自动维护DDL
+sidebar:
+  order: 10
 ---
 
 - `3.5.3 +` 版本支持

@@ -1,8 +1,7 @@
 ---
-title: MybatisX快速开发插件
-date: 2021-12-14 19:08:34
-permalink: /pages/ba5b24/
-article: false
+title: Mybatis X 插件
+sidebar:
+  order: 20
 ---
 
 MybatisX 是一款基于 IDEA 的快速开发插件，为效率而生。

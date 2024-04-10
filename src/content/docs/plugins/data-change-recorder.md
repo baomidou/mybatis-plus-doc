@@ -1,8 +1,7 @@
 ---
 title: 数据变动记录插件
-date: 2023-08-07 17:39:50
-permalink: /pages/1c87db/
-article: false
+sidebar:
+  order: 6
 ---
 
 ## DataChangeRecorderInnerInterceptor

@@ -1,8 +1,7 @@
 ---
 title: 分页插件
-date: 2021-12-14 19:12:01
-permalink: /pages/97710a/
-article: false
+sidebar:
+  order: 2
 ---
 
 ## PaginationInnerInterceptor

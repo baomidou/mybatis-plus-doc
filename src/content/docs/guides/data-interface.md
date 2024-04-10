@@ -1,19 +1,18 @@
 ---
-title: CRUD 接口
-date: 2021-12-14 18:25:13
-permalink: /pages/49cc81/
-article: false
+title: 持久层接口
+sidebar:
+  order: 3
 ---
 
 ## Service CRUD 接口
 
-::: tip 说明:
+:::tip[说明]
 
 - 通用 Service CRUD 封装[IService](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/service/IService.java)接口，进一步封装 CRUD 采用 `get 查询单行` `remove 删除` `list 查询集合` `page 分页` 前缀命名方式区分 `Mapper` 层避免混淆，
 - 泛型 `T` 为任意实体对象
 - 建议如果存在自定义通用 Service 方法的可能，请创建自己的 `IBaseService` 继承 `Mybatis-Plus` 提供的基类
 - 对象 `Wrapper` 为 [条件构造器](/pages/10c804/)
-  :::
+:::
 
 ### Save
 

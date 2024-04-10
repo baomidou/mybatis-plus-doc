@@ -1,8 +1,7 @@
 ---
 title: SQL注入器
-date: 2021-12-14 19:07:06
-permalink: /pages/42ea4a/
-article: false
+sidebar:
+  order: 17
 ---
 
 ::: tip 注入器配置

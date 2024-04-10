@@ -1,8 +1,7 @@
 ---
 title: 插件主体
-date: 2021-12-14 19:11:32
-permalink: /pages/2976a3/
-article: false
+sidebar:
+  order: 1
 ---
 
 :::warning

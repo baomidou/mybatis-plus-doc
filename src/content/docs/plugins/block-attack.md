@@ -1,8 +1,7 @@
 ---
 title: 防全表更新与删除插件
-date: 2022-10-31 10:55:24
-permalink: /pages/c571bc/
-article: false
+sidebar:
+  order: 8
 ---
 
 ## BlockAttackInnerInterceptor

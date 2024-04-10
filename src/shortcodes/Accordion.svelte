@@ -2,11 +2,25 @@
   export let title;
   export let className = ''; // 默认为空字符串，可选参数
   let show = false;
+
+  let contentElement; // 用于绑定到accordion-content的DOM元素
+
+  // 根据内容动态设置max-height
+  function toggleAccordion() {
+    show = !show;
+    if (show) {
+      // 用实际内容的高度设置max-height
+      contentElement.style.maxHeight = `${contentElement.scrollHeight}px`;
+    } else {
+      // 折叠时设置max-height回0
+      contentElement.style.maxHeight = '0px';
+    }
+  }
 </script>
 
 <div class={["accordion", show ? 'active' : 'collapsed', className].join(' ')}>
-  <button class="accordion-header" on:click={() => show = !show}>
-    {title}
+  <button class="accordion-header" on:click={toggleAccordion}>
+    <span class="title">{title}</span>
     <svg
       class="accordion-icon"
       x="0px"
@@ -20,8 +34,9 @@
       ></path>
     </svg>
   </button>
-  <div class={["accordion-content", show ? 'active' : 'collapsed', className].join(' ')}>
+  <div class="accordion-content" bind:this={contentElement}>
     <slot></slot>
+    <br/>
   </div>
 </div>
 
@@ -32,11 +47,15 @@
   :global(.accordion-header) {
     @apply flex w-full cursor-pointer items-center justify-between px-4 py-4 text-lg text-gray-800 text-left text-base font-medium;
   }
+  :global(.accordion-header .title) {
+    @apply flex-1;
+  }
   :global(.accordion-icon) {
-    @apply ml-auto h-5 w-5 transform rotate-[-90deg] transition-transform duration-200;
+    @apply ml-auto h-5 w-5 flex-shrink-0 transform rotate-[-90deg] transition-transform duration-200;
   }
   :global(.accordion-content) {
     @apply p-4 overflow-hidden transition-all duration-200 ease-out;
+    height: auto; /* 默认高度自适应 */
   }
   :global(.accordion.active .accordion-icon) {
     @apply rotate-0;
@@ -44,7 +63,7 @@
   :global(.accordion.active .accordion-content) {
     @apply max-h-screen;
   }
-  :global(.accordion.collapsed .accordion-content.collapsed ) {
+  :global(.accordion.collapsed .accordion-content ) {
     @apply max-h-0 py-0 my-0;
   }
 </style>

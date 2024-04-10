@@ -1,8 +1,7 @@
 ---
 title: 动态表名插件
-date: 2021-12-14 19:13:50
-permalink: /pages/2a45ff/
-article: false
+sidebar:
+  order: 5
 ---
 
 ## DynamicTableNameInnerInterceptor

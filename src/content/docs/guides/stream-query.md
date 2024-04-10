@@ -1,8 +1,7 @@
 ---
 title: 流式查询
-date: 2023-10-24 23:49:00
-permalink: /pages/1922u2/
-article: false
+sidebar:
+  order: 5
 ---
 # 流式查询
 - `3.5.4 +` 版本支持

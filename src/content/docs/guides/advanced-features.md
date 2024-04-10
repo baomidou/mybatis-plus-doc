@@ -1,5 +1,7 @@
 ---
 title: 高级特性
+sidebar:
+  order: 19
 ---
 
 <a href="https://space.bilibili.com/212983666/channel/collectiondetail?sid=606288"><img src="https://minio.pigx.vip/oss/1659603809.png"/></a>

@@ -1,8 +1,7 @@
 ---
 title: 多租户插件
-date: 2021-12-14 19:12:43
-permalink: /pages/aef2f2/
-article: false
+sidebar:
+  order: 3
 ---
 
 ## TenantLineInnerInterceptor

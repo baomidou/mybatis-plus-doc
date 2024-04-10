@@ -1,8 +1,7 @@
 ---
 title: 安全漏洞避免说明
-date: 2021-12-14 19:03:10
-permalink: /pages/110sec/
-article: false
+sidebar:
+  order: 4
 ---
 
 ::: tip
