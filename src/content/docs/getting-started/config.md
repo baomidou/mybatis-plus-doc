@@ -46,6 +46,6 @@ sidebar:
 
 通常来说，一般的简单工程，通过以上配置即可正常使用 MyBatis-Plus，具体可参考以下项目：[Spring Boot 快速启动示例](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart)、[Spring MVC 快速启动示例](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart-springmvc)。
 
-同时 MyBatis-Plus 提供了大量的个性化配置来满足不同复杂度的工程，大家可根据自己的项目按需取用，详细配置请参考[使用配置](/pages/56bac0/)一文。
+同时 MyBatis-Plus 提供了大量的个性化配置来满足不同复杂度的工程，大家可根据自己的项目按需取用，详细配置请参考[使用配置](/reference/)一文。
 
-针对复杂的表结构，我们也提供了丰富的字段注解以满足大家的特殊需求，详情请参考[注解](/getting-started/annotation)一文。
+针对复杂的表结构，我们也提供了丰富的字段注解以满足大家的特殊需求，详情请参考[注解](/reference/annotation/)一文。

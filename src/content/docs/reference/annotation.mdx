@@ -1,7 +1,7 @@
 ---
-title: 注解
+title: 注解配置
 sidebar:
-  order: 4
+  order: 2
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -128,6 +128,8 @@ public class User {
 
 指定主键的生成策略。
 
+#### IdType
+
 `IdType` 详细的类型定义如下：
 
 - `IdType.AUTO`：数据库 ID 自增。
@@ -196,7 +198,7 @@ public class User {
 
 字段在新增时的策略。
 
-- `FieldStrategy.DEFAULT`：该属性表示默认参考全局配置，而全部配置默认又是 NOT_ 等同于如下手写 XML SQL
+`FieldStrategy.DEFAULT`：该属性表示默认参考全局配置，而全部配置默认又是 `FieldStrategy.NOT_NULL`，所以使用该项配置等同于如下 XML SQL
 
     ```xml
     insert into table_a(<if test="columnProperty != null">column</if>) 

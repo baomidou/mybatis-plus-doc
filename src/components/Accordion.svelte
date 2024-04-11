@@ -1,6 +1,6 @@
 <script>
   export let title;
-  export let className = ''; // 默认为空字符串，可选参数
+  export let className = ""; // 默认为空字符串，可选参数
   let show = false;
 
   let contentElement; // 用于绑定到accordion-content的DOM元素
@@ -13,12 +13,12 @@
       contentElement.style.maxHeight = `${contentElement.scrollHeight}px`;
     } else {
       // 折叠时设置max-height回0
-      contentElement.style.maxHeight = '0px';
+      contentElement.style.maxHeight = "0px";
     }
   }
 </script>
 
-<div class={["accordion", show ? 'active' : 'collapsed', className].join(' ')}>
+<div class={["accordion", show ? "active" : "collapsed", className].join(" ")}>
   <button class="accordion-header" on:click={toggleAccordion}>
     <span class="title">{title}</span>
     <svg
@@ -35,8 +35,8 @@
     </svg>
   </button>
   <div class="accordion-content" bind:this={contentElement}>
-    <slot></slot>
-    <br/>
+    <slot />
+    <br />
   </div>
 </div>
 
@@ -63,7 +63,7 @@
   :global(.accordion.active .accordion-content) {
     @apply max-h-screen;
   }
-  :global(.accordion.collapsed .accordion-content ) {
+  :global(.accordion.collapsed .accordion-content) {
     @apply max-h-0 py-0 my-0;
   }
 </style>

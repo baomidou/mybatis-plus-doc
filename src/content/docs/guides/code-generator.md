@@ -4,19 +4,15 @@ sidebar:
   order: 2
 ---
 
-::: warning
-适用版本：mybatis-plus-generator 3.5.1 以下版本，3.5.1 及以上的请参考 [代码生成器新](/pages/779a6e/)
-:::
-
 AutoGenerator 是 MyBatis-Plus 的代码生成器，通过 AutoGenerator 可以快速生成 Entity、Mapper、Mapper XML、Service、Controller 等各个模块的代码，极大的提升了开发效率。
 
-::: tip 特别说明:
-自定义模板有哪些可用参数？[Github](https://github.com/baomidou/generator/blob/develop/mybatis-plus-generator/src/main/java/com/baomidou/mybatisplus/generator/engine/AbstractTemplateEngine.java) AbstractTemplateEngine 类中方法 getObjectMap 返回 objectMap 的所有值都可用。
+:::note
+老代码生成器适用于 3.5.1 以下版本，如果您用的是 3.5.1 以上的版本，请参考 [新代码生成器](/guides/new-code-generator/) 进行配置与使用。
 :::
 
 演示效果图：
 
-![relationship](/img/generator.gif)
+![relationship](/images/content/generator.gif)
 
 ```java
 // 演示例子，执行 main 方法控制台输入模块表名回车自动生成对应项目目录中
@@ -145,7 +141,7 @@ public class CodeGenerator {
 }
 ```
 
-更多详细配置，请参考[代码生成器配置](../config/generator-config.md)一文。
+更多详细配置，请参考[代码生成器配置](/reference/code-generator-configuration)一文。
 
 ## 使用教程
 
@@ -236,11 +232,15 @@ MyBatis-Plus 的代码生成器提供了大量的自定义参数供用户选择�
   dataSourceConfig.setPassword("password");
   ```
 
-更多生成器配置请移步至 [代码生成器配置旧](/pages/061573/) 查看。
+更多生成器配置请移步至 [代码生成器配置](/reference/code-generator-configuration/) 查看。
 
 ## 自定义模板引擎
 
 请继承类 com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine
+
+:::tip
+自定义模板有哪些可用参数？[AbstractTemplateEngine](https://github.com/baomidou/generator/blob/develop/mybatis-plus-generator/src/main/java/com/baomidou/mybatisplus/generator/engine/AbstractTemplateEngine.java) 类中方法 getObjectMap 返回 objectMap 的所有值都可用。
+:::
 
 ## 自定义代码模板
 
@@ -283,7 +283,7 @@ entity2.java.vm
 
 ## 字段其他信息查询注入
 
-![relationship](/img/custom-fields.png)
+![relationship](/images/content/custom-fields.png)
 
 ```java
 new DataSourceConfig().setDbQuery(new MySqlQuery() {

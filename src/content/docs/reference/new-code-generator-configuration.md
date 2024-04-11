@@ -1,7 +1,7 @@
 ---
 title: 代码生成器配置
 sidebar:
-  order: 2
+  order: 3
   badge:
     text: New
 ---

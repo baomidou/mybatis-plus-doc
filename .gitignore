@@ -4,9 +4,6 @@ dist/
 # IDEA
 .idea/
 
-# VSCode
-.vscode/
-
 # generated types
 .astro/
 
