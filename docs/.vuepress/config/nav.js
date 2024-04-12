@@ -5,7 +5,7 @@ module.exports = [
     link: "/pages/24112f/",
     items: [
       { text: "快速入门", link: "/pages/24112f/" },
-      { text: "核心功能", link: "/pages/779a6e/" },
+      { text: "核心功能", link: "/pages/10c804/" },
       { text: "扩展", link: "/pages/6b03c5/" },
       { text: "插件", link: "/pages/2976a3/" }
     ]
