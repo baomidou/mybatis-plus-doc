@@ -37,8 +37,8 @@ postList: none
 
 ### 🎖特别用户
 
-<a href="https://www.diboot.com/?from=mp" target="_blank">
-  <img class="no-zoom" height="70" width="224" src="https://www.diboot.com/diboot_slogon.png">
+<a href="http://boot.aizuda.com/?from=mp" target="_blank">
+  <img class="no-zoom" height="70" width="224" src="/img/azd01.png">
 </a>
 
 <a href="https://gitee.com/aizuda/flowlong?from=mp" target="_blank">

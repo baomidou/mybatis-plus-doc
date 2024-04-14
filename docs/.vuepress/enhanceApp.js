@@ -1,7 +1,7 @@
 // import vue from 'vue/dist/vue.esm.browser'
 let sidebarArray = [
-  `<a href="https://www.diboot.com/?from=mp" target="_blank">
-     <img class="no-zoom" style="width:100%;" src="https://www.diboot.com/diboot_slogon.png">
+  `<a href="http://boot.aizuda.com/?from=mp" target="_blank">
+     <img class="no-zoom" style="width:100%;" src="/img/azd01.png">
    </a>`,
   `<a href="https://gitee.com/aizuda/flowlong?from=mp" target="_blank">
      <img class="no-zoom" style="width:100%;" src="/img/aizuda.png">
