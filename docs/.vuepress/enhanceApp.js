@@ -1,10 +1,10 @@
 // import vue from 'vue/dist/vue.esm.browser'
 let sidebarArray = [
-  `<a href="http://boot.aizuda.com/?from=mp" target="_blank">
+  `<a href="https://flowlong.gitee.io/docs/preface.html?from=mp" target="_blank">
      <img class="no-zoom" style="width:100%;" src="/img/azd01.png">
    </a>`,
-  `<a href="https://gitee.com/aizuda/flowlong?from=mp" target="_blank">
-     <img class="no-zoom" style="width:100%;" src="/img/aizuda.png">
+  `<a href="https://gitee.com/gz-yami/mall4j?from=mp" target="_blank">
+     <img class="no-zoom" style="width:100%;" src="/img/mall4j.gif">
    </a>`,
   `<a href="http://github.crmeb.net/u/MyBatis-Plus" target="_blank">
      <img class="no-zoom" style="width:100%;" src="/img/crmeb3.gif">
