@@ -1,6 +1,6 @@
 // import vue from 'vue/dist/vue.esm.browser'
 let sidebarArray = [
-  `<a href="https://flowlong.gitee.io/docs/preface.html?from=mp" target="_blank">
+  `<a href="https://doc.flowlong.com/?from=mp" target="_blank">
      <img class="no-zoom" style="width:100%;" src="/img/azd01.png">
    </a>`,
   `<a href="https://gitee.com/gz-yami/mall4j?from=mp" target="_blank">

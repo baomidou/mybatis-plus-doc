@@ -37,7 +37,7 @@ postList: none
 
 ### 🎖特别用户
 
-<a href="https://flowlong.gitee.io/docs/preface.html?from=mp" target="_blank">
+<a href="https://doc.flowlong.com/?from=mp" target="_blank">
   <img class="no-zoom" height="70" width="224" src="/img/azd01.png">
 </a>
 
