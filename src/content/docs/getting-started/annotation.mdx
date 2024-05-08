@@ -17,9 +17,7 @@ import Badge from "@/components/Badge.astro";
 
 ## @TableName
 
-用于标识实体类对应的数据库表名。
-- 当您的实体类与数据库表名不一致时，请使用该注解指定表名。
-- 当您的实体类与数据库表名一致，且实体类是数据库表名的驼峰写法时，该注解可省略。
+该注解用于指定实体类对应的数据库表名。当实体类名与数据库表名不一致，或者实体类名不是数据库表名的驼峰写法时，您需要使用这个注解来明确指定表名。
 
 ```java {1}
 @TableName("sys_user")
@@ -37,7 +35,7 @@ public class User {
     **默认值：** `""`
 </p>
 
-填写当前实体类所对应的数据库表名。
+指定实体类对应的数据库表名。如果实体类名与表名不一致，使用这个属性来指定正确的表名。
 
 ### schema
 <p>
@@ -45,7 +43,7 @@ public class User {
     **默认值：** `""`
 </p>
 
-填写数据库对应的 `Schema`，通常不用填写。
+指定数据库的 Schema 名称。通常情况下，如果你的数据库没有使用 Schema 来组织表，这个属性可以不填写。
 
 ### keepGlobalPrefix
 <p>
@@ -53,9 +51,7 @@ public class User {
     **默认值：** `false`
 </p>
 
-在全局 `tablePrefix` 配置生效时是否保持使用全局的 `tablePrefix` 的值。
-
-> 全局 `tablePrefix` 配置：TODO
+当全局配置了 tablePrefix 时，这个属性决定是否保持使用全局的表前缀。如果设置为 true，即使注解中指定了表名，也会自动加上全局的表前缀。
 
 ### resultMap
 <p>
@@ -63,7 +59,7 @@ public class User {
     **默认值：** `""`
 </p>
 
-填写 `XML` 中 `ResultMap` 的 `id`，用于满足特定类型的实体类对象绑定。
+指定在 XML 中定义的 ResultMap 的 ID，用于将查询结果映射到特定类型的实体类对象。
 
 ### autoResultMap
 <p>
@@ -71,22 +67,18 @@ public class User {
     **默认值：** `false`
 </p>
 
-是否自动构建 `resultMap`。
+是否自动构建 resultMap。如果已经设置了 resultMap，这个属性不会生效。
 
 :::note
-如果已经设置 `resultMap`，配置该属性不生效，不会进行 `resultMap` 的自动构建与注入。
-:::
+MyBatis-Plus 会自动构建一个 resultMap 并注入到 MyBatis 中。但是，一旦注入完成，生成的内容就是静态的，类似于 XML 配置中的内容。在使用与 resultMap 相关的操作时，请注意 typeHandler 的处理。
 
-MyBatis-Plus 会自动构建一个 resultMap 并注入到 MyBatis 中。请注意以下内容：
-
-由于 MyBatis-Plus 底层是基于 MyBatis 的，因此 MyBatis-Plus 会根据您的实体类字段和注解变化动态地注入常用的 CRUD 操作到 MyBatis 中。但一旦注入完成，生成的内容就是静态的，等同于 XML 配置中的内容。
-
-在使用与 resultMap 相关的操作时，请注意 typeHandler 的处理。MyBatis 只支持将 typeHandler 写在两个地方：
+MyBatis 只支持将 typeHandler 写在两个地方：
 
 - 定义在 resultMap 中，作用于查询结果的封装。
 - 定义在 insert 和 update 语句的 `#{property}` 中的 property 后面，例如：`#{property,typehandler=xxx.xxx.xxx}`，并且只作用于当前设置的值。
 
 除了以上两种直接指定 typeHandler 的形式，MyBatis 还有一个全局扫描自定义 typeHandler 包的配置，原理是根据您的属性类型去找其对应的 typeHandler 并使用。
+:::
 
 ### excludeProperty
 <p>
@@ -95,11 +87,11 @@ MyBatis-Plus 会自动构建一个 resultMap 并注入到 MyBatis 中。请注�
     **添加于：** <Badge text="@since 3.3.1" vertical="middle"/>
 </p>
 
-指定需要排除的属性名。
+指定在映射时需要排除的属性名。这些属性将不会被包含在生成的 SQL 语句中。
 
 ## @TableId
 
-用于标识实体类的主键字段。如果您的主键 ID 名称为 id，则该注解可以省略。
+该注解用于标记实体类中的主键字段。如果你的主键字段名为 id，你可以省略这个注解。
 
 ```java {3}
 @TableName("sys_user")
@@ -118,7 +110,7 @@ public class User {
     **默认值：** `""`
 </p>
 
-指定当前表主键字段名。如果不设置，将使用实体类的字段名作为数据库表的主键字段。
+指定数据库表的主键字段名。如果不设置，MyBatis-Plus 将使用实体类中的字段名作为数据库表的主键字段名。
 
 ### type
 <p>
@@ -128,28 +120,28 @@ public class User {
 
 指定主键的生成策略。
 
-`IdType` 详细的类型定义如下：
+**IdType 枚举类型定义**
 
-- `IdType.AUTO`：数据库 ID 自增。
-- `IdType.NONE`：无状态，未设置主键类型，如果全局配置中有 IdType 相关的配置，则会跟随全局配置。
-- `IdType.INPUT`：数据库插入操作前自行设置主键值。
+- `IdType.AUTO`：使用数据库自增 ID 作为主键。
+- `IdType.NONE`：无特定生成策略，如果全局配置中有 IdType 相关的配置，则会跟随全局配置。
+- `IdType.INPUT`：在插入数据前，由用户自行设置主键值。
 - `IdType.ASSIGN_ID`：自动分配 `ID`，适用于 `Long`、`Integer`、`String` 类型的主键。默认使用雪花算法通过 `IdentifierGenerator` 的 `nextId` 实现。<Badge text="@since 3.3.0"/>
-- `IdType.ASSIGN_UUID`：自动分配 `UUID`，适用于 `String` 类型的主键。默认实现为 `IdentifierGenerator` 的 `nextUUID` 方法。<Badge text="@since 3.3.0"/>、
+- `IdType.ASSIGN_UUID`：自动分配 `UUID`，适用于 `String` 类型的主键。默认实现为 `IdentifierGenerator` 的 `nextUUID` 方法。<Badge text="@since 3.3.0"/>
 
 :::note
-请注意，已弃用的ID类型（如 `ID_WORKER`, `UUID`, `ID_WORKER_STR`）应避免使用，并使用 `ASSIGN_ID` 或 `ASSIGN_UUID` 代替。
+请注意，已弃用的ID类型（如 `ID_WORKER`, `UUID`, `ID_WORKER_STR`）应避免使用，并使用 `ASSIGN_ID` 或 `ASSIGN_UUID` 代替。这些新的策略提供了更好的灵活性和兼容性。
 :::
 
 ## @TableField
 
-用于标识实体类的非主键字段。如果您的实体类字段名称是数据库字段的驼峰写法，则该注解可以忽略。
+该注解用于标记实体类中的非主键字段，它告诉 MyBatis-Plus 如何映射实体类字段到数据库表字段。如果你的实体类字段名遵循驼峰命名规则，并且与数据库表字段名一致，你可以省略这个注解。
 
 ```java {5}
 @TableName("sys_user")
 public class User {
     @TableId
     private Long id;
-    @TableField("nickname")
+    @TableField("nickname") // 映射到数据库字段 "nickname"
     private String name;
     private Integer age;
     private String email;
@@ -161,32 +153,130 @@ public class User {
     **类型：** `String`<br/>
     **默认值：** `""`
 </p>
-指定数据库字段名。
+指定数据库中的字段名。如果你的实体类字段名与数据库字段名不同，使用这个属性来指定正确的数据库字段名。
 
 ### exist
 <p>
     **类型：** `boolean`<br/>
     **默认值：** `true`
 </p>
-指示是否为数据库表字段。
+指示这个字段是否存在于数据库表中。如果设置为 false，MyBatis-Plus 在生成 SQL 时会忽略这个字段。
 
 ### condition
 <p>
     **类型：** `String`<br/>
     **默认值：** `""`
 </p>
-在按照实体查询（EntityQuery）时，字段所运用比较条件的写法注入。
+在执行实体查询（EntityQuery）时，指定字段的条件表达式。这允许你自定义字段在 WHERE 子句中的比较方式。如果该项有值则按设置的值为准，无值则默认为全局的 `%s=#{%s}` 为准。
 
-如有值则按设置的值为准，无值则默认为全局的 `%s=#{%s}`，写法详见 [SqlCondition](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java)。
+写法详见 [SqlCondition](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java)。
+
+:::note[EntityQuery 解释]
+EntityQuery 是指在构建查询条件时，直接使用实体类的字段来设置查询条件，而不是手动编写 SQL 片段。
+:::
+
+**示例说明**
+
+假设我们有一个实体类 User，它有 id、name 和 age 三个字段。我们想要查询所有年龄大于 18 岁的用户，我们可以使用 QueryWrapper 来构建这个查询，直接传递 User 实体类实例：
+
+```java
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.SqlCondition;
+
+// 实体类定义
+@TableName("sys_user")
+public class User {
+    @TableId
+    private Long id;
+
+    private String name;
+
+    @TableField(condition = "%s > #{%s}") // 自定义 age 字段的条件表达式
+    private Integer age;
+
+    private String email;
+}
+
+// 使用 EntityQuery 构建查询
+public List<User> findUserAgeOver18() {
+    // 创建 User 实例，用于设置查询条件
+    User queryEntity = new User();
+    queryEntity.setAge(18); // 设置 age 字段的值
+
+    // 创建 QueryWrapper 实例，并传递 User 实例
+    QueryWrapper<User> queryWrapper = new QueryWrapper<>(queryEntity);
+
+    // 执行查询
+    List<User> userList = userMapper.selectList(queryWrapper);
+
+    return userList;
+}
+```
+
+在这个例子中，我们通过 `@TableField(condition = "%s > #{%s}")` 注解为 age 字段设置了自定义的条件表达式。当构建查询时，我们创建了一个 User 实例，并设置了 age 字段的值为 18。然后，我们使用这个实例来创建 QueryWrapper，MyBatis-Plus 会根据实体类上的注解自动生成相应的 SQL 查询条件。
+
+执行 findUserAgeOver18 方法时，MyBatis-Plus 会生成类似以下的 SQL 语句：
+
+```sql
+SELECT * FROM sys_user WHERE age > 18;
+```
+
+通过这种方式，condition 属性允许我们自定义字段在查询时的行为，使得查询更加灵活和符合特定需求，同时避免了手动编写 SQL 片段的繁琐。
 
 ### update
 <p>
     **类型：** `String`<br/>
     **默认值：** `""`
 </p>
-字段在更新（Update）时，`set` 部分的写法注入，该属性优先级高于 `el` 属性。
+在执行更新操作时，指定字段在 SET 子句中的表达式。这个属性的优先级高于 el 属性，允许你自定义字段的更新逻辑。
 
-例如，当在 `version` 字段上注解 `update="%s+1"` 表示更新时会 `set version=version+1`。
+**示例说明**
+
+假设我们有一个实体类 User，其中包含一个 version 字段，我们希望在每次更新用户信息时，自动将 version 字段的值增加 1。我们可以使用 @TableField 注解的 update 属性来实现这个功能：
+
+```java
+import com.baomidou.mybatisplus.annotation.TableField;
+
+@TableName("sys_user")
+public class User {
+    @TableId
+    private Long id;
+
+    private String name;
+
+    private Integer age;
+
+    private String email;
+
+    @TableField(update="%s+1") // 自定义更新时的表达式
+    private Integer version;
+}
+```
+
+在这个例子中，`@TableField(update="%s+1")` 注解告诉 MyBatis-Plus，在执行更新操作时，对于 version 字段，应该使用 `version = version + 1` 的表达式。这意味着，每次更新用户信息时，version 字段的值都会自动增加 1。
+
+如果我们执行以下更新操作：
+
+```java
+User user = new User();
+user.setId(1L);
+user.setName("Updated Name");
+user.setAge(30);
+user.setEmail("updated@example.com");
+
+userMapper.updateById(user);
+```
+
+MyBatis-Plus 会自动生成类似以下的 SQL 语句：
+
+```sql
+UPDATE sys_user
+SET name = 'Updated Name', age = 30, email = 'updated@example.com', version = version + 1
+WHERE id = 1;
+```
+
+通过这种方式，update 属性允许我们自定义字段在更新时的行为，使得更新操作更加灵活和符合特定需求，同时避免了手动编写 SQL 片段的繁琐。
 
 ### insertStrategy
 <p>
@@ -194,30 +284,234 @@ public class User {
     **默认值：** `FieldStrategy.DEFAULT`
 </p>
 
-字段在新增时的策略。
+定义在插入新记录时，如何处理字段的值。这个属性允许你控制字段是否应该包含在 INSERT 语句中，以及在什么条件下包含。
 
-- `FieldStrategy.DEFAULT`：该属性表示默认参考全局配置，而全部配置默认又是 NOT_ 等同于如下手写 XML SQL
+**FieldStrategy 枚举类型定义**
+- FieldStrategy.DEFAULT：遵循全局配置的策略。如果全局配置未指定，默认行为是仅在字段值不为 NULL 时插入该字段。
+- FieldStrategy.ALWAYS：总是插入该字段，无论字段值是否为 NULL。
+- FieldStrategy.NOT_NULL：仅在字段值不为 NULL 时插入该字段。
+- FieldStrategy.NOT_EMPTY：仅在字段值不为空（对于字符串类型）或不为 NULL（对于其他类型）时插入该字段。
+- FieldStrategy.NEVER：从不插入该字段，即使字段值不为 NULL。
 
-    ```xml
-    insert into table_a(<if test="columnProperty != null">column</if>) 
-    values (<if test="columnProperty != null">#{columnProperty}</if>)
-    ```
+**示例说明**
+
+假设我们有一个实体类 User，其中包含一个 nickname 字段，我们希望在插入新用户时，只有当 nickname 不为空时才插入该字段。我们可以使用 @TableField 注解的 insertStrategy 属性来实现这个功能：
+
+```java
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+
+@TableName("sys_user")
+public class User {
+    @TableId
+    private Long id;
+
+    @TableField(insertStrategy = FieldStrategy.NOT_EMPTY) // 仅在 nickname 不为空时插入
+    private String nickname;
+
+    private Integer age;
+
+    private String email;
+}
+```
+
+在这个例子中，`@TableField(insertStrategy = FieldStrategy.NOT_EMPTY)` 注解告诉 MyBatis-Plus，在插入新用户时，只有当 nickname 字段不为空时才将其包含在 INSERT 语句中。
+
+如果我们执行以下插入操作：
+
+```java
+User user = new User();
+user.setNickname("John Doe");
+user.setAge(25);
+user.setEmail("john.doe@example.com");
+
+userMapper.insert(user);
+```
+
+MyBatis-Plus 会自动生成类似以下的 SQL 语句：
+
+```sql
+INSERT INTO sys_user (nickname, age, email)
+VALUES ('John Doe', 25, 'john.doe@example.com');
+```
+
+如果 nickname 字段为空，生成的 SQL 将不包含 nickname 字段：
+
+```sql
+INSERT INTO sys_user (age, email)
+VALUES (25, 'john.doe@example.com');
+```
+
+其效果等同于如下 MyBatis 的自定义 XML 配置：
+
+```xml
+<mapper namespace="com.example.mapper.UserMapper">
+
+    <!-- 插入用户 -->
+    <insert id="insertUser" parameterType="com.example.entity.User">
+        INSERT INTO sys_user (
+            <if test="nickname != null and nickname != ''">
+                nickname,
+            </if>
+            age,
+            email
+        ) VALUES (
+            <if test="nickname != null and nickname != ''">
+                #{nickname},
+            </if>
+            #{age},
+            #{email}
+        )
+    </insert>
+
+</mapper>
+```
+
+通过这种方式，insertStrategy 属性允许我们自定义字段在插入时的行为，使得插入操作更加灵活和符合特定需求，同时避免了手动编写 SQL 片段的繁琐。
 
 ### updateStrategy
 <p>
     **类型：** `Enum`<br/>
     **默认值：** `FieldStrategy.DEFAULT`
 </p>
-举例：`IGNORED`  
-`update table_a set column=#{columnProperty}`。
+定义在更新记录时，如何处理字段的值。这个属性允许你控制字段是否应该包含在 UPDATE 语句的 SET 子句中，以及在什么条件下包含。
+
+参见 insertStrategy 属性以获取更多关于 FieldStrategy 枚举类型的详细信息。
+
+**示例说明**
+
+假设我们有一个实体类 User，其中包含一个 nickname 字段，我们希望在更新用户信息时，总是更新 nickname 字段，无论其值是否为空。我们可以使用 @TableField 注解的 updateStrategy 属性来实现这个功能：
+
+```java
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+
+@TableName("sys_user")
+public class User {
+    @TableId
+    private Long id;
+
+    @TableField(updateStrategy = FieldStrategy.ALWAYS) // 总是更新 nickname，忽略值的检查
+    private String nickname;
+
+    private Integer age;
+
+    private String email;
+}
+```
+
+在这个例子中，`@TableField(updateStrategy = FieldStrategy.IGNORED)` 注解告诉 MyBatis-Plus，在更新用户信息时，总是将 nickname 字段包含在 UPDATE 语句的 SET 子句中，忽略其值的检查。
+
+如果我们执行以下更新操作：
+
+```java
+User user = new User();
+user.setId(1L);
+user.setNickname("Updated Nickname");
+user.setAge(30);
+user.setEmail("updated@example.com");
+
+userMapper.updateById(user);
+```
+
+MyBatis-Plus 会自动生成类似以下的 SQL 语句：
+
+```sql
+UPDATE sys_user
+SET nickname = 'Updated Nickname', age = 30, email = 'updated@example.com'
+WHERE id = 1;
+```
+
+无论 nickname 字段的值是否为空，生成的 SQL 都会包含 nickname 字段。也就是说，即使 nickname 字段的值为空，生成的 SQL 也会更新 nickname 字段为 NULL。
+
+通过这种方式，updateStrategy 属性允许我们自定义字段在更新时的行为，使得更新操作更加灵活和符合特定需求，同时避免了手动编写 SQL 片段的繁琐。
 
 ### whereStrategy
 <p>
     **类型：** `Enum`<br/>
     **默认值：** `FieldStrategy.DEFAULT`
 </p>
-举例：`NOT_EMPTY`  
-`where <if test="columnProperty != null and columnProperty!=''">column=#{columnProperty}</if>`。
+定义在生成更新语句的 WHERE 子句时，如何处理字段的值。这个属性允许你控制字段是否应该包含在 WHERE 子句中，以及在什么条件下包含。
+
+参见 insertStrategy 和 updateStrategy 属性以获取更多关于 FieldStrategy 枚举类型的详细信息。
+
+**示例说明**
+
+假设我们有一个实体类 User，其中包含一个 nickname 字段，我们希望在更新用户信息时，只有当 nickname 字段不为空时，才将其作为 WHERE 子句的条件。我们可以使用 @TableField 注解的 whereStrategy 属性来实现这个功能：
+
+```java
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+
+@TableName("sys_user")
+public class User {
+    @TableId
+    private Long id;
+
+    @TableField(whereStrategy = FieldStrategy.NOT_EMPTY) // 仅在 nickname 不为空时作为 WHERE 条件
+    private String nickname;
+
+    private Integer age;
+
+    private String email;
+}
+```
+
+在这个例子中，`@TableField(whereStrategy = FieldStrategy.NOT_EMPTY)` 注解告诉 MyBatis-Plus，在使用 whereEntity 生成更新语句的 WHERE 子句时，只有当 nickname 字段不为空时，才将其包含在 WHERE 子句中。
+
+如果我们执行以下更新操作：
+
+```java
+User user = new User();
+user.setEmail("john.doe@example.com");
+
+User whereEntity = new User();
+whereEntity.setNickname("John Doe");
+whereEntity.setAge(30);
+
+// 使用 whereEntity 方法
+UpdateWrapper<User> updateWrapper = new UpdateWrapper<>(whereEntity);
+userMapper.update(user, updateWrapper);
+```
+
+MyBatis-Plus 会自动生成类似以下的 SQL 语句：
+
+```sql
+UPDATE sys_user
+SET email = 'john.doe@example.com'
+WHERE nickname = 'John Doe' AND age = 30;
+```
+
+如果 nickname 字段为空，生成的 SQL 将不包含 nickname 字段：
+
+```sql
+UPDATE sys_user
+SET email = 'john.doe@example.com'
+WHERE age = 30;
+```
+
+其效果等同于如下 MyBatis 的自定义 XML 配置：
+
+```xml
+<mapper namespace="com.example.mapper.UserMapper">
+
+    <!-- 更新用户信息 -->
+    <update id="updateUser" parameterType="com.example.entity.User">
+        UPDATE sys_user
+        SET email = #{email}
+        <where>
+            <if test="nickname != null and nickname != ''">
+                AND nickname = #{nickname}
+            </if>
+            AND age = #{age}
+        </where>
+    </update>
+    
+</mapper>
+```    
+
+通过这种方式，whereStrategy 属性允许我们自定义字段在 WHERE 子句中的行为，使得更新操作更加灵活和符合特定需求，同时避免了手动编写 SQL 片段的繁琐。参见 insertStrategy 和 updateStrategy 属性以获取更多关于 FieldStrategy 枚举类型的详细信息。
+
 
 ### fill
 <p>
