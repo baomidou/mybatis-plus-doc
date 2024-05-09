@@ -4,44 +4,56 @@ sidebar:
   order: 8
 ---
 
-解决了繁琐的配置，让 mybatis 优雅的使用枚举属性！
-从 3.5.2 版本开始只需完成 `步骤1: 声明通用枚举属性` 即可使用
+MyBatis-Plus 是一个增强工具，它在 MyBatis 的基础上提供了许多便捷的功能，其中包括对枚举类型的自动映射。自动映射枚举功能旨在简化开发者在处理数据库与Java枚举类型之间的转换时的配置和编码工作。
 
-> ~~自`3.1.0`开始，如果你无需使用原生枚举，可配置默认枚举来省略扫描通用枚举配置 [默认枚举配置](../config/#defaultEnumTypeHandler)~~
->
-> - 升级说明:
->
->   `3.1.0` 以下版本改变了原生默认行为,升级时请将默认枚举设置为`EnumOrdinalTypeHandler`
->
-> - 影响用户:
->
->   实体中使用原生枚举
->
-> - 其他说明:
->
->   配置枚举包扫描的时候能提前注册使用注解枚举的缓存
+MyBatis-Plus 的自动映射枚举功能主要涉及以下几个方面：
 
-## 步骤1: 声明通用枚举属性
+1. **枚举类型处理**：MyBatis-Plus 提供了对枚举类型的内置支持，可以自动将Java枚举类型映射到数据库中的特定数据类型，如整型或字符串。这样，开发者无需手动编写复杂的映射逻辑。
 
-> 方式一： 使用 @EnumValue 注解枚举属性 [完整示例](https://gitee.com/baomidou/mybatis-plus-samples/blob/master/mybatis-plus-sample-enum/src/main/java/com/baomidou/mybatisplus/samples/enums/enums/GradeEnum.java)
+2. **注解支持**：通过使用 `@EnumValue` 注解，开发者可以指定枚举值在数据库中存储的实际值。这通常是枚举中的一个字段，如序号或编码。
+
+3. **接口实现**：枚举类型可以实现 `IEnum` 接口，该接口定义了一个 `getValue` 方法，用于返回存储在数据库中的值。MyBatis-Plus 会自动识别并使用这个方法进行映射。
+
+4. **配置简化**：从 MyBatis-Plus 3.5.2 版本开始，开发者无需额外配置即可使用自动映射枚举功能。MyBatis-Plus 会自动识别并处理实体类中的枚举属性。
+
+5. **序列化与反序列化**：MyBatis-Plus 不仅处理数据库与Java枚举类型之间的映射，还提供了序列化和反序列化的支持，使得枚举值可以方便地在网络传输或持久化存储中使用。
+
+6. **灵活性**：开发者可以根据需要选择不同的序列化方式，如使用Jackson或Fastjson等库，来定制枚举值在前端展示的格式。
+
+通过这些功能，MyBatis-Plus 大大简化了枚举类型的处理，使得开发者可以更加专注于业务逻辑的实现，而不必担心底层的数据映射问题。
+
+## 声明通用枚举属性
+
+实体属性使用枚举类型
+
+```java
+public class User {
+    private String name; // 名字
+    private AgeEnum age; // 年龄
+    private GradeEnum grade; // 年级
+}
+```
+
+### 方式一：使用 @EnumValue 注解枚举属性
 
 ```java
 public enum GradeEnum {
-
-    PRIMARY(1, "小学"),  SECONDORY(2, "中学"),  HIGH(3, "高中");
+    PRIMARY(1, "小学"),
+    SECONDORY(2, "中学"),
+    HIGH(3, "高中");
 
     GradeEnum(int code, String descp) {
         this.code = code;
         this.descp = descp;
     }
 
-    @EnumValue//标记数据库存的值是code
+    @EnumValue // 标记数据库存的值是code
     private final int code;
-    //。。。
+    // 其他属性...
 }
 ```
 
-> 方式二： 枚举属性，实现 IEnum 接口如下：
+### 方式二：枚举属性实现 IEnum 接口
 
 ```java
 public enum AgeEnum implements IEnum<Integer> {
@@ -59,72 +71,42 @@ public enum AgeEnum implements IEnum<Integer> {
 }
 ```
 
-> 实体属性使用枚举类型
+## 配置 MyBatis-Plus 自动映射枚举
 
-```java
-public class User {
-    /**
-     * 名字
-     * 数据库字段: name varchar(20)
-     */
-    private String name;
+从 MyBatis-Plus 3.5.2 版本开始，自动映射枚举的配置得到了极大的简化，大多数情况下无需额外配置即可使用。然而，对于需要定制化配置的场景，MyBatis-Plus 提供了灵活的配置选项。
 
-    /**
-     * 年龄，IEnum接口的枚举处理
-     * 数据库字段：age INT(3)
-     */
-    private AgeEnum age;
+:::note[注意]
 
+- 自 3.5.2 版本起，大多数情况下无需手动配置枚举映射。
+- 对于 Spring MVC 集成，可以参考 Spring Boot 的配置示例。
+- 示例工程：👉 [mybatisplus-spring-boot](https://git.oschina.net/baomidou/mybatisplus-spring-boot)
 
-    /**
-     * 年级，原生枚举（带{@link com.baomidou.mybatisplus.annotation.EnumValue}):
-     * 数据库字段：grade INT(2)
-     */
-    private GradeEnum grade;
-}
-```
+:::
 
-## ~~步骤2: 配置扫描通用枚举~~
+### 方式一：指定包内枚举类使用 MybatisEnumTypeHandler
 
-- 注意!! 从 3.5.2 开始无需配置
-- 注意!! spring mvc 配置参考，安装集成 MybatisSqlSessionFactoryBean 枚举包扫描，spring boot 例子配置如下：
-
-示例工程：
-
-👉 [mybatisplus-spring-boot](https://git.oschina.net/baomidou/mybatisplus-spring-boot)
-
-### 方式一：仅配置指定包内的枚举类使用 MybatisEnumTypeHandler
-
-> 配置文件 resources/application.yml
+通过在配置文件中指定包路径，MyBatis-Plus 将自动扫描该包下的枚举类，并使用 `MybatisEnumTypeHandler` 处理。
 
 ```yml
 mybatis-plus:
-    # 支持统配符 * 或者 ; 分割
-    typeEnumsPackage: com.baomidou.springboot.entity.enums
-  ....
+  typeEnumsPackage: com.baomidou.springboot.entity.enums
 ```
 
-当添加这个配置后，mybatis-plus 提供的 `MybatisSqlSessionFactoryBean` 会自动扫描包内合法的枚举类（使用了 `@EnumValue` 注解，或者实现了 `IEnum` 接口），分别为这些类注册使用 `MybatisEnumTypeHandler`。
+此配置使得只有指定包内的枚举类会使用新的 TypeHandler，其他包下的枚举类则继续使用 MyBatis 的默认处理方式。
 
-换句话说，只有指定包下的枚举类会使用新的 TypeHandler。其他包下，或者包内没有做相关改造的枚举类，仍然会使用 mybatis 的 DefaultEnumTypeHandler。
+### 方式二：全局修改 DefaultEnumTypeHandler
 
-### 方式二：直接指定 DefaultEnumTypeHandler
-
-此方式用来 `全局` 修改 mybatis 使用的 EnumTypeHandler。
-
-> 配置文件 resources/application.yml
+如果需要全局修改 MyBatis 使用的 `EnumTypeHandler`，可以通过配置文件或自定义配置类来实现。
 
 ```yml
 mybatis-plus:
-    # 修改 mybatis 的 DefaultEnumTypeHandler
-    configuration:
-        default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
+  configuration:
+    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
 ```
 
-> 自定义配置类 MybatisPlusAutoConfiguration
+或者通过自定义配置类：
 
 ```java
-
 @Configuration
 public class MybatisPlusAutoConfiguration {
 
@@ -139,8 +121,9 @@ public class MybatisPlusAutoConfiguration {
         };
     }
 }
-
 ```
+
+通过这些配置，你可以根据项目需求灵活地定制枚举类型的映射处理，确保 MyBatis-Plus 与你的应用程序无缝集成。
 
 ## 如何序列化枚举值为前端返回值？
 
@@ -148,30 +131,31 @@ public class MybatisPlusAutoConfiguration {
 
 #### 一、重写 toString 方法
 
-##### springboot
+##### Spring Boot
 
 ```java
-    @Bean
-    public Jackson2ObjectMapperBuilderCustomizer customizer(){
-        return builder -> builder.featuresToEnable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
-    }
+@Bean
+public Jackson2ObjectMapperBuilderCustomizer customizer() {
+    return builder -> builder.featuresToEnable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+}
 ```
 
-##### jackson
+##### Jackson 独立使用
 
 ```java
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+ObjectMapper objectMapper = new ObjectMapper();
+objectMapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
 ```
 
-以上两种方式任选其一,然后在枚举中复写 toString 方法即可.
+在枚举中重写 toString 方法，以上两种方式任选其一。
 
 #### 二、注解处理
 
 ```java
 public enum GradeEnum {
-
-    PRIMARY(1, "小学"),  SECONDORY(2, "中学"),  HIGH(3, "高中");
+    PRIMARY(1, "小学"),
+    SECONDORY(2, "中学"),
+    HIGH(3, "高中");
 
     GradeEnum(int code, String descp) {
         this.code = code;
@@ -179,7 +163,7 @@ public enum GradeEnum {
     }
 
     @EnumValue
-  	@JsonValue	//标记响应json值
+    @JsonValue // 标记响应json值
     private final int code;
 }
 ```
@@ -191,15 +175,17 @@ public enum GradeEnum {
 ##### 全局处理方式
 
 ```java
-    FastJsonConfig config = new FastJsonConfig();
-    config.setSerializerFeatures(SerializerFeature.WriteEnumUsingToString);
+FastJsonConfig config = new FastJsonConfig();
+config.setSerializerFeatures(SerializerFeature.WriteEnumUsingToString);
 ```
 
 ##### 局部处理方式
 
 ```java
-    @JSONField(serialzeFeatures= SerializerFeature.WriteEnumUsingToString)
-    private UserStatus status;
+@JSONField(serialzeFeatures= SerializerFeature.WriteEnumUsingToString)
+private UserStatus status;
 ```
 
-以上两种方式任选其一,然后在枚举中复写 toString 方法即可.
+在枚举中重写 toString 方法，以上两种方式任选其一。
+
+通过以上步骤，你可以优雅地在 MyBatis-Plus 中使用枚举属性，并且能够方便地将枚举值序列化为前端所需的格式。

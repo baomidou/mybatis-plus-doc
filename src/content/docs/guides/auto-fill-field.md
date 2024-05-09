@@ -4,28 +4,33 @@ sidebar:
   order: 9
 ---
 
-示例工程：
+MyBatis-Plus 提供了一个便捷的自动填充功能，用于在插入或更新数据时自动填充某些字段，如创建时间、更新时间等。以下是如何使用这一功能的详细说明。
 
-👉 [mybatis-plus-sample-auto-fill-metainfo](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-auto-fill-metainfo)
+## 原理概述
 
-原理:
+自动填充功能通过实现 `com.baomidou.mybatisplus.core.handlers.MetaObjectHandler` 接口来实现。你需要创建一个类来实现这个接口，并在其中定义插入和更新时的填充逻辑。
 
-- 实现元对象处理器接口：com.baomidou.mybatisplus.core.handlers.MetaObjectHandler
+## 使用步骤
 
-- 注解填充字段 `@TableField(.. fill = FieldFill.INSERT)` 生成器策略部分也可以配置！
+### 1. 定义实体类
+
+在实体类中，你需要使用 `@TableField` 注解来标记哪些字段需要自动填充，并指定填充的策略。
 
 ```java
 public class User {
+    @TableField(fill = FieldFill.INSERT)
+    private String createTime;
 
-    // 注意！这里需要标记为填充字段
-    @TableField(.. fill = FieldFill.INSERT)
-    private String fillField;
+    @TableField(fill = FieldFill.UPDATE)
+    private String updateTime;
 
-    ....
+    // 其他字段...
 }
 ```
 
-- 自定义实现类 MyMetaObjectHandler
+### 2. 实现 MetaObjectHandler
+
+创建一个类来实现 `MetaObjectHandler` 接口，并重写 `insertFill` 和 `updateFill` 方法。
 
 ```java
 @Slf4j
@@ -34,103 +39,63 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
-        log.info("start insert fill ....");
-        this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now()); // 起始版本 3.3.0(推荐使用)
-        // 或者
-        this.strictInsertFill(metaObject, "createTime", () -> LocalDateTime.now(), LocalDateTime.class); // 起始版本 3.3.3(推荐)
-        // 或者
-        this.fillStrategy(metaObject, "createTime", LocalDateTime.now()); // 也可以使用(3.3.0 该方法有bug)
+        log.info("开始插入填充...");
+        this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now());
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        log.info("start update fill ....");
-        this.strictUpdateFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now()); // 起始版本 3.3.0(推荐)
-        // 或者
-        this.strictUpdateFill(metaObject, "updateTime", () -> LocalDateTime.now(), LocalDateTime.class); // 起始版本 3.3.3(推荐)
-        // 或者
-        this.fillStrategy(metaObject, "updateTime", LocalDateTime.now()); // 也可以使用(3.3.0 该方法有bug)
+        log.info("开始更新填充...");
+        this.strictUpdateFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
     }
 }
 ```
 
-::: warning 注意事项：
+### 3. 配置自动填充处理器
 
-- 填充原理是直接给`entity`的属性设置值!!!
+确保你的 `MyMetaObjectHandler` 类被 Spring 管理，可以通过 `@Component` 或 `@Bean` 注解来实现。
 
-- 注解则是指定该属性在对应情况下必有值,如果无值则入库会是`null`
+## 注意事项
 
-- `MetaObjectHandler`提供的默认方法的策略均为:如果属性有值则不覆盖,如果填充值为`null`则不填充
+- 自动填充是直接给实体类的属性设置值。
+- 如果属性没有值，入库时会是 `null`。
+- `MetaObjectHandler` 提供的默认方法策略是：如果属性有值则不覆盖，如果填充值为 `null` 则不填充。
+- 字段必须声明 `@TableField` 注解，并设置 `fill` 属性来选择填充策略。
+- 填充处理器需要在 Spring Boot 中声明为 `@Component` 或 `@Bean`。
+- 使用 `strictInsertFill` 或 `strictUpdateFill` 方法可以根据注解 `FieldFill.xxx`、字段名和字段类型来区分填充逻辑。
+- 如果不需区分，可以使用 `fillStrategy` 方法。
+- 在 `update(T entity, Wrapper<T> updateWrapper)` 时，`entity` 不能为空，否则自动填充失效。
+- 在 `update(Wrapper<T> updateWrapper)` 时不会自动填充，需要手动赋值字段条件。
 
-- 字段必须声明`TableField`注解,属性`fill`选择对应策略,该声明告知`Mybatis-Plus`需要预留注入`SQL`字段
+## 参数填充示例
 
-- 填充处理器`MyMetaObjectHandler`在 Spring Boot 中需要声明`@Component`或`@Bean`注入
+```java
+// 插入填充示例
+insertFillByCustomMethod1(H2User h2User);
+insertFillByCustomMethod8(H2User[] h2Users);
+insertFillByCustomMethod4(Collection<H2User> h2User);
 
-- 要想根据注解`FieldFill.xxx`和`字段名`以及`字段类型`来区分必须使用父类的`strictInsertFill`或者`strictUpdateFill`方法
+// 更新填充示例
+updateFillByCustomMethod2(@Param("coll") Collection<Long> ids, @Param("et") H2User h2User);
+updateFillByCustomMethod4(@Param("colls") Collection<Long> ids, @Param("et") H2User h2User);
+```
 
-- 不需要根据任何来区分可以使用父类的`fillStrategy`方法
+## 无法填充示例
 
-- update(T entity,Wrapper<T> updateWrapper)时entity不能为空,否则自动填充失效
-- update(Wrapper<T> updateWrapper) 时不会自动填充,需要手动赋值字段条件(建议如果需要填充的话,直接调用上面的带实体重载方法,初始化一个实体进行更新, 后期重构版本时考虑默认创建一个实体对象进行填空)
-- 当自定义mapper方法需要走填充时,建议按下列注解方式添加参数注解(如果使用编译参数保留的情况下,变量名字与注解名字保持一致也行)
-  (自3.5.4版本开始不限制参数注解,下面所有方法都支持自动填充,不限制别名,包括无法填充的示例)
-  | 数据类型   | 注解                                        | 示例                                                     |
-  | ---------- | ------------------------------------------- | -------------------------------------------------------- |
-  | Collection | @Param("collection") 或  ~~@Param("coll")~~ | saveXxx(@Param("collection") Collection<H2User> h2Users) |
-  | List       | @Param("list")                              | saveXxx(@Param("list") List<H2User> h2Users)             |
-  | Array      | @Param("array")                             | saveXxx(@Param("array") H2User[] h2Users)                |
-  | 实体       | @Param("et")                                | saveXxx(@Param("et") H2User h2Users)                     |
+```java
+// 方法参数名不满足填充条件，需要将 user 换成 et 才能正确填充
+updateFillByCustomMethod3(@Param("coll") Collection<Long> ids, @Param("user") H2User h2User);
+```
 
-  参数填充示例: 
-
-  ```java
-   insertFillByCustomMethod1(H2User h2User);
-   insertFillByCustomMethod8(H2User[] h2Users);
-   insertFillByCustomMethod4(Collection<H2User> h2User);
-  
-   insertFillByCustomMethod6(@Param("coll") Collection<H2User> h2User);
-   insertFillByCustomMethod5(@Param("collection") Collection<H2User> h2User);
-   insertFillByCustomMethod7(@Param("list") List<H2User> h2User);
-   insertFillByCustomMethod9(@Param("array") H2User[] h2Users);
-  
-   //et标记的会填充,coll虽然是特殊的key值,但不属于实体,所以不会处理
-   updateFillByCustomMethod2(@Param("coll") Collection<Long> ids, @Param("et") H2User h2User);  
-   updateFillByCustomMethod4(@Param("colls") Collection<Long> ids, @Param("et") H2User h2User);
-  
-  ```
-
-  无法填充示例: 
-
-  ```java
-  //方法虽然与上面方法一致,但key值不满足填充条件,需要将user换成et才能正确填充 
-  updateFillByCustomMethod3(@Param("coll") Collection<Long> ids, @Param("user") H2User h2User); 
-  ```
-
-  
-
-
-​    注意: 3.5.3.3-SNAPSHOT版本之前有未处理类型不匹配情况,当参数名称与上表一致但类型不一致的话会导致强转错误. [传送门](https://github.com/baomidou/mybatis-plus/pull/5375)
-
-:::
+## FieldFill 枚举
 
 ```java
 public enum FieldFill {
-    /**
-     * 默认不处理
-     */
-    DEFAULT,
-    /**
-     * 插入填充字段
-     */
-    INSERT,
-    /**
-     * 更新填充字段
-     */
-    UPDATE,
-    /**
-     * 插入和更新填充字段
-     */
-    INSERT_UPDATE
+    DEFAULT,       // 默认不处理
+    INSERT,        // 插入填充字段
+    UPDATE,        // 更新填充字段
+    INSERT_UPDATE  // 插入和更新填充字段
 }
 ```
 
+通过以上步骤，你可以轻松地在 MyBatis-Plus 中实现自动填充功能，提高开发效率。

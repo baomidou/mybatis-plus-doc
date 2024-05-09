@@ -4,63 +4,74 @@ sidebar:
   order: 13
 ---
 
-::: tip 说明:
-只对自动注入的 sql 起效:
+逻辑删除是一种优雅的数据管理策略，它通过在数据库中标记记录为“已删除”而非物理删除，来保留数据的历史痕迹，同时确保查询结果的整洁性。MyBatis-Plus 提供了便捷的逻辑删除支持，使得这一策略的实施变得简单高效。
 
-- 插入: 不作限制
-- 查找: 追加 where 条件过滤掉已删除数据,如果使用 wrapper.entity 生成的 where 条件也会自动追加该字段
-- 更新: 追加 where 条件防止更新到已删除数据,如果使用 wrapper.entity 生成的 where 条件也会自动追加该字段
-- 删除: 转变为 更新
+## 逻辑删除的工作原理
 
-例如:
+MyBatis-Plus 的逻辑删除功能会在执行数据库操作时自动处理逻辑删除字段。以下是它的工作方式：
 
-- 删除: `update user set deleted=1 where id = 1 and deleted=0`
-- 查找: `select id,name,deleted from user where deleted=0`
+- **插入**：逻辑删除字段的值不受限制。
+- **查找**：自动添加条件，过滤掉标记为已删除的记录。
+- **更新**：防止更新已删除的记录。
+- **删除**：将删除操作转换为更新操作，标记记录为已删除。
 
-字段类型支持说明:
+例如：
 
-- 支持所有数据类型(推荐使用 `Integer`,`Boolean`,`LocalDateTime`)
-- 如果数据库字段使用`datetime`,逻辑未删除值和已删除值支持配置为字符串`null`,另一个值支持配置为函数来获取值如`now()`
+- **删除**：`update user set deleted=1 where id = 1 and deleted=0`
+- **查找**：`select id,name,deleted from user where deleted=0`
 
-附录:
+## 支持的数据类型
 
-- 逻辑删除是为了方便数据恢复和保护数据本身价值等等的一种方案，但实际就是删除。
-- 如果你需要频繁查出来看就不应使用逻辑删除，而是以一个状态去表示。
-  :::
+逻辑删除字段支持所有数据类型，但推荐使用 `Integer`、`Boolean` 或 `LocalDateTime`。如果使用 `datetime` 类型，可以配置逻辑未删除值为 `null`，已删除值可以使用函数如 `now()` 来获取当前时间。
 
 ## 使用方法
 
-### 步骤 1: 配置`com.baomidou.mybatisplus.core.config.GlobalConfig$DbConfig`
+### 步骤 1: 配置全局逻辑删除属性
 
-- 例: application.yml
+在 `application.yml` 中配置 MyBatis-Plus 的全局逻辑删除属性：
 
 ```yaml
 mybatis-plus:
   global-config:
     db-config:
-      logic-delete-field: flag # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
-      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
-      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+      logic-delete-field: deleted # 全局逻辑删除字段名
+      logic-delete-value: 1 # 逻辑已删除值
+      logic-not-delete-value: 0 # 逻辑未删除值
 ```
 
-### 步骤 2: 实体类字段上加上`@TableLogic`注解
+### 步骤 2: 在实体类中使用 `@TableLogic` 注解
+
+在实体类中，对应数据库表的逻辑删除字段上添加 `@TableLogic` 注解：
 
 ```java
-@TableLogic
-private Integer deleted;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+
+public class User {
+    // 其他字段...
+
+    @TableLogic
+    private Integer deleted;
+}
 ```
 
-## 常见问题
+## 注意事项
 
-### 1. 如何 insert ?
+- **逻辑删除的本质**：逻辑删除的效果应等同于物理删除，其目的是为了保留数据，实现数据价值最大化。
+- **业务需求考量**：如果业务中仍需频繁查询这些“已删除”的数据，应考虑是否真正需要逻辑删除。或许，一个状态字段来控制数据的可见性更为合适。
 
-> 1. 字段在数据库定义默认值(推荐)
-> 2. insert 前自己 set 值
-> 3. 使用 [自动填充功能](/pages/4c6bcf/)
+## 常见问题解答
 
-### 2. 删除接口自动填充功能失效
+### 1. 如何处理插入操作？
 
-> 1. 使用 `deleteById` 方法(推荐)
-> 2. 使用 `update` 方法并: `UpdateWrapper.set(column, value)`(推荐)
-> 3. 使用 `update` 方法并: `UpdateWrapper.setSql("column=value")`
-> 4. 使用 [Sql 注入器](/pages/42ea4a/) 注入 `com.baomidou.mybatisplus.extension.injector.methods.LogicDeleteByIdWithFill` 并使用(3.5.0版本已废弃，推荐使用deleteById)
+- **方法一**：在数据库中为逻辑删除字段设置默认值。
+- **方法二**：在插入数据前手动设置逻辑删除字段的值。
+- **方法三**：使用 MyBatis-Plus 的自动填充功能。
+
+### 2. 删除接口自动填充功能失效怎么办？
+
+- **方法一**：使用 `deleteById` 方法。
+- **方法二**：使用 `update` 方法，并使用 `UpdateWrapper.set(column, value)`。
+- **方法三**：使用 `update` 方法，并使用 `UpdateWrapper.setSql("column=value")`。
+- **方法四**：使用 Sql 注入器注入 `com.baomidou.mybatisplus.extension.injector.methods.LogicDeleteByIdWithFill` 并使用（3.5.0版本已废弃，推荐使用deleteById）。
+
+通过以上步骤，你可以轻松地在 MyBatis-Plus 中实现逻辑删除功能，提高数据管理的灵活性和安全性。
