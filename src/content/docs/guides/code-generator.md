@@ -7,7 +7,7 @@ sidebar:
 AutoGenerator 是 MyBatis-Plus 的代码生成器，通过 AutoGenerator 可以快速生成 Entity、Mapper、Mapper XML、Service、Controller 等各个模块的代码，极大的提升了开发效率。
 
 :::note
-老代码生成器适用于 3.5.1 以下版本，如果您用的是 3.5.1 以上的版本，请参考 [新代码生成器](/guides/new-code-generator/) 进行配置与使用。
+老代码生成器适用于 3.5.1 以下版本，如果您用的是 3.5.1 以上的版本，请参考 [新代码生成器](/guides/new-code-generator/) 进行配置与使用，新的代码生成器更加的简洁与强大，推荐大家都升级到新的代码生成器。
 :::
 
 演示效果图：

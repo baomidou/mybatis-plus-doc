@@ -30,6 +30,7 @@ public class User {
 ```
 
 ### value
+
 <p>
     **类型：** `String` <br/>
     **默认值：** `""`
@@ -38,6 +39,7 @@ public class User {
 指定实体类对应的数据库表名。如果实体类名与表名不一致，使用这个属性来指定正确的表名。
 
 ### schema
+
 <p>
     **类型：** `String` <br/>
     **默认值：** `""`
@@ -46,6 +48,7 @@ public class User {
 指定数据库的 Schema 名称。通常情况下，如果你的数据库没有使用 Schema 来组织表，这个属性可以不填写。
 
 ### keepGlobalPrefix
+
 <p>
     **类型：** `boolean` <br/>
     **默认值：** `false`
@@ -54,6 +57,7 @@ public class User {
 当全局配置了 tablePrefix 时，这个属性决定是否保持使用全局的表前缀。如果设置为 true，即使注解中指定了表名，也会自动加上全局的表前缀。
 
 ### resultMap
+
 <p>
     **类型：** `String` <br/>
     **默认值：** `""`
@@ -62,6 +66,7 @@ public class User {
 指定在 XML 中定义的 ResultMap 的 ID，用于将查询结果映射到特定类型的实体类对象。
 
 ### autoResultMap
+
 <p>
     **类型：** `boolean` <br/>
     **默认值：** `false`
@@ -81,6 +86,7 @@ MyBatis 只支持将 typeHandler 写在两个地方：
 :::
 
 ### excludeProperty
+
 <p>
     **类型：** `String[]` <br/>
     **默认值：** `{}` <br/>
@@ -105,6 +111,7 @@ public class User {
 ```
 
 ### value
+
 <p>
     **类型：** `String` <br/>
     **默认值：** `""`
@@ -113,6 +120,7 @@ public class User {
 指定数据库表的主键字段名。如果不设置，MyBatis-Plus 将使用实体类中的字段名作为数据库表的主键字段名。
 
 ### type
+
 <p>
     **类型：** `Enum` <br/>
     **默认值：** `IdType.NONE`
@@ -149,6 +157,7 @@ public class User {
 ```
 
 ### value
+
 <p>
     **类型：** `String`<br/>
     **默认值：** `""`
@@ -156,6 +165,7 @@ public class User {
 指定数据库中的字段名。如果你的实体类字段名与数据库字段名不同，使用这个属性来指定正确的数据库字段名。
 
 ### exist
+
 <p>
     **类型：** `boolean`<br/>
     **默认值：** `true`
@@ -163,6 +173,7 @@ public class User {
 指示这个字段是否存在于数据库表中。如果设置为 false，MyBatis-Plus 在生成 SQL 时会忽略这个字段。
 
 ### condition
+
 <p>
     **类型：** `String`<br/>
     **默认值：** `""`
@@ -225,6 +236,7 @@ SELECT * FROM sys_user WHERE age > 18;
 通过这种方式，condition 属性允许我们自定义字段在查询时的行为，使得查询更加灵活和符合特定需求，同时避免了手动编写 SQL 片段的繁琐。
 
 ### update
+
 <p>
     **类型：** `String`<br/>
     **默认值：** `""`
@@ -279,6 +291,7 @@ WHERE id = 1;
 通过这种方式，update 属性允许我们自定义字段在更新时的行为，使得更新操作更加灵活和符合特定需求，同时避免了手动编写 SQL 片段的繁琐。
 
 ### insertStrategy
+
 <p>
     **类型：** `Enum`<br/>
     **默认值：** `FieldStrategy.DEFAULT`
@@ -286,12 +299,14 @@ WHERE id = 1;
 
 定义在插入新记录时，如何处理字段的值。这个属性允许你控制字段是否应该包含在 INSERT 语句中，以及在什么条件下包含。
 
-**FieldStrategy 枚举类型定义**
+**[FieldStrategy](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldStrategy.java) 枚举类型定义**
+
 - FieldStrategy.DEFAULT：遵循全局配置的策略。如果全局配置未指定，默认行为是仅在字段值不为 NULL 时插入该字段。
 - FieldStrategy.ALWAYS：总是插入该字段，无论字段值是否为 NULL。
 - FieldStrategy.NOT_NULL：仅在字段值不为 NULL 时插入该字段。
 - FieldStrategy.NOT_EMPTY：仅在字段值不为空（对于字符串类型）或不为 NULL（对于其他类型）时插入该字段。
 - FieldStrategy.NEVER：从不插入该字段，即使字段值不为 NULL。
+- FieldStrategy.IGNORED： 忽略判断，效果等同于”ALWAYS” <Badge text="@Deprecated" type="error"/>
 
 **示例说明**
 
@@ -370,6 +385,7 @@ VALUES (25, 'john.doe@example.com');
 通过这种方式，insertStrategy 属性允许我们自定义字段在插入时的行为，使得插入操作更加灵活和符合特定需求，同时避免了手动编写 SQL 片段的繁琐。
 
 ### updateStrategy
+
 <p>
     **类型：** `Enum`<br/>
     **默认值：** `FieldStrategy.DEFAULT`
@@ -427,6 +443,7 @@ WHERE id = 1;
 通过这种方式，updateStrategy 属性允许我们自定义字段在更新时的行为，使得更新操作更加灵活和符合特定需求，同时避免了手动编写 SQL 片段的繁琐。
 
 ### whereStrategy
+
 <p>
     **类型：** `Enum`<br/>
     **默认值：** `FieldStrategy.DEFAULT`
@@ -508,123 +525,434 @@ WHERE age = 30;
     </update>
     
 </mapper>
-```    
+```
 
 通过这种方式，whereStrategy 属性允许我们自定义字段在 WHERE 子句中的行为，使得更新操作更加灵活和符合特定需求，同时避免了手动编写 SQL 片段的繁琐。参见 insertStrategy 和 updateStrategy 属性以获取更多关于 FieldStrategy 枚举类型的详细信息。
 
-
 ### fill
+
 <p>
     **类型：** `Enum`<br/>
     **默认值：** `FieldFill.DEFAULT`
 </p>
-字段自动填充策略。
+字段自动填充策略。该属性用于指定在执行数据库操作（如插入、更新）时，如何自动填充字段的值。通过使用 FieldFill 枚举，可以灵活地控制字段的填充行为。
+
+:::note
+此功能需要配合[自动填充字段](/guides/auto-fill-field)功能一起使用。
+:::
+
+**[FieldFill](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldFill.java) 枚举类型定义**
+
+- `FieldFill.DEFAULT`：默认不进行填充，依赖于数据库的默认值或手动设置。
+
+- `FieldFill.INSERT`：在插入操作时自动填充字段值。
+
+- `FieldFill.UPDATE`：在更新操作时自动填充字段值。
+
+- `FieldFill.INSERT_UPDATE`：在插入和更新操作时都会自动填充字段值。
+
+**示例说明**
+
+假设有一个 User 实体类，其中包含 createTime 和 updateTime 字段，我们希望在创建用户时自动填充创建时间，在更新用户信息时自动填充更新时间。
+
+```java
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.time.LocalDateTime;
+
+@TableName("user")
+public class User {
+    // 其他字段...
+
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
+
+    @TableField(fill = FieldFill.UPDATE)
+    private LocalDateTime updateTime;
+
+    // 构造函数、getter 和 setter...
+}
+```
+
+在这个示例中，createTime 字段会在插入操作时自动填充当前时间，而 updateTime 字段会在更新操作时自动填充当前时间。这样，我们就不需要在每次数据库操作时手动设置这些时间字段的值了。
+
+**请注意**，为了使自动填充功能正常工作，您需要在 MyBatis-Plus 的配置中设置相应的自动填充处理器，并且确保在实体类对应的 Mapper 接口中定义了相应的插入和更新方法。
 
 ### select
+
 <p>
     **类型：** `boolean`<br/>
     **默认值：** `true`
 </p>
-指示是否进行 select 查询。
+指示在执行查询操作时，该字段是否应该包含在 SELECT 语句中。这个属性允许您控制查询结果中包含哪些字段，从而提供更细粒度的数据访问控制。
+
+**详细说明**
+
+- 当 select 属性设置为 true（默认值）时，该字段将包含在查询结果中。
+
+- 当 select 属性设置为 false 时，即使该字段存在于数据库表中，它也不会包含在查询结果中。这在需要保护敏感数据或优化查询性能时非常有用。
+
+**示例说明**
+
+假设有一个 User 实体类，其中包含 password 字段，我们希望在查询用户信息时排除密码字段，以保护用户隐私。
+
+```java
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+
+@TableName("user")
+public class User {
+    // 其他字段...
+
+    @TableField(select = false)
+    private String password;
+
+    // 构造函数、getter 和 setter...
+}
+```
+
+在这个示例中，当执行查询操作时，password 字段不会被包含在 SELECT 语句中，因此不会出现在查询结果中。这样，即使数据库中存储了密码信息，也不会在常规查询中泄露。
+
+请注意，@TableField 注解的 select 属性仅影响 MyBatis-Plus 生成的查询语句，不会影响其他框架或手动编写的 SQL 语句。此外，如果使用了 select = false 的字段，那么在自定义查询或使用其他方式访问该字段时，需要特别注意数据的安全性和完整性。
 
 ### keepGlobalFormat
+
 <p>
     **类型：** `boolean`<br/>
     **默认值：** `false`
 </p>
-指示是否保持使用全局的 format 进行处理。
+指示在处理字段时是否保持使用全局 DbConfig 中定义的 columnFormat 规则。这个属性用于控制字段值在数据库操作中是否应用全局的列格式化规则。
 
 ### jdbcType
+
 <p>
     **类型：** `JdbcType`<br/>
     **默认值：** `JdbcType.UNDEFINED`
 </p>
-JDBC类型（该默认值不代表会按照该值生效）。
+JDBC类型，用于指定字段在数据库中的数据类型。这个属性允许您显式地设置字段的数据库类型，以确保与数据库的兼容性，特别是在处理特殊类型或自定义类型时。
+
+**详细说明**
+
+- 当 jdbcType 属性设置为 JdbcType.UNDEFINED（默认值）时，MyBatis-Plus 将根据字段的 Java 类型自动推断其 JDBC 类型。
+
+- 当 jdbcType 属性设置为特定的 JdbcType 枚举值时，该字段将使用指定的 JDBC 类型进行数据库操作。这可以用于解决类型映射问题，或者在需要精确控制数据库类型时使用。
+
+**示例说明**
+
+假设有一个 CustomType 实体类，其中包含一个自定义类型 MyCustomType 的字段，我们希望在数据库中以特定的 JDBC 类型存储。
+
+```java
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import org.apache.ibatis.type.JdbcType;
+
+@TableName("custom_type")
+public class CustomType {
+    // 其他字段...
+
+    @TableField(value = "my_custom_field", jdbcType = JdbcType.VARCHAR)
+    private MyCustomType myCustomField;
+
+    // 构造函数、getter 和 setter...
+}
+```
+
+在这个示例中，myCustomField 字段将使用 VARCHAR JDBC 类型进行数据库操作。这样，即使 MyCustomType 是一个自定义类型，它也会被转换为 VARCHAR 类型存储在数据库中。
+
+**请注意**，jdbcType 属性仅在特定情况下需要设置，例如当 Java 类型与数据库类型之间存在不明确的映射关系时。在大多数情况下，MyBatis-Plus 能够自动处理类型映射，因此不需要显式设置 jdbcType。此外，jdbcType 属性仅影响 MyBatis-Plus 生成的 SQL 语句，不会影响其他框架或手动编写的 SQL 语句。
 
 ### typeHandler
+
 <p>
     **类型：** `Class<? extends TypeHandler>`<br/>
     **默认值：** `UnknownTypeHandler.class`
 </p>
-类型处理器（该默认值不代表会按照该值生效）。
+类型处理器，用于指定在数据库操作中如何处理特定字段的值。这个属性允许您自定义字段值的转换逻辑，以适应特定的数据类型或业务需求。
+
+**详细说明**
+
+- 当 typeHandler 属性未设置（即使用默认值 UnknownTypeHandler.class）时，MyBatis-Plus 将使用默认的类型处理器来处理字段值。
+
+- 当 typeHandler 属性设置为特定的 TypeHandler 子类时，该字段将使用指定的类型处理器进行数据库操作。这可以用于处理自定义类型、特殊数据格式或非标准的数据库类型。
+
+**示例说明**
+
+假设我们有一个 User 实体类，其中包含一个 birthDate 字段，我们希望使用自定义的类型处理器来处理日期格式，该处理器能够将日期按照特定的格式存储在数据库中。
+
+```java
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.myproject.typehandler.CustomDateTypeHandler;
+import java.time.LocalDate;
+
+@TableName("user")
+public class User {
+    // 其他字段...
+
+    @TableField(value = "birth_date", typeHandler = CustomDateTypeHandler.class)
+    private LocalDate birthDate;
+
+    // 构造函数、getter 和 setter...
+}
+```
+
+在这个示例中，birthDate 字段将使用 CustomDateTypeHandler 类型处理器进行数据库操作。这样，无论是在查询时将数据库中的日期值转换为 LocalDate 对象，还是在更新时将 LocalDate 对象的日期值转换为数据库中的特定日期格式，都会使用 CustomDateTypeHandler 来处理。
+
+CustomDateTypeHandler 可能实现如下：
+
+```java
+import org.apache.ibatis.type.BaseTypeHandler;
+import org.apache.ibatis.type.JdbcType;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class CustomDateTypeHandler extends BaseTypeHandler<LocalDate> {
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    @Override
+    public void setNonNullParameter(PreparedStatement ps, int i, LocalDate parameter, JdbcType jdbcType) throws SQLException {
+        ps.setString(i, parameter.format(FORMATTER));
+    }
+
+    @Override
+    public LocalDate getNullableResult(ResultSet rs, String columnName) throws SQLException {
+        String dateString = rs.getString(columnName);
+        return (dateString != null) ? LocalDate.parse(dateString, FORMATTER) : null;
+    }
+
+    // 实现其他必要的方法...
+}
+```
+
+在这个自定义类型处理器中，我们定义了一个 DateTimeFormatter 来指定日期的格式，并在 setNonNullParameter 和 getNullableResult 方法中实现了日期值的转换逻辑。
+
+**请注意**，为了使自定义类型处理器生效，您需要确保它在 MyBatis-Plus 的配置中被正确注册，并且能够在运行时被加载。此外，自定义类型处理器的使用应当谨慎，确保其正确性和性能。更多详细信息，请参考 [字段类型处理器](/guides/type-handler) 的内容。
 
 ### numericScale
+
 <p>
     **类型：** `String`<br/>
     **默认值：** `""`
 </p>
-指定小数点后保留的位数，只生效于 update 的 SQL。
+指定小数点后保留的位数，该属性仅在执行 update 操作时生效。它用于控制数值类型字段在更新时的小数精度。
 
-::: warning 关于`jdbcType`和`typeHandler`以及`numericScale`的说明:
-`numericScale`只生效于 update 的 SQL。
-`jdbcType`和`typeHandler`如果不配合`@TableName#autoResultMap = true`一起使用,也只生效于 update 的 SQL。
-对于`typeHandler`，如果你的字段类型和 set 进去的类型为`equals`关系，则只需要让你的`typeHandler`让 Mybatis 加载到即可，不需要使用注解。
+**详细说明**
+
+- 当 numericScale 属性设置为空字符串（默认值）时，字段的小数精度将遵循数据库的默认设置或字段定义时的设置。
+- 当 numericScale 属性设置为特定的数值（如 "2"）时，该字段在执行 update 操作时将按照指定的小数位数进行处理。
+
+**示例说明**
+假设有一个 Product 实体类，其中包含一个 price 字段，我们希望在更新价格时确保小数点后保留两位。
+
+```java
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+
+@TableName("product")
+public class Product {
+    // 其他字段...
+
+    @TableField(value = "price", numericScale = "2")
+    private BigDecimal price;
+
+    // 构造函数、getter 和 setter...
+}
+```
+
+在这个示例中，price 字段在执行 update 操作时将确保小数点后保留两位。这意味着在更新价格时，无论传入的价格值小数位数是多少，都会被格式化为两位小数。
+
+**请注意**，为了使 numericScale 属性生效，您需要确保数据库支持指定的小数位数，并且在执行 update 操作时，传入的数值类型字段值会被正确处理。此外，numericScale 属性仅影响 MyBatis-Plus 生成的 SQL 语句，不会影响其他框架或手动编写的 SQL 语句。
+
+:::note[关于 numericScale、jdbcType、typeHandler 的说明]
+
+- numericScale 属性仅在 update 操作时生效。
+- jdbcType 和 typeHandler 属性如果不与 @TableName 中的 autoResultMap = true 一起使用，也仅在 update 操作时生效。
+- 对于 typeHandler，如果字段类型和设置的值类型是 equals 关系，则只需确保 typeHandler 被 MyBatis 加载到，不需要使用注解。
+
 :::
 
-### [FieldStrategy](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldStrategy.java)
+## @Version
 
-| 值                | 描述                                                        |
-| :---------------- | :---------------------------------------------------------- |
-| IGNORED（已弃用） | 忽略判断，效果等同于"ALWAYS"                                |
-| ALWAYS            | 总是加入 SQL，无论字段值是否为 NULL                         |
-| NOT_NULL          | 非 NULL 判断                                                |
-| NOT_EMPTY         | 非空判断(只对字符串类型字段,其他类型字段依然为非 NULL 判断) |
-| DEFAULT           | 追随全局配置                                                |
-| NEVER             | 不加入 SQL                                                  |
+该注解用于标记实体类中的字段作为乐观锁版本号字段。乐观锁是一种并发控制机制，它假设多个事务可以同时进行而不会互相干扰，只在提交事务时检查是否有冲突。通过在实体类中使用`@Version`注解，MyBatis-Plus 会在更新操作时自动检查版本号，确保在更新过程中数据没有被其他事务修改。
 
-### [FieldFill](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldFill.java)
+```java
+@TableName("sys_user")
+public class User {
+    @TableId
+    private Long id;
+    @TableField("nickname") // 映射到数据库字段 "nickname"
+    private String name;
+    private Integer age;
+    private String email;
+    @Version // 标记为乐观锁版本号字段
+    private Integer version;
+}
+```
 
-| 值            | 描述                 |
-| :------------ | :------------------- |
-| DEFAULT       | 默认不处理           |
-| INSERT        | 插入时填充字段       |
-| UPDATE        | 更新时填充字段       |
-| INSERT_UPDATE | 插入和更新时填充字段 |
+在上面的示例中，version字段被标记为乐观锁版本号。当执行更新操作时，MyBatis-Plus 会检查该字段的值是否与数据库中的值一致。如果不一致，说明在读取数据后有其他事务修改了数据，此时会抛出乐观锁异常，提示开发者进行相应的处理。
 
-## [@Version](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/Version.java)
+使用@Version注解可以有效地防止并发更新时出现的数据不一致问题，提高系统的并发性能和数据完整性。开发者无需手动编写版本号检查的代码，MyBatis-Plus 会自动处理这一过程。
 
-- 描述：乐观锁注解、标记 `@Version` 在字段上
+## @EnumValue
 
-## [@EnumValue](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/EnumValue.java)
+该注解用于标记枚举类中的字段，指定在数据库中存储的枚举值。当实体类中的某个字段是枚举类型时，使用@EnumValue注解可以告诉MyBatis-Plus在数据库中存储枚举值的哪个属性。
 
-- 描述：普通枚举类注解(注解在枚举字段上)
+```java
+@TableName("sys_user")
+public class User {
+    @TableId
+    private Long id;
+    @TableField("nickname") // 映射到数据库字段 "nickname"
+    private String name;
+    private Integer age;
+    private String email;
+    private Gender gender; // 假设 Gender 是一个枚举类型
+}
 
-## [@TableLogic](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/TableLogic.java)
+public enum Gender {
+    MALE("M", "男"),
+    FEMALE("F", "女");
 
-- 描述：表字段逻辑处理注解（逻辑删除）
+    private String code;
+    private String description;
 
-| 属性   | 类型   | 必须指定 | 默认值 | 描述         |
-| :----- | :----- | :------- | :----- | :----------- |
-| value  | String | 否       | ""     | 逻辑未删除值 |
-| delval | String | 否       | ""     | 逻辑删除值   |
+    Gender(String code, String description) {
+        this.code = code;
+        this.description = description;
+    }
 
-## [@SqlParser](https://gitee.com/baomidou/mybatis-plus/blob/v3.4.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlParser.java) <Badge text="Deprecated" type="warn"/>
+    @EnumValue // 指定存储到数据库的枚举值为 code
+    public String getCode() {
+        return code;
+    }
+}
+```
 
-> see [@InterceptorIgnore](#InterceptorIgnore)
+在上面的示例中，Gender枚举类中的code字段被标记为@EnumValue，这意味着在数据库中存储User实体类的gender字段时，将存储Gender枚举的code值，而不是枚举常量本身。
 
-## [@KeySequence](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/KeySequence.java)
+使用@EnumValue注解可以灵活地控制枚举类型在数据库中的存储方式，使得数据库中的数据更加紧凑和易于处理。同时，它也简化了从数据库读取枚举值时的转换过程，因为MyBatis-Plus会自动根据@EnumValue注解的配置将数据库中的值转换为对应的枚举实例。
 
-- 描述：序列主键策略 `oracle`
-- 属性：value、dbType
+## @TableLogic
 
-| 属性   | 类型   | 必须指定 | 默认值       | 描述                                                                |
-| :----- | :----- | :------- | :----------- | :------------------------------------------------------------------ |
-| value  | String | 否       | ""           | 序列名                                                              |
-| dbType | Enum   | 否       | DbType.OTHER | 数据库类型，未配置默认使用注入 IKeyGenerator 实现，多个实现必须指定 |
+该注解用于标记实体类中的字段作为逻辑删除字段。逻辑删除是一种数据管理策略，它不是真正地从数据库中删除记录，而是在记录中标记该记录为已删除状态。通过使用`@TableLogic`注解，MyBatis-Plus 可以在查询、更新和删除操作中自动处理逻辑删除字段的值。
 
-## [@InterceptorIgnore](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/InterceptorIgnore.java)
+```java
+@TableName("sys_user")
+public class User {
+    @TableId
+    private Long id;
+    @TableField("nickname") // 映射到数据库字段 "nickname"
+    private String name;
+    private Integer age;
+    private String email;
+    @TableLogic(value = "0", delval = "1") // 逻辑删除字段
+    private Integer deleted;
+}
+```
 
-- `value` 值为 `1` | `yes` | `on` 视为忽略，例如 `@InterceptorIgnore(tenantLine = "1")`
+在上面的示例中，deleted字段被标记为逻辑删除字段。@TableLogic注解的value属性指定了逻辑未删除的值（在这个例子中是0），而delval属性指定了逻辑删除的值（在这个例子中是1）。
 
-- `value` 值为 `0` | `false` | `off` | `空值不变` 视为正常执行。
+当执行查询操作时，MyBatis-Plus 会自动过滤掉标记为逻辑删除的记录，只返回未删除的记录。在执行更新操作时，如果更新操作会导致逻辑删除字段的值变为逻辑删除值，MyBatis-Plus 会自动将该记录标记为已删除。在执行删除操作时，MyBatis-Plus 会自动将逻辑删除字段的值更新为逻辑删除值，而不是物理删除记录。
 
-> see [插件主体](/pages/2976a3/)
+使用@TableLogic注解可以实现数据的逻辑删除，有助于维护数据的完整性和可追溯性，同时避免了物理删除操作可能带来的数据丢失风险。开发者无需手动编写逻辑删除的代码，MyBatis-Plus 会自动处理这一过程。
 
-## [@OrderBy](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/OrderBy.java)
+## @SqlParser <Badge text="Deprecated" type="error"/>
 
-- 描述：内置 SQL 默认指定排序，优先级低于 wrapper 条件查询
+该注解已被标记为过时（Deprecated），建议查看[@InterceptorIgnore](#interceptorignore)注解以获取更多信息。@SqlParser注解原本用于标记方法，指示在执行该方法时，MyBatis-Plus 的 SQL 解析器（用于处理如分页、逻辑删除等功能）应该被忽略，从而允许原始的 SQL 语句不被修改地执行。
 
-| 属性 | 类型    | 必须指定 | 默认值          | 描述           |
-| :--- | :------ | :------- | :-------------- | :------------- |
-| asc  | boolean | 否       | true            | 是否倒序查询   |
-| sort | short   | 否       | Short.MAX_VALUE | 数字越小越靠前 |
+```java
+@Service
+public class UserService {
+    @Autowired
+    private UserMapper userMapper;
+
+    @SqlParser // 忽略 SQL 解析器，执行原始 SQL
+    public List<User> selectUsers() {
+        return userMapper.selectList(null);
+    }
+}
+```
+
+在上面的示例中，@SqlParser注解被应用于selectUsers方法，这意味着在执行该方法时，MyBatis-Plus 不会对生成的 SQL 语句进行任何额外的处理，例如添加分页信息或逻辑删除的判断。
+
+由于@SqlParser注解已被标记为过时，建议开发者使用@InterceptorIgnore注解来替代，以实现相同的功能。@InterceptorIgnore注解可以指定忽略哪些拦截器，从而更灵活地控制 SQL 语句的处理。
+
+**请注意**，使用过时的注解可能会导致未来的兼容性问题，因此建议查阅最新的 MyBatis-Plus 文档，了解当前推荐的最佳实践和替代方案。
+
+## @KeySequence
+
+该注解用于指定 Oracle 数据库中序列（Sequence）的名称，以便在实体类中生成主键值。在 Oracle 数据库中，主键通常是通过序列来生成的，而不是像其他数据库那样使用自增字段。@KeySequence注解告诉 MyBatis-Plus 使用特定的序列来生成主键。
+
+```java
+@TableName("sys_user")
+@KeySequence("SEQ_USER_ID") // 指定序列名称为 "SEQ_USER_ID"
+public class User {
+    @TableId(type = IdType.INPUT) // 使用序列生成主键
+    private Long id;
+    @TableField("nickname") // 映射到数据库字段 "nickname"
+    private String name;
+    private Integer age;
+    private String email;
+}
+```
+
+在上面的示例中，@KeySequence注解被应用于实体类User，并指定了序列名称为"SEQ_USER_ID"。这意味着在插入新记录时，MyBatis-Plus 将使用这个序列来生成id字段的值。
+
+@KeySequence注解的value属性用于指定序列的名称，而dbType属性用于指定数据库类型。如果未指定dbType，MyBatis-Plus 将默认使用注入的IKeyGenerator实现。如果有多个IKeyGenerator实现，则必须指定dbType。
+
+使用@KeySequence注解可以确保在 Oracle 数据库中正确地生成主键值，同时简化了主键生成的配置过程。开发者无需手动编写获取序列值的代码，MyBatis-Plus 会自动处理这一过程。
+
+## @InterceptorIgnore
+
+该注解用于指定在执行 MyBatis-Plus 的某个方法时，是否忽略特定的拦截器。MyBatis-Plus 提供了多个拦截器，用于实现如分页、逻辑删除、多租户等功能。通过使用@InterceptorIgnore注解，开发者可以控制哪些拦截器在执行特定方法时应该被忽略。
+
+```java
+@Service
+public class UserService {
+    @Autowired
+    private UserMapper userMapper;
+
+    @InterceptorIgnore(tenantLine = "1") // 忽略多租户拦截器
+    public List<User> selectUsers() {
+        return userMapper.selectList(null);
+    }
+}
+```
+
+在上面的示例中，@InterceptorIgnore注解被应用于selectUsers方法，并指定了tenantLine属性为"1"，这意味着在执行该方法时，多租户拦截器将被忽略。
+
+@InterceptorIgnore注解的value属性是一个字符串，可以包含多个以逗号分隔的拦截器名称。如果value的值为"1"、"yes"、"on"，则对应的拦截器将被忽略；如果value的值为"0"、"false"、"off"或为空，则拦截器将正常执行。
+
+使用@InterceptorIgnore注解可以灵活地控制拦截器的行为，允许开发者在特定的业务场景下选择性地禁用某些拦截器，以满足特定的业务需求或性能优化。
+
+插件使用方式详见[插件主体](/plugins)。
+
+## @OrderBy
+
+该注解用于指定实体类中的字段在执行查询操作时的默认排序方式。通过在实体类字段上使用@OrderBy注解，可以确保在执行查询时，如果没有显式指定排序条件，MyBatis-Plus 将按照注解中定义的排序规则返回结果。
+
+```java
+@TableName("sys_user")
+public class User {
+    @TableId
+    private Long id;
+    @TableField("nickname") // 映射到数据库字段 "nickname"
+    private String name;
+    @OrderBy(asc = false, sort = 10) // 指定默认排序为倒序，优先级为10
+    private Integer age;
+    private String email;
+}
+```
+
+在上面的示例中，age字段被标记为@OrderBy，并设置了asc属性为false，表示默认排序为倒序（降序），sort属性设置为10，表示该排序规则的优先级。
+
+@OrderBy注解的asc属性用于指定排序是否为升序，如果设置为true，则表示升序排序；如果设置为false，则表示降序排序。sort属性用于指定排序规则的优先级，数字越小，优先级越高，即越先被应用。
+
+需要注意的是，@OrderBy注解的排序规则优先级低于在查询时通过Wrapper条件查询对象显式指定的排序条件。如果在Wrapper中指定了排序条件，那么@OrderBy注解中定义的默认排序将被覆盖。
+
+使用@OrderBy注解可以简化代码，避免在每次查询时都显式指定排序条件，同时提供了一种默认的排序方式，有助于提高代码的可读性和维护性。

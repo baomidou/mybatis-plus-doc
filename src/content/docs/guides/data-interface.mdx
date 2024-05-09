@@ -1,0 +1,1618 @@
+---
+title: 持久层接口
+sidebar:
+  order: 3
+---
+
+本文详细介绍了 MyBatis-Plus 进行持久化操作的各种方法，包括插入、更新、删除、查询和分页等。通过本文，您可以了解到 MyBatis-Plus 提供的各种方法是如何进行数据操作的，以及它们对应的 SQL 语句。
+
+## Service Interface
+
+[IService](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/service/IService.java) 是 MyBatis-Plus 提供的一个通用 Service 层接口，它封装了常见的 CRUD 操作，包括插入、删除、查询和分页等。通过继承 IService 接口，可以快速实现对数据库的基本操作，同时保持代码的简洁性和可维护性。
+
+IService 接口中的方法命名遵循了一定的规范，如 get 用于查询单行，remove 用于删除，list 用于查询集合，page 用于分页查询，这样可以避免与 Mapper 层的方法混淆。
+
+:::tip
+
+- 泛型 `T` 为任意实体对象
+- 建议如果存在自定义通用 Service 方法的可能，请创建自己的 `IBaseService` 继承 `Mybatis-Plus` 提供的 `IService` 基类
+- 对象 `Wrapper` 为 [条件构造器](/guides/wrapper)
+
+:::
+
+### save
+
+```java
+// 插入一条记录（选择字段，策略插入）
+boolean save(T entity);
+// 插入（批量）
+boolean saveBatch(Collection<T> entityList);
+// 插入（批量）
+boolean saveBatch(Collection<T> entityList, int batchSize);
+```
+
+<p>
+    **功能描述：** 插入记录，根据实体对象的字段进行策略性插入。 <br/>
+    **返回值：** boolean，表示插入操作是否成功。 <br/>
+    **参数说明：** <br/>
+    |         类型          |   参数名   |     描述     |
+    | :-------------------: | :--------: | :----------: |
+    |           T           |   entity   |   实体对象   |
+    | Collection&#60;T&#62; | entityList | 实体对象集合 |
+    |          int          | batchSize  | 插入批次数量 |
+</p>
+
+
+**示例（save）：**
+
+```java
+// 假设有一个 User 实体对象
+User user = new User();
+user.setName("John Doe");
+user.setEmail("john.doe@example.com");
+boolean result = userService.save(user); // 调用 save 方法
+if (result) {
+    System.out.println("User saved successfully.");
+} else {
+    System.out.println("Failed to save user.");
+}
+```
+
+生成的 SQL:
+
+```sql
+INSERT INTO user (name, email) VALUES ('John Doe', 'john.doe@example.com')
+```
+
+**示例（saveBatch）：**
+
+```java
+// 假设有一组 User 实体对象
+List<User> users = Arrays.asList(
+    new User("Alice", "alice@example.com"),
+    new User("Bob", "bob@example.com"),
+    new User("Charlie", "charlie@example.com")
+);
+// 使用默认批次大小进行批量插入
+boolean result = userService.saveBatch(users); // 调用 saveBatch 方法，默认批次大小
+if (result) {
+    System.out.println("Users saved successfully.");
+} else {
+    System.out.println("Failed to save users.");
+}
+```
+
+生成的 SQL（假设默认批次大小为 3）:
+
+```sql
+INSERT INTO user (name, email) VALUES 
+('Alice', 'alice@example.com'),
+('Bob', 'bob@example.com'),
+('Charlie', 'charlie@example.com')
+```
+
+**示例（saveBatch 指定批次大小）：**
+
+```java
+// 假设有一组 User 实体对象
+List<User> users = Arrays.asList(
+    new User("David", "david@example.com"),
+    new User("Eve", "eve@example.com"),
+    new User("Frank", "frank@example.com"),
+    new User("Grace", "grace@example.com")
+);
+// 指定批次大小为 2进行批量插入
+boolean result = userService.saveBatch(users, 2); // 调用 saveBatch 方法，指定批次大小
+if (result) {
+    System.out.println("Users saved successfully.");
+} else {
+    System.out.println("Failed to save users.");
+}
+```
+
+生成的 SQL（指定批次大小为 2）:
+
+```sql
+-- 第一批次
+INSERT INTO user (name, email) VALUES 
+('David', 'david@example.com'),
+('Eve', 'eve@example.com')
+
+-- 第二批次
+INSERT INTO user (name, email) VALUES 
+('Frank', 'frank@example.com'),
+('Grace', 'grace@example.com')
+```
+
+通过上述示例，我们可以看到 save 系列方法是如何在 Service 层进行批量插入操作的，以及它们对应的 SQL 语句。这些方法大大简化了插入操作的代码编写，提高了开发效率。
+
+### saveOrUpdate
+
+```java
+// TableId 注解属性值存在则更新记录，否插入一条记录
+boolean saveOrUpdate(T entity);
+// 根据updateWrapper尝试更新，否继续执行saveOrUpdate(T)方法
+boolean saveOrUpdate(T entity, Wrapper<T> updateWrapper);
+// 批量修改插入
+boolean saveOrUpdateBatch(Collection<T> entityList);
+// 批量修改插入
+boolean saveOrUpdateBatch(Collection<T> entityList, int batchSize);
+```
+
+<p>
+    **功能描述：** 根据实体对象的主键 ID 进行判断，存在则更新记录，否则插入记录。 <br/>
+    **返回值：** boolean，表示插入或更新操作是否成功。 <br/>
+    **参数说明：** <br/>
+    |         类型          |   参数名   |     描述     |
+    | :-------------------: | :--------: | :----------: |
+    |           T           |   entity   |   实体对象   |
+    |  Wrapper&#60;T&#62;   | updateWrapper | 实体对象封装操作类 UpdateWrapper |
+    | Collection&#60;T&#62; | entityList | 实体对象集合 |
+    |          int          | batchSize  | 插入批次数量 |
+</p>
+
+**示例（saveOrUpdate）：**
+
+```java
+// 假设有一个 User 实体对象，其中 id 是 TableId 注解的属性
+User user = new User();
+user.setId(1);
+user.setName("John Doe");
+user.setEmail("john.doe@example.com");
+boolean result = userService.saveOrUpdate(user); // 调用 saveOrUpdate 方法
+if (result) {
+    System.out.println("User updated or saved successfully.");
+} else {
+    System.out.println("Failed to update or save user.");
+}
+```
+
+生成的 SQL（假设 id 为 1 的记录已存在）:
+
+```sql
+UPDATE user SET name = 'John Doe', email = 'john.doe@example.com' WHERE id = 1
+```
+
+生成的 SQL（假设 id 为 1 的记录不存在）:
+
+```sql
+INSERT INTO user (id, name, email) VALUES (1, 'John Doe', 'john.doe@example.com')
+```
+
+**示例（saveOrUpdateBatch）：**
+
+```java
+// 假设有一组 User 实体对象，每个对象都有 id 属性
+List<User> users = Arrays.asList(
+    new User(1, "Alice", "alice@example.com"),
+    new User(2, "Bob", "bob@example.com"),
+    new User(3, "Charlie", "charlie@example.com")
+);
+// 使用默认批次大小进行批量修改插入
+boolean result = userService.saveOrUpdateBatch(users); // 调用 saveOrUpdateBatch 方法，默认批次大小
+if (result) {
+    System.out.println("Users updated or saved successfully.");
+} else {
+    System.out.println("Failed to update or save users.");
+}
+```
+
+生成的 SQL（假设 id 为 1 和 2 的记录已存在，id 为 3 的记录不存在）:
+
+```sql
+UPDATE user SET name = 'Alice', email = 'alice@example.com' WHERE id = 1
+UPDATE user SET name = 'Bob', email = 'bob@example.com' WHERE id = 2
+INSERT INTO user (id, name, email) VALUES (3, 'Charlie', 'charlie@example.com')
+```
+
+**示例（saveOrUpdateBatch 指定批次大小）：**
+
+```java
+// 假设有一组 User 实体对象
+List<User> users = Arrays.asList(
+    new User(4, "David", "david@example.com"),
+    new User(5, "Eve", "eve@example.com"),
+    new User(6, "Frank", "frank@example.com")
+);
+// 指定批次大小为 2进行批量修改插入
+boolean result = userService.saveOrUpdateBatch(users, 2); // 调用 saveOrUpdateBatch 方法，指定批次大小
+if (result) {
+    System.out.println("Users updated or saved successfully.");
+} else {
+    System.out.println("Failed to update or save users.");
+}
+```
+
+生成的 SQL（假设指定批次大小为 2）:
+
+```sql
+-- 第一批次
+UPDATE user SET name = 'David', email = 'david@example.com' WHERE id = 4
+UPDATE user SET name = 'Eve', email = 'eve@example.com' WHERE id = 5
+
+-- 第二批次
+INSERT INTO user (id, name, email) VALUES (6, 'Frank', 'frank@example.com')
+```
+
+通过上述示例，我们可以看到 saveOrUpdate 系列方法是如何在 Service 层进行批量修改插入操作的，以及它们对应的 SQL 语句。这些方法提供了高效的数据操作方式，可以根据不同的条件进行更新或插入操作。
+
+### remove
+
+```java
+// 根据 queryWrapper 设置的条件，删除记录
+boolean remove(Wrapper<T> queryWrapper);
+// 根据 ID 删除
+boolean removeById(Serializable id);
+// 根据 columnMap 条件，删除记录
+boolean removeByMap(Map<String, Object> columnMap);
+// 删除（根据ID 批量删除）
+boolean removeByIds(Collection<? extends Serializable> idList);
+```
+
+<p>
+    **功能描述：** 通过指定条件删除符合条件的记录。<br/>
+    **返回值：** boolean，表示删除操作是否成功。 <br/>
+    **参数说明：** <br/>
+    |                    类型                    |    参数名    |          描述           |
+    | :----------------------------------------: | :----------: | :---------------------: |
+    |             Wrapper&#60;T&#62;             | queryWrapper | 实体包装类 QueryWrapper |
+    |                Serializable                |      id      |         主键 ID         |
+    |        Map&#60;String, Object&#62;         |  columnMap   |     表字段 map 对象     |
+    | Collection&#60;? extends Serializable&#62; |    idList    |      主键 ID 列表       |
+</p>
+
+**示例（remove）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置删除条件为 name = 'John Doe'
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.eq("name", "John Doe");
+boolean result = userService.remove(queryWrapper); // 调用 remove 方法
+if (result) {
+    System.out.println("Record deleted successfully.");
+} else {
+    System.out.println("Failed to delete record.");
+}
+```
+
+生成的 SQL:
+
+```sql
+DELETE FROM user WHERE name = 'John Doe'
+```
+
+**示例（removeById）：**
+
+```java
+// 假设要删除 ID 为 1 的用户
+boolean result = userService.removeById(1); // 调用 removeById 方法
+if (result) {
+    System.out.println("User deleted successfully.");
+} else {
+    System.out.println("Failed to delete user.");
+}
+```
+
+生成的 SQL:
+
+```sql
+DELETE FROM user WHERE id = 1
+```
+
+**示例（removeByMap）：**
+
+```java
+// 假设有一个 columnMap，设置删除条件为 age > 30
+Map<String, Object> columnMap = new HashMap<>();
+columnMap.put("age", 30);
+boolean result = userService.removeByMap(columnMap); // 调用 removeByMap 方法
+if (result) {
+    System.out.println("Records deleted successfully.");
+} else {
+    System.out.println("Failed to delete records.");
+}
+```
+
+生成的 SQL:
+
+```sql
+DELETE FROM user WHERE age > 30
+```
+
+**示例（removeByIds）：**
+
+```java
+// 假设有一组 ID 列表，批量删除用户
+List<Integer> ids = Arrays.asList(1, 2, 3);
+boolean result = userService.removeByIds(ids); // 调用 removeByIds 方法
+if (result) {
+    System.out.println("Users deleted successfully.");
+} else {
+    System.out.println("Failed to delete users.");
+}
+```
+
+生成的 SQL:
+
+```sql
+DELETE FROM user WHERE id IN (1, 2, 3)
+```
+
+通过上述示例，我们可以看到 remove 系列方法是如何在 Service 层进行删除操作的，以及它们对应的 SQL 语句。这些方法提供了灵活的数据操作方式，可以根据不同的条件进行删除操作。
+
+
+### update
+
+```java
+// 根据 UpdateWrapper 条件，更新记录 需要设置sqlset
+boolean update(Wrapper<T> updateWrapper);
+// 根据 whereWrapper 条件，更新记录
+boolean update(T updateEntity, Wrapper<T> whereWrapper);
+// 根据 ID 选择修改
+boolean updateById(T entity);
+// 根据ID 批量更新
+boolean updateBatchById(Collection<T> entityList);
+// 根据ID 批量更新
+boolean updateBatchById(Collection<T> entityList, int batchSize);
+```
+
+<p>
+    **功能描述：** 通过指定条件更新符合条件的记录。<br/>
+    **返回值：** boolean，表示更新操作是否成功。 <br/>
+    **参数说明：** <br/>
+    |         类型          |    参数名     |               描述               |
+    | :-------------------: | :-----------: | :------------------------------: |
+    |  Wrapper&#60;T&#62;   | updateWrapper | 实体对象封装操作类 UpdateWrapper |
+    |           T           |    entity     |             实体对象             |
+    | Collection&#60;T&#62; |  entityList   |           实体对象集合           |
+    |          int          |   batchSize   |           更新批次数量           |
+</p>
+
+**示例（update UpdateWrapper 形式）：**
+
+```java
+// 假设有一个 UpdateWrapper 对象，设置更新条件为 name = 'John Doe'，更新字段为 email
+UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+updateWrapper.eq("name", "John Doe").set("email", "john.doe@newdomain.com");
+boolean result = userService.update(updateWrapper); // 调用 update 方法
+if (result) {
+    System.out.println("Record updated successfully.");
+} else {
+    System.out.println("Failed to update record.");
+}
+```
+
+生成的 SQL:
+
+```sql
+UPDATE user SET email = 'john.doe@newdomain.com' WHERE name = 'John Doe'
+```
+
+**示例（update WhereWrapper 形式）：**
+
+```java
+// 假设有一个 User 实体对象，设置更新字段为 name，以及一个 whereWrapper 设置更新条件为 id = 1
+User updateEntity = new User();
+updateEntity.setName("Updated Name");
+QueryWrapper<User> whereWrapper = new QueryWrapper<>();
+whereWrapper.eq("id", 1);
+boolean result = userService.update(updateEntity, whereWrapper); // 调用 update 方法
+if (result) {
+    System.out.println("Record updated successfully.");
+} else {
+    System.out.println("Failed to update record.");
+}
+```
+
+生成的 SQL:
+
+```sql
+UPDATE user SET name = 'Updated Name' WHERE id = 1
+```
+
+**示例（updateById）：**
+
+```java
+// 假设有一个 User 实体对象，设置更新字段为 email，根据 ID 更新
+User updateEntity = new User();
+updateEntity.setId(1);
+updateEntity.setEmail("updated.email@example.com");
+boolean result = userService.updateById(updateEntity); // 调用 updateById 方法
+if (result) {
+    System.out.println("Record updated successfully.");
+} else {
+    System.out.println("Failed to update record.");
+}
+```
+
+生成的 SQL:
+
+```sql
+UPDATE user SET email = 'updated.email@example.com' WHERE id = 1
+```
+
+**示例（updateBatchById）：**
+
+```java
+// 假设有一组 User 实体对象，批量更新
+List<User> users = Arrays.asList(
+    new User(1, null, "new.email1@example.com"),
+    new User(2, null, "new.email2@example.com")
+);
+boolean result = userService.updateBatchById(users); // 调用 updateBatchById 方法，默认批次大小
+if (result) {
+    System.out.println("Records updated successfully.");
+} else {
+    System.out.println("Failed to update records.");
+}
+```
+
+生成的 SQL（假设默认批次大小为 2）:
+
+```sql
+UPDATE user SET email = 'new.email1@example.com' WHERE id = 1
+UPDATE user SET email = 'new.email2@example.com' WHERE id = 2
+```
+
+**示例（updateBatchById 指定批次大小）：**
+
+```java
+// 假设有一组 User 实体对象，批量更新，并指定批次大小为 1
+List<User> users = Arrays.asList(
+    new User(1, null, "new.email1@example.com"),
+    new User(2, null, "new.email2@example.com")
+);
+boolean result = userService.updateBatchById(users, 1); // 调用 updateBatchById 方法，指定批次大小
+if (result) {
+    System.out.println("Records updated successfully.");
+} else {
+    System.out.println("Failed to update records.");
+}
+```
+
+生成的 SQL（假设指定批次大小为 1）:
+
+```sql
+-- 第一批次
+UPDATE user SET email = 'new.email1@example.com' WHERE id = 1
+-- 第二批次
+UPDATE user SET email = 'new.email2@example.com' WHERE id = 2
+```
+
+通过上述示例，我们可以看到 `update` 系列方法是如何在 Service 层进行更新操作的，以及它们对应的 SQL 语句。这些方法提供了灵活的数据操作方式，可以根据不同的条件进行更新操作。
+
+### get
+
+```java
+// 根据 ID 查询
+T getById(Serializable id);
+// 根据 Wrapper，查询一条记录。结果集，如果是多个会抛出异常，随机取一条加上限制条件 wrapper.last("LIMIT 1")
+T getOne(Wrapper<T> queryWrapper);
+// 根据 Wrapper，查询一条记录
+T getOne(Wrapper<T> queryWrapper, boolean throwEx);
+// 根据 Wrapper，查询一条记录
+Map<String, Object> getMap(Wrapper<T> queryWrapper);
+// 根据 Wrapper，查询一条记录
+<V> V getObj(Wrapper<T> queryWrapper, Function<? super Object, V> mapper);
+```
+
+<p>
+    **功能描述：** 根据指定条件查询符合条件的记录。<br/>
+    **返回值：** 查询结果，可能是实体对象、Map 对象或其他类型。 <br/>
+    **参数说明：** <br/>
+    |                类型                 |    参数名    |              描述               |
+    | :---------------------------------: | :----------: | :-----------------------------: |
+    |            Serializable             |      id      |             主键 ID             |
+    |         Wrapper&#60;T&#62;          | queryWrapper | 实体对象封装操作类 QueryWrapper |
+    |               boolean               |   throwEx    |   有多个 result 是否抛出异常    |
+    |                  T                  |    entity    |            实体对象             |
+    | Function&#60;? super Object, V&#62; |    mapper    |            转换函数             |
+</p>
+
+**示例（getById）：**
+
+```java
+// 假设要查询 ID 为 1 的用户
+User user = userService.getById(1); // 调用 getById 方法
+if (user != null) {
+    System.out.println("User found: " + user);
+} else {
+    System.out.println("User not found.");
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE id = 1
+```
+
+**示例（getOne）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置查询条件为 name = 'John Doe'
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.eq("name", "John Doe");
+User user = userService.getOne(queryWrapper); // 调用 getOne 方法
+if (user != null) {
+    System.out.println("User found: " + user);
+} else {
+    System.out.println("User not found.");
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE name = 'John Doe' LIMIT 1
+```
+
+**示例（getOne 不抛出异常）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置查询条件为 name = 'John Doe'，并且不抛出异常
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.eq("name", "John Doe");
+User user = userService.getOne(queryWrapper, false); // 调用 getOne 方法
+if (user != null) {
+    System.out.println("User found: " + user);
+} else {
+    System.out.println("User not found.");
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE name = 'John Doe'
+```
+
+**示例（getMap）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置查询条件为 name = 'John Doe'，并将结果映射为 Map
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.eq("name", "John Doe");
+Map<String, Object> userMap = userService.getMap(queryWrapper); // 调用 getMap 方法
+if (userMap != null) {
+    System.out.println("User found: " + userMap);
+} else {
+    System.out.println("User not found.");
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE name = 'John Doe' LIMIT 1
+```
+
+**示例（getObj）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置查询条件为 name = 'John Doe'，并将结果转换为 String
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.eq("name", "John Doe");
+String userName = userService.getObj(queryWrapper, obj -> ((User) obj).getName()); // 调用 getObj 方法
+if (userName != null) {
+    System.out.println("User name found: " + userName);
+} else {
+    System.out.println("User name not found.");
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE name = 'John Doe' LIMIT 1
+```
+
+通过上述示例，我们可以看到 `get` 系列方法是如何在 Service 层进行查询操作的，以及它们对应的 SQL 语句。这些方法提供了灵活的数据查询方式，可以根据不同的条件进行查询操作。
+
+
+### list
+
+```java
+// 查询所有
+List<T> list();
+// 查询列表
+List<T> list(Wrapper<T> queryWrapper);
+// 查询（根据ID 批量查询）
+Collection<T> listByIds(Collection<? extends Serializable> idList);
+// 查询（根据 columnMap 条件）
+Collection<T> listByMap(Map<String, Object> columnMap);
+// 查询所有列表
+List<Map<String, Object>> listMaps();
+// 查询列表
+List<Map<String, Object>> listMaps(Wrapper<T> queryWrapper);
+// 查询全部记录
+List<Object> listObjs();
+// 查询全部记录
+<V> List<V> listObjs(Function<? super Object, V> mapper);
+// 根据 Wrapper 条件，查询全部记录
+List<Object> listObjs(Wrapper<T> queryWrapper);
+// 根据 Wrapper 条件，查询全部记录
+<V> List<V> listObjs(Wrapper<T> queryWrapper, Function<? super Object, V> mapper);
+```
+
+<p>
+    **功能描述：** 查询符合条件的记录。<br/>
+    **返回值：** 查询结果，可能是实体对象、Map 对象或其他类型。 <br/>
+    **参数说明：** <br/>
+    |                    类型                    |    参数名    |              描述               |
+    | :----------------------------------------: | :----------: | :-----------------------------: |
+    |             Wrapper&#60;T&#62;             | queryWrapper | 实体对象封装操作类 QueryWrapper |
+    | Collection&#60;? extends Serializable&#62; |    idList    |          主键 ID 列表           |
+    |         Map&#60;String, Object&#62;        |  columnMap   |         表字段 map 对象         |
+    |    Function&#60;? super Object, V&#62;     |    mapper    |            转换函数             |
+</p>
+
+**示例（list）：**
+
+```java
+// 查询所有用户
+List<User> users = userService.list(); // 调用 list 方法
+for (User user : users) {
+    System.out.println("User: " + user);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user
+```
+
+**示例（list QueryWrapper 形式）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置查询条件为 age > 25
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+List<User> users = userService.list(queryWrapper); // 调用 list 方法
+for (User user : users) {
+    System.out.println("User: " + user);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25
+```
+
+**示例（listByIds）：**
+
+```java
+// 假设有一组 ID 列表，批量查询用户
+List<Integer> ids = Arrays.asList(1, 2, 3);
+Collection<User> users = userService.listByIds(ids); // 调用 listByIds 方法
+for (User user : users) {
+    System.out.println("User: " + user);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE id IN (1, 2, 3)
+```
+
+**示例（listByMap）：**
+
+```java
+// 假设有一个 columnMap，设置查询条件为 age > 30
+Map<String, Object> columnMap = new HashMap<>();
+columnMap.put("age", 30);
+Collection<User> users = userService.listByMap(columnMap); // 调用 listByMap 方法
+for (User user : users) {
+    System.out.println("User: " + user);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE age > 30
+```
+
+**示例（listMaps）：**
+
+```java
+// 查询所有用户，并将结果映射为 Map
+List<Map<String, Object>> userMaps = userService.listMaps(); // 调用 listMaps 方法
+for (Map<String, Object> userMap : userMaps) {
+    System.out.println("User Map: " + userMap);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user
+```
+
+**示例（listMaps QueryWrapper 形式）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置查询条件为 age > 25，并将结果映射为 Map
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+List<Map<String, Object>> userMaps = userService.listMaps(queryWrapper); // 调用 listMaps 方法
+for (Map<String, Object> userMap : userMaps) {
+    System.out.println("User Map: " + userMap);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25
+```
+
+**示例（listObjs）：**
+
+```java
+// 查询所有用户，并将结果转换为 String 列表
+List<String> userNames = userService.listObjs(obj -> ((User) obj).getName()); // 调用 listObjs 方法
+for (String userName : userNames) {
+    System.out.println("User Name: " + userName);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user
+```
+
+**示例（listObjs QueryWrapper 形式）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置查询条件为 age > 25，并将结果转换为 String 列表
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+List<String> userNames = userService.listObjs(queryWrapper, obj -> ((User) obj).getName()); // 调用 listObjs 方法
+for (String userName : userNames) {
+    System.out.println("User Name: " + userName);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25
+```
+
+通过上述示例，我们可以看到 `list` 系列方法是如何在 Service 层进行查询操作的，以及它们对应的 SQL 语句。这些方法提供了灵活的数据查询方式，可以根据不同的条件进行查询操作。
+
+
+### page
+
+```java
+// 无条件分页查询
+IPage<T> page(IPage<T> page);
+// 条件分页查询
+IPage<T> page(IPage<T> page, Wrapper<T> queryWrapper);
+// 无条件分页查询
+IPage<Map<String, Object>> pageMaps(IPage<T> page);
+// 条件分页查询
+IPage<Map<String, Object>> pageMaps(IPage<T> page, Wrapper<T> queryWrapper);
+```
+
+<p>
+    **功能描述：** 分页查询符合条件的记录。<br/>
+    **返回值：** 分页查询结果，包含记录列表和总记录数。 <br/>
+    **参数说明：** <br/>
+    |                    类型                    |    参数名    |              描述               |
+    | :----------------------------------------: | :----------: | :-----------------------------: |
+    |              IPage&#60;T&#62;               |     page     |            翻页对象             |
+    |             Wrapper&#60;T&#62;             | queryWrapper | 实体对象封装操作类 QueryWrapper |
+</p>
+
+**示例（page）：**
+
+```java
+// 假设要进行无条件的分页查询，每页显示10条记录，查询第1页
+IPage<User> page = new Page<>(1, 10);
+IPage<User> userPage = userService.page(page); // 调用 page 方法
+List<User> userList = userPage.getRecords();
+long total = userPage.getTotal();
+System.out.println("Total users: " + total);
+for (User user : userList) {
+    System.out.println("User: " + user);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user LIMIT 10 OFFSET 0
+```
+
+**示例（page QueryWrapper 形式）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置查询条件为 age > 25，进行有条件的分页查询
+IPage<User> page = new Page<>(1, 10);
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+IPage<User> userPage = userService.page(page, queryWrapper); // 调用 page 方法
+List<User> userList = userPage.getRecords();
+long total = userPage.getTotal();
+System.out.println("Total users (age > 25): " + total);
+for (User user : userList) {
+    System.out.println("User: " + user);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25 LIMIT 10 OFFSET 0
+```
+
+**示例（pageMaps）：**
+
+```java
+// 假设要进行无条件的分页查询，并将结果映射为 Map，每页显示10条记录，查询第1页
+IPage<User> page = new Page<>(1, 10);
+IPage<Map<String, Object>> userPageMaps = userService.pageMaps(page); // 调用 pageMaps 方法
+List<Map<String, Object>> userMapList = userPageMaps.getRecords();
+long total = userPageMaps.getTotal();
+System.out.println("Total users: " + total);
+for (Map<String, Object> userMap : userMapList) {
+    System.out.println("User Map: " + userMap);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user LIMIT 10 OFFSET 0
+```
+
+**示例（pageMaps QueryWrapper 形式）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置查询条件为 age > 25，进行有条件的分页查询，并将结果映射为 Map
+IPage<User> page = new Page<>(1, 10);
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+IPage<Map<String, Object>> userPageMaps = userService.pageMaps(page, queryWrapper); // 调用 pageMaps 方法
+List<Map<String, Object>> userMapList = userPageMaps.getRecords();
+long total = userPageMaps.getTotal();
+System.out.println("Total users (age > 25): " + total);
+for (Map<String, Object> userMap : userMapList) {
+    System.out.println("User Map: " + userMap);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25 LIMIT 10 OFFSET 0
+```
+
+通过上述示例，我们可以看到 `page` 系列方法是如何在 Service 层进行分页查询操作的，以及它们对应的 SQL 语句。这些方法提供了灵活的数据查询方式，可以根据不同的条件进行分页查询操作。
+
+
+### count
+
+```java
+// 查询总记录数
+int count();
+// 根据 Wrapper 条件，查询总记录数
+int count(Wrapper<T> queryWrapper);
+```
+
+<p>
+    **功能描述：** 查询符合条件的记录总数。<br/>
+    **返回值：** 符合条件的记录总数。 <br/>
+    **参数说明：** <br/>
+    |             类型             |    参数名    |              描述               |
+    | :--------------------------: | :----------: | :-----------------------------: |
+    | Wrapper&#60;T&#62; | queryWrapper | 实体对象封装操作类 QueryWrapper |
+</p>
+
+**示例（count）：**
+
+```java
+// 查询用户表中的总记录数
+int totalUsers = userService.count(); // 调用 count 方法
+System.out.println("Total users: " + totalUsers);
+```
+
+生成的 SQL:
+
+```sql
+SELECT COUNT(*) FROM user
+```
+
+**示例（count QueryWrapper 形式）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置查询条件为 age > 25，查询满足条件的用户总数
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+int totalUsers = userService.count(queryWrapper); // 调用 count 方法
+System.out.println("Total users (age > 25): " + totalUsers);
+```
+
+生成的 SQL:
+
+```sql
+SELECT COUNT(*) FROM user WHERE age > 25
+```
+
+通过上述示例，我们可以看到 `count` 方法是如何在 Service 层进行记录数统计操作的，以及它们对应的 SQL 语句。这些方法提供了灵活的数据统计方式，可以根据不同的条件进行记录数统计。
+
+
+## Mapper Interface
+
+BaseMapper 是 Mybatis-Plus 提供的一个通用 Mapper 接口，它封装了一系列常用的数据库操作方法，包括增、删、改、查等。通过继承 BaseMapper，开发者可以快速地对数据库进行操作，而无需编写繁琐的 SQL 语句。
+
+:::tip
+
+- 泛型 `T` 为任意实体对象
+- 参数 `Serializable` 为任意类型主键 `Mybatis-Plus` 不推荐使用复合主键约定每一张表都有自己的唯一 `id` 主键
+- 对象 `Wrapper` 为 [条件构造器](/guides/wrapper)
+
+:::
+
+### insert
+
+```java
+// 插入一条记录
+int insert(T entity);
+```
+
+<p>
+    **功能描述：** 插入一条记录。<br/>
+    **返回值：** int，表示插入操作影响的行数，通常为 1，表示插入成功。 <br/>
+    **参数说明：** <br/>
+    |  类型  | 参数名 |   描述   |
+    | :----: | :----: | :------: |
+    |   T    | entity | 实体对象 |
+</p>
+
+**示例（insert）：**
+
+```java
+User user = new User();
+user.setName("John Doe");
+user.setEmail("john.doe@example.com");
+int rows = userMapper.insert(user); // 调用 insert 方法
+if (rows > 0) {
+    System.out.println("User inserted successfully.");
+} else {
+    System.out.println("Failed to insert user.");
+}
+```
+
+生成的 SQL:
+
+```sql
+INSERT INTO user (name, email) VALUES (?, ?)
+```
+
+通过上述示例，我们可以看到 `insert` 方法是如何在 Mapper 层进行插入操作的，以及它对应的 SQL 语句。这个方法简化了插入操作的实现，使得开发者无需手动编写 SQL 语句。
+
+
+### delete
+
+```java
+// 根据 entity 条件，删除记录
+int delete(@Param(Constants.WRAPPER) Wrapper<T> wrapper);
+// 删除（根据ID 批量删除）
+int deleteBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
+// 根据 ID 删除
+int deleteById(Serializable id);
+// 根据 columnMap 条件，删除记录
+int deleteByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
+```
+
+<p>
+    **功能描述：** 删除符合条件的记录。<br/>
+    **返回值：** int，表示删除操作影响的行数，通常为 1，表示删除成功。 <br/>
+    **参数说明：** <br/>
+    |                    类型                    |  参数名   |                 描述                 |
+    | :----------------------------------------: | :-------: | :----------------------------------: |
+    |             Wrapper&#60;T&#62;             |  wrapper  |  实体对象封装操作类（可以为 null）   |
+    | Collection&#60;? extends Serializable&#62; |  idList   | 主键 ID 列表(不能为 null 以及 empty) |
+    |                Serializable                |    id     |               主键 ID                |
+    |        Map&#60;String, Object&#62;         | columnMap |           表字段 map 对象            |
+</p>
+
+**示例（delete）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置查询条件为 age > 25，删除满足条件的用户
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+int rows = userMapper.delete(queryWrapper); // 调用 delete 方法
+if (rows > 0) {
+    System.out.println("Users deleted successfully.");
+} else {
+    System.out.println("No users deleted.");
+}
+```
+
+生成的 SQL:
+
+```sql
+DELETE FROM user WHERE age > 25
+```
+
+**示例（deleteBatchIds）：**
+
+```java
+// 假设有一组 ID 列表，批量删除用户
+List<Integer> ids = Arrays.asList(1, 2, 3);
+int rows = userMapper.deleteBatchIds(ids); // 调用 deleteBatchIds 方法
+if (rows > 0) {
+    System.out.println("Users deleted successfully.");
+} else {
+    System.out.println("No users deleted.");
+}
+```
+
+生成的 SQL:
+
+```sql
+DELETE FROM user WHERE id IN (1, 2, 3)
+```
+
+**示例（deleteById）：**
+
+```java
+// 根据 ID 删除单个用户
+int userId = 1;
+int rows = userMapper.deleteById(userId); // 调用 deleteById 方法
+if (rows > 0) {
+    System.out.println("User deleted successfully.");
+} else {
+    System.out.println("No user deleted.");
+}
+```
+
+生成的 SQL:
+
+```sql
+DELETE FROM user WHERE id = 1
+```
+
+**示例（deleteByMap）：**
+
+```java
+// 假设有一个 columnMap，设置查询条件为 age > 30，删除满足条件的用户
+Map<String, Object> columnMap = new HashMap<>();
+columnMap.put("age", 30);
+int rows = userMapper.deleteByMap(columnMap); // 调用 deleteByMap 方法
+if (rows > 0) {
+    System.out.println("Users deleted successfully.");
+} else {
+    System.out.println("No users deleted.");
+}
+```
+
+生成的 SQL:
+
+```sql
+DELETE FROM user WHERE age > 30
+```
+
+通过上述示例，我们可以看到 `delete` 系列方法是如何在 Mapper 层进行删除操作的，以及它们对应的 SQL 语句。这些方法提供了灵活的数据删除方式，可以根据不同的条件进行删除操作。
+
+### update
+
+```java
+// 根据 whereWrapper 条件，更新记录
+int update(@Param(Constants.ENTITY) T updateEntity, @Param(Constants.WRAPPER) Wrapper<T> whereWrapper);
+// 根据 ID 修改
+int updateById(@Param(Constants.ENTITY) T entity);
+```
+
+<p>
+    **功能描述：** 更新符合条件的记录。<br/>
+    **返回值：** int，表示更新操作影响的行数，通常为 1，表示更新成功。 <br/>
+    **参数说明：** <br/>
+    |        类型        |    参数名     |                                描述                                 |
+    | :----------------: | :-----------: | :-----------------------------------------------------------------: |
+    |         T          |    entity     |                   实体对象 (set 条件值,可为 null)                   |
+    | Wrapper&#60;T&#62; | updateWrapper | 实体对象封装操作类（可以为 null,里面的 entity 用于生成 where 语句） |
+</p>
+
+**示例（update）：**
+
+```java
+// 假设有一个 UpdateWrapper 对象，设置查询条件为 age > 25，更新满足条件的用户的邮箱
+UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+updateWrapper.gt("age", 25);
+User updateUser = new User();
+updateUser.setEmail("new.email@example.com");
+int rows = userMapper.update(updateUser, updateWrapper); // 调用 update 方法
+if (rows > 0) {
+    System.out.println("Users updated successfully.");
+} else {
+    System.out.println("No users updated.");
+}
+```
+
+生成的 SQL:
+
+```sql
+UPDATE user SET email = ? WHERE age > 25
+```
+
+**示例（updateById）：**
+
+```java
+// 假设要更新 ID 为 1 的用户的邮箱
+User updateUser = new User();
+updateUser.setId(1);
+updateUser.setEmail("new.email@example.com");
+int rows = userMapper.updateById(updateUser); // 调用 updateById 方法
+if (rows > 0) {
+    System.out.println("User updated successfully.");
+} else {
+    System.out.println("No user updated.");
+}
+```
+
+生成的 SQL:
+
+```sql
+UPDATE user SET email = ? WHERE id = 1
+```
+
+通过上述示例，我们可以看到 `update` 系列方法是如何在 Mapper 层进行更新操作的，以及它们对应的 SQL 语句。这些方法提供了灵活的数据更新方式，可以根据不同的条件进行更新操作。
+
+### select
+
+```java
+// 根据 ID 查询
+T selectById(Serializable id);
+// 根据 entity 条件，查询一条记录
+T selectOne(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+
+// 查询（根据ID 批量查询）
+List<T> selectBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
+// 根据 entity 条件，查询全部记录
+List<T> selectList(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+// 查询（根据 columnMap 条件）
+List<T> selectByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
+// 根据 Wrapper 条件，查询全部记录
+List<Map<String, Object>> selectMaps(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+// 根据 Wrapper 条件，查询全部记录。注意： 只返回第一个字段的值
+List<Object> selectObjs(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+
+// 根据 entity 条件，查询全部记录（并翻页）
+IPage<T> selectPage(IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+// 根据 Wrapper 条件，查询全部记录（并翻页）
+IPage<Map<String, Object>> selectMapsPage(IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+// 根据 Wrapper 条件，查询总记录数
+Integer selectCount(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+```
+
+<p>
+    **功能描述：** 查询符合条件的记录。<br/>
+    **返回值：** 查询结果，可能是实体对象、Map 对象或其他类型。 <br/>
+    **参数说明：** <br/>
+    |                    类型                    |    参数名    |                   描述                   |
+    | :----------------------------------------: | :----------: | :--------------------------------------: |
+    |                Serializable                |      id      |                 主键 ID                  |
+    |             Wrapper&#60;T&#62;             | queryWrapper |    实体对象封装操作类（可以为 null）     |
+    | Collection&#60;? extends Serializable&#62; |    idList    |   主键 ID 列表(不能为 null 以及 empty)   |
+    |        Map&#60;String, Object&#62;         |  columnMap   |             表字段 map 对象              |
+    |              IPage&#60;T&#62;              |     page     | 分页查询条件（可以为 RowBounds.DEFAULT） |
+</p>
+
+**示例（selectById）：**
+
+```java
+// 根据 ID 查询单个用户
+int userId = 1;
+User user = userMapper.selectById(userId); // 调用 selectById 方法
+System.out.println("User: " + user);
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE id = 1
+```
+
+**示例（selectOne）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置查询条件为 age > 25，查询一条满足条件的用户
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+User user = userMapper.selectOne(queryWrapper); // 调用 selectOne 方法
+System.out.println("User: " + user);
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25 LIMIT 1
+```
+
+**示例（selectBatchIds）：**
+
+```java
+// 假设有一组 ID 列表，批量查询用户
+List<Integer> ids = Arrays.asList(1, 2, 3);
+List<User> users = userMapper.selectBatchIds(ids); // 调用 selectBatchIds 方法
+for (User u : users) {
+    System.out.println("User: " + u);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE id IN (1, 2, 3)
+```
+
+**示例（selectList）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置查询条件为 age > 25，查询所有满足条件的用户
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+List<User> users = userMapper.selectList(queryWrapper); // 调用 selectList 方法
+for (User u : users) {
+    System.out.println("User: " + u);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25
+```
+
+**示例（selectByMap）：**
+
+```java
+// 假设有一个 columnMap，设置查询条件为 age > 30，查询满足条件的用户
+Map<String, Object> columnMap = new HashMap<>();
+columnMap.put("age", 30);
+List<User> users = userMapper.selectByMap(columnMap); // 调用 selectByMap 方法
+for (User u : users) {
+    System.out.println("User: " + u);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE age > 30
+```
+
+**示例（selectMaps）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置查询条件为 age > 25，查询所有满足条件的用户，并将结果映射为 Map
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+List<Map<String, Object>> userMaps = userMapper.selectMaps(queryWrapper); // 调用 selectMaps 方法
+for (Map<String, Object> userMap : userMaps) {
+    System.out.println("User Map: " + userMap);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25
+```
+
+**示例（selectObjs）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置查询条件为 age > 25，查询所有满足条件的用户，但只返回每个记录的第一个字段的值
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+List<Object> userIds = userMapper.selectObjs(queryWrapper); // 调用 selectObjs 方法
+for (Object userId : userIds) {
+    System.out.println("User ID: " + userId);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT id FROM user WHERE age > 25
+```
+
+**示例（selectPage）：**
+
+```java
+// 假设要进行分页查询，每页显示10条记录，查询第1页，查询条件为 age > 25
+IPage<User> page = new Page<>(1, 10);
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+IPage<User> userPage = userMapper.selectPage(page, queryWrapper); // 调用 selectPage 方法
+List<User> userList = userPage.getRecords();
+long total = userPage.getTotal();
+System.out.println("Total users (age > 25): " + total);
+for (User user : userList) {
+    System.out.println("User: " + user);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25 LIMIT 10 OFFSET 0
+```
+
+**示例（selectMapsPage）：**
+
+```java
+// 假设要进行分页查询，每页显示10条记录，查询第1页，查询条件为 age > 25，并将结果映射为 Map
+IPage<User> page = new Page<>(1, 10);
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+IPage<Map<String, Object>> userPageMaps = userMapper.selectMapsPage(page, queryWrapper); // 调用 selectMapsPage 方法
+List<Map<String, Object>> userMapList = userPageMaps.getRecords();
+long total = userPageMaps.getTotal();
+System.out.println("Total users (age > 25): " + total);
+for (Map<String, Object> userMap : userMapList) {
+    System.out.println("User Map: " + userMap);
+}
+```
+
+生成的 SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25 LIMIT 10 OFFSET 0
+```
+
+**示例（selectCount）：**
+
+```java
+// 假设有一个 QueryWrapper 对象，设置查询条件为 age > 25，查询总记录数
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+Integer totalUsers = userMapper.selectCount(queryWrapper); // 调用 selectCount 方法
+System.out.println("Total users (age > 25): " + totalUsers);
+```
+
+生成的 SQL:
+
+```sql
+SELECT COUNT(*) FROM user WHERE age > 25
+```
+
+通过上述示例，我们可以看到 `select` 系列方法是如何在 Mapper 层进行查询操作的，以及它们对应的 SQL 语句。这些方法提供了灵活的数据查询方式，可以根据不同的条件进行查询操作，包括单条记录查询、批量查询、条件查询、分页查询等。
+
+## Mapper 层选装件
+
+选装件是 Mybatis-Plus 提供的一些扩展方法，它们位于 `com.baomidou.mybatisplus.extension.injector.methods` 包下。这些方法需要配合[Sql 注入器](/pages/42ea4a/)使用，以扩展 Mapper 接口的功能。
+
+使用这些选装件前，需要确保已经正确配置了 Sql 注入器。更多使用案例和详细信息，可以参考[官方案例](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-sql-injector)和[源码注释](https://github.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods)。
+
+
+### 选装件说明
+
+#### alwaysUpdateSomeColumnById
+
+```java
+int alwaysUpdateSomeColumnById(T entity);
+```
+
+<p>
+**源码**：[alwaysUpdateSomeColumnById](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/AlwaysUpdateSomeColumnById.java) <br/>
+**功能**：这个方法用于在更新操作时，无论实体对象的某些字段是否有变化，都会强制更新这些字段。这在某些业务场景下非常有用，比如更新时间戳字段，确保每次更新操作都会更新该字段。 <br/>
+**使用场景**：当你需要在每次更新记录时，都更新某些特定的字段（如更新时间、版本号等），即使这些字段在实体对象中没有变化。
+</p>
+
+#### insertBatchSomeColumn
+
+```java
+int insertBatchSomeColumn(List<T> entityList);
+```
+
+<p>
+**源码**：[insertBatchSomeColumn](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/InsertBatchSomeColumn.java) <br/>
+**功能**：这个方法用于批量插入实体对象，但只插入实体对象中指定的某些字段。这在需要批量插入数据，但又不希望插入所有字段时非常有用。 <br/>
+**使用场景**：当你需要批量插入数据，并且希望只插入实体对象中的部分字段，以提高插入效率或保护敏感数据。
+</p>
+
+#### logicDeleteByIdWithFill
+
+```java
+int logicDeleteByIdWithFill(T entity);
+```
+
+<p>
+**源码**: [logicDeleteByIdWithFill](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/LogicDeleteByIdWithFill.java) <br/>
+**功能**: 这个方法用于逻辑删除记录，并填充实体对象中的某些字段。逻辑删除意味着不是真正从数据库中删除记录，而是通过更新某个字段（如 `deleted` 字段）来标记记录已被删除。 <br/>
+**使用场景**: 当你需要实现逻辑删除功能，并且希望在删除操作时自动填充实体对象中的某些字段（如删除时间、删除人等）。
+</p>
+
+### 使用提示
+
+- 在使用这些选装件之前，确保你的项目中已经正确配置了 Sql 注入器。
+- 这些方法通常需要在 Mapper 接口中显式声明，以便 Mybatis-Plus 能够识别并生成相应的 SQL 语句。
+- 每个选装件都有其特定的使用场景，根据业务需求选择合适的方法。
+- 在实际使用中，可能需要结合实体对象的注解（如 `@TableField`、`@TableLogic` 等）来实现更复杂的功能。
+
+通过使用这些选装件，可以进一步扩展 Mybatis-Plus 的功能，满足更多样化的业务需求。
+
+## Chain
+
+### query
+
+```java
+// 链式查询 普通
+QueryChainWrapper<T> query();
+// 链式查询 lambda 式。注意：不支持 Kotlin
+LambdaQueryChainWrapper<T> lambdaQuery();
+
+// 示例：
+query().eq("column", value).one();
+lambdaQuery().eq(Entity::getId, value).list();
+```
+
+#### update
+
+```java
+// 链式更改 普通
+UpdateChainWrapper<T> update();
+// 链式更改 lambda 式。注意：不支持 Kotlin
+LambdaUpdateChainWrapper<T> lambdaUpdate();
+
+// 示例：
+update().eq("column", value).remove();
+lambdaUpdate().eq(Entity::getId, value).update(entity);
+```
+
+## ActiveRecord 模式
+
+::: tip 说明:
+- 实体类只需继承 Model 类即可进行强大的 CRUD 操作
+- 需要项目中已注入对应实体的BaseMapper
+  :::
+
+### 操作步骤：
+- 继承 [Model](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/activerecord/Model.java)
+
+```java
+class User extends Model<User>{
+    // fields...
+}
+```
+
+- 调用`CRUD`方法(演示部分api，仅供参考)
+
+```java
+User user = new User();
+user.insert();
+user.selectAll();
+user.updateById();
+user.deleteById();
+// ...
+```
+
+## SimpleQuery 工具类
+
+::: tip 说明:
+- 对`selectList`查询后的结果用`Stream`流进行了一些封装，使其可以返回一些指定结果，简洁了api的调用
+- 需要项目中已注入对应实体的BaseMapper
+- 使用方式见: [测试用例](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus/src/test/java/com/baomidou/mybatisplus/test/toolkit/SimpleQueryTest.java)
+- 对于下方参数`peeks`，其类型为`Consumer...`，可一直往后叠加操作例如：`List<Long> ids = SimpleQuery.list(Wrappers.lambdaQuery(), Entity::getId, System.out::println, user -> userNames.add(user.getName()));`
+  :::
+
+### keyMap
+
+```java
+// 查询表内记录，封装返回为Map<属性,实体>
+Map<A, E> keyMap(LambdaQueryWrapper<E> wrapper, SFunction<E, A> sFunction, Consumer<E>... peeks);
+// 查询表内记录，封装返回为Map<属性,实体>，考虑了并行流的情况
+Map<A, E> keyMap(LambdaQueryWrapper<E> wrapper, SFunction<E, A> sFunction, boolean isParallel, Consumer<E>... peeks);
+```
+
+##### 参数说明
+| 类型 | 参数名 | 描述 |
+| :-: | :-: | :-: |
+| E | entity | 实体对象 |
+| A | attribute | 实体属性类型,也是map中key的类型 |
+| LambdaQueryWrapper&#60;E&#62; | wrapper | 支持lambda的条件构造器 |
+| SFunction&#60;E, A&#62; | sFunction | 实体中属性的getter,用于封装后map中作为key的条件 |
+| boolean | isParallel | 为true时底层使用并行流执行 |
+| Consumer&#60;E&#62;... | peeks | 可叠加的后续操作 |
+
+### map
+
+```java
+// 查询表内记录，封装返回为Map<属性,属性>
+Map<A, P> map(LambdaQueryWrapper<E> wrapper, SFunction<E, A> keyFunc, SFunction<E, P> valueFunc, Consumer<E>... peeks);
+// 查询表内记录，封装返回为Map<属性,属性>，考虑了并行流的情况
+Map<A, P> map(LambdaQueryWrapper<E> wrapper, SFunction<E, A> keyFunc, SFunction<E, P> valueFunc, boolean isParallel, Consumer<E>... peeks);
+```
+
+##### 参数说明
+| 类型 | 参数名 | 描述 |
+| :-: | :-: | :-: |
+| E | entity | 实体对象 |
+| A | attribute | 实体属性类型,也是map中key的类型 |
+| P | attribute | 实体属性类型,也是map中value的类型 |
+| LambdaQueryWrapper&#60;E&#62; | wrapper | 支持lambda的条件构造器 |
+| SFunction&#60;E, A&#62; | keyFunc | 封装后map中作为key的条件 |
+| SFunction&#60;E, P&#62; | valueFunc | 封装后map中作为value的条件 |
+| boolean | isParallel | 为true时底层使用并行流执行 |
+| Consumer&#60;E&#62;... | peeks | 可叠加的后续操作 |
+
+### group
+
+```java
+// 查询表内记录，封装返回为Map<属性,List<实体>>
+Map<K, List<T>> group(LambdaQueryWrapper<T> wrapper, SFunction<T, A> sFunction, Consumer<T>... peeks);
+// 查询表内记录，封装返回为Map<属性,List<实体>>，考虑了并行流的情况
+Map<K, List<T>> group(LambdaQueryWrapper<T> wrapper, SFunction<T, K> sFunction, boolean isParallel, Consumer<T>... peeks);
+// 查询表内记录，封装返回为Map<属性,分组后对集合进行的下游收集器>
+M group(LambdaQueryWrapper<T> wrapper, SFunction<T, K> sFunction, Collector<? super T, A, D> downstream, Consumer<T>... peeks);
+// 查询表内记录，封装返回为Map<属性,分组后对集合进行的下游收集器>，考虑了并行流的情况
+M group(LambdaQueryWrapper<T> wrapper, SFunction<T, K> sFunction, Collector<? super T, A, D> downstream, boolean isParallel, Consumer<T>... peeks);
+```
+
+##### 参数说明
+| 类型 | 参数名 | 描述 |
+| :-: | :-: | :-: |
+| T | entity | 实体对象 |
+| K | attribute | 实体属性类型,也是map中key的类型 |
+| D | - | 下游收集器返回类型,也是map中value的类型 |
+| A | - | 下游操作中间类型 |
+| M | - | 最终结束返回的Map&#60;K, D&#62; |
+| LambdaQueryWrapper&#60;E&#62; | wrapper | 支持lambda的条件构造器 |
+| SFunction&#60;E, A&#62; | sFunction | 分组依据，封装后map中作为key的条件 |
+| Collector&#60;T, A, D&#62; | downstream | 下游收集器 |
+| boolean | isParallel | 为true时底层使用并行流执行 |
+| Consumer&#60;T&#62;... | peeks | 可叠加的后续操作 |
+
+### list
+
+```java
+// 查询表内记录，封装返回为List<属性>
+List<A> list(LambdaQueryWrapper<E> wrapper, SFunction<E, A> sFunction, Consumer<E>... peeks);
+// 查询表内记录，封装返回为List<属性>，考虑了并行流的情况
+List<A> list(LambdaQueryWrapper<E> wrapper, SFunction<E, A> sFunction, boolean isParallel, Consumer<E>... peeks);
+```
+
+##### 参数说明
+| 类型 | 参数名 | 描述 |
+| :-: | :-: | :-: |
+| E | entity | 实体对象 |
+| A | attribute | 实体属性类型,也是list中元素的类型 |
+| LambdaQueryWrapper&#60;E&#62; | wrapper | 支持lambda的条件构造器 |
+| SFunction&#60;E, A&#62; | sFunction | 封装后list中的元素 |
+| boolean | isParallel | 为true时底层使用并行流执行 |
+| Consumer&#60;E&#62;... | peeks | 可叠加的后续操作 |
+
+## Db类
+
+::: tip 说明:
+
+- 使用静态调用的方式，执行CRUD方法，避免`Spring`环境下`Service`循环注入、简洁代码，提升效率
+- 需要项目中已注入对应实体的BaseMapper
+- 完整使用方式见: [测试用例](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus/src/test/java/com/baomidou/mybatisplus/test/toolkit/DbTest.java)
+- 对于参数为Wrapper的，需要在Wrapper中传入Entity或者EntityClass供寻找对应的Mapper
+- 不建议在循环中调用，如果是批量保存，建议将数据构造好后使用 Db.saveBatch(数据) 保存
+  :::
+
+例如：
+
+```java
+// 根据id查询
+List<Entity> list = Db.listByIds(Arrays.asList(1L, 2L), Entity.class);
+// 根据条件构造器查询
+List<Entity> list = Db.list(Wrappers.lambdaQuery(Entity.class));
+// 批量根据id更新
+boolean isSuccess = Db.updateBatchById(list);
+```
+
