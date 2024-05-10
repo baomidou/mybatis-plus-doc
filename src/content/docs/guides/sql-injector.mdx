@@ -1,0 +1,144 @@
+---
+title: SQL注入器
+sidebar:
+  order: 17
+---
+
+MyBatis-Plus 提供了灵活的机制来注入自定义的 SQL 方法，这通过 `sqlInjector` 全局配置实现。通过实现 `ISqlInjector` 接口或继承 `AbstractSqlInjector` 抽象类，你可以注入自定义的通用方法到 MyBatis 容器中。
+
+SQL注入器允许开发者扩展和定制SQL语句的生成，以适应特定的业务逻辑和查询需求。以下是SQL注入器的一些示例使用场景和它能实现的功能：
+
+**使用场景**
+
+1. **自定义查询方法**：当标准的CRUD操作无法满足复杂的查询需求时，可以通过SQL注入器添加自定义的查询方法。
+
+2. **复杂数据处理**：在需要进行复杂的数据处理，如多表联结、子查询、聚合函数等时，SQL注入器可以帮助生成相应的SQL语句。
+
+3. **性能优化**：通过自定义SQL语句，可以针对特定的查询场景进行性能优化。
+
+4. **数据权限控制**：在需要根据用户权限动态生成SQL语句时，SQL注入器可以用来实现数据权限的控制。
+
+5. **遗留系统迁移**：在将遗留系统迁移到MyBatis-Plus时，可能需要保留原有的SQL语句结构，SQL注入器可以帮助实现这一过渡。
+
+**功能**
+
+1. **注入自定义SQL方法**：通过实现`ISqlInjector`接口，可以注入自定义的SQL方法到MyBatis容器中，这些方法可以是任何复杂的SQL查询。
+
+2. **扩展BaseMapper**：可以在继承`BaseMapper`的基础上，通过SQL注入器添加额外的查询方法，这些方法将自动被MyBatis-Plus识别和使用。
+
+3. **灵活的SQL生成**：SQL注入器提供了灵活的SQL生成机制，可以根据业务需求生成各种SQL语句，包括但不限于SELECT、INSERT、UPDATE、DELETE等。
+
+4. **集成第三方数据库功能**：如果需要使用数据库的特定功能，如存储过程、触发器等，SQL注入器可以帮助生成调用这些功能的SQL语句。
+
+5. **动态SQL支持**：在某些场景下，SQL语句需要根据运行时的条件动态生成，SQL注入器可以支持这种动态SQL的生成。
+
+通过SQL注入器，MyBatis-Plus提供了一个强大的扩展点，使得开发者能够根据项目的具体需求，灵活地定制和优化SQL语句，从而提高应用的性能和适应性。
+
+## 注入器配置
+
+在MyBatis-Plus中，`sqlInjector` 配置是一个全局配置项，用于指定一个实现了 `ISqlInjector` 接口的类，该类负责将自定义的SQL方法注入到MyBatis的Mapper接口中。
+
+```java
+<!-- ISqlInjector.java -->
+public interface ISqlInjector {
+
+    /**
+     * 检查SQL是否已经注入(已经注入过不再注入)
+     *
+     * @param builderAssistant mapper 构建助手
+     * @param mapperClass      mapper 接口的 class 对象
+     */
+    void inspectInject(MapperBuilderAssistant builderAssistant, Class<?> mapperClass);
+}
+```
+
+默认的注入器实现是 [DefaultSqlInjector](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-core/src/main/java/com/baomidou/mybatisplus/core/injector/DefaultSqlInjector.java)，你可以参考它来创建自己的注入器。
+
+以下是如何配置 `sqlInjector` 的示例。
+
+根据提供的参考信息，我们可以看到如何在MyBatis-Plus中实现自定义的全局方法，包括逻辑删除、自动填充以及自定义的`insert`和`insertBatch`方法。下面是一个更详细的步骤说明和示例代码：
+
+## 自定义全局方法攻略
+
+### 步骤 1: 定义SQL
+
+首先，你需要定义自定义方法的SQL语句。这通常在继承了`AbstractMethod`的类中完成，例如`MysqlInsertAllBatch`。
+
+```java
+public class MysqlInsertAllBatch extends AbstractMethod {
+    @Override
+    public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
+        // 定义SQL语句
+        String sql = "INSERT INTO " + tableInfo.getTableName() + "(" + StringUtils.join(tableInfo.getFieldList(), ",") + ") VALUES " +
+                      "(#{list[0].id}, #{list[0].name}, #{list[0].age}), " +
+                      "(#{list[1].id}, #{list[1].name}, #{list[1].age})";
+        // 第三个参数必须和baseMapper的自定义方法名一致
+        return this.addInsertMappedStatement(mapperClass, modelClass, "mysqlInsertAllBatch", sqlSource, new NoKeyGenerator(), null, null);
+    }
+}
+```
+
+### 步骤 2: 注册自定义方法
+
+接下来，你需要创建一个类来继承`DefaultSqlInjector`，并重写`getMethodList`方法来注册你的自定义方法。
+
+```java
+public class MyLogicSqlInjector extends DefaultSqlInjector {
+
+    @Override
+    public List<AbstractMethod> getMethodList(Class<?> mapperClass) {
+        List<AbstractMethod> methodList = super.getMethodList(mapperClass);
+        methodList.add(new DeleteAll());
+        methodList.add(new MyInsertAll());
+        methodList.add(new MysqlInsertAllBatch());
+        return methodList;
+    }
+}
+```
+
+### 步骤 3: 定义BaseMapper
+
+然后，你需要在你的BaseMapper接口中定义自定义的方法。
+
+```java
+public interface MyBaseMapper<T> extends BaseMapper<T> {
+    
+    Integer deleteAll();
+    
+    int myInsertAll(T entity);
+    
+    int mysqlInsertAllBatch(@Param("list") List<T> batchList);
+}
+```
+
+### 步骤 4: 配置SqlInjector
+
+最后，你需要在配置文件中指定你的自定义SQL注入器。
+
+#### 在 `application.yml` 中配置
+
+```yml
+mybatis-plus:
+  global-config:
+    sql-injector: com.example.MyLogicSqlInjector
+```
+
+#### 在 `application.properties` 中配置
+
+```properties
+mybatis-plus.global-config.sql-injector=com.example.MyLogicSqlInjector
+```
+
+### 注意事项
+
+- 在定义自定义方法时，确保方法名与注入的SQL语句中的ID一致。
+- 在使用自定义的批量插入和自动填充功能时，确保在Mapper方法的参数上使用`@Param`注解，并且命名符合MyBatis-Plus的默认支持（`list`, `collection`, `array`）。
+- 自定义的SQL语句应该根据你的业务需求来编写，确保它能够正确地执行你想要的操作。
+
+通过以上步骤，你就可以在MyBatis-Plus中成功地实现自定义的全局方法了。记得在实际使用中，根据你的业务需求调整SQL语句和方法的实现。
+
+## 更多示例
+
+参考 [自定义 BaseMapper 示例](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-deluxe)，你可以找到如何创建自定义的 SQL 注入器和如何在项目中使用它们的详细步骤。
+
+通过这种方式，MyBatis-Plus 允许你扩展其功能，以满足特定的业务需求，同时保持代码的整洁和可维护性。
