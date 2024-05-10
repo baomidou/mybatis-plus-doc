@@ -4,44 +4,48 @@ sidebar:
   order: 1
 ---
 
-:::warning
+MyBatis-Plus 提供了一系列强大的插件来增强 MyBatis 的功能，这些插件通过 `MybatisPlusInterceptor` 来实现对 MyBatis 执行过程的拦截和增强。以下是这些插件的详细介绍和使用方法。
+
+:::note
 版本要求：3.4.0 版本以上
 :::
 
-## MybatisPlusInterceptor
+## MybatisPlusInterceptor 概览
 
-该插件是核心插件,目前代理了 `Executor#query` 和 `Executor#update` 和 `StatementHandler#prepare` 方法
+`MybatisPlusInterceptor` 是 MyBatis-Plus 的核心插件，它代理了 MyBatis 的 `Executor#query`、`Executor#update` 和 `StatementHandler#prepare` 方法，允许在这些方法执行前后插入自定义逻辑。
 
 ### 属性
 
-> `private List<InnerInterceptor> interceptors = new ArrayList<>();`
+`MybatisPlusInterceptor` 有一个关键属性 `interceptors`，它是一个 `List<InnerInterceptor>` 类型的集合，用于存储所有要应用的内部拦截器。
 
-### InnerInterceptor
+### InnerInterceptor 接口
 
-我们提供的插件都将基于此接口来实现功能
+所有 MyBatis-Plus 提供的插件都实现了 `InnerInterceptor` 接口，这个接口定义了插件的基本行为。目前，MyBatis-Plus 提供了以下插件：
 
-目前已有的功能:
+- **自动分页**: `PaginationInnerInterceptor`
+- **多租户**: `TenantLineInnerInterceptor`
+- **动态表名**: `DynamicTableNameInnerInterceptor`
+- **乐观锁**: `OptimisticLockerInnerInterceptor`
+- **SQL 性能规范**: `IllegalSQLInnerInterceptor`
+- **防止全表更新与删除**: `BlockAttackInnerInterceptor`
 
-- 自动分页: PaginationInnerInterceptor
-- 多租户: TenantLineInnerInterceptor
-- 动态表名: DynamicTableNameInnerInterceptor
-- 乐观锁: OptimisticLockerInnerInterceptor
-- sql 性能规范: IllegalSQLInnerInterceptor
-- 防止全表更新与删除: BlockAttackInnerInterceptor
+:::note[注意]
 
-::: tip 注意:
-使用多个功能需要注意顺序关系,建议使用如下顺序
+使用多个插件时，需要注意它们的顺序。建议的顺序是：
 
-- 多租户,动态表名
-- 分页,乐观锁
-- sql 性能规范,防止全表更新与删除
+1. 多租户、动态表名
+2. 分页、乐观锁
+3. SQL 性能规范、防止全表更新与删除
 
-总结: 对 sql 进行单次改造的优先放入,不对 sql 进行改造的最后放入
+总结：对 SQL 进行单次改造的插件应优先放入，不对 SQL 进行改造的插件最后放入。
+
 :::
 
-## 使用方式(以分页插件举例)
+## 使用示例
 
-### spring
+### Spring 配置
+
+在 Spring 配置中，你需要创建 `MybatisPlusInterceptor` 的实例，并将它添加到 MyBatis 的插件列表中。以下是一个分页插件的配置示例：
 
 ```xml
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
@@ -68,7 +72,9 @@ sidebar:
 </bean>
 ```
 
-### spring-boot
+### Spring Boot 配置
+
+在 Spring Boot 项目中，你可以通过 Java 配置来添加插件：
 
 ```java
 @Configuration
@@ -87,7 +93,9 @@ public class MybatisPlusConfig {
 }
 ```
 
-### mybatis-config.xml
+### mybatis-config.xml 配置
+
+如果你使用的是 XML 配置，可以在 `mybatis-config.xml` 中添加插件：
 
 ```xml
 <plugins>
@@ -98,25 +106,13 @@ public class MybatisPlusConfig {
 </plugins>
 ```
 
-> property 的配置说明详见 `MybatisPlusInterceptor#setProperties` 的源码方法注释
-
 ## 拦截忽略注解 @InterceptorIgnore
 
-|      属性名      |  类型  | 默认值 |                  描述                  |
-| :--------------: | :----: | :----: | :------------------------------------: |
-|    tenantLine    | String |   ""   |                行级租户                |
-| dynamicTableName | String |   ""   |                动态表名                |
-|   blockAttack    | String |   ""   | 攻击 SQL 阻断解析器,防止全表更新与删除 |
-|    illegalSql    | String |   ""   |             垃圾 SQL 拦截              |
-
-> 该注解作用于 xxMapper.java 方法之上
-> 各属性代表对应的插件
-> 各属性不给值则默认为 false 设置为 true 忽略拦截
-> 更多说明详见源码注释
+`@InterceptorIgnore` 注解可以用来忽略某些插件的拦截。该注解有多个属性，分别对应不同的插件。如果某个属性没有值，则默认为 `false`，表示不忽略该插件；如果设置为 `true`，则忽略对应的插件。
 
 ## 手动设置拦截器忽略执行策略
 
-> 该申明权限大于注解权限，相对注解更加灵活。注意，需要手动关闭调用方法!  `3.5.3 +` 版本支持
+从 `3.5.3` 版本开始，你可以手动设置拦截器的忽略执行策略，这比注解更加灵活。但是，你需要手动关闭调用方法。
 
 ```java
 // 设置忽略租户插件
@@ -130,10 +126,9 @@ InterceptorIgnoreHelper.clearIgnoreStrategy();
 
 ## 本地缓存 SQL 解析
 
-- 缓存 SQL 解析，对分页 SQL 优化、租户等插件有效
+MyBatis-Plus 支持本地缓存 SQL 解析，这对于分页、租户等插件特别有效。你可以通过静态代码块来设置缓存处理类：
 
 ```java
-// 静态注入缓存处理类
 static {
     // 默认支持序列化 FstSerialCaffeineJsqlParseCache，JdkSerialCaffeineJsqlParseCache
     JsqlParserGlobal.setJsqlParseCache(new JdkSerialCaffeineJsqlParseCache(
@@ -142,3 +137,5 @@ static {
     );
 }
 ```
+
+以上是 MyBatis-Plus 插件主体的详细介绍和使用方法。通过这些插件，你可以大大增强 MyBatis 的功能，提高开发效率。

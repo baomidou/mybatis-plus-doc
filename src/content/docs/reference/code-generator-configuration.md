@@ -1,7 +1,7 @@
 ---
 title: 代码生成器配置
 sidebar:
-  order: 3
+  order: 4
 ---
 
 ## 基本配置
