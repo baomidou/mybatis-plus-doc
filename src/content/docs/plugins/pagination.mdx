@@ -4,15 +4,15 @@ sidebar:
   order: 2
 ---
 
+import SupportDb from '@/components/SupportDb.astro';
+
 MyBatis-Plus 的分页插件 `PaginationInnerInterceptor` 提供了强大的分页功能，支持多种数据库，使得分页查询变得简单高效。
 
 ## 支持的数据库
 
 `PaginationInnerInterceptor` 支持广泛的数据库，包括但不限于：
 
-- MySQL, Oracle, DB2, H2, HSQL, SQLite, PostgreSQL, SQLServer, Phoenix, Gauss
-- Clickhouse, Sybase, OceanBase, Firebird, Cubrid, Goldilocks, CSIIDB, Informix, TDengine, Redshift
-- 达梦数据库, 虚谷数据库, 人大金仓数据库, 南大通用(华库)数据库, 南大通用数据库, 神通数据库, 瀚高数据库, 优炫数据库, 星瑞格数据库
+<SupportDb />
 
 如果你需要支持的数据库不在列表中，可以通过 [Pull Request](https://github.com/baomidou/mybatis-plus/pull/1550/files) 请求添加。
 
@@ -86,11 +86,11 @@ List<UserVo> selectPageVo(IPage<UserVo> page, Integer state);
 
 | 属性名 | 类型 | 默认值 | 描述 |
 | :-: | :-: | :-: | :-: |
-| records | List<T> | emptyList | 查询数据列表 |
+| records | List&#60;T&#62; | emptyList | 查询数据列表 |
 | total | Long | 0 | 查询列表总记录数 |
 | size | Long | 10 | 每页显示条数，默认 10 |
 | current | Long | 1 | 当前页 |
-| orders | List<OrderItem> | emptyList | 排序字段信息 |
+| orders | List&#60;OrderItem&#62; | emptyList | 排序字段信息 |
 | optimizeCountSql | boolean | true | 自动优化 COUNT SQL |
 | optimizeJoinOfCountSql | boolean | true | 自动优化 COUNT SQL 是否把 join 查询部分移除 |
 | searchCount | boolean | true | 是否进行 count 查询 |
