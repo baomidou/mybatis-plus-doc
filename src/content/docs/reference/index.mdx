@@ -1,0 +1,759 @@
+---
+title: 使用配置
+sidebar:
+  order: 1
+---
+
+import Badge from "@/components/Badge.astro";
+
+MyBatis-Plus 提供了丰富的配置选项，以满足不同用户的需求。这些配置中，一部分继承自 MyBatis 原生支持的配置，另一部分则是 MyBatis-Plus 特有的扩展配置。
+
+## 使用方式
+
+### Spring Boot 配置
+
+在 Spring Boot 项目中，可以通过 `application.yml` 或 `application.properties` 文件来配置 MyBatis-Plus。
+
+```yaml
+mybatis-plus:
+  configuration:
+    # MyBatis 配置
+    map-underscore-to-camel-case: true
+  global-config:
+    # 全局配置
+    db-config:
+      # 数据库配置
+      id-type: auto
+```
+
+### Spring MVC 配置
+
+在传统的 Spring MVC 项目中，可以通过 XML 配置文件来配置 MyBatis-Plus。
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="mapperLocations" value="classpath*:mapper/**/*.xml"/>
+    <property name="typeAliasesPackage" value="com.your.domain"/>
+    <!-- 其他配置 -->
+</bean>
+```
+
+## Base
+
+### configLocation
+
+- **类型**：`String`
+- **默认值**：`null`
+
+指定 MyBatis 配置文件的位置。如果有单独的 MyBatis 配置文件，应将其路径配置到 `configLocation`。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  config-location: classpath:/mybatis-config.xml
+```
+
+### mapperLocations
+
+- **类型**：`String[]`
+- **默认值**：`["classpath*:/mapper/**/*.xml"]`
+
+指定 MyBatis Mapper 对应的 XML 文件位置。如果在 Mapper 中有自定义方法，需要配置此项。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**.xml
+```
+
+:::note
+对于 Maven 多模块项目，扫描路径应以 `classpath*:` 开头，以加载多个 JAR 包中的 XML 文件。
+:::
+
+### typeAliasesPackage
+
+- **类型**：`String`
+- **默认值**：`null`
+
+指定 MyBatis 别名包扫描路径，用于给包中的类注册别名。注册后，在 Mapper 对应的 XML 文件中可以直接使用类名，无需使用全限定类名。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  type-aliases-package: com.your.domain
+```
+
+### typeAliasesSuperType
+
+- **类型**：`Class<?>`
+- **默认值**：`null`
+
+与 `typeAliasesPackage` 一起使用，仅扫描指定父类的子类。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  type-aliases-super-type: com.your.domain.BaseEntity
+```
+
+### typeHandlersPackage
+
+- **类型**：`String`
+- **默认值**：`null`
+
+指定 TypeHandler 扫描路径，用于注册自定义类型转换器。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  type-handlers-package: com.your.typehandlers
+```
+
+:::tip
+TypeHandler 用于自定义类型转换。
+:::
+
+### ~~typeEnumsPackage~~
+
+- **类型**：`String`
+- **默认值**：`null`
+
+从 3.5.2 版本开始，该配置无效，通用枚举功能无需配置即可使用。
+
+### checkConfigLocation <Badge text="Spring Boot Only" type="error"/>
+
+- **类型**：`boolean`
+- **默认值**：`false`
+
+指定启动时是否检查 MyBatis XML 文件的存在，默认不检查。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  check-config-location: true
+```
+
+### executorType <Badge text="Spring Boot Only" type="error"/>
+
+- **类型**：`ExecutorType`
+- **默认值**：`simple`
+
+指定 MyBatis 的执行器类型，包括 `SIMPLE`、`REUSE` 和 `BATCH`。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  executor-type: reuse
+```
+
+### configurationProperties
+
+- **类型**：`Properties`
+- **默认值**：`null`
+
+指定外部化 MyBatis Properties 配置，用于抽离配置，实现不同环境的配置部署。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  configuration-properties: classpath:/mybatis-properties.properties
+```
+
+### configuration
+
+- **类型**：`Configuration`
+- **默认值**：`null`
+
+原生 MyBatis 所支持的配置，具体请查看 具体请查看 [Configuration](#Configuration)。
+
+### globalConfig
+
+- **类型**：`com.baomidou.mybatisplus.core.config.GlobalConfig`
+- **默认值**：`GlobalConfig::new`
+
+MyBatis-Plus 全局策略配置，具体请查看 [GlobalConfig](#GlobalConfig)。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: tbl_
+      id-type: auto
+```
+
+## Configuration
+
+MyBatis-Plus 的 `Configuration` 配置继承自 MyBatis 原生支持的配置，这意味着您可以通过 MyBatis XML 配置文件的形式进行配置，也可以通过 Spring Boot 或 Spring MVC 的配置文件进行设置。
+
+### mapUnderscoreToCamelCase
+
+- **类型**：`boolean`
+- **默认值**：`true`
+
+开启自动驼峰命名规则（camel case）映射，即从经典数据库列名 A_COLUMN（下划线命名） 到经典 Java 属性名 aColumn（驼峰命名） 的类似映射。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+```
+
+:::tip
+在 MyBatis-Plus 中，此属性也将用于生成最终的 SQL 的 select body。如果您的数据库命名符合规则，无需使用 `@TableField` 注解指定数据库字段名。
+:::
+
+### defaultEnumTypeHandler
+
+- **类型**：`Class<? extends TypeHandler>`
+- **默认值**：`org.apache.ibatis.type.EnumTypeHandler`
+
+默认枚举处理类，如果配置了该属性，枚举将统一使用指定处理器进行处理。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
+```
+
+:::tip
+MyBatis-Plus 支持多种枚举处理方式，包括存储枚举名称、索引或自定义处理。从 3.5.2 开始，默认枚举处理器为 `CompositeEnumTypeHandler`，它会根据枚举是否为通用枚举来选择合适的处理方式。
+
+- org.apache.ibatis.type.EnumTypeHandler : 存储枚举的名称
+- org.apache.ibatis.type.EnumOrdinalTypeHandler : 存储枚举的索引
+- com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler : 枚举类需要实现 IEnum 接口或字段标记@EnumValue 注解.(3.1.2 以下版本为 EnumTypeHandler)
+- ~~com.baomidou.mybatisplus.extension.handlers.EnumAnnotationTypeHandler: 枚举类字段需要标记@EnumValue 注解~~
+
+从 3.5.2 开始，默认枚举处理器为 `CompositeEnumTypeHandler`，会对定义为 MyBatis-Plus 通用枚举的枚举(实现`IEnum`了或加了`EnumValue`注解) 在内部使用`MybatisEnumTypeHandler`处理枚举。
+
+其他的枚举使用内部属性 `defaultEnumTypeHandler`(默认为`org.apache.ibatis.type.EnumTypeHandler`)进行处理。
+
+此配置仅改变 `CompositeEnumTypeHandler#defaultEnumTypeHandler`的值
+:::
+
+### aggressiveLazyLoading
+
+- **类型**：`boolean`
+- **默认值**：`true`
+
+当设置为 true 时，懒加载的对象可能被任何懒属性全部加载，否则，每个属性都按需加载。需要和 `lazyLoadingEnabled` 一起使用。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    aggressive-lazy-loading: false
+```
+
+### autoMappingBehavior
+
+- **类型**：`AutoMappingBehavior`
+- **默认值**：`partial`
+
+MyBatis 自动映射策略，通过该配置可指定 MyBatis 是否并且如何来自动映射数据表字段与对象的属性。
+
+- AutoMappingBehavior.NONE：不启用自动映射
+- AutoMappingBehavior.PARTIAL：只对非嵌套的 resultMap 进行自动映射
+- AutoMappingBehavior.FULL：对所有的 resultMap 都进行自动映射
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    auto-mapping-behavior: full
+```
+
+### autoMappingUnknownColumnBehavior
+
+- **类型**：`AutoMappingUnknownColumnBehavior`
+- **默认值**：`NONE`
+
+MyBatis 自动映射时未知列或未知属性处理策略，通过该配置可指定 MyBatis 在自动映射过程中遇到未知列或者未知属性时如何处理。
+
+- AutoMappingUnknownColumnBehavior.NONE：不做任何处理 (默认值)
+- AutoMappingUnknownColumnBehavior.WARNING：以日志的形式打印相关警告信息
+- AutoMappingUnknownColumnBehavior.FAILING：当作映射失败处理，并抛出异常和详细信息
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    auto-mapping-unknown-column-behavior: warning
+```
+
+### localCacheScope
+
+- **类型**：`String`
+- **默认值**：`SESSION`
+
+Mybatis 一级缓存，默认为 SESSION。
+
+- SESSION：Session 级别缓存，同一个 Session 相同查询语句不会再次查询数据库
+- STATEMENT：关闭一级缓存
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    local-cache-scope: statement
+```
+
+:::note
+在单服务架构中（仅有一个程序提供相同服务），开启一级缓存不会影响业务，只会提高性能。在微服务架构中需要关闭一级缓存，原因是：Service1 查询数据后，如果 Service2 修改了数据，Service1 再次查询时可能会得到过期数据。
+:::
+
+### cacheEnabled
+
+- **类型**：`boolean`
+- **默认值**：`true`
+
+是否开启 MyBatis 二级缓存。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    cache-enabled: false
+```
+
+### callSettersOnNulls
+
+- **类型**：`boolean`
+- **默认值**：`false`
+
+指定当结果集中值为 null 时是否调用映射对象的 Setter 方法（Map 对象时为 put 方法）。通常用于有 Map.keySet() 依赖或 null 值初始化的情况。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    call-setters-on-nulls: true
+```
+
+:::note
+基本类型（int、boolean 等）是不能设置成 null 的。
+:::
+
+### configurationFactory
+
+- **类型**：`Class<?>`
+- **默认值**：`null`
+
+指定一个提供 Configuration 实例的工厂类。该工厂生产的实例将用来加载已被反序列化对象的懒加载属性值。工厂类必须包含一个签名方法 `static Configuration getConfiguration()`。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    configuration-factory: com.your.config.MyConfigurationFactory
+```
+
+## GlobalConfig
+
+`GlobalConfig` 是 MyBatis-Plus 提供的全局策略配置，它允许开发者对 MyBatis-Plus 的行为进行全局性的定制。
+
+### banner
+
+- **类型**：`boolean`
+- **默认值**：`true`
+
+控制是否在控制台打印 MyBatis-Plus 的 LOGO。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    banner: false
+```
+
+### enableSqlRunner
+
+- **类型**：`boolean`
+- **默认值**：`false`
+
+控制是否初始化 `SqlRunner`（`com.baomidou.mybatisplus.extension.toolkit.SqlRunner`）。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    enable-sql-runner: true
+```
+
+### sqlInjector
+
+- **类型**：`com.baomidou.mybatisplus.core.injector.ISqlInjector`
+- **默认值**：`com.baomidou.mybatisplus.core.injector.DefaultSqlInjector`
+
+SQL 注入器，用于注入 MyBatis-Plus 提供的通用方法。Starter 下支持`@Bean`注入。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    sql-injector: com.baomidou.mybatisplus.core.injector.DefaultSqlInjector
+```
+
+```java
+@Bean
+public MybatisPlusInterceptor mybatisPlusInterceptor() {
+    MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+    interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
+    return interceptor;
+}
+```
+
+### superMapperClass
+
+- **类型**：`Class`
+- **默认值**：`com.baomidou.mybatisplus.core.mapper.Mapper.class`
+
+通用 Mapper 父类，只有该父类的子类 Mapper 才会注入 `sqlInjector` 内的方法。
+
+### metaObjectHandler
+
+- **类型**：`com.baomidou.mybatisplus.core.handlers.MetaObjectHandler`
+- **默认值**：`null`
+
+元对象字段填充控制器，用于自动填充实体类的字段。Starter 下支持`@Bean`注入。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    meta-object-handler: com.example.MyMetaObjectHandler
+```
+
+```java
+@Bean
+public MetaObjectHandler metaObjectHandler() {
+    return new MyMetaObjectHandler();
+}
+```
+
+### identifierGenerator<Badge text="Since 3.3.0" type="error"/>
+
+- **类型**：`com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator`
+- **默认值**：`com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator`
+
+Id 生成器，用于生成实体类的唯一标识。Starter 下支持`@Bean`注入。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    identifier-generator: com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator
+```
+
+```java
+@Bean
+public IdentifierGenerator identifierGenerator() {
+    return new CustomIdentifierGenerator();
+}
+```
+
+### dbConfig
+
+- **类型**：`com.baomidou.mybatisplus.core.config.GlobalConfig$DbConfig`
+- **默认值**：`null`
+
+MyBatis-Plus 全局策略中的 DB 策略配置，具体请查看 [DbConfig](#DbConfig)。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: tbl_
+      id-type: ASSIGN_ID
+```
+
+
+## DbConfig
+
+### idType
+
+- 类型：`com.baomidou.mybatisplus.annotation.IdType`
+- 默认值：`ASSIGN_ID`
+
+全局默认主键类型。
+
+- `IdType.AUTO`：使用数据库自增 ID 作为主键。
+- `IdType.NONE`：无特定生成策略，如果全局配置中有 IdType 相关的配置，则会跟随全局配置。
+- `IdType.INPUT`：在插入数据前，由用户自行设置主键值。
+- `IdType.ASSIGN_ID`：自动分配 `ID`，适用于 `Long`、`Integer`、`String` 类型的主键。默认使用雪花算法通过 `IdentifierGenerator` 的 `nextId` 实现。<Badge text="@since 3.3.0"/>
+- `IdType.ASSIGN_UUID`：自动分配 `UUID`，适用于 `String` 类型的主键。默认实现为 `IdentifierGenerator` 的 `nextUUID` 方法。<Badge text="@since 3.3.0"/>
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+```
+
+### tablePrefix
+
+- 类型：`String`
+- 默认值：`null`
+
+表名前缀
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: tbl_
+```
+
+### schema
+
+- 类型：`String`
+- 默认值：`null`
+
+指定数据库的 Schema 名称，通常不用设置。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      schema: my_schema
+```
+
+### columnFormat
+
+- 类型：`String`
+- 默认值：`null`
+
+用于在生成 SQL 时对字段名进行格式化，例如添加前缀或后缀，对主键无效，例: `%s`。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      column-format: %s_field
+```
+
+### tableFormat<Badge text="Since 3.5.3.2" type="error"/>
+
+- 类型：`String`
+- 默认值：`null`
+
+在生成 SQL 时对表名进行格式化，例: `%s`。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      table-format: tbl_%s
+```
+
+### propertyFormat<Badge text="Since 3.3.0" type="error"/>
+
+- 类型：`String`
+- 默认值：`null`
+
+用于在 Entity 的字段映射到数据库字段时进行格式化，只有在 `column as property` 这种情况下生效，对主键无效，例: `%s`。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      property-format: %s_prop
+```
+
+### tableUnderline
+
+- 类型：`boolean`
+- 默认值：`true`
+
+控制表名是否使用驼峰转下划线命名。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      table-underline: false
+```
+
+### capitalMode
+
+- 类型：`boolean`
+- 默认值：`false`
+
+控制表名和字段名是否使用大写命名。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      capital-mode: true
+```
+
+### keyGenerator
+
+- 类型：`com.baomidou.mybatisplus.core.incrementer.IKeyGenerator`
+- 默认值：`null`
+
+自定义表主键生成器。Starter 下支持`@Bean`注入。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      key-generator: com.example.CustomKeyGenerator
+```
+
+```java
+@Bean
+public IKeyGenerator keyGenerator() {
+    return new CustomKeyGenerator();
+}
+```
+
+### logicDeleteField
+
+- 类型：`String`
+- 默认值：`null`
+
+全局的 Entity 逻辑删除字段属性名，仅在逻辑删除功能打开时有效。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+```
+
+### logicDeleteValue
+
+- 类型：`String`
+- 默认值：`1`
+
+逻辑已删除值，仅在逻辑删除功能打开时有效。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-value: true
+```
+
+### logicNotDeleteValue
+
+- 类型：`String`
+- 默认值：`0`
+
+逻辑未删除值，仅在逻辑删除功能打开时有效。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-not-delete-value: false
+```
+
+### insertStrategy
+
+- 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
+- 默认值：`NOT_NULL`
+
+控制字段在 Insert 时的字段验证策略。
+
+- FieldStrategy.DEFAULT：遵循全局配置的策略。如果全局配置未指定，默认行为是仅在字段值不为 NULL 时插入该字段。
+- FieldStrategy.ALWAYS：总是插入该字段，无论字段值是否为 NULL。
+- FieldStrategy.NOT_NULL：仅在字段值不为 NULL 时插入该字段。
+- FieldStrategy.NOT_EMPTY：仅在字段值不为空（对于字符串类型）或不为 NULL（对于其他类型）时插入该字段。
+- FieldStrategy.NEVER：从不插入该字段，即使字段值不为 NULL。
+- FieldStrategy.IGNORED： 忽略判断，效果等同于”ALWAYS” <Badge text="@Deprecated" type="error"/>
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      insert-strategy: NEVER
+```
+
+### updateStrategy
+
+- 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
+- 默认值：`NOT_NULL`
+
+控制字段在 Update 时的字段验证策略。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      update-strategy: IGNORED
+```
+
+### whereStrategy
+
+- 类型：`com.baomidou.mybatisplus.annotation.FieldStrategy`
+- 默认值：`NOT_NULL`
+
+控制字段在 Update 时的字段验证策略。既 Wrapper 根据内部 Entity 生成的 Where 条件。
+
+**配置示例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      where-strategy: ALWAYS
+```
