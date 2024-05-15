@@ -1,44 +1,35 @@
-# name: CI
+name: CI
 
-# on: 
-#   push:
-#     branches:
-#       - master
+on: 
+  push:
+    branches:
+      - master
 
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-#     strategy:
-#       matrix:
-#         node-version: [10.x]
+    strategy:
+      matrix:
+        node-version: [20.x]
 
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v1
-#       - name: Use Node.js ${{ matrix.node-version }}
-#         uses: actions/setup-node@v1
-#         with:
-#           node-version: ${{ matrix.node-version }}
-#       - name: Build project
-#         env:
-#           CODING_USER: ${{ secrets.CODING_USER }}
-#           CODING_TOKEN: ${{ secrets.CODING_TOKEN }}
-#         run: yarn --frozen-lockfile && yarn run deploy
-#       # - name: Upload COS
-#       #   uses: zkqiang/tencent-cos-action@v0.1.0
-#       #   with:
-#       #     args: list / -ar && delete -r -f / && upload -r ./docs/.vuepress/dist/ /
-#       #     secret_id: ${{ secrets.TENCENT_CLOUD_SECRET_ID }}
-#       #     secret_key: ${{ secrets.TENCENT_CLOUD_SECRET_KEY }}
-#       #     bucket: ${{ secrets.TENCENT_CLOUD_BUCKET }}
-#       #     region: ap-beijing
-#       - name: Deploy to ECS
-#         uses: cross-the-world/scp-pipeline@master
-#         with:
-#           host: ${{ secrets.ECS_HOST }}
-#           user: ${{ secrets.ECS_USERNAME }}
-#           pass: ${{ secrets.ECS_PASSWORD }}
-#           connect_timeout: 10s
-#           local: './docs/.vuepress/dist/*'
-#           remote: '/var/www/html/'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Build project
+        env:
+          CODING_USER: ${{ secrets.CODING_USER }}
+          CODING_TOKEN: ${{ secrets.CODING_TOKEN }}
+        run: npm run build
+      - name: Deploy to ECS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.ECS_HOST }}
+          username: ${{ secrets.ECS_USERNAME }}
+          password: ${{ secrets.ECS_PASSWORD }}
+          source: './dist/*'
+          target: '/var/www/html/'
