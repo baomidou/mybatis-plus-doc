@@ -4,6 +4,8 @@ sidebar:
   order: 4
 ---
 
+import Badge from "@/components/Badge.astro";
+
 MyBatis-Plus 提供了一套强大的条件构造器（Wrapper），用于构建复杂的数据库查询条件。Wrapper 类允许开发者以链式调用的方式构造查询条件，无需编写繁琐的 SQL 语句，从而提高开发效率并减少 SQL 注入的风险。
 
 在 MyBatis-Plus 中，Wrapper 类是构建查询和更新条件的核心工具。以下是主要的 Wrapper 类及其功能：
@@ -1264,6 +1266,266 @@ SELECT * FROM user WHERE id NOT IN (select id from other_table where id < 3)
 
 :::
 
+### eqSql <Badge text="Since 3.5.6" type="error"/>
+
+`eqSql` 方法是 MyBatis-Plus 中用于构建查询条件的高级方法之一，允许你设置一个字段等于（EQ）某个 SQL 语句的结果。这个方法特别适用于需要将字段值与子查询结果进行比较的场景。
+
+#### 方法签名
+
+```java
+// 设置指定字段等于 SQL 语句的结果
+eqSql(R column, String inValue)
+
+// 在条件满足时设置指定字段等于 SQL 语句的结果
+eqSql(boolean condition, R column, String inValue)
+```
+
+#### 参数说明
+
+- `column`：数据库字段名或使用 `Lambda` 表达式的字段名。
+- `inValue`：一个字符串，包含用于生成等于条件的 SQL 语句。
+- `condition`：一个布尔值，用于控制是否应用这个等于条件。
+
+#### 示例
+
+**普通 Wrapper (`QueryWrapper`)**：
+
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.eqSql("id", "select MAX(id) from table");
+```
+
+**Lambda Wrapper (`LambdaQueryWrapper`)**：
+
+```java
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+lambdaQueryWrapper.eqSql(User::getId, "select MAX(id) from table");
+```
+
+**生成的 SQL**
+
+```sql
+-- 普通 Wrapper 和 Lambda Wrapper 生成的 SQL 相同
+SELECT * FROM user WHERE id = (select MAX(id) from table)
+```
+
+:::note[注意事项]
+
+- `eqSql` 方法允许你将字段值与 SQL 语句的结果进行比较，这为复杂的查询条件提供了灵活性。
+- 在使用 `eqSql` 方法时，确保 `column` 参数正确指向了数据库中的字段名或使用 `Lambda` 表达式的字段名。
+- `inValue` 参数应该是一个有效的 SQL 语句，它将直接嵌入到生成的 SQL 中，因此需要确保其安全性和正确性，应避免 SQL 由前端动态参数传入并直接引用。
+- 如果需要根据某些条件动态添加等于条件，可以使用带有 `condition` 参数的重载方法。
+
+:::
+
+### gtSql <Badge text="Since 3.4.3.2" type="error"/>
+
+`gtSql` 方法是 MyBatis-Plus 中用于构建查询条件的高级方法之一，允许你设置一个字段大于（GT）某个 SQL 语句的结果。
+
+#### 方法签名
+
+```java
+// 设置指定字段大于 SQL 语句的结果
+gtSql(R column, String inValue)
+
+// 在条件满足时设置指定字段大于 SQL 语句的结果
+gtSql(boolean condition, R column, String inValue)
+```
+
+#### 参数说明
+
+- `column`：数据库字段名或使用 `Lambda` 表达式的字段名。
+- `inValue`：一个字符串，包含用于生成大于条件的 SQL 语句。
+- `condition`：一个布尔值，用于控制是否应用这个大于条件。
+
+#### 示例
+
+**普通 Wrapper (`QueryWrapper`)**：
+
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gtSql("id", "select id from table where name = 'xx'");
+```
+
+**Lambda Wrapper (`LambdaQueryWrapper`)**：
+
+```java
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+lambdaQueryWrapper.gtSql(User::getId, "select id from table where name = 'xx'");
+```
+
+**生成的 SQL**
+
+```sql
+-- 普通 Wrapper 和 Lambda Wrapper 生成的 SQL 相同
+SELECT * FROM user WHERE id > (select id from table where name = 'xx')
+```
+
+:::note[注意事项]
+
+- `gtSql` 方法允许你将字段值与 SQL 语句的结果进行比较，这为复杂的查询条件提供了灵活性。
+- 在使用 `gtSql` 方法时，确保 `column` 参数正确指向了数据库中的字段名或使用 `Lambda` 表达式的字段名。
+- `inValue` 参数应该是一个有效的 SQL 语句，它将直接嵌入到生成的 SQL 中，因此需要确保其安全性和正确性，应避免 SQL 由前端动态参数传入并直接引用。
+- 如果需要根据某些条件动态添加大于条件，可以使用带有 `condition` 参数的重载方法。
+
+:::
+
+### geSql <Badge text="Since 3.4.3.2" type="error"/>
+
+`geSql` 方法是 MyBatis-Plus 中用于构建查询条件的高级方法之一，允许你设置一个字段大于等于（GE）某个 SQL 语句的结果。
+
+#### 方法签名
+
+```java
+// 设置指定字段大于等于 SQL 语句的结果
+geSql(R column, String inValue)
+
+// 在条件满足时设置指定字段大于等于 SQL 语句的结果
+geSql(boolean condition, R column, String inValue)
+```
+
+#### 参数说明
+
+- `column`：数据库字段名或使用 `Lambda` 表达式的字段名。
+- `inValue`：一个字符串，包含用于生成大于等于条件的 SQL 语句。
+- `condition`：一个布尔值，用于控制是否应用这个大于等于条件。
+
+#### 示例
+
+**普通 Wrapper (`QueryWrapper`)**：
+
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.geSql("id", "select id from table where name = 'xx'");
+```
+
+**Lambda Wrapper (`LambdaQueryWrapper`)**：
+
+```java
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+lambdaQueryWrapper.geSql(User::getId, "select id from table where name = 'xx'");
+```
+
+**生成的 SQL**
+
+```sql
+-- 普通 Wrapper 和 Lambda Wrapper 生成的 SQL 相同
+SELECT * FROM user WHERE id >= (select id from table where name = 'xx')
+```
+
+:::note[注意事项]
+
+- `geSql` 方法允许你将字段值与 SQL 语句的结果进行比较，这为复杂的查询条件提供了灵活性。
+- 在使用 `geSql` 方法时，确保 `column` 参数正确指向了数据库中的字段名或使用 `Lambda` 表达式的字段名。
+- `inValue` 参数应该是一个有效的 SQL 语句，它将直接嵌入到生成的 SQL 中，因此需要确保其安全性和正确性，应避免 SQL 由前端动态参数传入并直接引用。
+- 如果需要根据某些条件动态添加大于等于条件，可以使用带有 `condition` 参数的重载方法。
+
+:::
+
+### ltSql <Badge text="Since 3.4.3.2" type="error"/>
+
+`ltSql` 方法是 MyBatis-Plus 中用于构建查询条件的高级方法之一，允许你设置一个字段小于（LT）某个 SQL 语句的结果。
+
+#### 方法签名
+
+```java
+// 设置指定字段小于 SQL 语句的结果
+ltSql(R column, String inValue)
+
+// 在条件满足时设置指定字段小于 SQL 语句的结果
+ltSql(boolean condition, R column, String inValue)
+```
+
+#### 参数说明
+
+- `column`：数据库字段名或使用 `Lambda` 表达式的字段名。
+- `inValue`：一个字符串，包含用于生成小于条件的 SQL 语句。
+- `condition`：一个布尔值，用于控制是否应用这个小于条件。
+
+#### 示例
+
+**普通 Wrapper (`QueryWrapper`)**：
+
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.ltSql("id", "select id from table where name = 'xx'");
+```
+
+**Lambda Wrapper (`LambdaQueryWrapper`)**：
+
+```java
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+lambdaQueryWrapper.ltSql(User::getId, "select id from table where name = 'xx'");
+```
+
+**生成的 SQL**
+
+```sql
+-- 普通 Wrapper 和 Lambda Wrapper 生成的 SQL 相同
+SELECT * FROM user WHERE id < (select id from table where name = 'xx')
+```
+
+:::note[注意事项]
+
+- `ltSql` 方法允许你将字段值与 SQL 语句的结果进行比较，这为复杂的查询条件提供了灵活性。
+- 在使用 `ltSql` 方法时，确保 `column` 参数正确指向了数据库中的字段名或使用 `Lambda` 表达式的字段名。
+- `inValue` 参数应该是一个有效的 SQL 语句，它将直接嵌入到生成的 SQL 中，因此需要确保其安全性和正确性，应避免 SQL 由前端动态入并直接引用。
+- 如果需要根据某些条件动态添加小于条件，可以使用带有 `condition` 参数的重载方法。
+
+:::
+
+### leSql <Badge text="Since 3.4.3.2" type="error"/>
+
+`leSql` 方法是 MyBatis-Plus 中用于构建查询条件的高级方法之一，允许你设置一个字段小于等于（LE）某个 SQL 语句的结果。
+
+#### 方法签名
+
+```java
+// 设置指定字段小于等于 SQL 语句的结果
+leSql(R column, String inValue)
+
+// 在条件满足时设置指定字段小于等于 SQL 语句的结果
+leSql(boolean condition, R column, String inValue)
+```
+
+#### 参数说明
+
+- `column`：数据库字段名或使用 `Lambda` 表达式的字段名。
+- `inValue`：一个字符串，包含用于生成小于等于条件的 SQL 语句。
+- `condition`：一个布尔值，用于控制是否应用这个小于等于条件。
+
+#### 示例
+
+**普通 Wrapper (`QueryWrapper`)**：
+
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.leSql("id", "select id from table where name = 'xx'");
+```
+
+**Lambda Wrapper (`LambdaQueryWrapper`)**：
+
+```java
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+lambdaQueryWrapper.leSql(User::getId, "select id from table where name = 'xx'");
+```
+
+**生成的 SQL**
+
+```sql
+-- 普通 Wrapper 和 Lambda Wrapper 生成的 SQL 相同
+SELECT * FROM user WHERE id <= (select id from table where name = 'xx')
+```
+
+:::note[注意事项]
+
+- `leSql` 方法允许你将字段值与 SQL 语句的结果进行比较，这为复杂的查询条件提供了灵活性。
+- 在使用 `leSql` 方法时，确保 `column` 参数正确指向了数据库中的字段名或使用 `Lambda` 表达式的字段名。
+- `inValue` 参数应该是一个有效的 SQL 语句，它将直接嵌入到生成的 SQL 中，因此需要确保其安全性和正确性，应避免 SQL 由前端动态参数传入并直接引用。
+- 如果需要根据某些条件动态添加小于等于条件，可以使用带有 `condition` 参数的重载方法。
+
+:::
+
 ### groupBy
 
 `groupBy` 方法是 MyBatis-Plus 中用于构建查询条件的高级方法之一，它用于设置查询结果的分组条件。通过指定一个或多个字段，`groupBy` 方法可以生成 SQL 语句中的 GROUP BY 子句。
@@ -2237,6 +2499,116 @@ UPDATE user SET name = '老李头'
 
 :::
 
+### setIncrBy <Badge text="Since 3.5.6" type="error"/>
+
+`setIncrBy` 方法是 MyBatis-Plus 中用于更新操作的高级方法之一，它允许你指定一个字段，并使其在数据库中的值增加指定的数值。这个方法特别适用于需要对数值字段进行增量操作的场景。
+
+#### 使用范围
+
+- `LambdaUpdateWrapper`
+
+#### 方法签名
+
+```java
+// 字段自增指定数值
+setIncrBy(SFunction<T, ?> column, Number val)
+
+// 在条件满足时字段自增指定数值
+setIncrBy(boolean condition, SFunction<T, ?> column, Number val)
+```
+
+#### 参数说明
+
+- `column`：一个 `SFunction` 对象，表示要自增的字段。
+- `val`：一个 `Number` 对象，表示要增加的数值。
+- `condition`（可选）：一个布尔值，表示是否在满足条件时执行自增操作。
+
+#### 示例
+
+**普通 Wrapper (`UpdateWrapper`)**：
+
+```java
+UpdateWrapper<Product> updateWrapper = new UpdateWrapper<>();
+updateWrapper.setIncrBy(Product::getNum, 1);
+```
+
+**Lambda Wrapper (`LambdaUpdateWrapper`)**：
+
+```java
+LambdaUpdateWrapper<Product> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+lambdaUpdateWrapper.setIncrBy(Product::getNum, 1);
+```
+
+**生成的 SQL**
+
+```sql
+-- 普通 Wrapper 和 Lambda Wrapper 生成的 SQL 相同
+UPDATE product SET num = num + 1
+```
+
+:::tip[注意事项]
+
+- `setIncrBy` 方法用于对指定字段进行自增操作，这通常用于需要对数值字段进行增量更新的场景。
+- 在使用 `setIncrBy` 方法时，确保 `column` 参数是一个有效的字段表达式，`val` 参数是一个有效的数值。
+- 如果提供了 `condition` 参数，则只有在条件为 `true` 时才会执行自增操作。
+
+:::
+
+### setDecrBy <Badge text="Since 3.5.6" type="error"/>
+
+`setDecrBy` 方法是 MyBatis-Plus 中用于更新操作的高级方法之一，它允许你指定一个字段，并使其在数据库中的值减少指定的数值。这个方法特别适用于需要对数值字段进行减量操作的场景。
+
+#### 使用范围
+
+- `LambdaUpdateWrapper`
+
+#### 方法签名
+
+```java
+// 字段自减指定数值
+setDecrBy(SFunction<T, ?> column, Number val)
+
+// 在条件满足时字段自减指定数值
+setDecrBy(boolean condition, SFunction<T, ?> column, Number val)
+```
+
+#### 参数说明
+
+- `column`：一个 `SFunction` 对象，表示要自减的字段。
+- `val`：一个 `Number` 对象，表示要减少的数值。
+- `condition`（可选）：一个布尔值，表示是否在满足条件时执行自减操作。
+
+#### 示例
+
+**普通 Wrapper (`UpdateWrapper`)**：
+
+```java
+UpdateWrapper<Product> updateWrapper = new UpdateWrapper<>();
+updateWrapper.setDecrBy(Product::getNum, 1);
+```
+
+**Lambda Wrapper (`LambdaUpdateWrapper`)**：
+
+```java
+LambdaUpdateWrapper<Product> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+lambdaUpdateWrapper.setDecrBy(Product::getNum, 1);
+```
+
+**生成的 SQL**
+
+```sql
+-- 普通 Wrapper 和 Lambda Wrapper 生成的 SQL 相同
+UPDATE product SET num = num - 1
+```
+
+:::tip[注意事项]
+
+- `setDecrBy` 方法用于对指定字段进行自减操作，这通常用于需要对数值字段进行减量更新的场景。
+- 在使用 `setDecrBy` 方法时，确保 `column` 参数是一个有效的字段表达式，`val` 参数是一个有效的数值。
+- 如果提供了 `condition` 参数，则只有在条件为 `true` 时才会执行自减操作。
+
+:::
+
 ### lambda
 
 `lambda` 方法是一个便捷的方法，它允许你从 `QueryWrapper` 或 `UpdateWrapper` 对象中获取对应的 `LambdaQueryWrapper` 或 `LambdaUpdateWrapper` 对象。这样，你就可以使用 Lambda 表达式来构建查询或更新条件，使得代码更加简洁和类型安全。
@@ -2286,6 +2658,8 @@ lambdaUpdateWrapper.set(User::getName, "李四");
 - 一旦获取了 `LambdaWrapper` 对象，你就可以使用 Lambda 表达式来构建查询或更新条件，这将使得代码更加类型安全和易于维护。
 
 :::
+
+
 
 ## 使用提示
 

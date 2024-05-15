@@ -28,7 +28,11 @@ import LastedDependency from '@/components/LastedDependency.astro';
 ---
 
 :::caution[注意事项]
+
 引入 `MyBatis-Plus` 之后请不要再次引入 `MyBatis` 以及 `mybatis-spring-boot-starter`和`MyBatis-Spring`，以避免因版本差异导致的问题。
+
+自**3.5.4**开始，在没有使用`mybatis-plus-boot-starter`或`mybatis-plus-spring-boot3-starter`情况下，请自行根据项目情况引入`mybatis-spring`。
+
 :::
 
 ## Snapshot
@@ -42,6 +46,17 @@ Maven：
     <id>snapshots</id>
     <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
 </repository>
+```
+
+当使用阿里云仓库无法下载快照时,请在mirrorOf中加上!snapshots.
+
+```xml
+<mirror>
+  <id>aliyunmaven</id>
+  <mirrorOf>*,!snapshots</mirrorOf>
+  <name>阿里云公共仓库</name>
+  <url>https://maven.aliyun.com/repository/public</url>
+</mirror>
 ```
 
 Gradle：

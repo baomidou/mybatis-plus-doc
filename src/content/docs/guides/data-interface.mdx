@@ -904,6 +904,12 @@ SELECT * FROM user WHERE age > 25 LIMIT 10 OFFSET 0
 int count();
 // 根据 Wrapper 条件，查询总记录数
 int count(Wrapper<T> queryWrapper);
+
+//自3.4.3.2开始,返回值修改为long
+// 查询总记录数
+long count();
+// 根据 Wrapper 条件，查询总记录数
+long count(Wrapper<T> queryWrapper);
 ```
 
 <p>

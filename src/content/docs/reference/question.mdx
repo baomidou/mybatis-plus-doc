@@ -553,6 +553,7 @@ There is one backward incompatible changes since 3.5.0.
 ```yaml
 mybatis-plus:
   configuration:
+    # 如果项目无日志框架，可以考虑指定为 org.apache.ibatis.logging.stdout.StdOutImpl (请勿在实际生产中使用).
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl 
 ```
 
@@ -622,11 +623,11 @@ mybatis-plus:
 
 如果您想要在 XML 中根据数据库类型选择不同的 SQL 片段，您可以使用 MyBatis Plus 提供的 `database-id` 参数。以下是配置示例（以 MySQL 为例）：
 
-\```yaml
+```yaml
 mybatis-plus:
   configuration:
     database-id: mysql
-\```
+```
 
 这样配置后，MyBatis Plus 将会在执行 SQL 语句时，根据 `database-id` 参数选择不同的 SQL 片段。
 
@@ -634,7 +635,7 @@ mybatis-plus:
 
 1. 使用变量 `_databaseId`：
 
-\```xml
+```xml
 <select id="selectAllNames" resultType="java.lang.String">
 select 
 <choose>
@@ -647,18 +648,18 @@ select
 </choose>
 form user
 </select>
-\```
+```
 
 2. 使用标签属性 `databaseId`：
 
-\```xml
+```xml
 <select id="selectAllNames" databaseId="mysql" resultType="java.lang.String">
      select GROUP_CONCAT(name SEPARATOR ',') form user
 </select>
 <select id="selectAllNames" databaseId="pgsql" resultType="java.lang.String">
      select array_to_string(ARRAY_AGG(name), ',') form user
 </select>
-\```
+```
 
 通过以上配置，您可以根据不同的数据库类型选择不同的 SQL 片段。
 
@@ -684,5 +685,24 @@ MyBatis Plus 不支持复合主键并强制使用唯一的 ID，这是出于以�
 </Accordion>
 
 
+<Accordion client:load title={'项目启动速度缓慢'}>
+- 初始化默认雪花ID导致
 
+  1. 查看本机hostname
+  2. 编辑系统hosts文件，将本机hostname写入至hosts文件
 
+  ```properties
+  # 示例,例如我的hostname名字为nieqiurong-PC，那我在hosts文件配置如下即可
+  127.0.0.1       localhost nieqiurong-PC
+  ```
+
+- 检查数据库连接池初始化
+
+  碰到过使用hikari在linux系统下启动缓慢
+
+  解决方案: 
+
+  在java启动命令中指定 -Djava.security.egd=file:/dev/urandom把获取随机数的方式从 /dev/random改为/dev/urandom
+
+  示例: java -Djava.security.egd=file:/dev/urandom -jar xxxx.jar
+</Accordion>

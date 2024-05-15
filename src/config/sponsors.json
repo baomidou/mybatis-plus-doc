@@ -1,17 +1,17 @@
 [
     {
-        "title": "DiBoot",
-        "subtitle": "低代码开发平台",
-        "description": "高效赋能开发者，多数功能不手写",
-        "logo": "/images/sponsors/diboot.png",
-        "link": "https://www.diboot.com/?from=mp"
-    },
-    {
         "title": "FlowLong",
         "subtitle": "飞龙工作流引擎",
         "description": "为中国特色审批流打造的国产JSON流程引擎",
         "logo": "/images/sponsors/flowlong.png",
-        "link": "https://gitee.com/aizuda/flowlong?from=mp"
+        "link": "https://doc.flowlong.com/?from=mp"
+    },
+    {
+        "title": "Mall4J",
+        "subtitle": "Java 开源商城系统",
+        "description": "专业高效商城系统，百万开发者的选择",
+        "logo": "/images/sponsors/mall4j.png",
+        "link": "https://gitee.com/gz-yami/mall4j?from=mp"
     },
     {
         "title": "CRMEB",
