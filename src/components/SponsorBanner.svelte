@@ -20,7 +20,7 @@
   }
 
   onMount(() => {
-    const interval = setInterval(updateCard, 4000);
+    const interval = setInterval(updateCard, 3000);
     return () => clearInterval(interval);
   });
 </script>

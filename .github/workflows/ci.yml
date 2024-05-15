@@ -31,6 +31,5 @@ jobs:
           host: ${{ secrets.ECS_HOST }}
           username: ${{ secrets.ECS_USERNAME }}
           password: ${{ secrets.ECS_PASSWORD }}
-          rm: true
           source: './dist/*'
-          target: '/var/www/html/'
+          target: '/var/www/mybatis-plus-doc/'
