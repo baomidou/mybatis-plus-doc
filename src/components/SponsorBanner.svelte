@@ -28,9 +28,9 @@
 <div class="flex xl:flex-col not-content">
   <!-- Spansor -->
   <div class="w-full xl:flex-1">
-    <div class="max-w-full xl:max-w-[18rem] w-full p-5 text-sm leading-6" style="opacity: {$opacity}">
+    <div class="max-w-full xl:max-w-[18rem] w-full mt-5 px-5 text-sm leading-6" style="opacity: {$opacity}">
         <a href={currentSponsor.link} class="w-full no-underline text-current hover:no-underline" target="_blank">
-            <figure class="relative flex flex-col-reverse border-2 rounded-lg p-6 dark:bg-slate-800 dark:highlight-white/5 transform transition hover:-translate-y-2.5 h-full">
+            <figure class="relative flex flex-col-reverse border-2 rounded-lg p-6 dark:bg-slate-800 dark:highlight-white/5 h-full">
                 <figcaption class="flex items-center space-x-4">
                     <img src={currentSponsor.logo} alt="" class="flex-none w-14 h-14 object-contain" loading="lazy" decoding="async">
                     <div class="flex-auto">
@@ -49,8 +49,12 @@
 
   <!-- WWAD -->
   <div class="w-full xl:flex-1">
-    <div class="max-w-full xl:max-w-[18rem] w-full m-5">
-      <div class="wwads-cn wwads-horizontal" data-id="135"></div>
+    <div class="max-w-full xl:max-w-[18rem] w-full mt-5 px-5 text-sm leading-6">
+      <figure class="relative flex flex-col-reverse border-2 rounded-lg p-6 dark:bg-slate-800 dark:highlight-white/5 h-full">
+        <figcaption class="flex items-center space-x-4">
+          <div class="wwads-cn wwads-horizontal" data-id="135"></div>
+        </figcaption>
+      </figure>
     </div>
   </div>
 </div>
