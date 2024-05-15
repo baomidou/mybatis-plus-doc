@@ -25,7 +25,7 @@
   });
 </script>
 
-<div class="not-content max-w-48 md:max-w-md w-full m-5 text-sm leading-6" style="opacity: {$opacity}">
+<div class="not-content max-w-sm md:max-w-[16rem] w-full m-5 text-sm leading-6" style="opacity: {$opacity}">
     <a href={currentSponsor.link} class="w-full no-underline text-current hover:no-underline" target="_blank">
         <figure class="relative flex flex-col-reverse border-2 rounded-lg p-6 dark:bg-slate-800 dark:highlight-white/5 transform transition hover:-translate-y-2.5 h-full">
             <blockquote class="mt-6 dark:text-gray-300 flex-1">
@@ -46,6 +46,6 @@
     </a>
 </div>
 
-<div class="not-content max-w-48 w-full m-5">
+<div class="not-content max-w-sm md:max-w-[16rem] w-full m-5">
   <div class="wwads-cn wwads-vertical wwads-sticky" data-id="135"></div>
 </div>
