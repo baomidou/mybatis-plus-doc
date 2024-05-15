@@ -26,9 +26,9 @@
 </script>
 
 <div class="flex xl:flex-col not-content">
-  <!-- Spansor -->
   <div class="w-full xl:flex-1">
     <div class="max-w-full xl:max-w-[18rem] w-full pt-5 px-5 text-sm leading-6" style="opacity: {$opacity}">
+        <!-- Spansor -->
         <a href={currentSponsor.link} class="w-full no-underline text-current hover:no-underline" target="_blank">
             <figure class="relative flex flex-col-reverse border rounded-lg p-4 dark:bg-slate-800 dark:highlight-white/5 h-full">
                 <figcaption class="flex items-center space-x-4">
@@ -44,17 +44,9 @@
                 </figcaption>
             </figure>
         </a>
-    </div>
-  </div>
 
-  <!-- WWAD -->
-  <div class="w-full xl:flex-1">
-    <div class="max-w-full xl:max-w-[18rem] w-full pt-5 px-5 text-sm leading-6">
-      <figure class="relative flex flex-col-reverse border rounded-lg p-2 h-full">
-        <figcaption class="flex items-center space-x-4">
-          <div class="wwads-cn wwads-vertical xl:wwads-horizontal" data-id="135"></div>
-        </figcaption>
-      </figure>
+        <!-- WWAD -->
+        <div class="wwads-cn wwads-horizontal xl:wwads-vertical" data-id="135"></div>
     </div>
   </div>
 </div>
