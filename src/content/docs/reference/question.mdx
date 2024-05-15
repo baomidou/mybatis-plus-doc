@@ -1,0 +1,708 @@
+---
+title: 常见问题
+sidebar:
+  order: 6
+---
+
+import Accordion from '@/components/Accordion.svelte';
+
+本文档收录了 MyBatis-Plus 使用时遇到的各种常见问题，如果您在使用 MyBatis-Plus 的时候遇到了问题，请您优先查看本文档。
+
+<br/>
+
+<Accordion client:load title={'如何排除非表中字段？'}>
+
+以下三种方式选择一种即可：
+
+- 使用 `transient` 修饰
+
+  ```java
+  private transient String noColumn;
+  ```
+
+- 使用 `static` 修饰
+
+  ```java
+  private static String noColumn;
+  ```
+
+- 使用 `TableField` 注解
+
+  ```java
+  @TableField(exist=false)
+  private String noColumn;
+  ```
+
+</Accordion>
+
+
+<Accordion client:load title={'如何排除实体父类属性？'}>
+
+使用 `transient` 修饰需要排除的父类属性
+
+``` java
+/**
+ * 忽略父类 createTime 字段映射
+ */
+private transient String createTime;
+```
+
+</Accordion>
+
+
+<Accordion client:load title={'出现 `Invalid bound statement (not found)` 异常'}>
+
+出现该异常通常是由于配置不正确或者 Mapper 没有被正确扫描到导致的。解决方案如下：
+
+- 检查是否存在 jar 包冲突。
+- 检查 Mapper.java 的扫描路径：
+
+  - 方法一：在 `Configuration` 类上使用注解 `MapperScan`
+
+    ```java
+    @Configuration
+    @MapperScan("com.yourpackage.*.mapper")
+    public class YourConfigClass{
+      ...
+    }
+    ```
+
+  - 方法二：在 `Configuration` 类中配置 `MapperScannerConfigurer`（[查看示例](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/config%E6%96%B9%E5%BC%8F/src/main/java/com/baomidou/springboot/config/MybatisPlusConfig.java)）
+
+    ```java
+    @Bean
+    public MapperScannerConfigurer mapperScannerConfigurer(){
+        MapperScannerConfigurer scannerConfigurer = new MapperScannerConfigurer();
+        // 可以通过环境变量获取你的 mapper 路径，这样 mapper 扫描可以通过配置文件配置了
+        scannerConfigurer.setBasePackage("com.yourpackage.*.mapper");
+        return scannerConfigurer;
+    }
+    ```
+
+- 检查是否指定了主键。如果未指定，将导致 `selectById` 相关 ID 无法操作。请使用注解 `@TableId` 注解表 ID 主键。当然，`@TableId` 注解可以省略，但是你的主键必须叫 id（忽略大小写）。
+- 不要使用原生的 SqlSessionFactory，请使用 MybatisSqlSessionFactory。
+- 检查是否自定义了 SqlInjector，是否复写了 `getMethodList()` 方法。在该方法中是否注入了你需要的方法（可参考 DefaultSqlInjector）。
+- IDEA 默认的 build 步骤可能会导致 mapper 文件无法正常编译到对应的 resources 文件夹中。请检查 build 后相关资源文件夹是否有对应的 XML 文件。如果没有，请调整 IDEA 的 build 设置。推荐调整为 Maven 或 Gradle 的 build。
+
+</Accordion>
+
+
+<Accordion client:load title={'自定义 SQL 无法执行'}>
+
+问题描述：指在 XML 中里面自定义 SQL，却无法调用。本功能同 `MyBatis` 一样需要配置 XML 扫描路径：
+
+- Spring MVC 配置（参考[mybatisplus-spring-mvc](https://gitee.com/baomidou/mybatisplus-spring-mvc/blob/dev/src/main/resources/spring/spring-mybatis.xml)）
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="typeAliasesPackage" value="xxx.entity" />
+    <property name="mapperLocations" value="classpath*:/mybatis/*/*.xml"/>
+    ...
+</bean>
+```
+
+- Spring Boot 配置（参考[mybatisplus-spring-boot](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/2.x/src/main/resources/application.yml)）
+
+```yaml
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+```
+
+- 对于`IDEA`系列编辑器，XML 文件是不能放在 java 文件夹中的，IDEA 默认不会编译源码文件夹中的 XML 文件，可以参照以下方式解决：
+
+  - 将配置文件放在 resource 文件夹中
+  - 对于 Maven 项目，可指定 POM 文件的 resource
+
+  ```xml
+  <build>
+    <resources>
+        <resource>
+            <!-- xml放在java目录下-->
+            <directory>src/main/java</directory>
+            <includes>
+                <include>**/*.xml</include>
+            </includes>
+        </resource>
+        <!--指定资源的位置（xml放在resources下，可以不用指定）-->
+        <resource>
+            <directory>src/main/resources</directory>
+        </resource>
+    </resources>
+  </build>
+  ```
+
+:::note
+注意！Maven 多模块项目的扫描路径需以 `classpath*:` 开头 （即加载多个 jar 包下的 XML 文件）
+:::
+
+</Accordion>
+
+
+<Accordion client:load title={'启动异常时异常问题排查'}>
+
+- 异常一：
+
+  ```txt
+  java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.TypeVariableImpl cannot be cast to java.lang.Class
+  ```
+
+  MapperScan 需要排除 com.baomidou.mybatisplus.mapper.BaseMapper 类 及其 子类（自定义公共 Mapper），比如：
+
+  ```java
+  import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+  public interface SuperMapper<T> extends BaseMapper<T> {
+      // your methods
+  }
+  ```
+
+- 异常二：
+
+  ```txt
+  Injection of autowired
+  ```
+
+  原因：低版本不支持泛型注入，请升级 Spring 版本到 4+ 以上。
+
+- 异常三：
+
+  ```txt
+  java.lang.NoSuchMethodError: org.apache.ibatis.session.Configuration.getDefaultScriptingLanguageInstance() Lorg/apache/ibatis/scripting/LanguageDriver
+  ```
+
+  版本引入问题：3.4.1 版本里没有，3.4.2 里面才有！
+
+</Accordion>
+
+
+<Accordion client:load title={'关于 Long 型主键填充不生效的问题'}>
+
+检查是不是用了`long`而不是`Long`！
+:::tip
+`long`类型默认值为 0，而 MP 只会判断是否为 `null`
+:::
+
+</Accordion>
+
+
+<Accordion client:load title={'生成主键太长导致 JS 精度丢失'}>
+
+JavaScript 无法处理 Java 的长整型 Long 导致精度丢失，具体表现为主键最后两位永远为 0，解决思路： Long 转为 String 返回
+
+- FastJson 处理方式
+
+  ```java {6}
+  @Override
+  public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+      FastJsonHttpMessageConverter fastJsonConverter = new FastJsonHttpMessageConverter();
+      FastJsonConfig fjc = new FastJsonConfig();
+      // 配置序列化策略
+      fjc.setSerializerFeatures(SerializerFeature.BrowserCompatible);
+      fastJsonConverter.setFastJsonConfig(fjc);
+      converters.add(fastJsonConverter);
+  }
+  ```
+
+- JackJson 处理方式
+
+  - 方式一
+
+    ```java
+    // 注解处理，这里可以配置公共 baseEntity 处理
+    @JsonSerialize(using=ToStringSerializer.class)
+    public long getId() {
+        return id;
+    }
+    ```
+
+  - 方式二
+
+    ```java
+    // 全局配置序列化返回 JSON 处理
+    final ObjectMapper objectMapper = new ObjectMapper();
+    SimpleModule simpleModule = new SimpleModule();
+    simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
+    objectMapper.registerModule(simpleModule);
+    ```
+
+- 比较一般的处理方式：增加一个 `public String getIdStr()` 方法，前台获取 `idStr`
+
+</Accordion>
+
+
+<Accordion client:load title={'插入或更新的字段有 空字符串 或者 `null`'}>
+
+FieldStrategy 有三种策略：
+
+- IGNORED：忽略
+- NOT_NULL：非 NULL，默认策略
+- NOT_EMPTY：非空
+
+当用户有更新字段为 空字符串 或者 `null` 的需求时，需要对 `FieldStrategy` 策略进行调整：
+
+- 方式一：调整全局的验证策略
+
+  注入配置 GlobalConfiguration 属性 fieldStrategy
+
+- 方式二：调整字段验证注解
+
+  根据具体情况，在需要更新的字段中调整验证注解，如验证非空：
+
+  ```java
+  @TableField(strategy=FieldStrategy.NOT_EMPTY)
+  ```
+
+- 方式三：使用 `UpdateWrapper` (3.x)
+
+  使用以下方法来进行更新或插入操作：
+
+  ```java
+  //updateAllColumnById(entity) // 全部字段更新: 3.0已经移除
+  mapper.update(
+     new User().setName("mp").setAge(3),
+     Wrappers.<User>lambdaUpdate()
+             .set(User::getEmail, null) //把email设置成null
+             .eq(User::getId, 2)
+  );
+  //也可以参考下面这种写法
+  mapper.update(
+      null,
+      Wrappers.<User>lambdaUpdate()
+         .set(User::getAge, 3)
+         .set(User::getName, "mp")
+         .set(User::getEmail, null) //把email设置成null
+         .eq(User::getId, 2)
+  );
+  
+  ```
+
+</Accordion>
+
+
+<Accordion client:load title={'字段类型为 `bit`、`tinyint(1)` 时映射为 `boolean` 类型'}>
+
+默认mysql驱动会把tinyint(1)字段映射为boolean: 0=false, 非0=true
+
+MyBatis 是不会自动处理该映射，如果不想把tinyint(1)映射为boolean类型:
+
+* 修改类型tinyint(1)为tinyint(2)或者int
+* 需要修改请求连接添加参数 `tinyInt1isBit=false`，如下：
+
+```xml
+jdbc:mysql://127.0.0.1:3306/mp?tinyInt1isBit=false
+```
+
+</Accordion>
+
+
+<Accordion client:load title={'出现 2 个 `limit` 语句'}>
+
+原因：配了 2 个分页拦截器! 检查配置文件或者代码，只留一个！
+
+</Accordion>
+
+
+<Accordion client:load title={'insert 后如何返回主键'}>
+
+insert 后主键会自动 set 到实体的 ID 字段，所以你只需要 getId() 就好
+
+</Accordion>
+
+
+<Accordion client:load title={'MP 如何查指定的几个字段'}>
+
+EntityWrapper.sqlSelect 配置你想要查询的字段
+
+```java
+//2.x
+EntityWrapper<H2User> ew = new EntityWrapper<>();
+ew.setSqlSelect("test_id as id, name, age");//只查询3个字段
+List<H2User> list = userService.selectList(ew);
+for(H2User u:list){
+    Assert.assertNotNull(u.getId());
+    Assert.assertNotNull(u.getName());
+    Assert.assertNull(u.getPrice()); // 这个字段没有查询出来
+}
+
+//3.x
+mapper.selectList(
+    Wrappers.<User>lambdaQuery()
+    .select(User::getId, User::getName)
+);
+//或者使用QueryWrapper
+mapper.selectList(
+    new QueryWrapper<User>()
+    .select("id","name")
+);
+
+```
+
+</Accordion>
+
+
+<Accordion client:load title={'Mapper 层二级缓存问题'}>
+
+我们建议缓存放到 service 层，你可以自定义自己的 BaseServiceImpl 重写注解父类方法，继承自己的实现。
+
+</Accordion>
+
+
+<Accordion client:load title={'Mapper 层二级缓存刷新问题'}>
+
+如果你按照 mybatis 的方式配置第三方二级缓存，并且使用 2.0.9 以上的版本，则会发现自带的方法无法更新缓存内容，那么请按如下方式解决（二选一）：
+
+1.在代码中 mybatis 的 mapper 层添加缓存注释，声明 implementation 或 eviction 的值为 cache 接口的实现类
+```java
+@CacheNamespace(implementation=MybatisRedisCache.class,eviction=MybatisRedisCache.class)
+public interface DataResourceMapper extends BaseMapper<DataResource>{}
+```
+
+2.在对应的 mapper.xml 中将原有注释修改为链接式声明，以保证 xml 文件里的缓存能够正常
+```xml
+<cache-ref namespace="com.mst.cms.dao.DataResourceMapper"></cache-ref>
+```
+
+</Accordion>
+
+
+<Accordion client:load title={'`Cause: org.apache.ibatis.type.TypeException:Error setting null for parameter #1 with JdbcType OTHER`'}>
+
+> 配置 jdbcTypeForNull=NULL
+> Spring Bean 配置方式：
+
+```java
+MybatisConfiguration configuration = new MybatisConfiguration();
+configuration.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
+configuration.setJdbcTypeForNull(JdbcType.NULL);
+configuration.setMapUnderscoreToCamelCase(true);//开启下划线转驼峰
+sqlSessionFactory.setConfiguration(configuration);
+```
+
+> yml 配置
+```yaml
+mybatis-plus:
+  configuration:
+    jdbc-type-for-null: 'null' 
+```
+
+</Accordion>
+
+
+<Accordion client:load title={'无法通过 Page 对象在自定义 SQL 中传递参数'}>
+
+在自定义 SQL 中，由于 Page 对象继承自 RowBounds，在 Mapper 中无法直接获取。为了解决这个问题，请考虑以下替代方案：
+
+- 使用自定义的 Map 对象或者普通的 Java 对象来传递参数。
+- 通过在方法参数中使用 @Param("page") int page, @Param("size") int size 来传递页码和每页大小。
+
+这些方法可以帮助您在自定义 SQL 中正确传递参数，确保代码的顺利运行。
+
+</Accordion>
+
+
+<Accordion client:load title={'如何使用 Map 下划线自动转驼峰'}>
+
+当使用 `resultType="java.util.Map"` 时，您可以通过以下步骤在 Spring Boot 中实现下划线自动转换为驼峰：
+
+在您的 Spring Boot 项目中创建一个配置类。
+
+```java
+@Configuration
+public class MybatisConfigurationCustomizer {
+    @Bean
+    public ConfigurationCustomizer configurationCustomizer() {
+        return configuration -> configuration.setObjectWrapperFactory(new MybatisMapWrapperFactory());
+    }
+}
+```
+
+通过这样配置，您就可以实现自动将 Map 中的下划线转换为驼峰形式。这样，在 MyBatis 查询结果映射到 Map 对象时，键名会自动进行转换，使得您在代码中更加便捷地访问数据。
+
+</Accordion>
+
+
+<Accordion client:load title={'如何在 Wrapper 中使用 `limit` 限制 SQL'}>
+
+您可以通过以下方式在 Wrapper 中使用 `limit` 限制 SQL 结果集：
+
+```java
+// 仅获取一条数据
+wrapper.last("limit 1");
+```
+
+这段代码会在 SQL 语句末尾添加 limit 1，以限制结果集返回的行数为 1。
+
+</Accordion>
+
+
+<Accordion client:load title={'为什么将通用的批量插入操作放在 Service 层处理'}>
+
+将通用的批量插入操作放在 Service 层处理有以下原因：
+
+- SQL 长度存在限制：处理海量数据时，单条 SQL 可能无法执行或者容易引起内存泄漏、JDBC 连接超时等问题。
+- 不同数据库的单条 SQL 批量语法不一致，不利于通用性。
+- 解决方案：采用循环预处理批量提交的方法。虽然性能比单条 SQL 插入稍慢，但可以解决上述问题。
+
+如果您想使用单条 SQL 插入方案，可以自行注入选装方法 [insertbatchsomecolumn](https://baomidou.com/pages/49cc81/#insertbatchsomecolumn)，或查看[SQL 注入器](https://baomidou.com/pages/42ea4a/)中提供的方法。
+
+</Accordion>
+
+<Accordion client:load title={'3.x版本中数据库关键字处理方法'}>
+
+在 MyBatis Plus 3.x 中，不再提供自动识别关键字进行处理的功能。处理数据库关键字的方法有以下几种：
+
+1. 不同数据库对关键字的处理方式不同，因此很难维护。在数据库设计时，建议避免使用关键字作为字段名或表名。
+
+2. 如果必须使用关键字，可以通过在字段或表名前后添加反引号（`）来进行处理，如下所示：
+    ```java
+    @TableField(value = "`status`")
+    private Boolean status;
+    ```
+
+综上所述，为了避免出现问题，建议尽量避免在数据库设计中使用关键字。
+
+</Accordion>
+
+
+<Accordion client:load title={'MybatisPlusException: Your property named "xxx" cannot find the corresponding database column name!'}>
+
+针对 MyBatis Plus 3.1.1 及更高版本出现的问题：
+
+现象：在单元测试中没有问题，但是在启动服务器进行调试时出现该异常。
+
+原因：在 3.1.1 版本及以后的版本中，针对字段缓存进行了优化，使用 `.class` 作为键来替换了原来的类名（className）。然而，当使用 dev-tools 时，可能会导致 `.class` 使用不同的类加载器加载，从而导致出现找不到属性的情况。
+
+解决方案：移除 dev-tools 插件。这样可以避免使用不同的类加载器加载 `.class`，从而解决该异常问题。
+
+</Accordion>
+
+
+<Accordion client:load title={'Error attempting to get column "create_time" from result set. Cause: java.sql.SQLFeatureNotSupportedException'}>
+
+针对 MyBatis Plus 3.1.1 及更高版本出现的问题：
+
+现象：在集成 Druid 数据源时，升级到 3.1.1 版本及之后的版本后，出现错误：java.sql.SQLFeatureNotSupportedException。而在 3.1.0 版本之前没有此问题。
+
+原因：MyBatis Plus 3.1.1 版本及更高版本采用了新版 JDBC，对于新的日期类型（如 LocalDateTime）处理方式进行了升级。然而，Druid 在 1.1.21 版本之前不支持此特性，导致出现此异常。详细信息请参考[相关问题](https://github.com/baomidou/mybatis-plus/issues/1245)。
+
+解决方案：
+1. 将 Druid 数据源升级至 1.1.21 版本以上，以解决此问题。
+2. 如果无法升级 Druid 数据源，可以选择保持 MyBatis Plus 版本在 3.1.0 及之前的版本。
+3. 若要继续使用最新的 MyBatis Plus 版本，可以考虑更换其他兼容新版 JDBC 的数据源，以避免出现此异常。
+
+</Accordion>
+
+
+<Accordion client:load title={'升级 MyBatis Plus 到 3.1.1 及更高版本后，新日期类型无法映射报错'}>
+
+如果您将 MyBatis Plus 从 3.1.0 及以下版本升级到较高版本，且遇到新日期类型（如 LocalDateTime）无法映射的报错，可能是由于以下原因：
+
+MP_3.1.0 及之前版本依赖的是 MyBatis 3.5.0。而 MP_3.1.1 升级了 MyBatis 的依赖到 3.5.1，而在 MyBatis 3.5.1 中，新日期类型需要 JDBC 驱动支持 JDBC 4.2 API。
+
+如果您的 JDBC 驱动版本不支持 JDBC 4.2 API，就会出现无法映射新日期类型的报错。
+
+参考 [MyBatis 官方博客](blog.mybatis.org) 的内容：
+```text
+There is one backward incompatible changes since 3.5.0.
+    Because of the fix for #1478 , LocalDateTypeHandler, LocalTimeTypeHandler and LocalDateTimeTypeHandler now require a JDBC driver that supports JDBC 4.2 API.
+    [EDIT] These type handlers no longer work with Druid. Please see #1516 .
+```
+
+解决方案：
+- 升级您的 JDBC 驱动至支持 JDBC 4.2 API 的版本。
+- 如果无法升级 JDBC 驱动，可以考虑将 MyBatis Plus 版本回滚至 3.1.0 或之前的版本。
+
+</Accordion>
+
+
+<Accordion client:load title={'Failed to bind properties under "mybatis-plus.configuration.incomplete-result-maps[0].assistant.configuration.mapped-statements[0].parameter-map.parameter-mappings[0]" to org.apache.ibatis.mapping.ParameterMapping'}>
+
+如果您在将 Spring Boot 版本从 2.2.0 升级到更高版本时遇到此问题，可能是由于以下原因：
+
+现象：在本地启动时没有问题，但是将打成 war 包部署到服务器时出现此问题。
+
+原因：在 Spring Boot 2.2.0 中存在构造器注入的问题，导致 MyBatis 的私有构造器无法正确绑定属性，进而导致依赖 MyBatis 的框架（如 MyBatis Plus）报错。详细信息请参考 [相关 issue](https://github.com/spring-projects/spring-boot/issues/18670)。此问题已在 Spring Boot 2.2.1 中得到修复。
+
+解决方案：
+1. 将 Spring Boot 降级至 2.1.x 版本，或升级至 2.2.1 版本以上。建议直接升级至 Spring Boot 2.2.2 版本以获取更好的稳定性和修复。
+   
+</Accordion>
+
+
+<Accordion client:load title={'分离打包部署出现 ClassNotFoundException'}>
+
+现象：在开发工具中运行没有问题，但是将项目打包部署到服务器后，执行 Lambda 表达式时出现 ClassNotFoundException。
+
+针对 MyBatis Plus 3.3.2 以下版本，如果在分离打包部署时出现 ClassNotFoundException 的问题，可能是因为在执行反序列化操作时，类加载器发生了错误。
+
+解决方案：
+1. 去除 `spring-boot-maven-plugin` 插件进行打包，或者
+2. 升级至 MyBatis Plus 3.3.2 版本。您可以参考示例 [分离打包](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-assembly) 进行操作。
+
+</Accordion>
+
+
+<Accordion client:load title={'启用 MyBatis 内部日志记录'}>
+
+您可以通过以下两种方式来启用 MyBatis 内部的日志记录：
+
+**方式一：**
+在您的 `application.yml` 或 `application.properties` 文件中添加以下配置：
+
+```yaml
+mybatis-plus:
+  configuration:
+    # 如果项目无日志框架，可以考虑指定为 org.apache.ibatis.logging.stdout.StdOutImpl (请勿在实际生产中使用).
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl 
+```
+
+这将使用 MyBatis 内置的 StdOutImpl 日志记录实现将日志输出到控制台。
+
+**方式二：**
+在您的 `application.yml` 或 `application.properties` 文件中增加日志级别配置，以指定特定包的日志级别。例如：
+
+```yaml
+logging:
+  level:
+    com.baomidou.example.mapper: debug
+```
+
+这将指定 com.baomidou.example.mapper 包下的日志级别为 debug。您可以根据需要调整级别。
+
+
+通过以上配置，您可以启用 MyBatis 内部的日志记录，并根据需要调整日志级别。
+
+</Accordion>
+
+
+<Accordion client:load title={'如何在 update 时对字段进行自增操作'}>
+
+如果您想要在更新操作时对某个字段进行自增操作，您可以使用 MyBatis Plus 提供的 `Wrapper` 进行更新。以下是一种可行的解决方案：
+
+```java
+UpdateWrapper<Entity> wrapper = new UpdateWrapper<>();
+wrapper.setSql("column = column + 1");
+
+// 或者使用 Lambda 表达式
+UpdateWrapper<Entity> wrapper = new UpdateWrapper<>();
+wrapper.setSql("column = column + 1");
+
+// 调用 update 方法
+baseMapper.update(null, wrapper);
+```
+
+这样可以在更新时对字段进行自增操作。请注意，需要在 `setSql` 方法中直接指定 SQL 更新语句。
+
+</Accordion>
+
+
+<Accordion client:load title={'如何全局处理数据库关键词'}>
+
+如果您想要全局处理数据库关键词，可以使用 MyBatis Plus 提供的全局配置。以下是配置示例（以 MySQL 为例）：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      column-format: "`%s`"
+```
+
+这样配置后，MyBatis Plus 将会在生成 SQL 语句时，对数据库字段名称使用反引号（``）进行包裹，以确保不与数据库关键词冲突。
+
+需要注意的是：
+- 如果您使用了 `@TableField` 注解，并希望保持全局格式化，需要设置参数 `keepGlobalFormat=true`。
+- 您也可以在 `@TableField` 注解中直接指定固定格式的数据库关键词，例如 `@TableField("'status'")`。
+
+通过以上配置，您可以全局处理数据库关键词，确保生成的 SQL 语句不会受到关键词影响。
+
+</Accordion>
+
+
+<Accordion client:load title={'如何在 XML 中根据数据库类型选择不同的 SQL 片段'}>
+
+如果您想要在 XML 中根据数据库类型选择不同的 SQL 片段，您可以使用 MyBatis Plus 提供的 `database-id` 参数。以下是配置示例（以 MySQL 为例）：
+
+```yaml
+mybatis-plus:
+  configuration:
+    database-id: mysql
+```
+
+这样配置后，MyBatis Plus 将会在执行 SQL 语句时，根据 `database-id` 参数选择不同的 SQL 片段。
+
+您可以根据不同的写法在 XML 中进行判断：
+
+1. 使用变量 `_databaseId`：
+
+```xml
+<select id="selectAllNames" resultType="java.lang.String">
+select 
+<choose>
+    <when test="_databaseId == 'mysql'">
+        GROUP_CONCAT(name SEPARATOR ',')
+    </when>
+    <otherwise>
+        array_to_string(ARRAY_AGG(name), ',')
+    </otherwise>
+</choose>
+form user
+</select>
+```
+
+2. 使用标签属性 `databaseId`：
+
+```xml
+<select id="selectAllNames" databaseId="mysql" resultType="java.lang.String">
+     select GROUP_CONCAT(name SEPARATOR ',') form user
+</select>
+<select id="selectAllNames" databaseId="pgsql" resultType="java.lang.String">
+     select array_to_string(ARRAY_AGG(name), ',') form user
+</select>
+```
+
+通过以上配置，您可以根据不同的数据库类型选择不同的 SQL 片段。
+
+</Accordion>
+
+
+<Accordion client:load title={'为何 MyBatis Plus 不支持复合主键，强制唯一 ID 问题解答'}>
+
+MyBatis Plus 不支持复合主键并强制使用唯一的 ID，这是出于以下考虑：
+
+1. 增加了表与表之间的相互依赖性：使用复合主键会使表与表之间的关系更加复杂，增加了维护和管理的难度。
+
+2. 增加了数据复杂的约束、规则：复合主键会增加数据的约束和规则，例如需要约束唯一性，而完全可以使用联合索引来实现。
+
+3. 增加了更新数据的限制：在更新数据时，需要更新所有复合主键的值，这增加了更新操作的限制和复杂性。
+
+4. 严重的数据冗余和更新异常问题：复合主键可能导致数据冗余和更新异常的问题，特别是在大型系统中，可能会出现更新异常的情况。
+
+5. 性能问题：使用复合主键时，查询某个 ID 时无法使用索引，会导致性能下降。
+
+综上所述，虽然使用复合主键可以省去一个 ID 字段，但是这种做法的缺点大于优点，不建议也不推荐这样做。MyBatis Plus 坚持使用唯一的 ID，以保证数据管理的简单性、可维护性和性能。
+
+</Accordion>
+
+
+<Accordion client:load title={'项目启动速度缓慢'}>
+- 初始化默认雪花ID导致
+
+  1. 查看本机hostname
+  2. 编辑系统hosts文件，将本机hostname写入至hosts文件
+
+  ```properties
+  # 示例,例如我的hostname名字为nieqiurong-PC，那我在hosts文件配置如下即可
+  127.0.0.1       localhost nieqiurong-PC
+  ```
+
+- 检查数据库连接池初始化
+
+  碰到过使用hikari在linux系统下启动缓慢
+
+  解决方案: 
+
+  在java启动命令中指定 -Djava.security.egd=file:/dev/urandom把获取随机数的方式从 /dev/random改为/dev/urandom
+
+  示例: java -Djava.security.egd=file:/dev/urandom -jar xxxx.jar
+</Accordion>

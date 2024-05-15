@@ -1,0 +1,195 @@
+---
+title: 代码生成器
+sidebar:
+  order: 1
+  badge:
+    text: New
+---
+
+import LastedDependency from '@/components/LastedDependency.astro';
+
+全新的 MyBatis-Plus 代码生成器，通过 builder 模式可以快速生成你想要的代码，快速且优雅，跟随下面的代码一睹为快。
+
+```java
+<!-- CodeGenerator.java -->
+
+FastAutoGenerator.create("url", "username", "password")
+        .globalConfig(builder -> builder
+                .author("Baomidou")
+                .outputDir(Paths.get(System.getProperty("user.dir")) + "/src/main/java")
+                .commentDate("yyyy-MM-dd")
+        )
+        .packageConfig(builder -> builder
+                .parent("com.baomidou.mybatisplus")
+                .entity("entity")
+                .mapper("mapper")
+                .service("service")
+                .serviceImpl("service.impl")
+                .xml("mapper.xml")
+        )
+        .strategyConfig(builder -> builder
+                .entityBuilder()
+                .enableLombok()
+        )
+        .templateEngine(new FreemarkerTemplateEngine())
+        .execute();
+```
+
+## 安装
+
+<LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-generator" />
+
+:::note
+全新的代码生成器添加于 3.5.1 版本，且对历史版本不兼容！如果您用的是 3.5.1 以下的版本，请参考 [代码生成器](/guides/code-generator/) 进行配置与使用。
+:::
+
+由于代码生成器用到了模板引擎，请自行引入您喜好的模板引擎。MyBatis-Plus Generator 支持如下模板引擎：
+
+- VelocityTemplateEngine(Default)
+- FreemarkerTemplateEngine
+- BeetlTemplateEngine
+- EnjoyTemplateEngine
+
+如果您还想使用或适配其他模板引擎，可自行继承 `AbstractTemplateEngine` 并参考其他模板引擎实现自定义。
+
+## 生成方式
+
+代码生成器目前支持两种生成方式：
+
+1. **DefaultQuery (元数据查询)**
+   - **优点：** 根据通用接口读取数据库元数据相关信息，对数据库通用性较好。
+   - **缺点：** 依赖数据库厂商驱动实现。
+   - **备注：** 默认方式，部分类型处理可能不理想。
+
+2. **SQLQuery (SQL查询)**
+   - **优点：** 需要根据数据库编写对应表、主键、字段获取等查询语句。
+   - **缺点：** 通用性不强，同数据库厂商不同版本可能会存在兼容问题（例如，H2数据库只支持1.X版本）。
+   - **备注：** 后期不再维护。
+
+如果是已知数据库（无版本兼容问题），请继续按照原有的SQL查询方式继续使用，示例代码如下：
+
+```java
+// MYSQL 示例 切换至SQL查询方式,需要指定好 dbQuery 与 typeConvert 来生成
+FastAutoGenerator.create("url", "username", "password")
+                .dataSourceConfig(builder ->
+                        builder.databaseQueryClass(SQLQuery.class)
+                                .typeConvert(new MySqlTypeConvert())
+                                .dbQuery(new MySqlQuery())
+                )
+                // Other Config ...
+```
+
+元数据查询目前有如下问题：
+
+1. 不支持使用 NotLike 的方式反向生成表。
+2. 无法读取表注释，解决方法：
+   - MySQL链接增加属性 `remarks=true&useInformationSchema=true`
+   - Oracle链接增加属性 `remarks=true` 或者 `remarksReporting=true`（某些驱动版本）
+   - SqlServer：驱动不支持
+3. 部分 PostgreSQL 类型处理不佳（如 json、jsonb、uuid、xml、money 类型），解决方法：
+   - 转换成自定义的类型配合自定义 TypeHandler 来处理。
+   - 扩展 typeConvertHandler 来处理（3.5.3.3 后增加了 typeName 获取）。
+4. MySQL 下 tinyint 字段转换问题：
+   - 当字段长度为 1 时，无法转换成 Boolean 字段，建议在指定数据库连接时添加 `&tinyInt1isBit=true`。
+   - 当字段长度大于 1 时，默认转换成 Byte，如果想继续转换成 Integer，可使用如下代码：
+
+        ```java
+        FastAutoGenerator.create("url", "username", "password")
+                .dataSourceConfig(builder ->
+                        builder.typeConvertHandler((globalConfig, typeRegistry, metaInfo) -> {
+                            // 兼容旧版本转换成Integer
+                            if (JdbcType.TINYINT == metaInfo.getJdbcType()) {
+                                return DbColumnType.INTEGER;
+                            }
+                            return typeRegistry.getColumnType(metaInfo);
+                        })
+                );
+        ```
+
+## 使用
+
+您可以通过以下两种形式使用代码生成器。
+
+### 快速生成
+
+在 CodeGenerator 中的 main 方法中直接添加生成器代码，并进行相关配置，然后直接运行即可生成代码。
+
+```java
+<!-- CodeGenerator.java -->
+
+public static void main(String[] args) {
+    FastAutoGenerator.create("url", "username", "password")
+            .globalConfig(builder -> {
+                builder.author("baomidou") // 设置作者
+                        .enableSwagger() // 开启 swagger 模式
+                        .outputDir("D://"); // 指定输出目录
+            })
+            .dataSourceConfig(builder ->
+                    builder.typeConvertHandler((globalConfig, typeRegistry, metaInfo) -> {
+                        int typeCode = metaInfo.getJdbcType().TYPE_CODE;
+                        if (typeCode == Types.SMALLINT) {
+                            // 自定义类型转换
+                            return DbColumnType.INTEGER;
+                        }
+                        return typeRegistry.getColumnType(metaInfo);
+                    })
+            )
+            .packageConfig(builder ->
+                    builder.parent("com.baomidou.mybatisplus.samples.generator") // 设置父包名
+                            .moduleName("system") // 设置父包模块名
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, "D://")) // 设置mapperXml生成路径
+            )
+            .strategyConfig(builder ->
+                    builder.addInclude("t_simple") // 设置需要生成的表名
+                            .addTablePrefix("t_", "c_") // 设置过滤表前缀
+            )
+            .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
+            .execute();
+}
+```
+
+### 交互式生成
+
+交互式生成在运行之后，会提示您输入相应的内容，等待配置输入完整之后就自动生成相关代码。
+
+```java
+<!-- CodeGenerator.java -->
+
+public static void main(String[] args) {
+    FastAutoGenerator.create("url", "username", "password")
+            // 全局配置
+            .globalConfig((scanner, builder) -> builder.author(scanner.apply("请输入作者名称？")))
+            // 包配置
+            .packageConfig((scanner, builder) -> builder.parent(scanner.apply("请输入包名？")))
+            // 策略配置
+            .strategyConfig((scanner, builder) -> builder.addInclude(getTables(scanner.apply("请输入表名，多个英文逗号分隔？所有输入 all")))
+                    .entityBuilder()
+                    .enableLombok()
+                    .addTableFills(
+                            new Column("create_time", FieldFill.INSERT)
+                    )
+                    .build())
+            // 使用Freemarker引擎模板，默认的是Velocity引擎模板
+            .templateEngine(new FreemarkerTemplateEngine())
+            .execute();
+}
+
+// 处理 all 情况
+protected static List<String> getTables(String tables) {
+    return "all".equals(tables) ? Collections.emptyList() : Arrays.asList(tables.split(","));
+}
+```
+
+如果您需要更多例子可查看 test 包下面的 samples。
+
+- [H2CodeGeneratorTest](https://github.com/baomidou/generator/blob/develop/mybatis-plus-generator/src/test/java/com/baomidou/mybatisplus/generator/samples/H2CodeGeneratorTest.java)
+- [FastAutoGeneratorTest](https://github.com/baomidou/generator/blob/develop/mybatis-plus-generator/src/test/java/com/baomidou/mybatisplus/generator/samples/FastAutoGeneratorTest.java)
+
+## 配置
+
+请移步至 [代码生成器配置](/reference/new-code-generator-configuration/) 查看。
+
+## 资源
+
+- [👉 源码](https://github.com/baomidou/mybatis-plus)：欢迎大家阅读源码并参与贡献。
+- [👉 视频教程详解](https://space.bilibili.com/483260422)：欢迎大家关注、点赞、投币、评论。

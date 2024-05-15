@@ -1,0 +1,100 @@
+---
+title: 分页插件
+sidebar:
+  order: 2
+---
+
+import SupportDb from '@/components/SupportDb.astro';
+
+MyBatis-Plus 的分页插件 `PaginationInnerInterceptor` 提供了强大的分页功能，支持多种数据库，使得分页查询变得简单高效。
+
+## 支持的数据库
+
+`PaginationInnerInterceptor` 支持广泛的数据库，包括但不限于：
+
+<SupportDb />
+
+如果你需要支持的数据库不在列表中，可以通过 [Pull Request](https://github.com/baomidou/mybatis-plus/pull/1550/files) 请求添加。
+
+## 配置方法
+
+在 Spring Boot 项目中，你可以通过 Java 配置来添加分页插件：
+
+```java
+@Configuration
+@MapperScan("scan.your.mapper.package")
+public class MybatisPlusConfig {
+
+    /**
+     * 添加分页插件
+     */
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL)); // 如果配置多个插件, 切记分页最后添加
+        // 如果有多数据源可以不配具体类型, 否则都建议配上具体的 DbType
+        return interceptor;
+    }
+}
+```
+
+## 属性介绍
+
+`PaginationInnerInterceptor` 提供了以下属性来定制分页行为：
+
+| 属性名 | 类型 | 默认值 | 描述 |
+| :-: | :-: | :-: | :-: |
+| overflow | boolean | false | 溢出总页数后是否进行处理 |
+| maxLimit | Long |  | 单页分页条数限制 |
+| dbType | DbType |  | 数据库类型 |
+| dialect | IDialect |  | 方言实现类 |
+
+> 建议单一数据库类型的均设置 dbType
+
+## 自定义 Mapper 方法中使用分页
+
+你可以通过以下方式在 Mapper 方法中使用分页：
+
+```java
+IPage<UserVo> selectPageVo(IPage<?> page, Integer state);
+// 或者自定义分页类
+MyPage selectPageVo(MyPage page);
+// 或者返回 List
+List<UserVo> selectPageVo(IPage<UserVo> page, Integer state);
+```
+
+对应的 XML 配置：
+
+```xml
+<select id="selectPageVo" resultType="xxx.xxx.xxx.UserVo">
+    SELECT id,name FROM user WHERE state=#{state}
+</select>
+```
+
+> 如果返回类型是 IPage，则入参的 IPage 不能为 null。如果想临时不分页，可以在初始化 IPage 时 size 参数传入小于 0 的值。
+> 如果返回类型是 List，则入参的 IPage 可以为 null，但需要手动设置入参的 IPage.setRecords(返回的 List)。
+> 如果 XML 需要从 page 里取值，需要使用 `page.属性` 获取。
+
+## 其他注意事项
+
+- 生成 countSql 时，如果 left join 的表不参与 where 条件，会将其优化掉。建议在任何带有 left join 的 SQL 中，都给表和字段加上别名。
+- 在使用多个插件时，请将分页插件放到插件执行链的最后面，以避免 COUNT SQL 执行不准确的问题。
+
+## Page 类
+
+`Page` 类继承了 `IPage` 类，实现了简单分页模型。如果你需要实现自己的分页模型，可以继承 `Page` 类或实现 `IPage` 类。
+
+| 属性名 | 类型 | 默认值 | 描述 |
+| :-: | :-: | :-: | :-: |
+| records | List&#60;T&#62; | emptyList | 查询数据列表 |
+| total | Long | 0 | 查询列表总记录数 |
+| size | Long | 10 | 每页显示条数，默认 10 |
+| current | Long | 1 | 当前页 |
+| orders | List&#60;OrderItem&#62; | emptyList | 排序字段信息 |
+| optimizeCountSql | boolean | true | 自动优化 COUNT SQL |
+| optimizeJoinOfCountSql | boolean | true | 自动优化 COUNT SQL 是否把 join 查询部分移除 |
+| searchCount | boolean | true | 是否进行 count 查询 |
+| maxLimit | Long |  | 单页分页条数限制 |
+| countId | String | | XML 自定义 count 查询的 statementId |
+
+通过这些配置和使用方法，你可以轻松地在 MyBatis-Plus 中实现分页查询，提高应用的性能和用户体验。

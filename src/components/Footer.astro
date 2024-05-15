@@ -1,0 +1,30 @@
+---
+import type { Props } from '@astrojs/starlight/props';
+import Default from "@astrojs/starlight/components/Footer.astro";
+
+const yearText = new Date().getFullYear().toString();
+---
+
+<Default {...Astro.props}>
+    <slot/>
+</Default>
+
+<div class="not-content">
+    <div class="text-center mt-20">
+        <a href="https://github.com/baomidou" class="flex items-center justify-center mb-5 text-2xl font-semibold text-gray-900 dark:text-white no-underline hover:no-underline">
+            <img src="/images/logo/baomidou.png" class="h-12 mr-3 sm:h-9" alt="Baomidou">
+        </a>
+
+        <p class="block text-sm text-center text-gray-500 dark:text-gray-400">
+            © 2016-{yearText} Baomidou™. All Rights Reserved.
+        </p>
+        <p class="block text-sm text-center text-gray-500 dark:text-gray-400">
+            Power by <a href="https://starlight.astro.build" target="_blank" class="font-bold no-underline text-current hover:no-underline hover:text-blue-500">Astro Starlight</a> |
+            Sponsored by <a href="https://www.jetbrains.com" target="_blank" class="font-bold no-underline text-current hover:no-underline hover:text-blue-500">JetBrains</a>
+        </p>
+        <p class="block text-sm text-center text-gray-500 dark:text-gray-400">
+            <a href="https://beian.miit.gov.cn/" rel="noreferrer" target="_blank" class="no-underline text-current hover:no-underline hover:text-blue-500">渝ICP备2021000141号-1</a> |
+            <a href="https://beian.mps.gov.cn/#/query/webSearch?code=50011302222097" rel="noreferrer" target="_blank" class="no-underline text-current hover:no-underline hover:text-blue-500">渝公网安备50011302222097</a>
+        </p>
+    </div>
+</div>

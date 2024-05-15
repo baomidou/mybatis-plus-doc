@@ -1,0 +1,63 @@
+---
+import {Tabs, TabItem, Code} from "@astrojs/starlight/components";
+
+// 组件接收 groupId 和 artifactId 作为 prop
+export interface Props {
+    groupId: string;
+    artifactId: string;
+}
+const {groupId, artifactId} = Astro.props as Props;
+
+// 调用中央库 API 返回最新的 Jar 包版本信息
+const fetchJarVersion = async (groupId: string, artifactId: string) => {
+    // Maven 中央库的搜索 API，这个 URL 可能需要根据 Maven API 的最新文档进行更新
+    const searchUrl = `https://search.maven.org/solrsearch/select?q=g:"${encodeURIComponent(groupId)}"+AND+a:"${encodeURIComponent(artifactId)}"&rows=1&wt=json`;
+
+    try {
+        const response = await fetch(searchUrl);
+        if (!response.ok) {
+            console.error(`Failed to fetch version for ${groupId}:${artifactId}`);
+            return 'lasted-version';
+        }
+        const data = await response.json();
+        return data.response.docs[0].latestVersion;
+    } catch (error) {
+        console.error("Error fetching Jar version:", error);
+        return 'lasted-version';
+    }
+};
+
+// 获取版本
+const version = await fetchJarVersion(groupId, artifactId);
+---
+
+<div>
+    {
+        version ? (
+                <Tabs>
+                    <TabItem label="Maven">
+                        <Code
+                                code={`
+<dependency>
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <version>${version}</version>
+</dependency>
+        `}
+                                lang="xml"
+                        />
+                    </TabItem>
+                    <TabItem label="Gradle">
+                        <Code
+                                code={`
+implementation '${groupId}:${artifactId}:${version}'
+            `}
+                                lang="groovy"
+                        />
+                    </TabItem>
+                </Tabs>
+        ) : (
+                <p>Loading version...</p>
+        )
+    }
+</div>

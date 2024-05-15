@@ -1,0 +1,51 @@
+---
+title: 测试
+sidebar:
+  order: 4
+---
+
+import { Steps, LinkCard } from '@astrojs/starlight/components';
+import LastedDependency from '@/components/LastedDependency.astro';
+
+自动导入 MyBatis-Plus 测试所需相关配置，通过 `@MybatisPlusTest` 注解快速配置测试类。
+
+## 示例工程
+
+<LinkCard
+  title="mybatis-plus-boot-starter-test"
+  description="MyBatis-Plus 快速测试功能相关源码"
+  href="https://github.com/baomidou/mybatis-plus/tree/master/mybatis-plus-boot-starter-test"
+/>
+
+## 使用教程
+
+
+<Steps>
+
+    1. 添加测试依赖
+        <LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-boot-starter-test"/>
+
+    2. 编写测试用例
+
+        ```java
+        import org.junit.jupiter.api.Test;
+        import org.springframework.beans.factory.annotation.Autowired;
+
+        import static org.assertj.core.api.Assertions.assertThat;
+
+        @MybatisPlusTest
+        class MybatisPlusSampleTest {
+
+            @Autowired
+            private SampleMapper sampleMapper;
+
+            @Test
+            void testInsert() {
+                Sample sample = new Sample();
+                sampleMapper.insert(sample);
+                assertThat(sample.getId()).isNotNull();
+            }
+        }
+        ```
+
+</Steps>

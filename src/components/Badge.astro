@@ -1,0 +1,45 @@
+---
+const {type = 'tip', text = 'Default Text', vertical = 'top'} = Astro.props;
+const backgroundColors: {[index: string]: any} = {
+    tip: '#42b983',
+    error: '#DA5961',
+    warn: '#ffe564',
+};
+const backgroundColor = backgroundColors[type] || '#42b983';
+---
+
+<span class={`badge ${type}`} style={`vertical-align: ${vertical}; background-color: ${backgroundColor};`}>
+  {text}
+</span>
+
+<style>
+    /* 这里可以使用标准的 CSS 或者 <style lang="stylus"> 如果你更喜欢 Stylus */
+    .badge {
+        display: inline-block;
+        font-size: 14px;
+        height: 18px;
+        line-height: 18px;
+        border-radius: 3px;
+        padding: 0 6px;
+        color: white;
+        /* background-color 会通过内联样式动态设置 */
+    }
+
+    /* 根据 type 来设置不同的背景颜色 */
+    .tip {
+        /* Astro 组件中无法使用 & 选择器 */
+    }
+
+    .error {
+        /* Astro 组件中无法使用 & 选择器 */
+    }
+
+    .warn {
+        /* Astro 组件中无法使用 & 选择器 */
+    }
+
+    /* 相邻的 .badge 之间的间距 */
+    .badge + .badge {
+        margin-left: 5px;
+    }
+</style>

@@ -1,0 +1,68 @@
+---
+title: 安装
+sidebar:
+  order: 2
+---
+
+import LastedDependency from '@/components/LastedDependency.astro';
+
+全新的 `MyBatis-Plus` 3.0 版本基于 JDK8，提供了 `lambda` 形式的调用，所以安装集成 MP3.0 要求如下：
+
+- JDK 8+
+- Maven or Gradle
+
+## Release
+
+### Spring Boot2
+
+<LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-boot-starter" />
+
+### Spring Boot3
+
+<LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-spring-boot3-starter" />
+
+### Spring
+
+<LastedDependency groupId="com.baomidou" artifactId="mybatis-plus" />
+
+---
+
+:::caution[注意事项]
+
+引入 `MyBatis-Plus` 之后请不要再次引入 `MyBatis` 以及 `mybatis-spring-boot-starter`和`MyBatis-Spring`，以避免因版本差异导致的问题。
+
+自**3.5.4**开始，在没有使用`mybatis-plus-boot-starter`或`mybatis-plus-spring-boot3-starter`情况下，请自行根据项目情况引入`mybatis-spring`。
+
+:::
+
+## Snapshot
+
+快照 SNAPSHOT 版本需要添加仓库，且版本号为快照版本 [点击查看最新快照版本号](https://oss.sonatype.org/content/repositories/snapshots/com/baomidou/mybatis-plus-boot-starter/)。
+
+Maven：
+
+```xml
+<repository>
+    <id>snapshots</id>
+    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+</repository>
+```
+
+当使用阿里云仓库无法下载快照时,请在mirrorOf中加上!snapshots.
+
+```xml
+<mirror>
+  <id>aliyunmaven</id>
+  <mirrorOf>*,!snapshots</mirrorOf>
+  <name>阿里云公共仓库</name>
+  <url>https://maven.aliyun.com/repository/public</url>
+</mirror>
+```
+
+Gradle：
+
+```groovy
+repositories {
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+}
+```
