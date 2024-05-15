@@ -25,9 +25,9 @@
   });
 </script>
 
-<div class="flex flex-col md:flex-row not-content">
+<div class="flex xl:flex-col not-content">
   <!-- Spansor -->
-  <div class="w-full md:w-auto md:flex-1">
+  <div class="w-full xl:flex-1">
     <div class="max-w-full xl:max-w-[18rem] w-full p-5 text-sm leading-6" style="opacity: {$opacity}">
         <a href={currentSponsor.link} class="w-full no-underline text-current hover:no-underline" target="_blank">
             <figure class="relative flex flex-col-reverse border-2 rounded-lg p-6 dark:bg-slate-800 dark:highlight-white/5 transform transition hover:-translate-y-2.5 h-full">
@@ -51,7 +51,7 @@
   </div>
 
   <!-- WWAD -->
-  <div class="w-full md:w-auto md:flex-1">
+  <div class="w-full xl:flex-1">
     <div class="max-w-full xl:max-w-[18rem] w-full m-5">
       <div class="wwads-cn wwads-vertical" data-id="135"></div>
     </div>
