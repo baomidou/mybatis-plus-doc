@@ -47,5 +47,5 @@
 </div>
 
 <div class="not-content max-w-sm md:max-w-[16rem] w-full m-5">
-  <div class="wwads-cn wwads-vertical wwads-sticky" data-id="135"></div>
+  <div class="wwads-cn wwads-horizontal wwads-sticky" data-id="135"></div>
 </div>
