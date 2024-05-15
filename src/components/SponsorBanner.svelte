@@ -27,9 +27,9 @@
 
 <div class="flex xl:flex-col not-content">
   <div class="w-full xl:flex-1">
-    <div class="max-w-full xl:max-w-[18rem] w-full pt-5 px-5 text-sm leading-6" style="opacity: {$opacity}">
+    <div class="max-w-full xl:max-w-[18rem] w-full pt-5 px-5 text-sm leading-6">
         <!-- Spansor -->
-        <a href={currentSponsor.link} class="w-full no-underline text-current hover:no-underline" target="_blank">
+        <a href={currentSponsor.link} class="w-full no-underline text-current hover:no-underline" target="_blank" style="opacity: {$opacity}">
             <figure class="relative flex flex-col-reverse border rounded-lg p-4 dark:bg-slate-800 dark:highlight-white/5 h-full">
                 <figcaption class="flex items-center space-x-4">
                     <img src={currentSponsor.logo} alt="" class="flex-none w-14 h-14 object-contain" loading="lazy" decoding="async">
