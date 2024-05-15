@@ -1,21 +1,17 @@
 ---
-title: SpringCloud低代码快速开发平台
+title: PIG 微服务开发平台
 description: SpringCloud企业级开源低代码应用开发平台_低代码微服务开发管理平台
 sidebar:
   hidden: true
 ---
 
-## [PIG 微服务开发平台](https://pig4cloud.com)
+## 联系信息
 
-::: note 联系我们：<a href="https://kf.pig4cloud.com" target="_blank"><Badge text="点击联系我们"/></a>
-
-官方网站： [https://pig4cloud.com](https://pig4cloud.com?from=mp)
-
-产品介绍： [https://paper.pig4cloud.com](https://paper.pig4cloud.com)
-
-在线演示： [http://preview.pig4cloud.com](http://pigx.pigx.top)
-
-:::
+- 官网： [PIG 微服务开发平台](https://pig4cloud.com)
+- 联系我们： [https://kf.pig4cloud.com](https://kf.pig4cloud.com)
+- 官方网站： [https://pig4cloud.com](https://pig4cloud.com?from=mp)
+- 产品介绍： [https://paper.pig4cloud.com](https://paper.pig4cloud.com)
+- 在线演示： [http://preview.pig4cloud.com](http://pigx.pigx.top)
 
 ### 产品荣誉
 
@@ -51,8 +47,4 @@ PIG 商业版应用微服务、容器、DevOps 等云原生技术，封装了大
 
 **<mark>MyBatis-Mate + PigX 联合授权限时折扣，一份钱享受双倍快乐，欢迎微信扫码咨询</mark>**
 
-::: center
-
 <img align="center" src="https://minio.pigx.top/oss/1647315825.gif"/>
-
-:::

@@ -1,13 +1,11 @@
 ---
-title: 数据处理低代码解决方案
-description: Mybatis企业级开源低代码应用开发平台
+title: MyBatis-Meta
+description: Mybatis-Plus 企业级数据处理低代码解决方案
 sidebar:
   hidden: true
 ---
 
-## [MyBatis-Mate 企业级数据处理模块](https://baomidou.com/pages/1864e1)
-
-提供企业级的高级特性，旨在更敏捷优雅处理数据。
+提供企业级的高级特性，旨在更敏捷优雅处理数据。[使用教程](/guides/advanced-features/)
 
 - 数据审计（对账）：快速对比两对象属性差异
 - 数据敏感词过滤：自主可控敏感词库，自动过滤敏感词，让敏感词无处遁形
@@ -18,10 +16,8 @@ sidebar:
 - 字段脱敏：用户隐私好帮手
 - 多数据源：分库分表、动态加载、多数据源事务等处理一应俱全
 
-::: center
+---
 
-**MyBatis-Mate + PigX 联合授权限时折扣，一份钱享受双倍快乐，欢迎微信扫码咨询**
+MyBatis-Mate + PigX 联合授权限时折扣，一份钱享受双倍快乐，欢迎微信扫码咨询
 
-<img align="center" src="https://minio.pigx.top/oss/1647315825.gif"/>
-
-:::
+![联合授权](https://minio.pigx.top/oss/1647315825.gif)

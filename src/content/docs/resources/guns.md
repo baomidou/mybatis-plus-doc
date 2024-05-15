@@ -1,25 +1,21 @@
 ---
-title: 插件式一体化开发平台
+title: Guns
 description: Guns是一个现代化的Java应用开发框架_插件式一体化开发平台
 sidebar:
   hidden: true
 ---
 
-::: center
-
-**[MyBatis-Mate](https://baomidou.com/pages/1864e1) + [Guns](https://javaguns.com/enterprise) 联合授权限时折扣，一份钱享受双倍快乐，更多咨询微信 wx153666**
-
-:::
-
-## [Guns一体化快速开发平台](https://javaguns.com/enterprise)
-
-::: tip
-在线演示: [https://vue3.javaguns.com/](https://vue3.javaguns.com/)
-:::
+> **[MyBatis-Mate](https://baomidou.com/pages/1864e1) + [Guns](https://javaguns.com/enterprise) 联合授权限时折扣，一份钱享受双倍快乐，更多咨询微信 wx153666**
 
 Guns是一个现代化的Java应用开发框架，基于主流技术Spring Boot2，同时支持单体和微服务架构，Guns基于**插件化架构**，可以自由组合细粒度模块依赖，实现不同功能的组合和剔除，目前企业版支持包括**微服务**、**SSO统一认证**、**SaaS多租户**、**工作流**、**报表**、**支付**、**代码加密混淆**等数十种插件功能。
 
-![](https://last.javaguns.com/pics/30b79056.png)
+**官网：**[https://javaguns.com/enterprise](https://javaguns.com/enterprise)
+
+![特性](https://last.javaguns.com/pics/30b79056.png)
+
+:::tip
+在线演示: [https://vue3.javaguns.com/](https://vue3.javaguns.com/)
+:::
 
 ## 产品优势
 

@@ -5,12 +5,7 @@ sidebar:
   hidden: true
 ---
 
-::: center
-
-<img align="center" src="/img/springboot.png"/>
-
-:::
-
+<img align="center" src="/images/content/springboot.png"/>
 
 ### 产品介绍
 
@@ -26,9 +21,7 @@ Snowy是国内首个国密前后分离快速开发平台，采用Vue3+AntDesignV
 
 产品文档: [https://www.xiaonuo.vip/doc](https://www.xiaonuo.vip/doc)
 
-
-![](https://pan.xiaonuo.vip/?explorer/share/file&hash=87aezjDgKhZAtVBvlw0lkiiLfz6MmgIF3Q4aRp6B9pjbP10oHPz4QXrR&name=/admin_index_01.0edb73a4.png
-)
+![](https://pan.xiaonuo.vip/?explorer/share/file&hash=87aezjDgKhZAtVBvlw0lkiiLfz6MmgIF3Q4aRp6B9pjbP10oHPz4QXrR&name=/admin_index_01.0edb73a4.png)
 
 ### 架构特性
 

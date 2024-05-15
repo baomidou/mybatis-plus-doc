@@ -1,0 +1,738 @@
+---
+title: 代码生成器配置
+sidebar:
+  order: 4
+---
+
+import Badge from "@/components/Badge.astro";
+
+MyBatis-Plus 代码生成器是一个强大的工具，它能够根据数据库表结构自动生成对应的实体类、Mapper接口、XML映射文件以及Service层代码。这个工具极大地简化了基于MyBatis框架的开发流程，提高了开发效率，尤其是在需要处理大量数据库表时。
+
+### 主要特点
+
+- **自动化**：代码生成器能够自动根据数据库表结构生成相应的Java代码，减少了手动编写重复代码的工作量。
+- **可配置性**：通过配置文件或代码，可以灵活地指定生成代码的包路径、表名、字段名、模板等，满足不同项目的需求。
+- **模板支持**：支持自定义代码模板，可以根据项目需求定制代码风格和结构。
+- **多数据库支持**：支持多种数据库类型，如MySQL、Oracle、SQL Server等，只需配置相应的数据库连接信息即可。
+- **集成简单**：可以轻松集成到现有的项目中，只需几行代码即可启动代码生成过程。
+
+### 使用场景
+
+- **新项目搭建**：在新项目开始时，可以使用代码生成器快速生成基础的CRUD代码，加快项目启动速度。
+- **表结构变更**：当数据库表结构发生变化时，可以通过代码生成器更新对应的Java代码，保持代码与数据库的一致性。
+- **重复性工作**：在需要编写大量相似CRUD操作的场景中，代码生成器可以显著减少重复劳动，提高开发效率。
+
+### 如何使用
+
+1. **配置数据源**：指定数据库类型、连接URL、用户名和密码等。
+2. **配置策略**：选择需要生成代码的表，设置表名和字段名的命名策略等。
+3. **配置包信息**：设置生成代码的包路径，包括实体类、Mapper接口、Service等。
+4. **配置模板**：如果需要自定义代码风格，可以配置或创建自定义的代码模板。
+5. **执行生成**：运行代码生成器，根据配置生成相应的Java代码。
+
+### 示例代码
+
+```java
+import com.baomidou.mybatisplus.generator.AutoGenerator;
+import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.rules.DbType;
+import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+
+public class CodeGenerator {
+
+    public static void main(String[] args) {
+        // 全局配置
+        GlobalConfig globalConfig = new GlobalConfig();
+        globalConfig.setOutputDir(System.getProperty("user.dir") + "/src/main/java") // 设置输出目录
+                .setAuthor("Your Name") // 设置作者
+                .setOpen(false) // 设置生成后是否自动打开目录
+                .setFileOverride(true) // 设置文件存在时是否覆盖
+                .setServiceName("%sService") // 设置Service接口名后缀
+                .setIdType(IdType.AUTO) // 设置主键生成策略
+                .setSwagger2(true); // 设置是否生成Swagger注解
+
+        // 数据源配置
+        DataSourceConfig dataSourceConfig = new DataSourceConfig();
+        dataSourceConfig.setDbType(DbType.MYSQL) // 设置数据库类型
+                .setUrl("jdbc:mysql://localhost:3306/mybatis_plus?useSSL=false&serverTimezone=UTC") // 数据库连接URL
+                .setUsername("root") // 数据库用户名
+                .setPassword("password") // 数据库密码
+                .setDriverName("com.mysql.cj.jdbc.Driver"); // 数据库驱动类名
+
+        // 策略配置
+        StrategyConfig strategyConfig = new StrategyConfig();
+        strategyConfig.setInclude("user", "order") // 指定需要生成代码的表名
+                .setNaming(NamingStrategy.underline_to_camel) // 设置表名转类名策略
+                .setColumnNaming(NamingStrategy.underline_to_camel) // 设置列名转属性名策略
+                .setEntityLombokModel(true) // 设置实体类使用Lombok模型
+                .setRestControllerStyle(true) // 设置Controller使用REST风格
+                .setTablePrefix(new String[]{"tbl_"}); // 设置表名前缀
+
+        // 包配置
+        PackageConfig packageConfig = new PackageConfig();
+        packageConfig.setParent("com.example") // 设置父包名
+                .setMapper("mapper") // 设置Mapper接口所在的子包名
+                .setEntity("entity") // 设置实体类所在的子包名
+                .setController("controller") // 设置Controller所在的子包名
+                .setService("service") // 设置Service所在的子包名
+                .setXml("mapper"); // 设置Mapper XML文件所在的子包名
+
+        // 模板配置
+        TemplateConfig templateConfig = new TemplateConfig();
+        templateConfig.setXml(null) // 不生成XML文件
+                .setController("templates/controller.java.vm") // 设置Controller模板路径
+                .setEntity("templates/entity.java.vm") // 设置实体类模板路径
+                .setMapper("templates/mapper.java.vm"); // 设置Mapper接口模板路径
+
+        // 整合配置
+        AutoGenerator autoGenerator = new AutoGenerator();
+        autoGenerator.setGlobalConfig(globalConfig)
+                .setDataSource(dataSourceConfig)
+                .setStrategy(strategyConfig)
+                .setPackageInfo(packageConfig)
+                .setTemplate(templateConfig);
+
+        // 执行生成
+        autoGenerator.execute();
+    }
+}
+```
+
+通过MyBatis-Plus代码生成器，开发者可以更加专注于业务逻辑的实现，而不是繁琐的CRUD代码编写，从而提升开发效率和代码质量。
+
+## 基本配置
+
+### 数据源配置（dataSource）
+
+- 类型：`DataSourceConfig`
+- 默认值：`null`
+
+数据源配置用于指定需要生成代码的具体数据库。通过配置数据源，代码生成器能够连接到数据库并获取表结构信息，以便生成相应的代码。
+
+**示例配置：**
+
+```java
+DataSourceConfig dataSourceConfig = new DataSourceConfig();
+dataSourceConfig.setDbType(DbType.MYSQL) // 设置数据库类型，如MySQL、Oracle等
+    .setUrl("jdbc:mysql://localhost:3306/mybatis_plus") // 数据库连接URL
+    .setUsername("root") // 数据库用户名
+    .setPassword("password") // 数据库密码
+    .setDriverName("com.mysql.cj.jdbc.Driver"); // 数据库驱动类名
+```
+
+### 数据库表配置（strategy）
+
+- 类型：`StrategyConfig`
+- 默认值：`null`
+
+数据库表配置用于指定需要生成哪些表的代码或者排除哪些表。通过策略配置，可以灵活地控制代码生成的范围。
+
+**示例配置：**
+
+```java
+StrategyConfig strategyConfig = new StrategyConfig();
+strategyConfig.setInclude("user", "order") // 指定需要生成代码的表名
+    .setExclude("user_detail") // 排除不需要生成代码的表名
+    .setEntityLombokModel(true) // 设置实体类使用Lombok模型
+    .setRestControllerStyle(true); // 设置Controller使用REST风格
+```
+
+### 包名配置（packageInfo）
+
+- 类型：`PackageConfig`
+- 默认值：`null`
+
+包名配置用于指定生成代码的包路径。通过配置包名，可以确保生成的代码放置在正确的目录结构中。
+
+**示例配置：**
+
+```java
+PackageConfig packageConfig = new PackageConfig();
+packageConfig.setParent("com.example") // 设置父包名
+    .setMapper("mapper") // 设置Mapper接口所在的子包名
+    .setEntity("entity") // 设置实体类所在的子包名
+    .setController("controller"); // 设置Controller所在的子包名
+```
+
+### 模板配置（template）
+
+- 类型：`TemplateConfig`
+- 默认值：`null`
+
+模板配置允许自定义代码生成的模板，实现个性化操作。通过模板配置，可以定制生成代码的格式和内容。
+
+**示例配置：**
+
+```java
+TemplateConfig templateConfig = new TemplateConfig();
+templateConfig.setXml(null) // 不生成XML文件
+    .setController("templates/controller.java.vm") // 设置Controller模板路径
+    .setEntity("templates/entity.java.vm") // 设置实体类模板路径
+    .setMapper("templates/mapper.java.vm"); // 设置Mapper接口模板路径
+```
+
+### 全局策略配置（globalConfig）
+
+- 类型：`GlobalConfig`
+- 默认值：`null`
+
+全局策略配置提供了一些全局的设置，如作者信息、生成路径等。
+
+**示例配置：**
+
+```java
+GlobalConfig globalConfig = new GlobalConfig();
+globalConfig.setOutputDir("src/main/java") // 设置生成代码的输出目录
+    .setAuthor("Your Name") // 设置作者信息
+    .setOpen(false) // 设置生成后是否自动打开目录
+    .setFileOverride(true); // 设置文件存在时是否覆盖
+```
+
+### 注入配置（injectionConfig）
+
+- 类型：`InjectionConfig`
+- 默认值：`null`
+
+注入配置允许注入自定义参数等操作以实现个性化操作。通过注入配置，可以在代码生成过程中添加额外的逻辑。
+
+**示例配置：**
+
+```java
+InjectionConfig injectionConfig = new InjectionConfig() {
+    // 自定义注入参数
+    @Override
+    public void initMap() {
+        // to do nothing
+    }
+
+    // 自定义参数
+    @Override
+    public MappedStatement injectMappedStatement(MappedStatement ms, Configuration configuration, SqlSource sqlSource, String mapperId) {
+        // 自定义注入逻辑
+        return ms;
+    }
+};
+```
+
+通过以上配置，MyBatis-Plus 代码生成器可以根据你的需求生成符合项目结构的代码，大大提高了开发效率。记得根据实际项目需求调整配置参数，以达到最佳的代码生成效果。
+
+
+## 数据源配置（dataSource）详解
+
+数据源配置是 MyBatis-Plus 代码生成器的关键部分，它定义了如何连接到数据库以及如何查询数据库信息。以下是数据源配置的详细说明和示例。
+
+### dbQuery
+
+- **描述**：数据库信息查询类，用于执行数据库查询操作。
+- **默认实现**：根据 `dbType` 自动选择对应数据库的内置实现。
+- **自定义**：可以实现 `IDbQuery` 接口来自定义数据库查询 SQL 语句，以返回特定内容。
+
+### dbType
+
+- **描述**：数据库类型，是必须配置的选项。
+- **内置支持**：MyBatis-Plus 内置了多种常用数据库类型，如 MySQL、Oracle、PostgreSQL 等。
+
+### schemaName
+
+- **描述**：数据库 schema name，某些数据库系统（如 PostgreSQL）需要指定。
+- **示例**：在 PostgreSQL 中，可以指定为 `public`。
+
+### typeConvert
+
+- **描述**：类型转换，用于将数据库字段类型转换为 Java 类型。
+- **默认实现**：根据 `dbType` 自动选择对应数据库的内置实现。
+- **自定义**：如果内置转换类型不满足需求，可以实现 `ITypeConvert` 接口来自定义数据库字段类型到 Java 类型的转换，或者实现 `IColumnType` 接口进行更高级的自定义。
+
+### url
+
+- **描述**：数据库连接的 URL，包含了连接到数据库所需的所有信息。
+
+### driverName
+
+- **描述**：数据库驱动程序的名称，用于建立数据库连接。
+
+### username
+
+- **描述**：数据库连接的用户名，用于身份验证。
+
+### password
+
+- **描述**：数据库连接的密码，用于身份验证。
+
+### 示例配置
+
+```java
+DataSourceConfig dataSourceConfig = new DataSourceConfig();
+dataSourceConfig.setDbType(DbType.MYSQL) // 设置数据库类型为 MySQL
+    .setUrl("jdbc:mysql://localhost:3306/mybatis_plus?useSSL=false&serverTimezone=UTC") // 设置数据库连接 URL
+    .setUsername("root") // 设置数据库用户名
+    .setPassword("password") // 设置数据库密码
+    .setDriverName("com.mysql.cj.jdbc.Driver"); // 设置数据库驱动名称
+```
+
+在这个示例中，我们配置了一个 MySQL 数据库的数据源。我们指定了数据库类型、连接 URL、用户名、密码和驱动名称。这些信息将用于建立与数据库的连接，并从中获取表结构信息，以便生成相应的 Java 代码。
+
+请根据你的实际数据库配置调整这些参数，确保它们与你的数据库环境相匹配。
+
+
+## 数据库表配置（strategy）详解
+
+数据库表配置用于定义生成代码时如何处理数据库表和字段。通过策略配置，可以指定生成哪些表的代码、如何命名实体类和字段、以及是否包含特定的注解或属性。
+
+### isCapitalMode
+
+- **描述**：是否使用大写命名模式。
+- **默认值**：`false`
+
+### skipView
+
+- **描述**：是否跳过视图。
+- **默认值**：`false`
+
+### naming
+
+- **描述**：数据库表映射到实体的命名策略。
+- **默认值**：使用下划线转驼峰命名。
+
+### columnNaming
+
+- **描述**：数据库表字段映射到实体的命名策略。
+- **默认值**：未指定时，按照 `naming` 策略执行。
+
+### tablePrefix
+
+- **描述**：表前缀，用于过滤带有特定前缀的表。
+
+### fieldPrefix
+
+- **描述**：字段前缀，用于过滤带有特定前缀的字段。
+
+### superEntityClass
+
+- **描述**：自定义继承的 Entity 类全称，带包名。
+
+### superEntityColumns
+
+- **描述**：自定义基础的 Entity 类，公共字段。
+
+### superMapperClass
+
+- **描述**：自定义继承的 Mapper 类全称，带包名。
+
+### superServiceClass
+
+- **描述**：自定义继承的 Service 类全称，带包名。
+
+### superServiceImplClass
+
+- **描述**：自定义继承的 ServiceImpl 类全称，带包名。
+
+### superControllerClass
+
+- **描述**：自定义继承的 Controller 类全称，带包名。
+
+### enableSqlFilter <Badge text="Since 3.3.1" type="error"/>
+
+- **描述**：默认激活进行 SQL 模糊表名匹配。关闭后，`likeTable` 与 `notLikeTable` 将失效，`include` 和 `exclude` 将使用内存过滤。
+- **默认值**：`true`
+- **注意**：如果有 SQL 语法兼容性问题，请手动设置为 `false`。已知无法使用的情况包括 MyCat 中间件。更多信息请查看 [ISSUE-2102](https://github.com/baomidou/mybatis-plus/issues/2102)
+
+### include
+
+- **描述**：需要包含的表名，当 `enableSqlFilter` 为 `false` 时，允许正则表达式。
+
+### likeTable <Badge text="Since 3.3.0" type="error"/>
+
+- **描述**：模糊匹配表名，与 notLikeTable 二选一配置。
+
+### exclude
+
+- **描述**：需要排除的表名，当 `enableSqlFilter` 为 `false` 时，允许正则表达式。
+
+### notLikeTable <Badge text="Since 3.3.0" type="error"/>
+
+- **描述**：模糊排除表名，与 likeTable 二选一配置。
+
+### entityColumnConstant
+
+- **描述**：【实体】是否生成字段常量。
+- **默认值**：`false`
+
+### ~~entityBuilderModel~~ <Badge text="@Deprecated" type="error"/>
+
+- **描述**：【实体】是否为构建者模型.
+- **默认值**：`false`
+- **注意**：自 3.3.2 开始更名为 [chainModel](#chainmodel)
+
+### chainModel <Badge text="Since 3.3.2" type="error"/>
+
+- **描述**：【实体】是否为链式模型。
+- **默认值**：`false`
+- **注意**：3.3.2 以下版本默认生成了链式模型，3.3.2 以后，默认不生成，如有需要，请开启。
+
+### entityLombokModel
+
+- **描述**：【实体】是否为 Lombok 模型。
+- **默认值**：`false`
+
+### entityBooleanColumnRemoveIsPrefix
+
+- **描述**：Boolean 类型字段是否移除 is 前缀。
+- **默认值**：`false`
+
+### restControllerStyle
+
+- **描述**：生成 `@RestController` 控制器。
+- **默认值**：`false`
+
+### controllerMappingHyphenStyle
+
+- **描述**：驼峰转连字符。
+- **默认值**：`false`
+
+### entityTableFieldAnnotationEnable
+
+- **描述**：是否生成实体时，生成字段注解。
+- **默认值**：`false`
+
+### versionFieldName
+
+- **描述**：乐观锁属性名称。
+
+### logicDeleteFieldName
+
+- **描述**：逻辑删除属性名称。
+
+### tableFillList
+
+- **描述**：表填充字段。
+
+### 示例配置
+
+```java
+StrategyConfig strategyConfig = new StrategyConfig();
+strategyConfig.setCapitalMode(true) // 使用大写命名模式
+    .setEntityLombokModel(true) // 使用 Lombok 模型
+    .setRestControllerStyle(true) // 生成 @RestController 控制器
+    .setInclude("user", "order") // 包含特定的表
+    .setExclude("user_detail") // 排除特定的表
+    .setEntityBooleanColumnRemoveIsPrefix(true) // 移除 Boolean 类型字段的 is 前缀
+    .setTablePrefix("tbl_") // 设置表前缀
+    .setControllerMappingHyphenStyle(true); // 驼峰转连字符
+```
+
+在这个示例中，我们配置了一个策略，指定了大写命名模式、使用 Lombok 模型、生成 REST 风格的控制器，并指定了需要包含和排除的表。我们还设置了表前缀和驼峰转连字符的控制器映射风格。
+
+请根据你的项目需求调整这些配置参数，以确保生成的代码符合你的期望。
+
+
+## 包名配置（packageInfo）详解
+
+包名配置用于定义生成代码的包结构，确保生成的代码放置在正确的目录中。通过配置包名，可以控制代码的组织方式，使其符合项目的架构设计。
+
+### parent
+
+- **描述**：父包名，即所有生成代码的顶级包名。
+- **默认值**：如果未设置，则需要为每个子包名指定完整的包路径。
+
+### moduleName
+
+- **描述**：父包模块名，用于区分不同的模块或子系统。
+
+### entity
+
+- **描述**：Entity 包名，即实体类所在的包名。
+
+### service
+
+- **描述**：Service 包名，即服务接口所在的包名。
+
+### serviceImpl
+
+- **描述**：Service Impl 包名，即服务实现类所在的包名。
+
+### mapper
+
+- **描述**：Mapper 包名，即 Mapper 接口所在的包名。
+
+### xml
+
+- **描述**：Mapper XML 包名，即 Mapper XML 文件所在的包名。
+
+### controller
+
+- **描述**：Controller 包名，即控制器类所在的包名。
+
+### pathInfo
+
+- **描述**：路径配置信息，用于指定生成代码的物理路径。
+
+### 示例配置
+
+```java
+PackageConfig packageConfig = new PackageConfig();
+packageConfig.setParent("com.example") // 设置父包名
+    .setModuleName("mybatisplus") // 设置父包模块名
+    .setEntity("entity") // 设置实体类所在的子包名
+    .setService("service") // 设置服务接口所在的子包名
+    .setServiceImpl("service.impl") // 设置服务实现类所在的子包名
+    .setMapper("mapper") // 设置Mapper接口所在的子包名
+    .setXml("mapper") // 设置Mapper XML文件所在的子包名
+    .setController("controller"); // 设置控制器类所在的子包名
+```
+
+在这个示例中，我们配置了一个包结构，其中父包名为 `com.example`，每个子包名都根据其功能进行了设置。例如，实体类将放置在 `com.example.mybatisplus.entity` 包中，服务接口将放置在 `com.example.mybatisplus.service` 包中，以此类推。
+
+请根据你的项目结构和组织习惯调整这些配置参数，以确保生成的代码能够正确地集成到你的项目中。
+
+
+## 模板配置（template）详解
+
+模板配置允许开发者自定义代码生成器使用的模板，以生成符合特定项目风格和需求的代码。MyBatis-Plus 代码生成器支持多种类型的模板，包括实体类、服务类、Mapper 接口、XML 映射文件和控制器类等。
+
+### entity
+
+- **描述**：Java 实体类模板，用于生成 Java 实体类代码。
+
+### entityKt
+
+- **描述**：Kotlin 实体类模板，用于生成 Kotlin 实体类代码。
+
+### service
+
+- **描述**：Service 类模板，用于生成服务接口代码。
+
+### serviceImpl
+
+- **描述**：Service impl 实现类模板，用于生成服务实现类代码。
+
+### mapper
+
+- **描述**：mapper 模板，用于生成 Mapper 接口代码。
+
+### xml
+
+- **描述**：mapper xml 模板，用于生成 Mapper XML 映射文件代码。
+
+### controller
+
+- **描述**：controller 控制器模板，用于生成控制器类代码。
+
+### 示例配置
+
+```java
+TemplateConfig templateConfig = new TemplateConfig();
+templateConfig.setEntity("templates/entity.java.vm") // 设置实体类模板路径
+    .setService("templates/service.java.vm") // 设置服务类模板路径
+    .setServiceImpl("templates/serviceImpl.java.vm") // 设置服务实现类模板路径
+    .setMapper("templates/mapper.java.vm") // 设置Mapper接口模板路径
+    .setXml("templates/mapper.xml.vm") // 设置Mapper XML模板路径
+    .setController("templates/controller.java.vm"); // 设置控制器模板路径
+```
+
+在这个示例中，我们配置了不同类型的模板路径。例如，实体类模板路径设置为 `templates/entity.java.vm`，服务类模板路径设置为 `templates/service.java.vm`，以此类推。这些模板路径指向了项目中自定义的模板文件，代码生成器将使用这些模板来生成相应的代码。
+
+请确保你的模板文件路径正确，并且模板文件遵循 Velocity 或 Freemarker 等模板引擎的语法。通过自定义模板，你可以控制生成的代码的结构、注释、命名风格等，以满足项目的特定需求。
+
+在实际使用中，你可能需要根据项目的具体情况调整模板配置，例如，如果你的项目使用 Kotlin 语言，则需要配置 `entityKt` 模板路径。如果你的项目不需要生成某些类型的代码（如 XML 映射文件），则可以不配置相应的模板。
+
+
+## 全局策略配置（globalConfig）详解
+
+全局策略配置提供了一些全局的设置，如输出目录、文件覆盖、开发者信息等，以及一些高级选项，如 Kotlin 模式、Swagger2 集成、ActiveRecord 模式等。
+
+### outputDir
+
+- **描述**：生成文件的输出目录。
+- **默认值**：`D 盘根目录`
+
+### fileOverride
+
+- **描述**：是否覆盖已有文件。
+- **默认值**：`false`
+
+### open
+
+- **描述**：是否在生成后自动打开输出目录。
+- **默认值**：`true`
+
+### enableCache
+
+- **描述**：是否在 XML 中添加二级缓存配置。
+- **默认值**：`false`
+
+### author
+
+- **描述**：开发人员名称。
+- **默认值**：`null`
+
+### kotlin
+
+- **描述**：是否开启 Kotlin 模式。
+- **默认值**：`false`
+
+### swagger2
+
+- **描述**：是否开启 Swagger2 模式。
+- **默认值**：`false`
+
+### activeRecord
+
+- **描述**：是否开启 ActiveRecord 模式。
+- **默认值**：`false`
+
+### baseResultMap
+
+- **描述**：是否开启 BaseResultMap。
+- **默认值**：`false`
+
+### baseColumnList
+
+- **描述**：是否开启 baseColumnList。
+- **默认值**：`false`
+
+### dateType
+
+- **描述**：时间类型对应策略。
+- **默认值**：`TIME_PACK`
+
+### entityName
+
+- **描述**：实体命名方式，`%s` 为占位符。
+- **默认值**：`null`
+- **示例**：`%sEntity` 生成 `UserEntity`
+
+### mapperName
+
+- **描述**：Mapper 命名方式，`%s` 为占位符。
+- **默认值**：`null`
+- **示例**：`%sDao` 生成 `UserDao`
+
+### xmlName
+
+- **描述**：Mapper XML 命名方式，`%s` 为占位符。
+- **默认值**：`null`
+- **示例**：`%sDao` 生成 `UserDao.xml`
+
+### serviceName
+
+- **描述**：Service 命名方式，`%s` 为占位符。
+- **默认值**：`null`
+- **示例**：`%sBusiness` 生成 `UserBusiness`
+
+### serviceImplName
+
+- **描述**：Service impl 命名方式，`%s` 为占位符。
+- **默认值**：`null`
+- **示例**：`%sBusinessImpl` 生成 `UserBusinessImpl`
+
+### controllerName
+
+- **描述**：Controller 命名方式，`%s` 为占位符。
+- **默认值**：`null`
+- **示例**：`%sAction` 生成 `UserAction`
+
+### idType
+
+- **描述**：指定生成的主键的 ID 类型。
+- **默认值**：`null`
+
+### 示例配置
+
+```java
+GlobalConfig globalConfig = new GlobalConfig();
+globalConfig.setOutputDir("src/main/java") // 设置输出目录
+    .setFileOverride(true) // 允许覆盖已有文件
+    .setOpen(false) // 不自动打开输出目录
+    .setEnableCache(true) // 在XML中添加二级缓存配置
+    .setAuthor("Your Name") // 设置开发者名称
+    .setKotlin(false) // 不开启Kotlin模式
+    .setSwagger2(true) // 开启Swagger2模式
+    .setActiveRecord(false) // 不开启ActiveRecord模式
+    .setBaseResultMap(true) // 开启BaseResultMap
+    .setBaseColumnList(true) // 开启baseColumnList
+    .setDateType(DateType.TIME_PACK) // 设置时间类型对应策略
+    .setEntityName("%sEntity") // 设置实体命名方式
+    .setMapperName("%sDao") // 设置Mapper命名方式
+    .setXmlName("%sDao") // 设置Mapper XML命名方式
+    .setServiceName("%sService") // 设置Service命名方式
+    .setServiceImplName("%sServiceImpl") // 设置Service impl命名方式
+    .setControllerName("%sController") // 设置Controller命名方式
+    .setIdType(IdType.AUTO); // 设置主键ID类型为自增
+```
+
+在这个示例中，我们配置了全局策略，指定了输出目录、文件覆盖、开发者信息等，并设置了各种命名方式和主键ID类型。这些配置将影响生成的代码的结构和内容。
+
+请根据你的项目需求和偏好调整这些配置参数，以确保生成的代码符合你的期望。例如，如果你希望生成的实体类名以 `Entity` 结尾，可以将 `entityName` 设置为 `%sEntity`。如果你希望在生成的 XML 文件中包含二级缓存配置，可以将 `enableCache` 设置为 `true`。
+
+
+## 注入配置（injectionConfig）详解
+
+注入配置允许开发者自定义代码生成器的行为，包括自定义返回配置、自定义输出文件、自定义文件创建逻辑等。这些配置提供了灵活性，使得代码生成器能够适应更复杂的项目需求。
+
+### map
+
+- **描述**：自定义返回配置 Map 对象，该对象可以传递到模板引擎，通过 `cfg.xxx` 引用。
+- **用途**：用于在模板中访问自定义的配置信息。
+
+### fileOutConfigList
+
+- **描述**：自定义输出文件，通过配置 `FileOutConfig` 指定模板文件和输出文件，实现自定义文件生成。
+- **用途**：用于生成非标准格式的文件，或者在特定目录下生成文件。
+
+### fileCreate
+
+- **描述**：自定义判断是否创建文件，实现 `IFileCreate` 接口。
+- **用途**：用于判断某个类是否需要覆盖创建，或者实现文件差异算法 `merge`。
+
+### initMap
+
+- **描述**：注入自定义 Map 对象，注意需要通过 `setMap` 方法放入。
+- **用途**：用于在代码生成器中注入额外的配置信息。
+
+### 示例配置
+
+```java
+InjectionConfig injectionConfig = new InjectionConfig() {
+    @Override
+    public void initMap() {
+        // 自定义 Map 对象，可以在模板中通过 cfg.xxx 引用
+        this.setMap(new HashMap<String, Object>() {{
+            put("author", "Your Name");
+            put("project", "MyBatis-Plus Code Generator");
+        }});
+    }
+
+    @Override
+    public FileOutConfig getFileOutConfig(TableInfo tableInfo) {
+        // 自定义输出文件配置
+        return new FileOutConfig(tableInfo.getEntityName()) {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                // 自定义输出文件路径
+                return "src/main/java/" + tableInfo.getEntityName() + ".java";
+            }
+        };
+    }
+
+    @Override
+    public IFileCreate getFileCreate() {
+        // 自定义文件创建逻辑
+        return new IFileCreate() {
+            @Override
+            public boolean isCreate(File file) {
+                // 自定义判断是否创建文件的逻辑
+                return !file.exists() || file.length() == 0;
+            }
+        };
+    }
+};
+```
+
+在这个示例中，我们配置了注入配置，包括自定义 Map 对象、自定义输出文件配置和自定义文件创建逻辑。
+
+- 在 `initMap` 方法中，我们创建了一个包含作者和项目名称的 Map 对象，这些信息可以在模板中通过 `cfg.xxx` 引用。
+- 在 `getFileOutConfig` 方法中，我们返回了一个自定义的 `FileOutConfig` 对象，指定了输出文件的路径。
+- 在 `getFileCreate` 方法中，我们返回了一个自定义的 `IFileCreate` 实现，用于判断文件是否需要创建。
+
+请根据你的项目需求调整这些配置参数，以确保生成的代码符合你的期望。例如，如果你需要在模板中访问额外的配置信息，可以在 `initMap` 方法中添加这些信息。如果你需要生成特定格式的文件，可以在 `getFileOutConfig` 方法中指定相应的模板和输出路径。如果你需要自定义文件创建逻辑，可以在 `getFileCreate` 方法中实现相应的判断逻辑。
