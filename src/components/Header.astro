@@ -1,0 +1,11 @@
+---
+import type { Props } from '@astrojs/starlight/props';
+import Default from "@astrojs/starlight/components/Header.astro";
+import CheckAdBlocked from '@/components/CheckAdBlocked.svelte';
+---
+
+<Default {...Astro.props}>
+    <slot/>
+</Default>
+
+<CheckAdBlocked client:load />
