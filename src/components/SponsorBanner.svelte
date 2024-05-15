@@ -25,27 +25,35 @@
   });
 </script>
 
-<div class="not-content max-w-sm md:max-w-[16rem] w-full m-5 text-sm leading-6" style="opacity: {$opacity}">
-    <a href={currentSponsor.link} class="w-full no-underline text-current hover:no-underline" target="_blank">
-        <figure class="relative flex flex-col-reverse border-2 rounded-lg p-6 dark:bg-slate-800 dark:highlight-white/5 transform transition hover:-translate-y-2.5 h-full">
-            <blockquote class="mt-6 dark:text-gray-300 flex-1">
-                <p>{currentSponsor.description}</p>
-            </blockquote>
-            <figcaption class="flex items-center space-x-4">
-                <img src={currentSponsor.logo} alt="" class="flex-none w-14 h-14 object-contain" loading="lazy" decoding="async">
-                <div class="flex-auto">
-                    <div class="text-base font-semibold dark:text-slate-200">
-                        {currentSponsor.title}
+<div class="flex flex-col md:flex-row not-content">
+  <!-- Spansor -->
+  <div class="w-full md:w-auto md:flex-1">
+    <div class="max-w-full xl:max-w-[18rem] w-full p-5 text-sm leading-6" style="opacity: {$opacity}">
+        <a href={currentSponsor.link} class="w-full no-underline text-current hover:no-underline" target="_blank">
+            <figure class="relative flex flex-col-reverse border-2 rounded-lg p-6 dark:bg-slate-800 dark:highlight-white/5 transform transition hover:-translate-y-2.5 h-full">
+                <blockquote class="mt-6 dark:text-gray-300 flex-1">
+                    <p>{currentSponsor.description}</p>
+                </blockquote>
+                <figcaption class="flex items-center space-x-4">
+                    <img src={currentSponsor.logo} alt="" class="flex-none w-14 h-14 object-contain" loading="lazy" decoding="async">
+                    <div class="flex-auto">
+                        <div class="text-base font-semibold dark:text-slate-200">
+                            {currentSponsor.title}
+                        </div>
+                        <div class="mt-0.5 text-slate-700 dark:text-slate-300 text-xs">
+                            {currentSponsor.subtitle}
+                        </div>
                     </div>
-                    <div class="mt-0.5 dark:text-slate-300">
-                        {currentSponsor.subtitle}
-                    </div>
-                </div>
-            </figcaption>
-        </figure>
-    </a>
-</div>
+                </figcaption>
+            </figure>
+        </a>
+    </div>
+  </div>
 
-<div class="not-content max-w-sm md:max-w-[16rem] w-full m-5">
-  <div class="wwads-cn wwads-horizontal wwads-sticky" data-id="135"></div>
+  <!-- WWAD -->
+  <div class="w-full md:w-auto md:flex-1">
+    <div class="max-w-full xl:max-w-[18rem] w-full m-5">
+      <div class="wwads-cn wwads-vertical" data-id="135"></div>
+    </div>
+  </div>
 </div>
