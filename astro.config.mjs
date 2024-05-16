@@ -51,7 +51,7 @@ export default defineConfig({
         Footer: "./src/components/Footer.astro",
         Header: "./src/components/Header.astro",
         Sidebar: "./src/components/Sidebar.astro",
-        PageTitle: "./src/components/PageTitle.astro",
+        PageSidebar: "./src/components/PageSidebar.astro",
       },
       locales: {
         root: {
