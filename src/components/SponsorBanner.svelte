@@ -25,28 +25,20 @@
   });
 </script>
 
-<div class="flex xl:flex-col not-content">
-  <div class="w-full xl:flex-1">
-    <div class="max-w-full xl:max-w-[18rem] w-full pt-5 px-5 text-sm leading-6">
-        <!-- Spansor -->
-        <a href={currentSponsor.link} class="w-full no-underline text-current hover:no-underline" target="_blank" style="opacity: {$opacity}">
-            <figure class="relative flex flex-col-reverse border rounded-lg p-4 dark:bg-slate-800 dark:highlight-white/5 h-full">
-                <figcaption class="flex items-center space-x-4">
-                    <img src={currentSponsor.logo} alt="" class="flex-none w-14 h-14 object-contain" loading="lazy" decoding="async">
-                    <div class="flex-auto">
-                        <div class="text-base font-semibold dark:text-slate-200">
-                            {currentSponsor.title}
-                        </div>
-                        <div class="mt-0.5 text-slate-700 dark:text-slate-300 text-xs">
-                          {currentSponsor.description}
-                        </div>
+<div class="not-content max-w-full w-full text-sm leading-6">
+    <a href={currentSponsor.link} class="w-full no-underline text-current hover:no-underline" target="_blank" style="opacity: {$opacity}">
+        <figure class="border rounded-lg p-4 dark:bg-slate-800 dark:highlight-white/5 h-full">
+            <figcaption class="flex items-center space-x-4">
+                <img src={currentSponsor.logo} alt="" class="flex-none w-14 h-14 object-contain" loading="lazy" decoding="async">
+                <div class="flex-auto">
+                    <div class="text-base font-semibold dark:text-slate-200">
+                        {currentSponsor.title}
                     </div>
-                </figcaption>
-            </figure>
-        </a>
-
-        <!-- WWAD -->
-        <div class="wwads-cn wwads-horizontal xl:wwads-vertical" data-id="135"></div>
-    </div>
-  </div>
+                    <div class="mt-0.5 text-slate-700 dark:text-slate-300 text-xs">
+                      {currentSponsor.description}
+                    </div>
+                </div>
+            </figcaption>
+        </figure>
+    </a>
 </div>

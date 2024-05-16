@@ -1,12 +1,13 @@
 ---
 import type { Props } from '@astrojs/starlight/props';
-import Default from "@astrojs/starlight/components/PageSidebar.astro";
+import Default from "@astrojs/starlight/components/Sidebar.astro";
 import SponsorBanner from '@/components/SponsorBanner.svelte';
 import sponsors from "@/config/sponsors.json";
 ---
+
+<SponsorBanner client:load {sponsors}/>
 
 <Default {...Astro.props}>
     <slot/>
 </Default>
 
-<SponsorBanner client:load {sponsors}/>
