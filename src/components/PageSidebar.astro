@@ -3,10 +3,15 @@ import type { Props } from '@astrojs/starlight/props';
 import Default from "@astrojs/starlight/components/PageSidebar.astro";
 ---
 
-<div class="not-content max-w-full xl:max-w-[18rem]">
-  <div class="wwads-cn wwads-horizontal" data-id="135"></div>
+<div class="flex xl:flex-col not-content">
+    <div class="w-full xl:flex-1">
+        <div class="max-w-full xl:max-w-[32rem] w-full h-[6.15rem] overflow-y-hidden pt-4 px-5 text-sm leading-6">
+            <div class="wwads-cn wwads-horizontal xl:wwads-vertical border rounded-lg bg-transparent" data-id="135"></div>
+        </div>
+    </div>
 </div>
 
 <Default {...Astro.props}>
     <slot/>
 </Default>
+
