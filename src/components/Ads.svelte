@@ -10,7 +10,7 @@
     </div>
 </div>
 
-<style>
+<style is:global>
     .page-wwads .wwads-img img {
         width: 90px !important;
     }
