@@ -24,11 +24,11 @@
       <div class="flex justify-center gap-4">
         <a href="https://wwads.cn/page/end-user-privacy" target="_blank"
           class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300 text-current no-underline hover:no-underline">
-          隐私声明
+          查看隐私声明
         </a>
         <a href="https://wwads.cn/page/whitelist-wwads" target="_blank"
           class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300 text-current no-underline hover:no-underline">
-          加入白名单
+          查看加入白名单教程
         </a>
       </div>
     </div>
