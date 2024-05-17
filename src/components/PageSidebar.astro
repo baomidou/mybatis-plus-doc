@@ -1,11 +1,11 @@
 ---
 import type { Props } from "@astrojs/starlight/props";
 import Default from "@astrojs/starlight/components/PageSidebar.astro";
-import Ads from "@/components/Ads.svelte";
+import Ads from "@/components/Ads.astro";
 ---
 
 <Default {...Astro.props}>
   <slot />
 </Default>
 
-<Ads client:only="svelte" />
+<Ads />
