@@ -16,7 +16,7 @@
   });
 </script>
 
-<div class="{adBlockDetected ? 'flex' : 'hidden'} fixed inset-0 bg-black bg-opacity-90 z-[99999]">
+<div class="{adBlockDetected ? 'hidden' : 'flex'} fixed inset-0 bg-black bg-opacity-90 z-[99999]">
   <div class="m-auto p-5 bg-white rounded-lg text-center space-y-4">
     <button class="absolute top-3 right-3 text-black text-white bg-transparent" on:click={() => adBlockDetected = false}>×</button>
     <p class="text-center text-lg text-gray-700">
