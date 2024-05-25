@@ -57,6 +57,8 @@ queryWrapper.like(StringUtils.isNotBlank(name), Entity::getName, name)
 
 **问题反馈**：不接受任何关于 RPC 传输 Wrapper 报错相关的 issue 或 pr。
 
+**安全性**： `QueryWrapper` `UpdateWrapper` 字段部分，如有允许 `前端传入 SQL 片段` 这可能会导致 `SQL 注入风险` 需要校验，更多查看 [预防安全漏洞](https://mp.baomidou.com/guide/sql-injection.html)。
+
 :::
 
 :::caution[Wrapper 类说明]
