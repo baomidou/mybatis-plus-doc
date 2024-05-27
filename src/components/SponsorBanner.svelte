@@ -3,13 +3,20 @@
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
   import { slide } from "svelte/transition";
+  import store from "store2";
 
   export let sponsors = [];
   let currentSponsors = [];
-  let isVisible = true;
+  const key = "sponsor-banner-visibility";
+  let isVisible;
+
+  function initVisibility() {
+    isVisible = store.session(key) ?? true;
+  }
 
   function toggleVisibility() {
     isVisible = !isVisible;
+    store.session(key, isVisible);
   }
 
   function getRandomElements(array, num) {
@@ -34,6 +41,7 @@
   }
 
   onMount(() => {
+    initVisibility();
     selectSponsors();
     const interval = setInterval(updateCard, 5000);
     return () => clearInterval(interval);
@@ -42,46 +50,47 @@
 
 <div class="not-content max-w-full w-full text-sm leading-6">
   {#if isVisible}
-  <div transition:slide>
-    {#each currentSponsors as currentSponsor}
-      <a
-        href={currentSponsor.link}
-        class="text-current no-underline hover:no-underline w-full block mb-1"
-        target="_blank"
-        style="opacity: {$opacity}"
-      >
-        <figure
-          class="border rounded-lg p-3 dark:bg-slate-800 dark:highlight-white/5"
+    <div transition:slide>
+      {#each currentSponsors as currentSponsor}
+        <a
+          href={currentSponsor.link}
+          class="text-current no-underline hover:no-underline w-full block mb-1"
+          target="_blank"
+          style="opacity: {$opacity}"
         >
-          <figcaption class="flex items-center space-x-4">
-            <img
-              src={currentSponsor.logo}
-              alt=""
-              class="flex-none w-14 h-14 object-contain"
-              loading="lazy"
-              decoding="async"
-            />
-            <div class="flex-auto">
-              <div class="text-sm font-semibold dark:text-slate-200">
-                {currentSponsor.title}
+          <figure
+            class="border rounded-lg p-3 dark:bg-slate-800 dark:highlight-white/5"
+          >
+            <figcaption class="flex items-center space-x-4">
+              <img
+                src={currentSponsor.logo}
+                alt=""
+                class="flex-none w-14 h-14 object-contain"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="flex-auto">
+                <div class="text-sm font-semibold dark:text-slate-200">
+                  {currentSponsor.title}
+                </div>
+                <div class="text-xs text-slate-700 dark:text-slate-300 mt-0.5">
+                  {currentSponsor.description}
+                </div>
               </div>
-              <div class="text-xs text-slate-700 dark:text-slate-300 mt-0.5">
-                {currentSponsor.description}
-              </div>
-            </div>
-          </figcaption>
-        </figure>
-      </a>
-    {/each}
-    <div class="w-full block flex justify-between text-[11px]">
-      <span>广告采取随机轮播3个方式显示</span>
-      <a
-        class="text-current no-underline hover:no-underline text-red-500"
-        href="/resources/support/#成为赞助商"
-        ><span class="with-love">♥</span>成为赞助商</a
-      >
+            </figcaption>
+          </figure>
+        </a>
+      {/each}
+      <div class="w-full block flex justify-between text-[11px]">
+        <span>广告采取随机轮播3个方式显示</span>
+        <a
+          class="text-current no-underline hover:no-underline text-red-500"
+          href="/resources/support/#成为赞助商"
+        >
+          <span class="with-love">♥</span>成为赞助商
+        </a>
+      </div>
     </div>
-  </div>
   {/if}
 
   <div class="button-container">
