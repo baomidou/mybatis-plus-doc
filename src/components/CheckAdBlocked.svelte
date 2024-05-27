@@ -5,7 +5,8 @@
   let adBlockDetected = false;
 
   function checkAdBlocker() {
-    if (store.session('adBlockNoticeClosed')) {
+    let adBlockNoticeClosed = store.session('adBlockNoticeClosed') ?? false
+    if (adBlockNoticeClosed) {
       return;
     }
 
