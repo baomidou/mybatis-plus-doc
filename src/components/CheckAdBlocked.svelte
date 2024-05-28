@@ -1,24 +1,15 @@
 <script>
   import { onMount } from "svelte";
-  import store from "store2";
 
   let adBlockDetected = false;
-  let session = store.session;
-  const key = "adBlockNoticeClosed";
 
   function checkAdBlocker() {
-    let adBlockNoticeClosed = session.get(key) ?? false;
-    if (adBlockNoticeClosed) {
-      return;
-    }
-
     if (window._AdBlockInit === undefined) {
       adBlockDetected = true;
     }
   }
 
   function closeNotice() {
-    session.set(key, true);
     adBlockDetected = false;
   }
 
