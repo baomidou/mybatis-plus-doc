@@ -34,6 +34,7 @@
   }
 
   function closeNotice() {
+    session.set(key, true);
     adBlockDetected = false;
   }
 
