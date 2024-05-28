@@ -15,6 +15,7 @@
     // check ad block init
     if (window._AdBlockInit === undefined) {
       adBlockDetected = true;
+      return;
     }
 
     // check script banned
