@@ -7,16 +7,17 @@
 
   export let sponsors = [];
   let currentSponsors = [];
+  let session = store.session;
   const key = "sponsorBannerEnabled";
   let isVisible;
 
   function initVisibility() {
-    isVisible = store.session.get(key) ?? true;
+    isVisible = session.get(key) ?? true;
   }
 
   function toggleVisibility() {
     isVisible = !isVisible;
-    store.session(key, isVisible);
+    session.set(key, isVisible);
   }
 
   function getRandomElements(array, num) {
