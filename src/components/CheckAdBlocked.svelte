@@ -13,10 +13,10 @@
     }
 
     // check ad block init
-    if (window._AdBlockInit === undefined) {
-      adBlockDetected = true;
-      return;
-    }
+    // if (window._AdBlockInit === undefined) {
+    //   adBlockDetected = true;
+    //   return;
+    // }
 
     // check script banned
     checkAdScriptBanned('https://cdn.wwads.cn/js/makemoney.js');
@@ -40,7 +40,7 @@
   }
 
   onMount(() => {
-    const interval = setInterval(checkAdBlocker, 3000);
+    const interval = setInterval(checkAdBlocker, 5000);
     return () => clearInterval(interval);
   });
 </script>
