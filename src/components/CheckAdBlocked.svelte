@@ -1,12 +1,36 @@
 <script>
   import { onMount } from "svelte";
+  import store from "store2";
 
   let adBlockDetected = false;
+  let session = store.session;
+  const key = "adBlockNoticeClosed";
 
   function checkAdBlocker() {
-    if (window._AdBlockInit === undefined) {
-      adBlockDetected = true;
+    let adBlockNoticeClosed = session.get(key) ?? false;
+    if (adBlockNoticeClosed) {
+      return;
     }
+
+    // check ad block init
+    // if (window._AdBlockInit === undefined) {
+    //   adBlockDetected = true;
+    // }
+
+    // check script banned
+    checkAdScriptBanned('https://cdn.wwads.cn/js/makemoney.js');
+  }
+  
+  function checkAdScriptBanned(scriptUrl) {
+    fetch(scriptUrl)
+        .then(response => {
+            if (!response.ok) {
+              adBlockDetected = true;
+            }
+        })
+        .catch(() => {
+            adBlockDetected = true;
+        });
   }
 
   function closeNotice() {
@@ -14,7 +38,7 @@
   }
 
   onMount(() => {
-    const interval = setInterval(checkAdBlocker, 3000);
+    const interval = setInterval(checkAdBlocker, 5000);
     return () => clearInterval(interval);
   });
 </script>
