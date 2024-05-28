@@ -3,9 +3,10 @@
   import store from 'store2';
 
   let adBlockDetected = false;
+  const key = "adBlockNoticeClosed";
 
   function checkAdBlocker() {
-    let adBlockNoticeClosed = store.session('adBlockNoticeClosed') ?? false
+    let adBlockNoticeClosed = store.session.get(key) ?? false
     if (adBlockNoticeClosed) {
       return;
     }
@@ -18,7 +19,7 @@
   }
 
   function closeNotice() {
-    store.session('adBlockNoticeClosed', true);
+    store.session(key, true);
     adBlockDetected = false;
   }
 

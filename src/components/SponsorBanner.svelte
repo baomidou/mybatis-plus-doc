@@ -7,11 +7,11 @@
 
   export let sponsors = [];
   let currentSponsors = [];
-  const key = "sponsor-banner-visibility";
+  const key = "sponsorBannerEnabled";
   let isVisible;
 
   function initVisibility() {
-    isVisible = store.session(key) ?? true;
+    isVisible = store.session.get(key) ?? true;
   }
 
   function toggleVisibility() {
