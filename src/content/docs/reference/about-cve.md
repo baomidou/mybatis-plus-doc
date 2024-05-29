@@ -57,13 +57,19 @@ SqlInjectionUtils.check("任意前端传入字段")
 
 ## 关于恶意漏洞的说明
 
-MyBatis-Plus 相关的代码和 Jar 包被别有用心的人提交了两个 CVE 漏洞，下面对这两个漏洞进行一下官方的声明。
+MyBatis-Plus 相关的代码和 Jar 包被别有用心的人提交了 CVE 漏洞，下面对这些漏洞进行一下官方的声明。
+
+当然不排除提交者本意是非恶意的，但是 `请您注意这种不被官方认可的 "CVE 漏洞" ` 对框架本身、对用户、对项目的交付都会产生非常大的影响，您的不经意的行为可能会给别人带来非常大的经济损失。
+
+如果是不安全的设计，最好的办法是 `issue 或 pull request` 协助官方尽快修复，而不是给别人带来困惑和损失的行为。
+
+官方文档也 `一而再 再而三` 的强调 `SQL 片段` 必须检查安全，任何 `ORM 框架，包括 JDBC` 都是允许字符串直接拼接 SQL 情况，因此，我们建议最后不要允许前端传入 SQL 片段。 
 
 ### CVE-2024-35548
 
 详情链接：[CVE-2024-35548](https://www.cve.org/CVERecord?id=CVE-2024-35548)
 
-该“漏洞”也是前端端传入 SQL 片段导致 SQL 注入攻击。框架 `QueryWrapper` `UpdateWrapper` 条件部分是允许子查询的因此不能人为允许前端传入 SQL 片段。
+该“漏洞”也是前端端传入 `SQL 片段` 导致 SQL 注入攻击。框架 `QueryWrapper` `UpdateWrapper` 字段部分是允许子查询的因此不能人为允许前端传入 SQL 片段。
 
 如果使用者有这种需求，可以使用 `SqlInjectionUtils.check(内容)` 或 `xxWrapper.checkSqlInjection()` 方法来检查，如果检查通过，则不会抛出异常。
 
