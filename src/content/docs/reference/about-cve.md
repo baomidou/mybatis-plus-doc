@@ -59,6 +59,16 @@ SqlInjectionUtils.check("任意前端传入字段")
 
 MyBatis-Plus 相关的代码和 Jar 包被别有用心的人提交了两个 CVE 漏洞，下面对这两个漏洞进行一下官方的声明。
 
+### CVE-2024-35548
+
+详情链接：[CVE-2024-35548](https://www.cve.org/CVERecord?id=CVE-2024-35548)
+
+该“漏洞”也是前端端传入 SQL 片段导致 SQL 注入攻击。框架 `QueryWrapper` `UpdateWrapper` 条件部分是允许子查询的因此不能人为允许前端传入 SQL 片段。
+
+如果使用者有这种需求，可以使用 `SqlInjectionUtils.check(内容)` 或 `xxWrapper.checkSqlInjection()` 方法来检查，如果检查通过，则不会抛出异常。
+
+框架也提供了非常严格的条件构造器 `LambdaQueryWrapper` `LambdaUpdateWrapper` 推荐使用。
+
 ### CVE-2023-25330
 
 详情链接：[CVE-2023-25330](https://nvd.nist.gov/vuln/detail/CVE-2023-25330)
