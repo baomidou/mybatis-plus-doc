@@ -2697,6 +2697,13 @@ LambdaUpdateWrapper<User> lambdaUpdateWrapper = Wrappers.lambdaUpdate();
 lambdaUpdateWrapper.set(User::getName, "李四");
 ```
 
+:::tip[注意事项]
+
+- 在使用 `QueryWrapper` `updateWrapper` 查询 设置 `条件字段部分` 一定要保证安全，避免 SQL 注入攻击。
+- 任何 `前端` 传入的 `SQL片段` 都要 `严格过滤` 更多查看 [数据安全保护](/guides/security/) [预防安全漏洞](/reference/about-cve/)
+
+:::
+
 ### 线程安全性
 
 Wrapper 实例不是线程安全的，因此建议在每次使用时创建新的 Wrapper 实例。这样可以避免多线程环境下的数据竞争和潜在的错误。
