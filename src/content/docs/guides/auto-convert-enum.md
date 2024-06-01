@@ -4,21 +4,10 @@ sidebar:
   order: 8
 ---
 
-MyBatis-Plus 是一个增强工具，它在 MyBatis 的基础上提供了许多便捷的功能，其中包括对枚举类型的自动映射。自动映射枚举功能旨在简化开发者在处理数据库与Java枚举类型之间的转换时的配置和编码工作。
-
-MyBatis-Plus 的自动映射枚举功能主要涉及以下几个方面：
-
-1. **枚举类型处理**：MyBatis-Plus 提供了对枚举类型的内置支持，可以自动将Java枚举类型映射到数据库中的特定数据类型，如整型或字符串。这样，开发者无需手动编写复杂的映射逻辑。
-
-2. **注解支持**：通过使用 `@EnumValue` 注解，开发者可以指定枚举值在数据库中存储的实际值。这通常是枚举中的一个字段，如序号或编码。
-
-3. **接口实现**：枚举类型可以实现 `IEnum` 接口，该接口定义了一个 `getValue` 方法，用于返回存储在数据库中的值。MyBatis-Plus 会自动识别并使用这个方法进行映射。
-
-通过这些功能，MyBatis-Plus 大大简化了枚举类型的处理，使得开发者可以更加专注于业务逻辑的实现，而不必担心底层的数据映射问题。
-
-## 声明通用枚举属性
-
-实体属性使用枚举类型
+我们在 mybatis 的 `EnumOrdinalTypeHandler(基于枚举常量序号)` 和 `EnumTypeHandler(基于枚举常量名)` 之外  
+提供了更加灵活的枚举处理器 `MybatisEnumTypeHandler(基于枚举常量属性)`  
+只需要对枚举进行声明,即可实现枚举的自动映射,未进行声明的枚举则根据 `mybatis`的`defaultEnumTypeHandler`
+的默认值`EnumTypeHandler` 来进行映射
 
 ```java
 public class User {
@@ -28,18 +17,18 @@ public class User {
 }
 ```
 
-### 方式一：使用 @EnumValue 注解枚举属性
+## 枚举声明为使用 `MybatisEnumTypeHandler(基于枚举常量属性)` 进行映射
+
+### 一：属性使用 `@EnumValue` 注解，指定枚举值在数据库中存储的实际值。支持枚举类中的任意字段，如序号或编码。
 
 ```java
+
+@Getter
+@AllArgsConstructor
 public enum GradeEnum {
     PRIMARY(1, "小学"),
-    SECONDORY(2, "中学"),
+    SECONDARY(2, "中学"),
     HIGH(3, "高中");
-
-    GradeEnum(int code, String descp) {
-        this.code = code;
-        this.descp = descp;
-    }
 
     @EnumValue // 标记数据库存的值是code
     private final int code;
@@ -47,16 +36,19 @@ public enum GradeEnum {
 }
 ```
 
-### 方式二：枚举属性实现 IEnum 接口
+### 二：实现 `IEnum` 接口，实现 `getValue` 方法，指定枚举值在数据库中存储的实际值。支持枚举类中的任意字段，如序号或编码。
 
 ```java
+
+@Getter
+@AllArgsConstructor
 public enum AgeEnum implements IEnum<Integer> {
     ONE(1, "一岁"),
     TWO(2, "二岁"),
     THREE(3, "三岁");
 
-    private int value;
-    private String desc;
+    private final int value;
+    private final String desc;
 
     @Override
     public Integer getValue() {
@@ -65,11 +57,11 @@ public enum AgeEnum implements IEnum<Integer> {
 }
 ```
 
-## 非 MyBatis-Plus 枚举如何指定映射处理
+## 未进行声明的枚举如何修改默认枚举处理器(对已声明的枚举无效)
 
-关于在 MyBatis-Plus 枚举规则之外的枚举如何指定映射处理,该操作不会影响 MyBatis-Plus 规则内的枚举映射处理。
+### 修改全局 defaultEnumTypeHandler
 
-### 修改全局 DefaultEnumTypeHandler
+yml 配置文件中配置：
 
 ```yml
 mybatis-plus:
@@ -96,7 +88,7 @@ public class MybatisPlusAutoConfiguration {
 }
 ```
 
-通过这些配置，你可以根据项目需求灵活地定制枚举类型的映射处理，确保 MyBatis-Plus 与你的应用程序无缝集成。
+或者其他
 
 ## 号外参考: 如何序列化枚举值为前端返回值
 
