@@ -701,7 +701,7 @@ SELECT * FROM user WHERE id IN (1, 2, 3)
 **示例（listByMap）：**
 
 ```java
-// 假设有一个 columnMap，设置查询条件为 age > 30
+// 假设有一个 columnMap，设置查询条件为 age = 30
 Map<String, Object> columnMap = new HashMap<>();
 columnMap.put("age", 30);
 Collection<User> users = userService.listByMap(columnMap); // 调用 listByMap 方法
@@ -713,7 +713,7 @@ for (User user : users) {
 生成的 SQL:
 
 ```sql
-SELECT * FROM user WHERE age > 30
+SELECT * FROM user WHERE age = 30
 ```
 
 **示例（listMaps）：**

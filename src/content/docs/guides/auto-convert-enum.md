@@ -14,12 +14,6 @@ MyBatis-Plus 的自动映射枚举功能主要涉及以下几个方面：
 
 3. **接口实现**：枚举类型可以实现 `IEnum` 接口，该接口定义了一个 `getValue` 方法，用于返回存储在数据库中的值。MyBatis-Plus 会自动识别并使用这个方法进行映射。
 
-4. **配置简化**：从 MyBatis-Plus 3.5.2 版本开始，开发者无需额外配置即可使用自动映射枚举功能。MyBatis-Plus 会自动识别并处理实体类中的枚举属性。
-
-5. **序列化与反序列化**：MyBatis-Plus 不仅处理数据库与Java枚举类型之间的映射，还提供了序列化和反序列化的支持，使得枚举值可以方便地在网络传输或持久化存储中使用。
-
-6. **灵活性**：开发者可以根据需要选择不同的序列化方式，如使用Jackson或Fastjson等库，来定制枚举值在前端展示的格式。
-
 通过这些功能，MyBatis-Plus 大大简化了枚举类型的处理，使得开发者可以更加专注于业务逻辑的实现，而不必担心底层的数据映射问题。
 
 ## 声明通用枚举属性
@@ -71,37 +65,16 @@ public enum AgeEnum implements IEnum<Integer> {
 }
 ```
 
-## 配置 MyBatis-Plus 自动映射枚举
+## 非 MyBatis-Plus 枚举如何指定映射处理
 
-从 MyBatis-Plus 3.5.2 版本开始，自动映射枚举的配置得到了极大的简化，大多数情况下无需额外配置即可使用。然而，对于需要定制化配置的场景，MyBatis-Plus 提供了灵活的配置选项。
+关于在 MyBatis-Plus 枚举规则之外的枚举如何指定映射处理,该操作不会影响 MyBatis-Plus 规则内的枚举映射处理。
 
-:::note[注意]
-
-- 自 3.5.2 版本起，大多数情况下无需手动配置枚举映射。
-- 对于 Spring MVC 集成，可以参考 Spring Boot 的配置示例。
-- 示例工程：👉 [mybatisplus-spring-boot](https://git.oschina.net/baomidou/mybatisplus-spring-boot)
-
-:::
-
-### 方式一：指定包内枚举类使用 MybatisEnumTypeHandler
-
-通过在配置文件中指定包路径，MyBatis-Plus 将自动扫描该包下的枚举类，并使用 `MybatisEnumTypeHandler` 处理。
-
-```yml
-mybatis-plus:
-  typeEnumsPackage: com.baomidou.springboot.entity.enums
-```
-
-此配置使得只有指定包内的枚举类会使用新的 TypeHandler，其他包下的枚举类则继续使用 MyBatis 的默认处理方式。
-
-### 方式二：全局修改 DefaultEnumTypeHandler
-
-如果需要全局修改 MyBatis 使用的 `EnumTypeHandler`，可以通过配置文件或自定义配置类来实现。
+### 修改全局 DefaultEnumTypeHandler
 
 ```yml
 mybatis-plus:
   configuration:
-    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
+    default-enum-type-handler: xx.xx.xx.MyEnumTypeHandler
 ```
 
 或者通过自定义配置类：
@@ -116,7 +89,7 @@ public class MybatisPlusAutoConfiguration {
             GlobalConfig globalConfig = properties.getGlobalConfig();
             globalConfig.setBanner(false);
             MybatisConfiguration configuration = new MybatisConfiguration();
-            configuration.setDefaultEnumTypeHandler(MybatisEnumTypeHandler.class);
+            configuration.setDefaultEnumTypeHandler(MyEnumTypeHandler.class);
             properties.setConfiguration(configuration);
         };
     }
@@ -125,7 +98,7 @@ public class MybatisPlusAutoConfiguration {
 
 通过这些配置，你可以根据项目需求灵活地定制枚举类型的映射处理，确保 MyBatis-Plus 与你的应用程序无缝集成。
 
-## 如何序列化枚举值为前端返回值？
+## 号外参考: 如何序列化枚举值为前端返回值
 
 ### Jackson
 
