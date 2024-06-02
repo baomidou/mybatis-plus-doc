@@ -6,8 +6,8 @@ sidebar:
 
 我们在 mybatis 的 `EnumOrdinalTypeHandler(基于枚举常量序号)` 和 `EnumTypeHandler(基于枚举常量名)` 之外  
 提供了更加灵活的枚举处理器 `MybatisEnumTypeHandler(基于枚举常量属性)`  
-只需要对枚举进行声明,即可实现枚举的自动映射,未进行声明的枚举则根据 `mybatis`的`defaultEnumTypeHandler`
-的默认值`EnumTypeHandler` 来进行映射
+只需要对枚举进行声明,即可实现枚举的自动映射  
+未进行声明的枚举则根据 `mybatis`的`defaultEnumTypeHandler` 的默认值`EnumTypeHandler` 来进行映射
 
 ```java
 public class User {
@@ -17,9 +17,13 @@ public class User {
 }
 ```
 
-## 枚举声明为使用 `MybatisEnumTypeHandler(基于枚举常量属性)` 进行映射
+## 枚举声明
 
-### 一：属性使用 `@EnumValue` 注解，指定枚举值在数据库中存储的实际值。支持枚举类中的任意字段，如序号或编码。
+声明该枚举使用 `MybatisEnumTypeHandler(基于枚举常量属性)` 进行映射
+
+### 方式一：注解标记
+
+枚举属性使用 `@EnumValue` 注解，指定枚举值在数据库中存储的实际值。支持枚举类中的任意字段，如序号或编码。
 
 ```java
 
@@ -36,7 +40,9 @@ public enum GradeEnum {
 }
 ```
 
-### 二：实现 `IEnum` 接口，实现 `getValue` 方法，指定枚举值在数据库中存储的实际值。支持枚举类中的任意字段，如序号或编码。
+### 方式二：实现接口
+
+实现 `IEnum` 接口，实现 `getValue` 方法，指定枚举值在数据库中存储的实际值。支持枚举类中的任意字段，如序号或编码。
 
 ```java
 
@@ -57,7 +63,10 @@ public enum AgeEnum implements IEnum<Integer> {
 }
 ```
 
-## 未进行声明的枚举如何修改默认枚举处理器(对已声明的枚举无效)
+## 未声明枚举
+
+未声明的枚举将使用 `mybatis` 的 `defaultEnumTypeHandler` 的默认值 `EnumTypeHandler` 进行映射  
+可以通过修改全局配置来变更,不过这对上面步骤声明的枚举无效
 
 ### 修改全局 defaultEnumTypeHandler
 
@@ -72,6 +81,7 @@ mybatis-plus:
 或者通过自定义配置类：
 
 ```java
+
 @Configuration
 public class MybatisPlusAutoConfiguration {
 
@@ -99,6 +109,7 @@ public class MybatisPlusAutoConfiguration {
 ##### Spring Boot
 
 ```java
+
 @Bean
 public Jackson2ObjectMapperBuilderCustomizer customizer() {
     return builder -> builder.featuresToEnable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
@@ -109,7 +120,9 @@ public Jackson2ObjectMapperBuilderCustomizer customizer() {
 
 ```java
 ObjectMapper objectMapper = new ObjectMapper();
-objectMapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+objectMapper.
+
+configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
 ```
 
 在枚举中重写 toString 方法，以上两种方式任选其一。
@@ -141,13 +154,16 @@ public enum GradeEnum {
 
 ```java
 FastJsonConfig config = new FastJsonConfig();
-config.setSerializerFeatures(SerializerFeature.WriteEnumUsingToString);
+config.
+
+setSerializerFeatures(SerializerFeature.WriteEnumUsingToString);
 ```
 
 ##### 局部处理方式
 
 ```java
-@JSONField(serialzeFeatures= SerializerFeature.WriteEnumUsingToString)
+
+@JSONField(serialzeFeatures = SerializerFeature.WriteEnumUsingToString)
 private UserStatus status;
 ```
 
