@@ -71,7 +71,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Component
-public class CustomTenantHandler implements TenantHandler {
+public class CustomTenantHandler implements TenantLineHandler {
 
     @Override
     public Expression getTenantId() {
