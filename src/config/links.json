@@ -2,51 +2,61 @@
     {
         "name": "D.Yang",
         "logo": "/images/link/dyang.png",
-        "url": "https://dyang.top/"
+        "url": "https://dyang.top/?form=mp"
     },
     {
         "name": "爱组搭",
         "logo": "/images/link/aizuda.png",
-        "url": "http://aizuda.com/?from=MybatisPlus"
+        "url": "http://aizuda.com/?from=mp"
     },
     {
         "name": "EasyES",
         "logo": "/images/link/esay-es.svg",
-        "url": "https://www.easy-es.cn/"
+        "url": "https://www.easy-es.cn/?form=mp"
     },
     {
         "name": "Layui-Vue",
         "logo": "/images/link/layui-vue.png",
-        "url": "http://www.layui-vue.com/"
+        "url": "http://www.layui-vue.com/?form=mp"
     },
     {
         "name": "JPom",
         "logo": "/images/link/jpom.svg",
-        "url": "https://jpom.top/"
+        "url": "https://jpom.top/?form=mp"
     },
     {
         "name": "SpringDoc",
         "logo": "/images/link/springdoc.webp",
-        "url": "https://springdoc.cn/"
+        "url": "https://springdoc.cn/?form=mp"
     },
     {
         "name": "Sa-Token",
         "logo": "/images/link/sa-token.png",
-        "url": "https://sa-token.cc/"
+        "url": "https://sa-token.cc/?form=mp"
     },
     {
         "name": "RuleGo",
         "logo": "/images/link/rulego.png",
-        "url": "https://rulego.cc/"
+        "url": "https://rulego.cc/?form=mp"
     },
     {
         "name": "NanCheung",
         "logo": "/images/link/nan-cheung.jpg",
-        "url": "https://blog.nancheung.com/"
+        "url": "https://blog.nancheung.com/?form=mp"
     },
     {
         "name": "ApiDocs",
         "logo": "/images/link/api-docs.png",
-        "url": "https://apidocs.cn/"
+        "url": "https://apidocs.cn/?form=mp"
+    },
+    {
+        "name": "BeanSearcher",
+        "logo": "/images/link/bean-searcher.png",
+        "url": "https://bs.zhxu.cn/?form=mp"
+    },
+    {
+        "name": "FlowLong",
+        "logo": "/images/link/flowlong.png",
+        "url": "https://doc.flowlong.com/?form=mp"
     }
 ]
