@@ -13,7 +13,7 @@ DataPermissionInterceptor 的工作原理与租户插件类似，它会在 SQL �
 ## 插件地址和测试用例
 
 - **插件地址**：[DataPermissionInterceptor](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/plugins/inner/DataPermissionInterceptor.java)
-- **测试用例**：[DataPermissionInterceptorTest](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/test/java/com/baomidou/mybatisplus/extension/plugins/inner/DataPermissionInterceptorTest.java)
+- **测试用例**：[DataPermissionInterceptorTest](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/test/java/com/baomidou/mybatisplus/test/extension/plugins/inner/DataPermissionInterceptorTest.java)
 
 ## 核心代码
 以下是 SQL 片段组装的核心逻辑代码：
