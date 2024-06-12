@@ -50,6 +50,17 @@ public interface TenantLineHandler {
     default boolean ignoreTable(String tableName) {
         return false;
     }
+
+    /**
+     * 忽略插入租户字段逻辑
+     *
+     * @param columns        插入字段
+     * @param tenantIdColumn 租户 ID 字段
+     * @return
+     */
+    default boolean ignoreInsert(List<Column> columns, String tenantIdColumn) {
+        return columns.stream().map(Column::getColumnName).anyMatch(i -> i.equalsIgnoreCase(tenantIdColumn));
+    }
 }
 ```
 
@@ -60,16 +71,6 @@ public interface TenantLineHandler {
 实现 `TenantLineHandler` 接口，创建一个租户处理器。在这个例子中，我们假设每个租户都有一个唯一的 `tenantId`，并且我们通过请求头来获取当前租户的 `tenantId`。
 
 ```java
-import com.baomidou.mybatisplus.core.parser.ISqlParser;
-import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.tenant.TenantHandler;
-import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.SqlCommandType;
-import org.springframework.stereotype.Component;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-
 @Component
 public class CustomTenantHandler implements TenantLineHandler {
 
@@ -77,8 +78,8 @@ public class CustomTenantHandler implements TenantLineHandler {
     public Expression getTenantId() {
         // 假设有一个租户上下文，能够从中获取当前用户的租户
          Long tenantId = TenantContextHolder.getCurrentTenantId();
-        // 返回租户ID的表达式
-        return tenantId;
+        // 返回租户ID的表达式，LongValue 是 JSQLParser 中表示 bigint 类型的 class
+        return new LongValue(tenantId);;
     }
 
     @Override
@@ -92,10 +93,6 @@ public class CustomTenantHandler implements TenantLineHandler {
         return false;
     }
 
-    @Override
-    public void setProperties(Properties properties) {
-        // 可以设置一些属性
-    }
 }
 ```
 
