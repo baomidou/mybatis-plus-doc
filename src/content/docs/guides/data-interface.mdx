@@ -1091,7 +1091,7 @@ DELETE FROM user WHERE id = 1
 **示例（deleteByMap）：**
 
 ```java
-// 假设有一个 columnMap，设置查询条件为 age > 30，删除满足条件的用户
+// 假设有一个 columnMap，设置查询条件为 age = 30，删除满足条件的用户
 Map<String, Object> columnMap = new HashMap<>();
 columnMap.put("age", 30);
 int rows = userMapper.deleteByMap(columnMap); // 调用 deleteByMap 方法
