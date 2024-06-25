@@ -2351,7 +2351,7 @@ queryWrapper.select("id", "name", "age");
 
 ```java
 LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-lambdaQueryWrapper.select("id", "name", "age");
+lambdaQueryWrapper.select(User::getId, User::getName, User::getAge);
 ```
 
 **使用 Predicate 过滤字段的示例**：
