@@ -1935,12 +1935,12 @@ SELECT * FROM user WHERE id = 1 OR name = '老王'
 // 普通 Wrapper
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.or(i -> i.and(j -> j.eq("name", "李白").eq("status", "alive"))
-                         .and(j -> j.eq("name", "杜甫").eq("status", "alive")));
+                         .or(j -> j.eq("name", "杜甫").eq("status", "alive")));
 
 // Lambda Wrapper
 LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.or(i -> i.and(j -> j.eq(User::getName, "李白").eq(User::getStatus, "alive"))
-                              .and(j -> j.eq(User::getName, "杜甫").eq(User::getStatus, "alive")));
+                              .or(j -> j.eq(User::getName, "杜甫").eq(User::getStatus, "alive")));
 ```
 
 **生成的 SQL**
