@@ -2662,6 +2662,18 @@ lambdaUpdateWrapper.set(User::getName, "李四");
 :::
 
 
+## 使用 TypeHandler
+
+> 在 `wrapper` 中使用 `typeHandler` 需要特殊处理利用 `formatSqlMaybeWithParam` 方法
+
+```java
+// 查询
+queryWrapper.apply("type={0,typeHandler="+ MyTypeHandler.class.getCanonicalName()+ "}", "待处理字符串");
+
+// 更新
+updateWrapper.setSql("type={0,javaType=string,jdbcType=VARCHAR,typeHandler=xxx.xxx.MyTypeHandler}", "待处理字符串");
+```
+
 
 ## 使用提示
 

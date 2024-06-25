@@ -7,6 +7,13 @@
         "link": "https://doc.flowlong.com/?from=mp"
     },
     {
+        "title": "AVUE-DATA",
+        "subtitle": "avue-data 数据大屏",
+        "description": "VUE 专业高效的数据大屏",
+        "logo": "/images/sponsors/avue.png",
+        "link": "https://data.avuejs.com/?from=mp"
+    },
+    {
         "title": "Mall4J",
         "subtitle": "Java 开源商城系统",
         "description": "专业高效商城系统，百万开发者的选择",

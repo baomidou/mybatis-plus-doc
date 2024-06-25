@@ -26,7 +26,7 @@
   }
 
   function selectSponsors() {
-    currentSponsors = getRandomElements(sponsors, 3);
+    currentSponsors = getRandomElements(sponsors, 4);
   }
 
   const opacity = tweened(1, {
@@ -60,7 +60,7 @@
           style="opacity: {$opacity}"
         >
           <figure
-            class="border rounded-lg p-3 dark:bg-slate-800 dark:highlight-white/5"
+            class="border rounded-lg p-2 dark:bg-slate-800 dark:highlight-white/5"
           >
             <figcaption class="flex items-center space-x-4">
               <img
@@ -83,7 +83,7 @@
         </a>
       {/each}
       <div class="w-full block flex justify-between text-[11px]">
-        <span>广告采取随机轮播3个方式显示</span>
+        <span>广告采取随机轮播方式显示</span>
         <a
           class="text-current no-underline hover:no-underline text-red-500"
           href="/resources/support/#成为赞助商"
