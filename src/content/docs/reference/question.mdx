@@ -706,3 +706,9 @@ MyBatis Plus 不支持复合主键并强制使用唯一的 ID，这是出于以�
 
   示例: java -Djava.security.egd=file:/dev/urandom -jar xxxx.jar
 </Accordion>
+
+
+<Accordion client:load title={'3.5.7+ 版本 Db.saveBatch 返回值一直为 false'}>
+- 原因：驱动配置不兼容
+> 解决方案：驱动连接去掉 `rewriteBatchedStatements=true` 配置
+</Accordion>
