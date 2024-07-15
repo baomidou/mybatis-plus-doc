@@ -416,7 +416,7 @@ public class User {
 }
 ```
 
-在这个例子中，`@TableField(updateStrategy = FieldStrategy.IGNORED)` 注解告诉 MyBatis-Plus，在更新用户信息时，总是将 nickname 字段包含在 UPDATE 语句的 SET 子句中，忽略其值的检查。
+在这个例子中，`@TableField(updateStrategy = FieldStrategy.ALWAYS)` 注解告诉 MyBatis-Plus，在更新用户信息时，总是将 nickname 字段包含在 UPDATE 语句的 SET 子句中，忽略其值的检查。
 
 如果我们执行以下更新操作：
 
