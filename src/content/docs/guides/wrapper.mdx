@@ -2586,7 +2586,7 @@ setDecrBy(boolean condition, SFunction<T, ?> column, Number val)
 
 ```java
 UpdateWrapper<Product> updateWrapper = new UpdateWrapper<>();
-updateWrapper.setDecrBy(Product::getNum, 1);
+updateWrapper.setDecrBy("num", 1);
 ```
 
 **Lambda Wrapper (`LambdaUpdateWrapper`)**：
@@ -2635,7 +2635,7 @@ lambda();
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 LambdaQueryWrapper<User> lambdaQueryWrapper = queryWrapper.lambda();
 // 使用 Lambda 表达式构建查询条件
-lambdaQueryWrapper.eq(User::getName, "张三");
+lambdaQueryWrapper.eq("name", "张三");
 ```
 
 **从 UpdateWrapper 获取 LambdaUpdateWrapper**：
