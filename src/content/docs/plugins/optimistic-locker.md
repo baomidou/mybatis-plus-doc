@@ -70,7 +70,8 @@ public class YourEntity {
 - 支持的数据类型包括：`int`, `Integer`, `long`, `Long`, `Date`, `Timestamp`, `LocalDateTime`。
 - 对于整数类型，`newVersion` 是 `oldVersion + 1`。
 - `newVersion` 会自动回写到实体对象中。
-- 仅支持 `updateById(id)` 和 `update(entity, wrapper)` 方法。
+- 支持内置的 `updateById(entity)` 和 `update(entity, wrapper)`, `saveOrUpdate(entity)`, `insertOrUpdate(entity) (version >=3.5.7)` 方法。
+- 自定义方法更新时如果满足内置参数的参数条件方式也会执行乐观锁逻辑，例如自定义`myUpate(entity)` 这个和 `updateById(entity)` 是等价的，会提取参数进行乐观锁填充，但更新实现需要自行处理。
 - 在 `update(entity, wrapper)` 方法中，`wrapper` 不能复用。
 
 ## 示例
