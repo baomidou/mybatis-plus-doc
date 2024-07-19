@@ -644,7 +644,7 @@ SELECT * FROM user WHERE name LIKE '%王%'
 :::note[注意事项]
 
 - `like` 方法适用于字符串类型的字段，用于模糊匹配。
-- 默认情况下，`like` 方法会在搜索值前后添加 `%`，实现全模糊匹配。如果需要左模糊或右模糊匹配，可以使用 `likeLeft` 或 `likeRight` 方法。
+- 默认情况下，`like` 方法会在搜索值前后添加 `%`，实现全模糊匹配。如果需要左模糊或右模糊匹配，可以使用 `likeRight` 或 `likeLeft` 方法。
 - 在使用 `like` 方法时，确保 `val` 参数的类型是字符串，以避免类型转换错误。
 - 如果需要根据某些条件动态添加 LIKE 条件，可以使用带有 `condition` 参数的重载方法。
 
@@ -703,7 +703,7 @@ SELECT * FROM user WHERE name NOT LIKE '%王%'
 :::note[注意事项]
 
 - `notLike` 方法适用于字符串类型的字段，用于排除特定的模糊匹配。
-- 默认情况下，`notLike` 方法会在搜索值前后添加 `%`，实现全模糊排除。如果需要排除左模糊或排除右模糊匹配，可以使用 `notLikeLeft` 或 `notLikeRight` 方法。
+- 默认情况下，`notLike` 方法会在搜索值前后添加 `%`，实现全模糊排除。如果需要排除左模糊或排除右模糊匹配，可以使用 `notLikeRight` 或 `notLikeLeft` 方法。
 - 在使用 `notLike` 方法时，确保 `val` 参数的类型是字符串，以避免类型转换错误。
 - 如果需要根据某些条件动态添加 NOT LIKE 条件，可以使用带有 `condition` 参数的重载方法。
 
@@ -711,7 +711,7 @@ SELECT * FROM user WHERE name NOT LIKE '%王%'
 
 ### likeLeft
 
-`likeLeft` 方法是 MyBatis-Plus 中用于构建模糊查询条件的基本方法之一，它用于设置单个字段的左模糊匹配条件。
+`likeLeft` 方法是 MyBatis-Plus 中用于构建模糊查询条件的基本方法之一，它用于设置单个字段的右模糊匹配条件。
 
 #### 使用范围
 
@@ -723,18 +723,18 @@ SELECT * FROM user WHERE name NOT LIKE '%王%'
 #### 方法签名
 
 ```java
-// 设置指定字段的左模糊匹配条件
+// 设置指定字段的右模糊匹配条件
 likeLeft(R column, Object val)
 
-// 根据条件设置指定字段的左模糊匹配条件
+// 根据条件设置指定字段的右模糊匹配条件
 likeLeft(boolean condition, R column, Object val)
 ```
 
 #### 参数说明
 
 - `column`：数据库字段名或使用 `Lambda` 表达式的字段名。
-- `val`：与字段名对应的值，表示左模糊匹配条件中的搜索值。
-- `condition`：一个布尔值，用于控制是否应用这个左模糊匹配条件。
+- `val`：与字段名对应的值，表示右模糊匹配条件中的搜索值。
+- `condition`：一个布尔值，用于控制是否应用这个右模糊匹配条件。
 
 #### 示例
 
@@ -761,10 +761,10 @@ SELECT * FROM user WHERE name LIKE '%王'
 
 :::note[注意事项]
 
-- `likeLeft` 方法适用于字符串类型的字段，用于左模糊匹配，即匹配以指定字符串开头的记录。
-- 默认情况下，`likeLeft` 方法会在搜索值前添加 `%`，实现左模糊匹配。如果需要全模糊或右模糊匹配，可以使用 `like` 或 `likeRight` 方法。
+- `likeLeft` 方法适用于字符串类型的字段，用于右模糊匹配，即匹配以指定字符串开头的记录。
+- 默认情况下，`likeLeft` 方法会在搜索值前添加 `%`，实现右模糊匹配。如果需要全模糊或左模糊匹配，可以使用 `like` 或 `likeRight` 方法。
 - 在使用 `likeLeft` 方法时，确保 `val` 参数的类型是字符串，以避免类型转换错误。
-- 如果需要根据某些条件动态添加左模糊匹配条件，可以使用带有 `condition` 参数的重载方法。
+- 如果需要根据某些条件动态添加右模糊匹配条件，可以使用带有 `condition` 参数的重载方法。
 
 :::
 
@@ -772,7 +772,7 @@ SELECT * FROM user WHERE name LIKE '%王'
 
 ### likeRight
 
-`likeRight` 方法是 MyBatis-Plus 中用于构建模糊查询条件的基本方法之一，它用于设置单个字段的右模糊匹配条件。
+`likeRight` 方法是 MyBatis-Plus 中用于构建模糊查询条件的基本方法之一，它用于设置单个字段的左模糊匹配条件。
 
 #### 使用范围
 
@@ -784,18 +784,18 @@ SELECT * FROM user WHERE name LIKE '%王'
 #### 方法签名
 
 ```java
-// 设置指定字段的右模糊匹配条件
+// 设置指定字段的左模糊匹配条件
 likeRight(R column, Object val)
 
-// 根据条件设置指定字段的右模糊匹配条件
+// 根据条件设置指定字段的左模糊匹配条件
 likeRight(boolean condition, R column, Object val)
 ```
 
 #### 参数说明
 
 - `column`：数据库字段名或使用 `Lambda` 表达式的字段名。
-- `val`：与字段名对应的值，表示右模糊匹配条件中的搜索值。
-- `condition`：一个布尔值，用于控制是否应用这个右模糊匹配条件。
+- `val`：与字段名对应的值，表示左模糊匹配条件中的搜索值。
+- `condition`：一个布尔值，用于控制是否应用这个左模糊匹配条件。
 
 #### 示例
 
@@ -822,16 +822,16 @@ SELECT * FROM user WHERE name LIKE '王%'
 
 :::note[注意事项]
 
-- `likeRight` 方法适用于字符串类型的字段，用于右模糊匹配，即匹配以指定字符串结尾的记录。
-- 默认情况下，`likeRight` 方法会在搜索值后添加 `%`，实现右模糊匹配。如果需要全模糊或左模糊匹配，可以使用 `like` 或 `likeLeft` 方法。
+- `likeRight` 方法适用于字符串类型的字段，用于左模糊匹配，即匹配以指定字符串结尾的记录。
+- 默认情况下，`likeRight` 方法会在搜索值后添加 `%`，实现左模糊匹配。如果需要全模糊或右模糊匹配，可以使用 `like` 或 `likeLeft` 方法。
 - 在使用 `likeRight` 方法时，确保 `val` 参数的类型是字符串，以避免类型转换错误。
-- 如果需要根据某些条件动态添加右模糊匹配条件，可以使用带有 `condition` 参数的重载方法。
+- 如果需要根据某些条件动态添加左模糊匹配条件，可以使用带有 `condition` 参数的重载方法。
 
 :::
 
 ### notLikeLeft
 
-`notLikeLeft` 方法是 MyBatis-Plus 中用于构建模糊查询条件的另一个基本方法，它用于设置单个字段的非左模糊匹配条件。
+`notLikeLeft` 方法是 MyBatis-Plus 中用于构建模糊查询条件的另一个基本方法，它用于设置单个字段的非右模糊匹配条件。
 
 #### 使用范围
 
@@ -843,18 +843,18 @@ SELECT * FROM user WHERE name LIKE '王%'
 #### 方法签名
 
 ```java
-// 设置指定字段的非左模糊匹配条件
+// 设置指定字段的非右模糊匹配条件
 notLikeLeft(R column, Object val)
 
-// 根据条件设置指定字段的非左模糊匹配条件
+// 根据条件设置指定字段的非右模糊匹配条件
 notLikeLeft(boolean condition, R column, Object val)
 ```
 
 #### 参数说明
 
 - `column`：数据库字段名或使用 `Lambda` 表达式的字段名。
-- `val`：与字段名对应的值，表示非左模糊匹配条件中的搜索值。
-- `condition`：一个布尔值，用于控制是否应用这个非左模糊匹配条件。
+- `val`：与字段名对应的值，表示非右模糊匹配条件中的搜索值。
+- `condition`：一个布尔值，用于控制是否应用这个非右模糊匹配条件。
 
 #### 示例
 
@@ -882,15 +882,15 @@ SELECT * FROM user WHERE name NOT LIKE '%王'
 :::note[注意事项]
 
 - `notLikeLeft` 方法适用于字符串类型的字段，用于排除以指定字符串开头的记录。
-- 默认情况下，`notLikeLeft` 方法会在搜索值前添加 `%`，实现非左模糊匹配。如果需要排除全模糊或右模糊匹配，可以使用 `notLike` 或 `notLikeRight` 方法。
+- 默认情况下，`notLikeLeft` 方法会在搜索值前添加 `%`，实现非右模糊匹配。如果需要排除全模糊或左模糊匹配，可以使用 `notLike` 或 `notLikeRight` 方法。
 - 在使用 `notLikeLeft` 方法时，确保 `val` 参数的类型是字符串，以避免类型转换错误。
-- 如果需要根据某些条件动态添加非左模糊匹配条件，可以使用带有 `condition` 参数的重载方法。
+- 如果需要根据某些条件动态添加非右模糊匹配条件，可以使用带有 `condition` 参数的重载方法。
 
 :::
 
 ### notLikeRight
 
-`notLikeRight` 方法是 MyBatis-Plus 中用于构建模糊查询条件的另一个基本方法，它用于设置单个字段的非右模糊匹配条件。
+`notLikeRight` 方法是 MyBatis-Plus 中用于构建模糊查询条件的另一个基本方法，它用于设置单个字段的非左模糊匹配条件。
 
 #### 使用范围
 
@@ -902,18 +902,18 @@ SELECT * FROM user WHERE name NOT LIKE '%王'
 #### 方法签名
 
 ```java
-// 设置指定字段的非右模糊匹配条件
+// 设置指定字段的非左模糊匹配条件
 notLikeRight(R column, Object val)
 
-// 根据条件设置指定字段的非右模糊匹配条件
+// 根据条件设置指定字段的非左模糊匹配条件
 notLikeRight(boolean condition, R column, Object val)
 ```
 
 #### 参数说明
 
 - `column`：数据库字段名或使用 `Lambda` 表达式的字段名。
-- `val`：与字段名对应的值，表示非右模糊匹配条件中的搜索值。
-- `condition`：一个布尔值，用于控制是否应用这个非右模糊匹配条件。
+- `val`：与字段名对应的值，表示非左模糊匹配条件中的搜索值。
+- `condition`：一个布尔值，用于控制是否应用这个非左模糊匹配条件。
 
 #### 示例
 
@@ -941,9 +941,9 @@ SELECT * FROM user WHERE name NOT LIKE '王%'
 :::note[注意事项]
 
 - `notLikeRight` 方法适用于字符串类型的字段，用于排除以指定字符串结尾的记录。
-- 默认情况下，`notLikeRight` 方法会在搜索值后添加 `%`，实现非右模糊匹配。如果需要排除全模糊或左模糊匹配，可以使用 `notLike` 或 `notLikeLeft` 方法。
+- 默认情况下，`notLikeRight` 方法会在搜索值后添加 `%`，实现非左模糊匹配。如果需要排除全模糊或右模糊匹配，可以使用 `notLike` 或 `notLikeLeft` 方法。
 - 在使用 `notLikeRight` 方法时，确保 `val` 参数的类型是字符串，以避免类型转换错误。
-- 如果需要根据某些条件动态添加非右模糊匹配条件，可以使用带有 `condition` 参数的重载方法。
+- 如果需要根据某些条件动态添加非左模糊匹配条件，可以使用带有 `condition` 参数的重载方法。
 
 :::
 
