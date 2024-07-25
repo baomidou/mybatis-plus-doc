@@ -14,7 +14,7 @@ import Ads from "@/components/Ads.astro";
   <Ads />
 </div>
 
-<script lang="js">
+<script lang="js" is:inline>
   document.addEventListener("DOMContentLoaded", function () {
     const toc = document.querySelector(".toc");
     const ad = document.querySelector(".ad");
@@ -51,8 +51,6 @@ import Ads from "@/components/Ads.astro";
     observer.observe(ad, { childList: true, subtree: true });
     // 检测窗口变化时重新布局
     window.addEventListener("resize", adjustLayout);
-    // 初始化布局
-    adjustLayout();
   });
 </script>
 
