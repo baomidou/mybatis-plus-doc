@@ -51,6 +51,7 @@ import Ads from "@/components/Ads.astro";
     observer.observe(ad, { childList: true, subtree: true });
     // 检测窗口变化时重新布局
     window.addEventListener("resize", adjustLayout);
+    adjustLayout();
   });
 </script>
 
