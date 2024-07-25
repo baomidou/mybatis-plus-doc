@@ -31,8 +31,23 @@ import Ads from "@/components/Ads.astro";
       }
     }
 
+    let adHeight = ad.offsetHeight;
+    let heightCheckInterval;
+    function startHeightCheck() {
+      clearInterval(heightCheckInterval);
+      heightCheckInterval = setInterval(() => {
+        const newAdHeight = ad.offsetHeight;
+        if (newAdHeight !== adHeight) {
+          adHeight = newAdHeight;
+        } else {
+          clearInterval(heightCheckInterval);
+          adjustLayout();
+        }
+      }, 100); // 每100毫秒检查一次高度
+    }
+
     // 监测内容变化时重新布局
-    const observer = new MutationObserver(adjustLayout);
+    const observer = new MutationObserver(startHeightCheck);
     observer.observe(ad, { childList: true, subtree: true });
     // 检测窗口变化时重新布局
     window.addEventListener("resize", adjustLayout);
