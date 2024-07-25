@@ -1,11 +1,96 @@
 ---
 import type { Props } from "@astrojs/starlight/props";
-import Default from "@astrojs/starlight/components/PageSidebar.astro";
+import MobileTableOfContents from "virtual:starlight/components/MobileTableOfContents";
+import TableOfContents from "virtual:starlight/components/TableOfContents";
 import Ads from "@/components/Ads.astro";
 ---
 
-<Default {...Astro.props}>
-  <slot />
-</Default>
+<div class="toc">
+  {
+    Astro.props.toc && (
+      <>
+        <div class="lg:sl-hidden">
+          <MobileTableOfContents {...Astro.props} />
+        </div>
+        <div class="right-sidebar-panel sl-hidden lg:sl-block">
+          <div class="sl-container">
+            <TableOfContents {...Astro.props} />
+          </div>
+        </div>
+      </>
+    )
+  }
+</div>
 
-<Ads />
+<div class="ad">
+  <Ads />
+</div>
+
+<script lang="js">
+  document.addEventListener("DOMContentLoaded", function () {
+    const toc = document.querySelector(".toc");
+    const ad = document.querySelector(".ad");
+
+    function adjustLayout() {
+      const windowHeight = window.innerHeight;
+      const adHeight = ad.offsetHeight;
+
+      toc.style.maxHeight = `${windowHeight - adHeight - 64}px`;
+      if (toc.offsetHeight + adHeight > windowHeight) {
+        ad.classList.add("fixed-ad");
+      } else {
+        ad.classList.remove("fixed-ad");
+      }
+    }
+
+    window.addEventListener("resize", adjustLayout);
+    adjustLayout();
+  });
+</script>
+
+<style>
+  .toc {
+    overflow-y: auto; /* 允许 TOC 内部滚动 */
+  }
+  .fixed-ad {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .right-sidebar-panel {
+    padding: 1rem var(--sl-sidebar-pad-x);
+  }
+  .sl-container {
+    width: calc(var(--sl-sidebar-width) - 2 * var(--sl-sidebar-pad-x));
+  }
+  .right-sidebar-panel :global(h2) {
+    color: var(--sl-color-white);
+    font-size: var(--sl-text-h5);
+    font-weight: 600;
+    line-height: var(--sl-line-height-headings);
+    margin-bottom: 0.5rem;
+  }
+  .right-sidebar-panel :global(:where(a)) {
+    display: block;
+    font-size: var(--sl-text-xs);
+    text-decoration: none;
+    color: var(--sl-color-gray-3);
+    overflow-wrap: anywhere;
+  }
+  .right-sidebar-panel :global(:where(a):hover) {
+    color: var(--sl-color-white);
+  }
+  @media (min-width: 72rem) {
+    .sl-container {
+      max-width: calc(
+        (
+          (
+              100vw - var(--sl-sidebar-width) - 2 * var(--sl-content-pad-x) - 2 *
+                var(--sl-sidebar-pad-x)
+            ) * 0.25 /* MAGIC NUMBER 🥲 */
+        )
+      );
+    }
+  }
+</style>
