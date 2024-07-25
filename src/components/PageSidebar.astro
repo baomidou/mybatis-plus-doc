@@ -31,7 +31,12 @@ import Ads from "@/components/Ads.astro";
       }
     }
 
+    // 监测内容变化时重新布局
+    const observer = new MutationObserver(adjustLayout);
+    observer.observe(ad, { childList: true, subtree: true });
+    // 检测窗口变化时重新布局
     window.addEventListener("resize", adjustLayout);
+    // 初始化布局
     adjustLayout();
   });
 </script>
