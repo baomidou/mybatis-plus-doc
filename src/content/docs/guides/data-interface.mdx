@@ -302,7 +302,7 @@ DELETE FROM user WHERE id = 1
 **示例（removeByMap）：**
 
 ```java
-// 假设有一个 columnMap，设置删除条件为 age > 30
+// 假设有一个 columnMap，设置删除条件为 age = 30
 Map<String, Object> columnMap = new HashMap<>();
 columnMap.put("age", 30);
 boolean result = userService.removeByMap(columnMap); // 调用 removeByMap 方法
@@ -316,7 +316,7 @@ if (result) {
 生成的 SQL:
 
 ```sql
-DELETE FROM user WHERE age > 30
+DELETE FROM user WHERE age = 30
 ```
 
 **示例（removeByIds）：**
