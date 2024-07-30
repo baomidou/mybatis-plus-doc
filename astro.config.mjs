@@ -63,6 +63,10 @@ export default defineConfig({
           lang: "zh-CN",
         }
       },
+      editLink: {
+        baseUrl: 'https://github.com/baomidou/mybatis-plus-doc/edit/master',
+      },
+      lastUpdated: true,
       social: {
         github: "https://github.com/baomidou/mybatis-plus",
       },
