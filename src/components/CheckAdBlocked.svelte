@@ -13,9 +13,10 @@
     }
 
     // check ad block init
-    if (window._AdBlockInit === undefined) {
-      adBlockDetected = true;
-    }
+    // if (window._AdBlockInit === undefined) {
+    //   adBlockDetected = true;
+    //   return;
+    // }
 
     // check script banned
     checkAdScriptBanned('https://cdn.wwads.cn/js/makemoney.js');
