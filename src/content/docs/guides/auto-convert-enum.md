@@ -120,9 +120,7 @@ public Jackson2ObjectMapperBuilderCustomizer customizer() {
 
 ```java
 ObjectMapper objectMapper = new ObjectMapper();
-objectMapper.
-
-configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+objectMapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
 ```
 
 在枚举中重写 toString 方法，以上两种方式任选其一。
@@ -154,9 +152,7 @@ public enum GradeEnum {
 
 ```java
 FastJsonConfig config = new FastJsonConfig();
-config.
-
-setSerializerFeatures(SerializerFeature.WriteEnumUsingToString);
+config.setSerializerFeatures(SerializerFeature.WriteEnumUsingToString);
 ```
 
 ##### 局部处理方式
