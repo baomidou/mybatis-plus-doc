@@ -2393,15 +2393,18 @@ SELECT testField1, testField2 FROM user
 
 ```java
 // 设置更新语句中的 SET 字段
-set(String column, Object val)
-set(boolean condition, String column, Object val)
+set(R column, Object val)
+set(R column, Object val, String mapping)
+set(boolean condition, R column, Object val)
+set(boolean condition, R column, Object val, String mapping)
 ```
 
 #### 参数说明
 
-- `column`：一个字符串，表示要更新的字段名。
-- `val`：一个对象，表示要更新到字段的新值。
+- `column`：数据库字段名或使用 `Lambda` 表达式的字段名。
 - `condition`：一个布尔值，用于控制是否应用这个 SET 字段。
+- `val`：一个对象，表示要更新到字段的新值。
+- `mapping`：额外指定,例如: `javaType=int,jdbcType=NUMERIC,typeHandler=xxx.xxx.MyTypeHandler`
 
 #### 示例
 
@@ -2463,34 +2466,22 @@ UPDATE user SET name = ''
 
 ```java
 // 设置更新语句中的 SET 部分 SQL
-setSql(String sql)
+setSql(String setSql, Object... params)
+setSql(boolean condition, String setSql, Object... params)
 ```
 
 #### 参数说明
 
-- `sql`：一个字符串，包含要作为 SET 子句的 SQL 片段。
+- `setSql`：一个字符串，包含要作为 SET 子句的 SQL 片段。
+- `condition`：一个布尔值，用于控制是否应用这个 SET 字段。
+- `params`：一个可变参数列表，包含 SQL 片段中占位符的替换值。
 
 #### 示例
 
-**普通 Wrapper (`UpdateWrapper`)**：
-
 ```java
-UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-updateWrapper.setSql("name = '老李头'");
-```
-
-**Lambda Wrapper (`LambdaUpdateWrapper`)**：
-
-```java
-LambdaUpdateWrapper<User> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
-lambdaUpdateWrapper.setSql("name = '老李头'");
-```
-
-**生成的 SQL**
-
-```sql
--- 普通 Wrapper 和 Lambda Wrapper 生成的 SQL 相同
-UPDATE user SET name = '老李头'
+setSql("name = '老李头'")
+setSql("dateColumn={0}", LocalDate.now())
+setSql("type={0,javaType=int,jdbcType=NUMERIC,typeHandler=xxx.xxx.MyTypeHandler}", "待处理字符串");
 ```
 
 :::tip[注意事项]
