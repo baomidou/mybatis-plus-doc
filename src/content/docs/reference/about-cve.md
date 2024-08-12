@@ -45,10 +45,10 @@ MyBatis-Plus 在生成相关的 SQL 时底层能力同样来自 MyBatis，所以
 
 ```java
 // 开启自动检查 SQL 注入 (3.5.3.2+ 版本支持
-Wrappers.query().checkSqlInjection().orderByDesc("任意前端传入字段")
+Wrappers.query().checkSqlInjection().orderByDesc("任意前端传入字段，我们推荐最好是白名单处理，因为可能存在检查覆盖不全情况")
 ​
 // 手动校验方式 (3.4.3.2+ 版本支持)
-SqlInjectionUtils.check("任意前端传入字段")
+SqlInjectionUtils.check("任意前端传入字段，我们推荐最好是白名单处理，因为可能存在检查覆盖不全情况")
 ```
 
 :::danger[注意]
