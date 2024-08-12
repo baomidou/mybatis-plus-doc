@@ -66,7 +66,7 @@ MyBatis-Plus 提供了自动和手动两种方式来检查 SQL 注入风险。
 ```java
 Wrappers.query()
 // 开启自动检查 SQL 注入
-.checkSqlInjection().orderByDesc("任意前端传入字段")
+.checkSqlInjection().orderByDesc("任意前端传入字段，我们推荐最好是白名单处理，因为可能存在检查覆盖不全情况")
 ```
 
 ### 手动校验
@@ -75,7 +75,10 @@ Wrappers.query()
 
 ```java
 // 手动校验前端传入的字段是否存在 SQL 注入风险
-SqlInjectionUtils.check("任意前端传入字段")
+SqlInjectionUtils.check("任意前端传入字段，我们推荐最好是白名单处理，因为可能存在检查覆盖不全情况")
 ```
+:::danger[注意]
+最好的预防方式仍旧是不允许**任何SQL片段**由前端传到后台，我们强烈建议不要开放给前端太多的动态 SQL，这样最安全。
+:::
 
 通过上述措施，MyBatis-Plus 帮助你构建了一个更加安全的数据库环境，保护了敏感数据不被泄露。
