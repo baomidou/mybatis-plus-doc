@@ -75,10 +75,12 @@ Wrappers.<H2User>lambdaQuery()
 
 以下是一个自定义的 JSONB 类型处理器的示例：
 
+> 示例工程：👉 [mybatis-plus-sample-jsonb](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-jsonb)
+
 ### 创建自定义类型处理器
 
 ```java
-import org.apache.ibatis.type.BaseTypeHandler;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;
@@ -91,7 +93,7 @@ import java.sql.SQLException;
 
 @MappedTypes({Object.class})
 @MappedJdbcTypes(JdbcType.VARCHAR)
-public class JsonbTypeHandler<T> extends BaseTypeHandler<T> {
+public class JsonbTypeHandler<T> extends JacksonTypeHandler<T> {
 
     private final Class<T> clazz;
 
@@ -102,34 +104,17 @@ public class JsonbTypeHandler<T> extends BaseTypeHandler<T> {
         this.clazz = clazz;
     }
 
+    // 自3.5.6版本开始支持泛型,需要加上此构造.
+    public JsonbTypeHandler(Class<?> type, Field field) {
+        super(type, field);
+    }
+
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException {
         PGobject jsonbObject = new PGobject();
         jsonbObject.setType("jsonb");
-        jsonbObject.setValue(JsonUtils.toJsonString(parameter)); // 假设 JsonUtils 是一个用于 JSON 序列化的工具类
+        jsonObject.setValue(toJson(parameter));
         ps.setObject(i, jsonbObject);
-    }
-
-    @Override
-    public T getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        return parseJsonb(rs.getString(columnName));
-    }
-
-    @Override
-    public T getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        return parseJsonb(rs.getString(columnIndex));
-    }
-
-    @Override
-    public T getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        return parseJsonb(cs.getString(columnIndex));
-    }
-
-    private T parseJsonb(String jsonbString) {
-        if (jsonbString != null) {
-            return JsonUtils.parseObject(jsonbString, clazz); // 假设 JsonUtils 是一个用于 JSON 反序列化的工具类
-        }
-        return null;
     }
 }
 ```
