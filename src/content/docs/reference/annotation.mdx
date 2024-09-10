@@ -861,28 +861,6 @@ public class User {
 
 使用@TableLogic注解可以实现数据的逻辑删除，有助于维护数据的完整性和可追溯性，同时避免了物理删除操作可能带来的数据丢失风险。开发者无需手动编写逻辑删除的代码，MyBatis-Plus 会自动处理这一过程。
 
-## @SqlParser <Badge text="Deprecated" type="error"/>
-
-该注解已被标记为过时（Deprecated），建议查看[@InterceptorIgnore](#interceptorignore)注解以获取更多信息。@SqlParser注解原本用于标记方法，指示在执行该方法时，MyBatis-Plus 的 SQL 解析器（用于处理如分页、逻辑删除等功能）应该被忽略，从而允许原始的 SQL 语句不被修改地执行。
-
-```java
-@Service
-public class UserService {
-    @Autowired
-    private UserMapper userMapper;
-
-    @SqlParser // 忽略 SQL 解析器，执行原始 SQL
-    public List<User> selectUsers() {
-        return userMapper.selectList(null);
-    }
-}
-```
-
-在上面的示例中，@SqlParser注解被应用于selectUsers方法，这意味着在执行该方法时，MyBatis-Plus 不会对生成的 SQL 语句进行任何额外的处理，例如添加分页信息或逻辑删除的判断。
-
-由于@SqlParser注解已被标记为过时，建议开发者使用@InterceptorIgnore注解来替代，以实现相同的功能。@InterceptorIgnore注解可以指定忽略哪些拦截器，从而更灵活地控制 SQL 语句的处理。
-
-**请注意**，使用过时的注解可能会导致未来的兼容性问题，因此建议查阅最新的 MyBatis-Plus 文档，了解当前推荐的最佳实践和替代方案。
 
 ## @KeySequence
 
@@ -912,23 +890,19 @@ public class User {
 该注解用于指定在执行 MyBatis-Plus 的某个方法时，是否忽略特定的拦截器。MyBatis-Plus 提供了多个拦截器，用于实现如分页、逻辑删除、多租户等功能。通过使用@InterceptorIgnore注解，开发者可以控制哪些拦截器在执行特定方法时应该被忽略。
 
 ```java
-@Service
-public class UserService {
-    @Autowired
-    private UserMapper userMapper;
+// @InterceptorIgnore(tenantLine = "1") // 忽略多租户拦截器
+public interface UserMapper extends BaseMapper<User> {
 
     @InterceptorIgnore(tenantLine = "1") // 忽略多租户拦截器
-    public List<User> selectUsers() {
-        return userMapper.selectList(null);
-    }
+    List<User> selectUsers();
 }
 ```
 
 在上面的示例中，@InterceptorIgnore注解被应用于selectUsers方法，并指定了tenantLine属性为"1"，这意味着在执行该方法时，多租户拦截器将被忽略。
 
-@InterceptorIgnore注解的value属性是一个字符串，可以包含多个以逗号分隔的拦截器名称。如果value的值为"1"、"yes"、"on"，则对应的拦截器将被忽略；如果value的值为"0"、"false"、"off"或为空，则拦截器将正常执行。
+注解也支持在类级别上使用，以便在整个类中忽略特定的拦截器。
 
-使用@InterceptorIgnore注解可以灵活地控制拦截器的行为，允许开发者在特定的业务场景下选择性地禁用某些拦截器，以满足特定的业务需求或性能优化。
+@InterceptorIgnore注解的value属性是一个字符串，可以包含多个以逗号分隔的拦截器名称。如果value的值为"1"、"yes"、"on"，则对应的拦截器将被忽略；如果value的值为"0"、"false"、"off"或为空，则拦截器将正常执行。
 
 插件使用方式详见[插件主体](/plugins)。
 
