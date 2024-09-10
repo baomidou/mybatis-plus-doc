@@ -900,7 +900,7 @@ public interface UserMapper extends BaseMapper<User> {
 
 在上面的示例中，@InterceptorIgnore注解被应用于selectUsers方法，并指定了tenantLine属性为"1"，这意味着在执行该方法时，多租户拦截器将被忽略。
 
-注解也支持在类级别上使用，以便在整个类中忽略特定的拦截器。
+注解也支持在`Mapper`级别上使用，以便整个`Mapper`下的`method`都忽略特定的拦截器。
 
 @InterceptorIgnore注解的value属性是一个字符串，可以包含多个以逗号分隔的拦截器名称。如果value的值为"1"、"yes"、"on"，则对应的拦截器将被忽略；如果value的值为"0"、"false"、"off"或为空，则拦截器将正常执行。
 
