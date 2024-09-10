@@ -887,7 +887,7 @@ public class User {
 
 ## @InterceptorIgnore
 
-该注解用于指定在执行 MyBatis-Plus 的某个方法时，是否忽略特定的拦截器。MyBatis-Plus 提供了多个拦截器，用于实现如分页、逻辑删除、多租户等功能。通过使用@InterceptorIgnore注解，开发者可以控制哪些拦截器在执行特定方法时应该被忽略。
+该注解用于指定`Mapper`的某个`method`(注解在`method`上)或者所有`method`(注解在`Mapper`上)在执行时是否忽略特定的插件(比如多租户)
 
 ```java
 // @InterceptorIgnore(tenantLine = "1") // 忽略多租户拦截器
@@ -898,11 +898,9 @@ public interface UserMapper extends BaseMapper<User> {
 }
 ```
 
-在上面的示例中，@InterceptorIgnore注解被应用于selectUsers方法，并指定了tenantLine属性为"1"，这意味着在执行该方法时，多租户拦截器将被忽略。
+在上面的示例中，在执行`selectUsers`方法时,多租户拦截器将被忽略
 
-注解也支持在`Mapper`级别上使用，以便整个`Mapper`下的`method`都忽略特定的拦截器。
-
-@InterceptorIgnore注解的value属性是一个字符串，可以包含多个以逗号分隔的拦截器名称。如果value的值为"1"、"yes"、"on"，则对应的拦截器将被忽略；如果value的值为"0"、"false"、"off"或为空，则拦截器将正常执行。
+MyBatis-Plus 提供的插件在注解里都有对应的属性,比如多租户插件为`tenantLine`属性,如果属性对应的值为"1"、"yes"、"on",则表示对应的插件将被忽略,如果属性对应的值为"0"、"false"、"off"或为空,则插件将正常执行。
 
 插件使用方式详见[插件主体](/plugins)。
 
