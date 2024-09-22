@@ -100,6 +100,26 @@
         "url": "https://aws.amazon.com/redshift/"
     },
     {
+        "name": "Derby",
+        "logo": "/images/db/Derby.png",
+        "url": "https://db.apache.org/derby/"
+    },
+    {
+        "name": "DuckDB",
+        "logo": "/images/db/DuckDB.png",
+        "url": "https://duckdb.org/"
+    },
+    {
+        "name": "Vastbase",
+        "logo": "/images/db/Vastbase.png",
+        "url": "https://www.vastdata.com.cn/"
+    },
+    {
+        "name": "GoldenDB",
+        "logo": "/images/db/GoldenDB.png",
+        "url": "https://www.goldendb.com/"
+    },
+    {
         "name": "达梦",
         "logo": "/images/db/dameng.svg",
         "url": "https://www.dameng.com/"
