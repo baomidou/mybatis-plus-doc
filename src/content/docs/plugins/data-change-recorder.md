@@ -4,11 +4,11 @@ sidebar:
   order: 6
 ---
 
-在数据库操作中，记录数据变动和控制操作的安全性是非常重要的。MyBatis-Plus 提供了一个数据变动记录插件 `DataChangeRecorderInnerInterceptor`，它不仅能够自动记录操作日志，还支持安全阈值控制，例如限制批量更新或插入的数量。
+在数据库操作中，记录数据变动和控制操作的安全性是非常重要的。MyBatis-Plus 提供了一个数据变动记录插件 `DataChangeRecorderInnerInterceptor`，它能够自动记录操作日志，还支持批量更新或删除的安全阈值控制。
 
 ## 插件简介
 
-`DataChangeRecorderInnerInterceptor` 是 MyBatis-Plus 提供的一个拦截器，它可以在执行数据库操作时自动记录数据变动，并且可以根据配置的安全阈值来控制操作，比如限制一次批量更新或插入的记录数不超过 1000 条。
+`DataChangeRecorderInnerInterceptor` 是 MyBatis-Plus 提供的一个拦截器，它可以在执行数据库操作时自动记录数据变动，并且可以根据配置的安全阈值来控制操作，比如限制一次批量更新或删除的记录数不超过 1000 条。
 
 为了更好地理解如何使用 `DataChangeRecorderInnerInterceptor`，你可以参考官方提供的测试用例：
 
@@ -35,21 +35,21 @@ public class MybatisPlusConfig {
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         DataChangeRecorderInnerInterceptor dataChangeRecorderInnerInterceptor = new DataChangeRecorderInnerInterceptor();
-        // 配置安全阈值，例如限制批量更新或插入的记录数不超过 1000 条
-        dataChangeRecorderInnerInterceptor.setBatchUpdateLimit(1000);
+        // 配置安全阈值，限制批量更新或删除的记录数不超过 1000 条
+        dataChangeRecorderInnerInterceptor.setBatchUpdateLimit(1000).openBatchUpdateLimitation();
         interceptor.addInnerInterceptor(dataChangeRecorderInnerInterceptor);
         return interceptor;
     }
 }
 ```
 
-在这个例子中，我们设置了批量操作的安全阈值为 1000 条记录。
+在这个例子中，我们设置了批量更新或删除的安全阈值为 1000 条记录。
 
 ### 使用插件
 
-配置好插件之后使用 MyBatis-Plus 提供的 CRUD 方法，插件会自动记录数据变动并执行安全控制：
+配置好插件之后，通过 MyBatis-Plus 执行操作，插件会自动记录数据变动并执行安全控制：
 
-当执行批量更新或插入操作时，如果操作的记录数超过了配置的安全阈值，插件会抛出异常。
+当执行批量更新或删除操作时，如果操作的记录数超过了配置的安全阈值，插件会抛出异常。
 
 ## 注意事项
 
