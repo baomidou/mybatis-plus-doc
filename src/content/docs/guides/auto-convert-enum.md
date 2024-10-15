@@ -90,7 +90,7 @@ public class MybatisPlusAutoConfiguration {
         return properties -> {
             GlobalConfig globalConfig = properties.getGlobalConfig();
             globalConfig.setBanner(false);
-            MybatisConfiguration configuration = new MybatisConfiguration();
+            MybatisPlusProperties.CoreConfiguration configuration = new MybatisPlusProperties.CoreConfiguration();
             configuration.setDefaultEnumTypeHandler(MyEnumTypeHandler.class);
             properties.setConfiguration(configuration);
         };
