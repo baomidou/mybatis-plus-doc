@@ -8,6 +8,10 @@ import SupportDb from '@/components/SupportDb.astro';
 
 MyBatis-Plus 的分页插件 `PaginationInnerInterceptor` 提供了强大的分页功能，支持多种数据库，使得分页查询变得简单高效。
 
+:::tip
+于 `v3.5.9` 起，`PaginationInnerInterceptor` 已分离出来。如需使用，则需单独引入 `mybatis-plus-jsqlparser` 依赖 ， 具体请查看 [安装](/getting-started/install) 一章。
+:::
+
 ## 支持的数据库
 
 `PaginationInnerInterceptor` 支持广泛的数据库，包括但不限于：
