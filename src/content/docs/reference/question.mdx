@@ -716,10 +716,20 @@ MyBatis Plus 不支持复合主键并强制使用唯一的 ID，这是出于以�
 
 <Accordion client:load title={'Page或List返回的结果集为null或者包含部分null元素'}>
 - 原因：mybatis默认情况下, 当返回行的所有列都是空时(含属性无法自动映射), 默认返回 null
-> 解决方案：配置return-instance-for-empty-row 为true
+> 解决方案：配置returnInstanceForEmptyRow 为true
 ```yaml
 mybatis-plus:
     configuration:
         return-instance-for-empty-row: true
+```
+</Accordion>
+
+<Accordion client:load title={'当返回值为Map或List<Map>时,null值对应的key没有添加至Map里'}>
+- 原因：mybatis默认情况下, 当返回 null 时,不会调用put方法
+> 解决方案：配置callSettersOnNulls 为true
+```yaml
+mybatis-plus:
+    configuration:
+        call-setters-on-nulls: true
 ```
 </Accordion>
