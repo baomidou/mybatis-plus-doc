@@ -6,85 +6,162 @@
   let session = store.session;
   const key = "adBlockNoticeClosed";
 
-  function checkAdBlocker() {
+  // 常见广告相关JS资源列表
+  const adJsResources = [
+    // 百度广告
+    'https://cpro.baidustatic.com/cpro/ui/c.js',
+    'https://cpro.baidustatic.com/cpro/ui/rt.js',
+    // Google广告
+    'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
+    'https://www.googletagservices.com/tag/js/gpt.js',
+    // 常见统计和广告服务
+    'https://s1.hdslb.com/bfs/seed/blive/blfe-link-shortassets/dist/component.statistics/log-reporter.js',
+    'https://img3.doubanio.com/dae/fundin/piwik.js',
+    'https://analytics.163.com/ntes.js',
+    'https://stat.zol.com.cn/adrs/ol.js',
+  ];
+
+  // 常见广告类名
+  const baitClasses = [
+    // wwads 相关
+    'wwads-cn',
+    'wwads-horizontal',
+    // 常见广告类名
+    'ad-unit',
+    'adsbox',
+    'adsbygoogle'
+  ];
+
+  // 方法1: 诱饵元素检测
+  function checkBaitElements() {
+    return new Promise((resolve) => {
+      const baits = [];
+      
+      // 创建诱饵元素
+      baitClasses.forEach((className, index) => {
+        const bait = document.createElement('span');
+        bait.setAttribute('class', className);
+        bait.setAttribute('data-bait', 'true');
+        bait.style.cssText = `position:fixed;top:-${index + 1}px;left:0;width:1px;height:1px;opacity:0;`;
+        document.body.appendChild(bait);
+        baits.push(bait);
+      });
+
+      // 延迟检查
+      setTimeout(() => {
+        const baitsToCheck = document.querySelectorAll('[data-bait="true"]');
+        let isBlocked = false;
+
+        // 检查诱饵是否被屏蔽
+        for (const bait of baitsToCheck) {
+          const style = window.getComputedStyle(bait);
+          if (style.display === 'none') {
+            isBlocked = true;
+            break;
+          }
+        }
+
+        // 清理诱饵元素
+        baitsToCheck.forEach(bait => {
+          if (bait.parentNode) {
+            bait.parentNode.removeChild(bait);
+          }
+        });
+
+        resolve(isBlocked);
+      }, 100);
+    });
+  }
+
+  // 方法2: JS资源检测
+  async function checkAdScripts() {
+    const resourcesToCheck = getRandomAdResources();
+    const results = await Promise.all(
+      resourcesToCheck.map(url => checkAdScript(url))
+    );
+    return results.every(result => !result);
+  }
+
+  // 方法3: wwads容器检测
+  function checkWwadsContainer() {
+    const adContainer = document.querySelector('.wwads-cn');
+    if (!adContainer) return false;
+
+    const style = window.getComputedStyle(adContainer);
+    
+    // 检查容器是否被隐藏
+    const isHidden = style.display === 'none' || !adContainer.offsetParent;
+    
+    // 检查容器高度是否异常
+    const height = adContainer.offsetHeight;
+    const isHeightAbnormal = height === 0 || height < 10; // 正常广告容器高度应该大于10px
+    
+    // 检查容器是否被折叠
+    const isCollapsed = style.visibility === 'collapse' || style.maxHeight === '0px';
+    
+    // 检查容器是否被缩小到不可见
+    const isScaledDown = style.transform.includes('scale(0)') || style.zoom === '0';
+    
+    // 检查容器是否被移出视口
+    const rect = adContainer.getBoundingClientRect();
+    const isOutOfView = rect.width === 0 || rect.height === 0;
+
+    return isHidden || isHeightAbnormal || isCollapsed || isScaledDown || isOutOfView;
+  }
+
+  // 方法4: AdBlockInit检测
+  function checkAdBlockInit() {
+    return typeof window._AdBlockInit === 'undefined';
+  }
+
+  // 辅助函数: 随机获取JS资源
+  function getRandomAdResources(count = 3) {
+    const shuffled = [...adJsResources].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  }
+
+  // 辅助函数: 检测单个JS资源
+  async function checkAdScript(url) {
+    try {
+      const response = await fetch(url, { 
+        method: 'HEAD',
+        mode: 'no-cors'
+      });
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  // 主检测函数
+  async function checkAdBlocker() {
     let adBlockNoticeClosed = session.get(key) ?? false;
     if (adBlockNoticeClosed) {
       return;
     }
 
-    // 方法1: 只检查 wwads 容器是否被隐藏
-    const adContainer = document.querySelector('.wwads-cn');
-    if (adContainer && (window.getComputedStyle(adContainer).display === 'none' || !adContainer.offsetParent)) {
+    // 按优先级顺序执行检测
+    const [baitBlocked, scriptsBlocked] = await Promise.all([
+      checkBaitElements(),
+      checkAdScripts()
+    ]);
+
+    if (baitBlocked || scriptsBlocked) {
       adBlockDetected = true;
       return;
     }
 
-    // 方法2: 只检查 AdBlockInit 相关变量
-    if (typeof window._AdBlockInit === 'undefined') {
+    // 检查 wwads 容器
+    if (checkWwadsContainer()) {
       adBlockDetected = true;
       return;
     }
 
-    // 方法3: 创建精简的诱饵元素检测
-    const baitClasses = [
-      // wwads 相关
-      'wwads-cn',
-      'wwads-horizontal',
-      // 常见广告类名（只保留最关键的几个）
-      'ad-unit',
-      'adsbox',
-      'adsbygoogle'
-    ];
-
-    // 创建诱饵 div，使用 span 而不是 div 来避免触发延迟加载
-    const baits = [];
-    
-    // 使用不同类名创建诱饵
-    baitClasses.forEach((className, index) => {
-      const bait = document.createElement('span'); // 使用 span 代替 div
-      bait.setAttribute('class', className);
-      bait.setAttribute('data-bait', 'true');
-      bait.style.cssText = `position:fixed;top:-${index + 1}px;left:0;width:1px;height:1px;opacity:0;`;
-      document.body.appendChild(bait);
-      baits.push(bait);
-    });
-
-    // 检查诱饵是否被屏蔽
-    setTimeout(() => {
-      // 只检查带有特殊标记的诱饵元素
-      const baitsToCheck = document.querySelectorAll('[data-bait="true"]');
-      for (const bait of baitsToCheck) {
-        const style = window.getComputedStyle(bait);
-        // 只检查 display，避免其他可能触发延迟加载的属性
-        if (style.display === 'none') {
-          adBlockDetected = true;
-          break;
-        }
-      }
-      // 只清理带有特殊标记的诱饵元素
-      baitsToCheck.forEach(bait => {
-        if (bait.parentNode) {
-          bait.parentNode.removeChild(bait);
-        }
-      });
-    }, 100);
-
-    // 方法4: 检测 wwads JS 是否被拦截
-    checkAdScriptBanned('https://wwads.cn/js/makemoney.js');
-    checkAdScriptBanned('https://cdn.wwads.cn/js/makemoney.js');
-  }
-  
-  function checkAdScriptBanned(scriptUrl) {
-    // 使用 fetch 检测资源是否可访问
-    fetch(scriptUrl, { method: 'HEAD' })
-      .then(response => {
-        if (!response.ok) {
-          adBlockDetected = true;
-        }
-      })
-      .catch(() => {
-        adBlockDetected = true;
-      });
+    // 检查 AdBlockInit
+    if (checkAdBlockInit()) {
+      adBlockDetected = true;
+      return;
+    }
   }
 
   function closeNotice() {
@@ -96,8 +173,8 @@
     // 延迟 5 秒后开始第一次检测，给页面足够的加载时间
     setTimeout(() => {
       checkAdBlocker();
-      // 之后每 30 秒检测一次
-      const interval = setInterval(checkAdBlocker, 30000);
+      // 之后每 10 秒检测一次
+      const interval = setInterval(checkAdBlocker, 10000);
       return () => clearInterval(interval);
     }, 5000);
   });
