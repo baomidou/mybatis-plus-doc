@@ -12,82 +12,62 @@
       return;
     }
 
-    // 方法1: 检查广告容器是否被隐藏
+    // 方法1: 只检查 wwads 容器是否被隐藏
     const adContainer = document.querySelector('.wwads-cn');
     if (adContainer && (window.getComputedStyle(adContainer).display === 'none' || !adContainer.offsetParent)) {
       adBlockDetected = true;
       return;
     }
 
-    // 方法2: 检查广告相关变量
-    if (typeof window._AdBlockInit !== 'undefined' || typeof window.__WWADS === 'undefined') {
+    // 方法2: 只检查 wwads 相关变量
+    if (typeof window.__WWADS === 'undefined') {
       adBlockDetected = true;
       return;
     }
 
-    // 方法3: 创建多个诱饵元素检测
+    // 方法3: 创建 wwads 相关的诱饵元素检测
     const baitClasses = [
-      'ad-unit ad adsbox ad-space',  // 常见广告类名
-      'banner_ad ad-banner',         // 横幅广告
-      'adsbygoogle',                // Google Ads
-      'ad-sidebar sponsorship',     // 侧边栏广告
-      'pub_300x250 pub_300x250m',  // 特定尺寸广告
-      'textads textads-text',      // 文字广告
-      'banner-ads banner_ads',      // 另一种横幅广告
-      'ad-zone ad-space',          // 广告区域
-      'ad-placeholder adbadge',    // 广告占位符
-      'inner-ad-space-holder'      // 内部广告占位
+      'wwads-cn',
+      'wwads-horizontal',
+      'wwads-vertical',
+      'wwads-content'
     ];
 
-    const baitIds = [
-      'ad-slot',
-      'ad-banner-top',
-      'sponsored-content',
-      'advertisement',
-      'google_ads_frame'
-    ];
-
-    // 创建多个诱饵 div
+    // 创建诱饵 div
     const baits = [];
     
     // 使用不同类名创建诱饵
     baitClasses.forEach((className, index) => {
       const bait = document.createElement('div');
       bait.setAttribute('class', className);
+      // 添加特殊标记用于识别诱饵元素
+      bait.setAttribute('data-bait', 'true');
       bait.style.cssText = `position:absolute;top:-${9999 + index}px;width:1px;height:1px;`;
-      document.body.appendChild(bait);
-      baits.push(bait);
-    });
-
-    // 使用不同 ID 创建诱饵
-    baitIds.forEach((id, index) => {
-      const bait = document.createElement('div');
-      bait.id = id;
-      bait.style.cssText = `position:absolute;top:-${8999 + index}px;width:1px;height:1px;`;
       document.body.appendChild(bait);
       baits.push(bait);
     });
 
     // 检查诱饵是否被屏蔽
     setTimeout(() => {
-      for (const bait of baits) {
+      // 只检查带有特殊标记的诱饵元素
+      const baitsToCheck = document.querySelectorAll('[data-bait="true"]');
+      for (const bait of baitsToCheck) {
         if (bait.offsetParent === null || 
             window.getComputedStyle(bait).display === 'none' || 
-            window.getComputedStyle(bait).visibility === 'hidden' ||
-            window.getComputedStyle(bait).opacity === '0') {
+            window.getComputedStyle(bait).visibility === 'hidden') {
           adBlockDetected = true;
           break;
         }
       }
-      // 清理诱饵元素
-      baits.forEach(bait => {
+      // 只清理带有特殊标记的诱饵元素
+      baitsToCheck.forEach(bait => {
         if (bait.parentNode) {
           bait.parentNode.removeChild(bait);
         }
       });
     }, 100);
 
-    // 方法4: 检查广告 JS 是否被拦截
+    // 方法4: 检查 wwads JS 是否被拦截
     checkAdScriptBanned('https://wwads.cn/js/makemoney.js');
     checkAdScriptBanned('https://cdn.wwads.cn/js/makemoney.js');
   }
