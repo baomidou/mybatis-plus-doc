@@ -98,8 +98,13 @@
   }
 
   onMount(() => {
-    const interval = setInterval(checkAdBlocker, 5000);
-    return () => clearInterval(interval);
+    // 延迟 5 秒后开始第一次检测，给页面足够的加载时间
+    setTimeout(() => {
+      checkAdBlocker();
+      // 之后每 30 秒检测一次
+      const interval = setInterval(checkAdBlocker, 30000);
+      return () => clearInterval(interval);
+    }, 5000);
   });
 </script>
 
