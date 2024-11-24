@@ -14,11 +14,6 @@
     // Google广告
     'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
     'https://www.googletagservices.com/tag/js/gpt.js',
-    // 常见统计和广告服务
-    'https://s1.hdslb.com/bfs/seed/blive/blfe-link-shortassets/dist/component.statistics/log-reporter.js',
-    'https://img3.doubanio.com/dae/fundin/piwik.js',
-    'https://analytics.163.com/ntes.js',
-    'https://stat.zol.com.cn/adrs/ol.js',
   ];
 
   // 常见广告类名
