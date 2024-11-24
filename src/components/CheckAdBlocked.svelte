@@ -19,8 +19,8 @@
       return;
     }
 
-    // 方法2: 只检查 wwads 相关变量
-    if (typeof window.__WWADS === 'undefined') {
+    // 方法2: 只检查 AdBlockInit 相关变量
+    if (typeof window._AdBlockInit === 'undefined') {
       adBlockDetected = true;
       return;
     }
@@ -36,35 +36,27 @@
       'adsbygoogle'
     ];
 
-    // 创建诱饵 div
+    // 创建诱饵 div，使用 span 而不是 div 来避免触发延迟加载
     const baits = [];
     
     // 使用不同类名创建诱饵
     baitClasses.forEach((className, index) => {
-      const bait = document.createElement('div');
+      const bait = document.createElement('span'); // 使用 span 代替 div
       bait.setAttribute('class', className);
       bait.setAttribute('data-bait', 'true');
-      bait.style.cssText = `position:absolute;top:-${9999 + index}px;width:1px;height:1px;background:transparent;pointer-events:none;`;
+      bait.style.cssText = `position:fixed;top:-${index + 1}px;left:0;width:1px;height:1px;opacity:0;`;
       document.body.appendChild(bait);
       baits.push(bait);
     });
-
-    // 创建一个简单的内容诱饵
-    const contentBait = document.createElement('div');
-    contentBait.setAttribute('data-bait', 'true');
-    contentBait.style.cssText = 'position:absolute;top:-9999px;width:1px;height:1px;background:transparent;pointer-events:none;';
-    contentBait.innerHTML = '<div class="ad-content">Advertisement</div>';
-    document.body.appendChild(contentBait);
-    baits.push(contentBait);
 
     // 检查诱饵是否被屏蔽
     setTimeout(() => {
       // 只检查带有特殊标记的诱饵元素
       const baitsToCheck = document.querySelectorAll('[data-bait="true"]');
       for (const bait of baitsToCheck) {
-        if (bait.offsetParent === null || 
-            window.getComputedStyle(bait).display === 'none' || 
-            window.getComputedStyle(bait).visibility === 'hidden') {
+        const style = window.getComputedStyle(bait);
+        // 只检查 display，避免其他可能触发延迟加载的属性
+        if (style.display === 'none') {
           adBlockDetected = true;
           break;
         }
