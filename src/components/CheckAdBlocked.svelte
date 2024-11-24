@@ -25,34 +25,15 @@
       return;
     }
 
-    // 方法3: 创建多个诱饵元素检测
+    // 方法3: 创建精简的诱饵元素检测
     const baitClasses = [
       // wwads 相关
       'wwads-cn',
       'wwads-horizontal',
-      'wwads-vertical',
-      'wwads-content',
-      // 常见广告类名
+      // 常见广告类名（只保留最关键的几个）
       'ad-unit',
-      'ad-box',
-      'ad-banner',
       'adsbox',
-      'ad-space',
-      'ad-placeholder',
-      'adsbygoogle',
-      'textads',
-      'banner_ad',
-      'sponsored-ad',
-      'carbon-ads',
-      'adview'
-    ];
-
-    const baitIds = [
-      'ad-unit',
-      'ad-box',
-      'carbon-ad',
-      'wwads-container',
-      'sponsor-ad'
+      'adsbygoogle'
     ];
 
     // 创建诱饵 div
@@ -62,32 +43,17 @@
     baitClasses.forEach((className, index) => {
       const bait = document.createElement('div');
       bait.setAttribute('class', className);
-      // 添加特殊标记用于识别诱饵元素
       bait.setAttribute('data-bait', 'true');
-      bait.style.cssText = `position:absolute;top:-${9999 + index}px;width:1px;height:1px;background:transparent;`;
+      bait.style.cssText = `position:absolute;top:-${9999 + index}px;width:1px;height:1px;background:transparent;pointer-events:none;`;
       document.body.appendChild(bait);
       baits.push(bait);
     });
 
-    // 使用不同 ID 创建诱饵
-    baitIds.forEach((id, index) => {
-      const bait = document.createElement('div');
-      bait.id = id;
-      bait.setAttribute('data-bait', 'true');
-      bait.style.cssText = `position:absolute;top:-${8999 + index}px;width:1px;height:1px;background:transparent;`;
-      document.body.appendChild(bait);
-      baits.push(bait);
-    });
-
-    // 创建一些内容诱饵
+    // 创建一个简单的内容诱饵
     const contentBait = document.createElement('div');
     contentBait.setAttribute('data-bait', 'true');
-    contentBait.style.cssText = 'position:absolute;top:-9999px;width:1px;height:1px;background:transparent;';
-    contentBait.innerHTML = `
-      <div class="ad-content">Advertisement</div>
-      <div class="adtext">Sponsored Content</div>
-      <div class="ad-badge">AD</div>
-    `;
+    contentBait.style.cssText = 'position:absolute;top:-9999px;width:1px;height:1px;background:transparent;pointer-events:none;';
+    contentBait.innerHTML = '<div class="ad-content">Advertisement</div>';
     document.body.appendChild(contentBait);
     baits.push(contentBait);
 
@@ -98,8 +64,7 @@
       for (const bait of baitsToCheck) {
         if (bait.offsetParent === null || 
             window.getComputedStyle(bait).display === 'none' || 
-            window.getComputedStyle(bait).visibility === 'hidden' || 
-            window.getComputedStyle(bait).opacity === '0') {
+            window.getComputedStyle(bait).visibility === 'hidden') {
           adBlockDetected = true;
           break;
         }
