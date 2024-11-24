@@ -25,12 +25,34 @@
       return;
     }
 
-    // 方法3: 创建 wwads 相关的诱饵元素检测
+    // 方法3: 创建多个诱饵元素检测
     const baitClasses = [
+      // wwads 相关
       'wwads-cn',
       'wwads-horizontal',
       'wwads-vertical',
-      'wwads-content'
+      'wwads-content',
+      // 常见广告类名
+      'ad-unit',
+      'ad-box',
+      'ad-banner',
+      'adsbox',
+      'ad-space',
+      'ad-placeholder',
+      'adsbygoogle',
+      'textads',
+      'banner_ad',
+      'sponsored-ad',
+      'carbon-ads',
+      'adview'
+    ];
+
+    const baitIds = [
+      'ad-unit',
+      'ad-box',
+      'carbon-ad',
+      'wwads-container',
+      'sponsor-ad'
     ];
 
     // 创建诱饵 div
@@ -42,10 +64,32 @@
       bait.setAttribute('class', className);
       // 添加特殊标记用于识别诱饵元素
       bait.setAttribute('data-bait', 'true');
-      bait.style.cssText = `position:absolute;top:-${9999 + index}px;width:1px;height:1px;`;
+      bait.style.cssText = `position:absolute;top:-${9999 + index}px;width:1px;height:1px;background:transparent;`;
       document.body.appendChild(bait);
       baits.push(bait);
     });
+
+    // 使用不同 ID 创建诱饵
+    baitIds.forEach((id, index) => {
+      const bait = document.createElement('div');
+      bait.id = id;
+      bait.setAttribute('data-bait', 'true');
+      bait.style.cssText = `position:absolute;top:-${8999 + index}px;width:1px;height:1px;background:transparent;`;
+      document.body.appendChild(bait);
+      baits.push(bait);
+    });
+
+    // 创建一些内容诱饵
+    const contentBait = document.createElement('div');
+    contentBait.setAttribute('data-bait', 'true');
+    contentBait.style.cssText = 'position:absolute;top:-9999px;width:1px;height:1px;background:transparent;';
+    contentBait.innerHTML = `
+      <div class="ad-content">Advertisement</div>
+      <div class="adtext">Sponsored Content</div>
+      <div class="ad-badge">AD</div>
+    `;
+    document.body.appendChild(contentBait);
+    baits.push(contentBait);
 
     // 检查诱饵是否被屏蔽
     setTimeout(() => {
@@ -54,7 +98,8 @@
       for (const bait of baitsToCheck) {
         if (bait.offsetParent === null || 
             window.getComputedStyle(bait).display === 'none' || 
-            window.getComputedStyle(bait).visibility === 'hidden') {
+            window.getComputedStyle(bait).visibility === 'hidden' || 
+            window.getComputedStyle(bait).opacity === '0') {
           adBlockDetected = true;
           break;
         }
@@ -67,29 +112,22 @@
       });
     }, 100);
 
-    // 方法4: 检查 wwads JS 是否被拦截
+    // 方法4: 检测 wwads JS 是否被拦截
     checkAdScriptBanned('https://wwads.cn/js/makemoney.js');
     checkAdScriptBanned('https://cdn.wwads.cn/js/makemoney.js');
   }
   
   function checkAdScriptBanned(scriptUrl) {
-    const script = document.createElement('script');
-    script.src = scriptUrl;
-    // 添加一个特殊标记，用于识别检测用的脚本
-    script.setAttribute('data-detect', 'true');
-    script.onerror = () => {
-      adBlockDetected = true;
-    };
-    document.head.appendChild(script);
-    // 5秒后只移除带有检测标记的script标签
-    setTimeout(() => {
-      const scripts = document.querySelectorAll('script[data-detect="true"]');
-      scripts.forEach(s => {
-        if (s.parentNode) {
-          s.parentNode.removeChild(s);
+    // 使用 fetch 检测资源是否可访问
+    fetch(scriptUrl, { method: 'HEAD' })
+      .then(response => {
+        if (!response.ok) {
+          adBlockDetected = true;
         }
+      })
+      .catch(() => {
+        adBlockDetected = true;
       });
-    }, 5000);
   }
 
   function closeNotice() {
