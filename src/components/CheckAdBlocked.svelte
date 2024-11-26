@@ -33,11 +33,11 @@
       return;
     }
 
-    const isAdBlockDetected = await checkAdBlockInit();
-    if (isAdBlockDetected) {
-      adBlockDetected = true;
-      return;
-    }
+    // const isAdBlockDetected = await checkAdBlockInit();
+    // if (isAdBlockDetected) {
+    //   adBlockDetected = true;
+    //   return;
+    // }
 
     const isScriptBanned = await checkAdScriptBanned(getRandomUrl());
     if (isScriptBanned) {
