@@ -8,8 +8,8 @@
 
   const adCheckUrls = [
     'https://cdn.wwads.cn/js/makemoney.js',
-    'https://cdn.carbonads.com/carbon.js',
-    'https://static.ads-twitter.com/uwt.js'
+    'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
+    'https://www.googletagservices.com/tag/js/gpt.js',
   ];
 
   function getRandomUrl() {
