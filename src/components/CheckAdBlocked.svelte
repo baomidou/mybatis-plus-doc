@@ -22,9 +22,22 @@
   }
 
   function checkAdScriptBanned(scriptUrl) {
-    return fetch(scriptUrl)
-      .then(response => !response.ok)
-      .catch(() => true);
+    try {
+      return fetch(scriptUrl, {
+        method: 'HEAD',
+        mode: 'no-cors',
+        redirect: 'follow'
+      })
+        .then(response => {
+          if (!response.ok || response.type === 'error' || response.status === 0) {
+            return true;
+          }
+          return false;
+        })
+        .catch(() => true);
+    } catch (error) {
+      return Promise.resolve(true);
+    }
   }
 
   async function checkAdBlocker() {
@@ -33,14 +46,8 @@
       return;
     }
 
-    // const isAdBlockDetected = await checkAdBlockInit();
-    // if (isAdBlockDetected) {
-    //   adBlockDetected = true;
-    //   return;
-    // }
-
     const isScriptBanned = await checkAdScriptBanned(getRandomUrl());
-    if (isScriptBanned) {
+    if (checkAdBlockInit() || isScriptBanned) {
       adBlockDetected = true;
     }
   }
