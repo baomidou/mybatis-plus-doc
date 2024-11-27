@@ -20,13 +20,13 @@
 
     // check ad block init
     if (window._AdBlockInit === undefined) {
-      console.log("ADBlock detected, cause window._AdBlockInit is undefined");
+      console.log("ADBlock detected, cause window._AdBlockInit undefined");
       hasAdBlockDetected = true;
       return;
     }
 
     // check script banned
-    checkAdScriptBanned('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js');
+    checkAdScriptBanned('https://log.mmstat.com/eg.js');
   }
   
   function checkAdScriptBanned(scriptUrl) {
