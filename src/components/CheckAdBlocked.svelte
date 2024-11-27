@@ -44,7 +44,7 @@
   }
 
   onMount(() => {
-    const interval = setInterval(checkAdBlocker, 5000);
+    const interval = setInterval(checkAdBlocker, 15000);
     return () => clearInterval(interval);
   });
 </script>
