@@ -11,22 +11,17 @@
     hasAdBlockDetected = false;
   }
 
-  function adBlockDetected() {
-    console.log("ADBlock Detected...");
+  function checkAdBlocker() {
     let adBlockNoticeClosed = session.get(key) ?? false;
     if (adBlockNoticeClosed) {
-      console.log("ADBlock Notice Chosen Closed...");
+      console.log("ADBlock notice closed...");
       return;
     }
-    hasAdBlockDetected = true;
-  }
-
-  function checkAdBlocker() {
-    console.log("Checking ADBlock...");
 
     // check ad block init
     if (window._AdBlockInit === undefined) {
-      adBlockDetected();
+      console.log("ADBlock detected, cause window._AdBlockInit is undefined");
+      hasAdBlockDetected = true;
       return;
     }
 
@@ -38,11 +33,13 @@
     fetch(scriptUrl)
         .then(response => {
             if (!response.ok) {
-              adBlockDetected();
+              console.log("ADBlock detected, cause script can't be loaded");
+              hasAdBlockDetected = true;
             }
         })
         .catch(() => {
-          adBlockDetected();
+          console.log("ADBlock detected, cause script banned");
+          hasAdBlockDetected = true;
         });
   }
 
