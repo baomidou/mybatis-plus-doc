@@ -2,41 +2,48 @@
   import { onMount } from "svelte";
   import store from "store2";
 
-  let adBlockDetected = false;
+  let hasAdBlockDetected = false;
   let session = store.session;
   const key = "adBlockNoticeClosed";
 
-  function checkAdBlocker() {
+  function closeNotice() {
+    session.set(key, true);
+    hasAdBlockDetected = false;
+  }
+
+  function adBlockDetected() {
+    console.log("ADBlock Detected...");
     let adBlockNoticeClosed = session.get(key) ?? false;
     if (adBlockNoticeClosed) {
+      console.log("ADBlock Notice Chosen Closed...");
       return;
     }
+    hasAdBlockDetected = true;
+  }
+
+  function checkAdBlocker() {
+    console.log("Checking ADBlock...");
 
     // check ad block init
     if (window._AdBlockInit === undefined) {
-      adBlockDetected = true;
+      adBlockDetected();
       return;
     }
 
     // check script banned
-    checkAdScriptBanned('https://cdn.wwads.cn/js/makemoney.js');
+    checkAdScriptBanned('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js');
   }
   
   function checkAdScriptBanned(scriptUrl) {
     fetch(scriptUrl)
         .then(response => {
             if (!response.ok) {
-              adBlockDetected = true;
+              adBlockDetected();
             }
         })
         .catch(() => {
-            adBlockDetected = true;
+          adBlockDetected();
         });
-  }
-
-  function closeNotice() {
-    session.set(key, true);
-    adBlockDetected = false;
   }
 
   onMount(() => {
@@ -46,7 +53,7 @@
 </script>
 
 <div
-  class="{adBlockDetected
+  class="{hasAdBlockDetected
     ? 'flex'
     : 'hidden'} fixed inset-0 bg-black bg-opacity-90 z-[99999]"
 >
