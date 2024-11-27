@@ -6,52 +6,34 @@
   let session = store.session;
   const key = "adBlockNoticeClosed";
 
-  const adCheckUrls = [
-    'https://cdn.wwads.cn/js/makemoney.js',
-    'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
-    'https://www.googletagservices.com/tag/js/gpt.js',
-  ];
-
-  function getRandomUrl() {
-    const randomIndex = Math.floor(Math.random() * adCheckUrls.length);
-    return adCheckUrls[randomIndex];
-  }
-
-  function checkAdBlockInit() {
-    return window._AdBlockInit === undefined;
-  }
-
-  function checkAdScriptBanned(scriptUrl) {
-    try {
-      return fetch(scriptUrl, {
-        method: 'HEAD',
-        mode: 'no-cors',
-        redirect: 'follow'
-      })
-        .then(response => {
-          if (!response.ok || response.type === 'error' || response.status === 0) {
-            return true;
-          }
-          return false;
-        })
-        .catch(() => true);
-    } catch (error) {
-      return Promise.resolve(true);
-    }
-  }
-
-  async function checkAdBlocker() {
+  function checkAdBlocker() {
     let adBlockNoticeClosed = session.get(key) ?? false;
     if (adBlockNoticeClosed) {
       return;
     }
 
-    const isScriptBanned = await checkAdScriptBanned(getRandomUrl());
-    if (checkAdBlockInit() || isScriptBanned) {
+    // check ad block init
+    if (window._AdBlockInit === undefined) {
       adBlockDetected = true;
+      return;
     }
+
+    // check script banned
+    checkAdScriptBanned('https://cdn.wwads.cn/js/makemoney.js');
   }
   
+  function checkAdScriptBanned(scriptUrl) {
+    fetch(scriptUrl)
+        .then(response => {
+            if (!response.ok) {
+              adBlockDetected = true;
+            }
+        })
+        .catch(() => {
+            adBlockDetected = true;
+        });
+  }
+
   function closeNotice() {
     session.set(key, true);
     adBlockDetected = false;
