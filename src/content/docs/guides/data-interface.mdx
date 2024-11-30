@@ -544,7 +544,7 @@ if (user != null) {
 生成的 SQL:
 
 ```sql
-SELECT * FROM user WHERE name = 'John Doe' LIMIT 1
+SELECT * FROM user WHERE name = 'John Doe'
 ```
 
 **示例（getOne 不抛出异常）：**
@@ -584,7 +584,7 @@ if (userMap != null) {
 生成的 SQL:
 
 ```sql
-SELECT * FROM user WHERE name = 'John Doe' LIMIT 1
+SELECT * FROM user WHERE name = 'John Doe'
 ```
 
 **示例（getObj）：**
@@ -604,7 +604,7 @@ if (userName != null) {
 生成的 SQL:
 
 ```sql
-SELECT * FROM user WHERE name = 'John Doe' LIMIT 1
+SELECT * FROM user WHERE name = 'John Doe'
 ```
 
 通过上述示例，我们可以看到 `get` 系列方法是如何在 Service 层进行查询操作的，以及它们对应的 SQL 语句。这些方法提供了灵活的数据查询方式，可以根据不同的条件进行查询操作。
