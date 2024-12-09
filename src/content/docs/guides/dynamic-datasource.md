@@ -32,14 +32,23 @@ sidebar:
 ### 使用方法
 
 1. **引入依赖**：
+  - SpringBoot2
+  ```xml
+  <dependency>
+    <groupId>com.baomidou</groupId>
+    <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+    <version>${version}</version>
+  </dependency>
+  ```
 
-```xml
-<dependency>
+ - SpringBoot3
+ ```xml
+ <dependency>
   <groupId>com.baomidou</groupId>
-  <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+  <artifactId>dynamic-datasource-spring-boot3-starter</artifactId>
   <version>${version}</version>
-</dependency>
-```
+ </dependency>
+ ```  
 
 2. **配置数据源**：
 
