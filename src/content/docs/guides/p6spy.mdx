@@ -80,6 +80,10 @@ outagedetection=true
 
 # 慢SQL记录标准（单位：秒）
 outagedetectioninterval=2
+
+# 过滤 flw_ 开头的表 SQL 打印
+filter=true
+exclude=flw_*
 ```
 
 ## Spring Boot集成
