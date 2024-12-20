@@ -75,7 +75,7 @@ List<UserVo> selectPageVo(IPage<UserVo> page, Integer state);
 </select>
 ```
 
-> 如果返回类型是 IPage，则入参的 IPage 不能为 null。如果想临时不分页，可以在初始化 IPage 时 size 参数传入小于 0 的值。
+> 如果返回类型是 IPage，则入参的 IPage 不能为 null。如果想临时不分页，可以在初始化 IPage 时 size 参数传入小于 0 的值(注意：在3.4.3.1以及以后的新版本中不能设置maxLimit值，需要保持该值为null)。
 > 如果返回类型是 List，则入参的 IPage 可以为 null，但需要手动设置入参的 IPage.setRecords(返回的 List)。
 > 如果 XML 需要从 page 里取值，需要使用 `page.属性` 获取。
 
