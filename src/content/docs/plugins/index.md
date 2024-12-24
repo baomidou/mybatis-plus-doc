@@ -115,13 +115,15 @@ public class MybatisPlusConfig {
 从 `3.5.3` 版本开始，你可以手动设置拦截器的忽略执行策略，这比注解更加灵活。但是，你需要手动关闭调用方法。
 
 ```java
-// 设置忽略租户插件
-InterceptorIgnoreHelper.handle(IgnoreStrategy.builder().tenantLine(true).build());
-
-// 执行逻辑 ..
-        
-// 关闭忽略策略
-InterceptorIgnoreHelper.clearIgnoreStrategy();
+// 请尽量使用 try finally 的方式来保证能正确得到关闭
+try { 
+    // 设置忽略租户插件
+    InterceptorIgnoreHelper.handle(IgnoreStrategy.builder().tenantLine(true).build());
+    // 执行逻辑 ..
+} finally {
+    // 关闭忽略策略
+	InterceptorIgnoreHelper.clearIgnoreStrategy();
+}
 ```
 
 ## 本地缓存 SQL 解析
