@@ -129,9 +129,9 @@ INSERT INTO user (name, email) VALUES
 ### saveOrUpdate
 
 ```java
-// TableId 注解属性值存在则更新记录，否插入一条记录
+// TableId 注解的属性值存在则更新记录，不存在则插入一条记录
 boolean saveOrUpdate(T entity);
-// 根据updateWrapper尝试更新，否继续执行saveOrUpdate(T)方法
+// 根据updateWrapper尝试更新，不存在则继续执行saveOrUpdate(T)方法
 boolean saveOrUpdate(T entity, Wrapper<T> updateWrapper);
 // 批量修改插入
 boolean saveOrUpdateBatch(Collection<T> entityList);
@@ -140,7 +140,7 @@ boolean saveOrUpdateBatch(Collection<T> entityList, int batchSize);
 ```
 
 <p>
-    **功能描述：** 根据实体对象的主键 ID 进行判断，存在则更新记录，否则插入记录。 <br/>
+    **功能描述：** 根据实体对象的主键 ID 进行判断，存在则更新记录，不存在则插入记录。 <br/>
     **返回值：** boolean，表示插入或更新操作是否成功。 <br/>
     **参数说明：** <br/>
     |         类型          |   参数名   |     描述     |
