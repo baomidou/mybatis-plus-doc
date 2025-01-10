@@ -740,15 +740,15 @@ mybatis-plus:
 
 抽象接口方法: 直接在XML重写此方法可完成
 
-defalut方法: 直接重写真实调用的方法或者把原defalut重写为真实接口方法,可在XML或注解的方式重写执行语句.
+default方法: 直接重写真实调用的方法或者把原default重写为真实接口方法,然后在XML或注解的方式重写执行语句.
 
 ```java
-// 方式一: 注解式重写BaseMapper中selectPage方法(低版本下可能为接口方法,这里以新版defalut为例)
+// 方式一: 注解式重写BaseMapper中selectPage方法(低版本下可能为接口方法,这里以新版default为例)
 @Override
 @Select("select * from h2user")
 <P extends IPage<H2User>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<H2User> queryWrapper);
 
-// 方式二: XML式重写BaseMapper中selectPage方法(低版本下可能为接口方法,这里以新版defalut为例)
+// 方式二: XML式重写BaseMapper中selectPage方法(低版本下可能为接口方法,这里以新版default为例)
 @Override
 <P extends IPage<H2User>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<H2User> queryWrapper);
 // 这里自己去XML里面重写selectPage的查询语句
