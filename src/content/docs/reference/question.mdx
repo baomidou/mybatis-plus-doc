@@ -708,8 +708,8 @@ MyBatis Plus 不支持复合主键并强制使用唯一的 ID，这是出于以�
   示例: java -Djava.security.egd=file:/dev/urandom -jar xxxx.jar
 </Accordion>
 
-
 <Accordion client:load title={'3.5.7+ 版本 Db.saveBatch 返回值一直为 false'}>
+
 - 原因：驱动配置不兼容
 > 解决方案：驱动连接去掉 `rewriteBatchedStatements=true` 配置
 </Accordion>
@@ -725,6 +725,7 @@ mybatis-plus:
 </Accordion>
 
 <Accordion client:load title={'当返回值为Map或List<Map>时,null值对应的key没有添加至Map里'}>
+
 - 原因：mybatis默认情况下, 当返回 null 时,不会调用put方法
 > 解决方案：配置callSettersOnNulls 为true
 ```yaml
@@ -732,4 +733,29 @@ mybatis-plus:
     configuration:
         call-setters-on-nulls: true
 ```
+</Accordion>
+
+<Accordion client:load title={'如何重写BaseMapper方法'}>
+重写接口方法请区分default方法和抽象接口方法,重写的方法需要以最终调用的实际方法为准.
+抽象接口方法: 直接在XML重写此方法可完成
+defalut方法: 直接重写真实调用的方法或者把原defalut重写为真实接口方法,可在XML或注解的方式重写执行语句.
+
+```java
+// 方式一: 注解式重写BaseMapper中selectPage方法(低版本下可能为接口方法,这里以新版defalut为例)
+@Override
+@Select("select * from h2user")
+<P extends IPage<H2User>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<H2User> queryWrapper);
+
+// 方式二: XML式重写BaseMapper中selectPage方法(低版本下可能为接口方法,这里以新版defalut为例)
+@Override
+<P extends IPage<H2User>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<H2User> queryWrapper);
+// 这里自己去XML里面重写selectPage的查询语句
+
+// 方式三: 重写BaseMapper中selectPage方法
+@Override
+default <P extends IPage<User>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<User> queryWrapper) {
+	return xxxx(); //实际调用的自己定义的真实接口方法
+}
+```
+
 </Accordion>
