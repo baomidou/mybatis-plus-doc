@@ -737,7 +737,9 @@ mybatis-plus:
 
 <Accordion client:load title={'如何重写BaseMapper方法'}>
 重写接口方法请区分default方法和抽象接口方法,重写的方法需要以最终调用的实际方法为准.
+
 抽象接口方法: 直接在XML重写此方法可完成
+
 defalut方法: 直接重写真实调用的方法或者把原defalut重写为真实接口方法,可在XML或注解的方式重写执行语句.
 
 ```java
