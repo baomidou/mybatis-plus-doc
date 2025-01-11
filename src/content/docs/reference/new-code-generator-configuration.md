@@ -273,32 +273,38 @@ StrategyConfig strategyConfig = new StrategyConfig.Builder()
 
 #### 方法说明
 
-| 方法                               | 说明                              | 示例                                                     |
-| ---------------------------------- | --------------------------------- | -------------------------------------------------------- |
-| nameConvert(INameConvert)          | 名称转换实现                      |                                                          |
-| superClass(Class<?>)               | 设置父类                          | `BaseEntity.class`                                         |
-| superClass(String)                 | 设置父类                          | `com.baomidou.global.BaseEntity`                           |
-| disableSerialVersionUID            | 禁用生成 serialVersionUID         | 默认值: `true`                                              |
-| enableFileOverride                 | 覆盖已生成文件                    | 默认值: `false`                                             |
-| enableColumnConstant               | 开启生成字段常量                  | 默认值: `false`                                             |
-| enableChainModel                   | 开启链式模型                      | 默认值: `false`                                             |
-| enableLombok                       | 开启 Lombok 模型                  | 默认值: `false`                                             |
-| enableRemoveIsPrefix               | 开启 Boolean 类型字段移除 is 前缀 | 默认值: `false`                                             |
-| enableTableFieldAnnotation         | 开启生成实体时生成字段注解        | 默认值: `false`                                             |
-| enableActiveRecord                 | 开启 ActiveRecord 模型            | 默认值: `false`                                             |
-| versionColumnName(String)          | 乐观锁字段名(数据库字段)          | `versionColumnName` 与 `versionPropertyName` 二选一即可         |
-| versionPropertyName(String)        | 乐观锁属性名(实体)                | `versionColumnName` 与 `versionPropertyName` 二选一即可         |
-| logicDeleteColumnName(String)      | 逻辑删除字段名(数据库字段)        | `logicDeleteColumnName` 与 `logicDeletePropertyName` 二选一即可 |
-| logicDeletePropertyName(String)    | 逻辑删除属性名(实体)              | `logicDeleteColumnName` 与 `logicDeletePropertyName` 二选一即可 |
-| naming                             | 数据库表映射到实体的命名策略      | 默认下划线转驼峰命名: `NamingStrategy.underline_to_camel`   |
-| columnNaming                       | 数据库表字段映射到实体的命名策略  | 默认为 `null`，未指定按照 `naming` 执行                      |
-| addSuperEntityColumns(String...)   | 添加父类公共字段                  |                                                          |
-| addIgnoreColumns(String...)        | 添加忽略字段                      |                                                          |
-| addTableFills(IFill...)            | 添加表字段填充                    |                                                          |
-| addTableFills(List<IFill\>)        | 添加表字段填充                    |                                                          |
-| idType(IdType)                     | 全局主键类型                      |                                                          |
-| convertFileName(ConverterFileName) | 转换文件名称                      |                                                          |
-| formatFileName(String)             | 格式化文件名称                    |                                                          |
+| 方法                                        | 说明                              | 示例                                                         |
+| ------------------------------------------- | --------------------------------- | ------------------------------------------------------------ |
+| nameConvert(INameConvert)                   | 名称转换实现                      |                                                              |
+| superClass(Class<?>)                        | 设置父类                          | `BaseEntity.class`                                           |
+| superClass(String)                          | 设置父类                          | `com.baomidou.global.BaseEntity`                             |
+| disableSerialVersionUID                     | 禁用生成 serialVersionUID         | 默认值: `true`                                               |
+| enableFileOverride                          | 覆盖已生成文件                    | 默认值: `false`                                              |
+| enableColumnConstant                        | 开启生成字段常量                  | 默认值: `false`                                              |
+| enableChainModel                            | 开启链式模型                      | 默认值: `false`                                              |
+| enableLombok                                | 开启 Lombok 模型                  | 默认值: `false`  默认只有Getter,Setter,自3.5.10后增加T       |
+| enableRemoveIsPrefix                        | 开启 Boolean 类型字段移除 is 前缀 | 默认值: `false`                                              |
+| enableTableFieldAnnotation                  | 开启生成实体时生成字段注解        | 默认值: `false`                                              |
+| enableActiveRecord                          | 开启 ActiveRecord 模型            | 默认值: `false`                                              |
+| versionColumnName(String)                   | 乐观锁字段名(数据库字段)          | `versionColumnName` 与 `versionPropertyName` 二选一即可      |
+| versionPropertyName(String)                 | 乐观锁属性名(实体)                | `versionColumnName` 与 `versionPropertyName` 二选一即可      |
+| logicDeleteColumnName(String)               | 逻辑删除字段名(数据库字段)        | `logicDeleteColumnName` 与 `logicDeletePropertyName` 二选一即可 |
+| logicDeletePropertyName(String)             | 逻辑删除属性名(实体)              | `logicDeleteColumnName` 与 `logicDeletePropertyName` 二选一即可 |
+| naming                                      | 数据库表映射到实体的命名策略      | 默认下划线转驼峰命名: `NamingStrategy.underline_to_camel`    |
+| columnNaming                                | 数据库表字段映射到实体的命名策略  | 默认为 `null`，未指定按照 `naming` 执行                      |
+| addSuperEntityColumns(String...)            | 添加父类公共字段                  |                                                              |
+| addIgnoreColumns(String...)                 | 添加忽略字段                      |                                                              |
+| addTableFills(IFill...)                     | 添加表字段填充                    |                                                              |
+| addTableFills(List<IFill\>)                 | 添加表字段填充                    |                                                              |
+| idType(IdType)                              | 全局主键类型                      |                                                              |
+| convertFileName(ConverterFileName)          | 转换文件名称                      |                                                              |
+| formatFileName(String)                      | 格式化文件名称                    |                                                              |
+| toString(boolean)                           | 是否生成ToString方法              | 默认为true, 自3.5.10开始                                     |
+| fieldUseJavaDoc                             | 启用字段文档注释                  | 默认为true, 自3.5.10开始                                     |
+| classAnnotations(ClassAnnotationAttributes) | 添加实体类注解                    | 自3.5.10开始                                                 |
+| tableAnnotationHandler                      | 表注解处理器                      | 自3.5.10开始                                                 |
+| tableFieldAnnotationHandler                 | 字段注解处理器                    | 自3.5.10开始                                                 |
+| enableLombok(ClassAnnotationAttributes ...) | 开启 Lombok 模型并设置Lombok注解  | 自3.5.10开始.   使用@Data示例: enableLombok(new ClassAnnotationAttributes("@Data","lombok.Data")) |
 
 #### 示例配置
 
@@ -402,6 +408,7 @@ Mapper 策略配置用于定制 Mapper 接口和对应的 XML 映射文件的生
 | convertXmlFileName(ConverterFileName)    | 转换 XML 文件名称         |                                    |
 | formatMapperFileName(String)             | 格式化 Mapper 文件名称    |                                    |
 | formatXmlFileName(String)                | 格式化 XML 实现类文件名称 |                                    |
+| generateMapperMethodHandler(IGenerateMapperMethodHandler) | 自定义生成Mapper方法实现 | 自3.5.10开始DefaultGenerateMapperMethodHandler |
 
 #### 示例配置
 
