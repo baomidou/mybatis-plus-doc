@@ -282,7 +282,7 @@ StrategyConfig strategyConfig = new StrategyConfig.Builder()
 | enableFileOverride                          | 覆盖已生成文件                    | 默认值: `false`                                              |
 | enableColumnConstant                        | 开启生成字段常量                  | 默认值: `false`                                              |
 | enableChainModel                            | 开启链式模型                      | 默认值: `false`                                              |
-| enableLombok                                | 开启 Lombok 模型                  | 默认值: `false`  默认只有Getter,Setter,自3.5.10后增加T       |
+| enableLombok                                | 开启 Lombok 模型                  | 默认值: `false`  默认只有Getter,Setter,自3.5.10后增加ToString |
 | enableRemoveIsPrefix                        | 开启 Boolean 类型字段移除 is 前缀 | 默认值: `false`                                              |
 | enableTableFieldAnnotation                  | 开启生成实体时生成字段注解        | 默认值: `false`                                              |
 | enableActiveRecord                          | 开启 ActiveRecord 模型            | 默认值: `false`                                              |
