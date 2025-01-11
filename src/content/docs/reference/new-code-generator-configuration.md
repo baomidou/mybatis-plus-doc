@@ -304,7 +304,7 @@ StrategyConfig strategyConfig = new StrategyConfig.Builder()
 | classAnnotations(ClassAnnotationAttributes) | 添加实体类注解                    | 自3.5.10开始                                                 |
 | tableAnnotationHandler                      | 表注解处理器                      | 自3.5.10开始                                                 |
 | tableFieldAnnotationHandler                 | 字段注解处理器                    | 自3.5.10开始                                                 |
-| enableLombok(ClassAnnotationAttributes ...) | 开启 Lombok 模型并设置Lombok注解  | 自3.5.10开始.   使用@Data示例: enableLombok(new ClassAnnotationAttributes("@Data","lombok.Data")) |
+| enableLombok(ClassAnnotationAttributes...)  | 开启 Lombok 模型并设置Lombok注解  | 自3.5.10开始.   使用@Data示例: enableLombok(new ClassAnnotationAttributes("@Data","lombok.Data")) |
 
 #### 示例配置
 
@@ -408,7 +408,7 @@ Mapper 策略配置用于定制 Mapper 接口和对应的 XML 映射文件的生
 | convertXmlFileName(ConverterFileName)    | 转换 XML 文件名称         |                                    |
 | formatMapperFileName(String)             | 格式化 Mapper 文件名称    |                                    |
 | formatXmlFileName(String)                | 格式化 XML 实现类文件名称 |                                    |
-| generateMapperMethodHandler(IGenerateMapperMethodHandler) | 自定义生成Mapper方法实现 | 自3.5.10开始DefaultGenerateMapperMethodHandler |
+| generateMapperMethodHandler | 自定义生成Mapper方法实现 | 自3.5.10开始                     |
 
 #### 示例配置
 
