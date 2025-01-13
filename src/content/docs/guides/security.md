@@ -34,7 +34,9 @@ String encryptedData = AES.encrypt(data, randomKey);
 
 ### 如何使用
 
-在启动应用程序时，通过命令行参数或环境变量传递密钥。
+在启动应用程序时，通过命令行参数。
+
+自3.5.10开始支持系统属性与环境变量传递密钥.
 
 ```txt
 // Jar 启动参数示例（在IDEA中设置Program arguments，或在服务器上设置为启动环境变量）
