@@ -1,5 +1,5 @@
 ---
-title: MyBatis-Meta
+title: MyBatis-Mate
 description: Mybatis-Plus 企业级数据处理低代码解决方案
 sidebar:
   hidden: true
@@ -17,6 +17,8 @@ sidebar:
 - 多数据源：分库分表、动态加载、多数据源事务等处理一应俱全
 
 ---
+
+> 官方直接采购添加微信 `wx153666`
 
 MyBatis-Mate + PigX 联合授权限时折扣，一份钱享受双倍快乐，欢迎微信扫码咨询
 
