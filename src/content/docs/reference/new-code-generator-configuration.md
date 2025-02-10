@@ -427,38 +427,13 @@ StrategyConfig strategyConfig = new StrategyConfig.Builder()
 
 ## 自定义模板支持 (DTO/VO 等) 配置
 
-MyBatis-Plus 代码生成器支持自定义模板，如 DTO (Data Transfer Object) 和 VO (Value Object) 等，通过扩展 `FreemarkerTemplateEngine` 类来实现。
-
-以下是如何配置和使用自定义 Freemarker 模板的示例。
-
-首先，创建一个自定义的 Freemarker 模板引擎类，该类继承自 `FreemarkerTemplateEngine`，并重写 `outputCustomFile` 方法来输出自定义文件。
-
-```java
-/**
- * 代码生成器支持自定义[DTO\VO等]模版
- */
-public class EnhanceFreemarkerTemplateEngine extends FreemarkerTemplateEngine {
-
-    @Override
-    protected void outputCustomFile(@NotNull Map<String, String> customFile, @NotNull TableInfo tableInfo, @NotNull Map<String, Object> objectMap) {
-        String entityName = tableInfo.getEntityName();
-        String otherPath = this.getPathInfo(OutputFile.other);
-        customFile.forEach((key, value) -> {
-            String fileName = String.format(otherPath + File.separator + entityName + "%s", key);
-            this.outputFile(new File(fileName), objectMap, value);
-        });
-    }
-}
-```
-
-在配置代码生成器时，可以通过 `injectionConfig` 方法添加自定义文件配置。以下是一个使用自定义 Freemarker 模板的示例。
+MyBatis-Plus 代码生成器支持自定义模板，如 DTO (Data Transfer Object) 和 VO (Value Object) 等。
 
 ```java
 FastAutoGenerator.create(url, username, password)
     .globalConfig(builder -> {
         builder.author("abc") // 设置作者
             .enableSwagger() // 开启 swagger 模式
-            .fileOverride() // 覆盖已生成文件
             .disableOpenDir() // 禁止打开输出目录
             .outputDir(finalProjectPath + "/src/main/java"); // 指定输出目录
     })
@@ -466,16 +441,19 @@ FastAutoGenerator.create(url, username, password)
         builder.parent("com.baomidou.mybatisplus.samples") // 设置父包名
             .moduleName("test") // 设置父包模块名
             .entity("model.entity") // 设置实体类包名
-            .other("model.dto") // 设置 DTO 包名
             .pathInfo(Collections.singletonMap(OutputFile.xml, finalProjectPath + "/src/main/resources/mapper")); // 设置 Mapper XML 文件生成路径
     })
-    .injectionConfig(consumer -> {
-        Map<String, String> customFile = new HashMap<>();
-        // DTO
-        customFile.put("DTO.java", "/templates/entityDTO.java.ftl");
-        consumer.customFile(customFile);
-    })
-    .templateEngine(new EnhanceFreemarkerTemplateEngine()) // 使用自定义的模板引擎
+     .injectionConfig(injectConfig -> {
+                Map<String,Object> customMap = new HashMap<>();
+                customMap.put("abc","1234");
+                injectConfig.customMap(customMap); //注入自定义属性
+                injectConfig.customFile(new CustomFile.Builder()
+                    .fileName("entityDTO.java") //文件名称
+                    .templatePath("templates/entityDTO.java.ftl") //指定生成模板路径
+                    .packageName("dto") //包名,自3.5.10开始,可通过在package里面获取自定义包全路径,低版本下无法获取,示例:package.entityDTO
+                    .build());
+      })
+    .templateEngine(new FreemarkerTemplateEngine())
     .execute(); // 执行生成
 ```
 
