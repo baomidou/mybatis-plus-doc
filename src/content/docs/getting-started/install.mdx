@@ -12,7 +12,7 @@ import LastedDependency from '@/components/LastedDependency.astro';
 - Maven or Gradle
 
 :::caution[注意事项]
-版本 `3.5.9+` 开始修改为可选依赖，具体查看下文 `maven bom` 部分。
+版本 `3.5.9+`  插件部分开始修改为可选依赖，具体查看下文 `maven bom` 部分，根据自行项目选取对应插件支持模块。
 :::
 
 ## Release
@@ -78,7 +78,11 @@ repositories {
 ## Maven bom
 
 >  使用 `maven bom` 管理依赖，减少版本号的冲突。因为 `jsqlparser 5.0+` 版本不再支持 `jdk8` 针对这个问题解耦 `jsqlparser` 依赖。
-正确打开姿势，引入 `mybatis-plus-bom` 模块，然后引入 `..starter` 和 `..jsqlparser..` 依赖
+>  正确打开姿势，引入 `mybatis-plus-bom` 模块，然后引入 `..starter` 和 `..jsqlparser..` 依赖
+>
+>  mybatis-plus-jsqlparser:  此依赖会跟着jsqlparser最新版本支持更新
+>
+>  mybatis-plus-jsqlparser-xx: 为具体的jsqlparser特定支持版本，也就是无法兼容更新的板本。
 
 - Maven
 
