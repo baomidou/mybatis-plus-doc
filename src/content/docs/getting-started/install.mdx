@@ -47,6 +47,12 @@ import LastedDependency from '@/components/LastedDependency.astro';
 
 快照 SNAPSHOT 版本需要添加仓库，且版本号为快照版本 [点击查看最新快照版本号](https://oss.sonatype.org/content/repositories/snapshots/com/baomidou/mybatis-plus-boot-starter/)。
 
+:::caution[注意事项]
+
+自3.5.11-SNAPSHOTS开始，快照仓库地址变更为 https://central.sonatype.com/repository/maven-snapshots/，快照版本有效期为90天。
+
+:::
+
 Maven：
 
 ```xml
@@ -56,7 +62,7 @@ Maven：
 </repository>
 ```
 
-当使用阿里云仓库无法下载快照时，请在 mirrorOf 中加上 `  `。
+当使用代理仓库无法下载快照时，请在 mirrorOf 中加上 `  !snapshots`。
 
 ```xml
 <mirror>
