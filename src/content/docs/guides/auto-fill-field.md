@@ -33,6 +33,7 @@ public class User {
 创建一个类来实现 `MetaObjectHandler` 接口，并重写 `insertFill` 和 `updateFill` 方法。
 
 ```java
+// java example
 @Slf4j
 @Component
 public class MyMetaObjectHandler implements MetaObjectHandler {
@@ -40,17 +41,39 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         log.info("开始插入填充...");
+        this.strictInsertFill(metaObject, "createUserId", Long.class, 123456L)
         this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now());
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         log.info("开始更新填充...");
+        this.strictInsertFill(metaObject, "updateUserId", Long.class, 123456L)
         this.strictUpdateFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
     }
 }
 ```
+```kotlin
+// kotlin example
+@Slf4j
+@Component
+class MyMetaObjectHandler : MetaObjectHandler {
+    
+    // 注意将kotlin类型转为java类型请使用 xxx::class.javaObjectType，防止部分类型使用xxx::class.java转换为基本类型导致类型不一致无法填充
+    override fun insertFill(metaObject: MetaObject) {
+        log.info("开始插入填充...");
+        this.strictInsertFill(metaObject, "createUserId", Long::class.javaObjectType, 123456L)
+        this.strictInsertFill(metaObject, "createTime", LocalDateTime::class.javaObjectType, LocalDateTime.now())
+    }
 
+    override fun updateFill(metaObject: MetaObject) {
+        log.info("开始更新填充...");
+        this.strictInsertFill(metaObject, "updateUserId", Long::class.javaObjectType, 123456L)
+        this.strictInsertFill(metaObject, "updateTime", LocalDateTime::class.javaObjectType, LocalDateTime.now())
+    }
+
+}
+```
 ### 3. 配置自动填充处理器
 
 确保你的 `MyMetaObjectHandler` 类被 Spring 管理，可以通过 `@Component` 或 `@Bean` 注解来实现。
