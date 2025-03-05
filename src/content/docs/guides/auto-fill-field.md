@@ -55,9 +55,10 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
 ```
 ```kotlin
 // kotlin example
-@Slf4j
 @Component
 class MyMetaObjectHandler : MetaObjectHandler {
+    
+    private val log = LoggerFactory.getLogger(MyMetaObjectHandler::class.java)
     
     // 注意将kotlin类型转为java类型请使用 xxx::class.javaObjectType，防止部分类型使用xxx::class.java转换为基本类型导致类型不一致无法填充
     override fun insertFill(metaObject: MetaObject) {
