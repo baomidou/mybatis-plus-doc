@@ -69,8 +69,8 @@ class MyMetaObjectHandler : MetaObjectHandler {
 
     override fun updateFill(metaObject: MetaObject) {
         log.info("开始更新填充...");
-        this.strictInsertFill(metaObject, "updateUserId", Long::class.javaObjectType, 123456L)
-        this.strictInsertFill(metaObject, "updateTime", LocalDateTime::class.javaObjectType, LocalDateTime.now())
+        this.strictUpdateFill(metaObject, "updateUserId", Long::class.javaObjectType, 123456L)
+        this.strictUpdateFill(metaObject, "updateTime", LocalDateTime::class.javaObjectType, LocalDateTime.now())
     }
 
 }
