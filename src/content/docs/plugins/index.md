@@ -142,7 +142,9 @@ static {
 ## 设置 SQL 解析线程池
 
 自3.5.6开始，对JSQLParser(4.9) 支持了线程池解析复用，可减少重复创建线程池带来的性能开销。
+
 默认创建固定线程池核心数: (Runtime.getRuntime().availableProcessors() + 1) / 2
+
 如果默认的线程池方式不太符合你实际部署情况，请用下面的方式指定你的自定义线程池，自行创建的线程池需要注意自行关闭。
 ```java
 static {
@@ -152,4 +154,27 @@ static {
 	JsqlParserGlobal.setExecutorService(....);
 }
 ```
+
+## 设置 JsqlParser解析处理方法
+如果需要JsqlParser的sql语句进行加工处理，请通过下面的方式进行指定，处理完成 sql 字符串再交由解析器进行解析。
+```java
+/*
+3.5.6~3.5.11 请使用 JsqlParserGlobal.executorService
+3.5.11+: JsqlParserGlobal.getExecutorService()
+低于3.5.6的版本只能使用 
+CCJSqlParserUtil.parseStatements(sql);
+CCJSqlParserUtil.parse(sql)
+**/ 
+static {
+        JsqlParserGlobal.setParserMultiFunc((sql)-> {
+            System.out.println("解析SQL:" + sql);
+            return CCJSqlParserUtil.parseStatements(sql, JsqlParserGlobal.getExecutorService(), null);
+        });
+        JsqlParserGlobal.setParserSingleFunc((sql)-> {
+            System.out.println("解析SQL:" + sql);
+            return CCJSqlParserUtil.parse(sql, JsqlParserGlobal.getExecutorService(), null);
+        });
+}
+```
+
 以上是 MyBatis-Plus 插件主体的详细介绍和使用方法。通过这些插件，你可以大大增强 MyBatis 的功能，提高开发效率。
