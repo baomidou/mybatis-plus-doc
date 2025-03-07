@@ -761,3 +761,33 @@ default <P extends IPage<User>> P selectPage(P page, @Param(Constants.WRAPPER) W
 ```
 
 </Accordion>
+
+<Accordion client:load title={'Kotlin调用接口defalut方法出现 Invalid bound statement (not found)'}>
+
+- 原因：https://blog.jetbrains.com/kotlin/2020/07/kotlin-1-4-m3-generating-default-methods-in-interfaces/
+
+> 解决方案：配置编译插件的编译参数 -Xjvm-default=all
+
+```xml
+<plugin>
+     <groupId>org.jetbrains.kotlin</groupId>
+     <artifactId>kotlin-maven-plugin</artifactId>
+     <version>${kotlin.version}</version>
+     <configuration>
+      	<args>
+            <arg>-Xjsr305=strict</arg>
+            <arg>-Xjvm-default=all</arg>
+        </args>
+     </configuration>
+</plugin>
+```
+
+```groovy
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ['-Xjvm-default=all']
+    }
+}
+```
+
+</Accordion>
