@@ -39,7 +39,7 @@ public class MysqlDdl implements IDdl {
     }
 }
 
-// 切换到mysql从库，执行SQL脚本
+// 切换到mysql从库，执行SQL脚本 (开源版本无此功能)
 ShardingKey.change("mysqlt2");
 ddlScript.run(new StringReader("DELETE FROM user;\n" +
         "INSERT INTO user (id, username, password, sex, email) VALUES\n" +
