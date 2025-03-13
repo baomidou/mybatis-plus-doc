@@ -49,3 +49,28 @@ ddlScript.run(new StringReader("DELETE FROM user;\n" +
 在这个示例中，我们定义了一个`MysqlDdl`组件，它实现了`IDdl`接口，并提供了要执行的SQL脚本文件列表。通过调用`ShardingKey.change`方法，我们可以切换到mysql的从库，并使用`ddlScript.run`方法执行特定的SQL脚本。
 
 通过这种方式，MyBatis-Plus提供了一个高效且自动化的方式来管理数据库的DDL操作，极大地简化了数据库结构的管理和维护工作。
+
+## 自定义运行器
+
+如果集成了MyBatis-Plus的starter的话，会自动实例化一个 DdlApplicationRunner 实例来执行 DDL 脚本。
+
+执行方式为自动提交事务，且忽略错误继续执行（其他脚本参数见如下）。
+
+如果需要自定义控制，请自行注入一个DdlApplicationRunner实例至容器。
+
+```java
+    @Bean
+    public DdlApplicationRunner ddlApplicationRunner(List<IDdl> ddlList) {
+        DdlApplicationRunner ddlApplicationRunner = new DdlApplicationRunner(ddlList);
+        // 下面属性自 3.5.11 开始 ...
+        ddlApplicationRunner.setAutoCommit(false);	//关闭自动提交
+        ddlApplicationRunner.setDdlScriptErrorHandler(DdlScriptErrorHandler.ThrowsErrorHandler.INSTANCE); // 设置错误处理方式为抛异常
+        ddlApplicationRunner.setScriptRunnerConsumer(scriptRunner -> {
+            scriptRunner.setLogWriter(null);   // 关闭执行日志打印 默认: System.out
+            scriptRunner.setErrorLogWriter(null); // 关闭错误日志打印  默认:System.err
+            scriptRunner.setStopOnError(true); // 遇到异常是否停止
+            scriptRunner.setRemoveCRs(false); //  是否替换\r\n 为 \n 默认: false
+        });
+        return ddlApplicationRunner;
+    }
+```
