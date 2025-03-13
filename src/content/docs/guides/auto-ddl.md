@@ -61,10 +61,14 @@ ddlScript.run(new StringReader("DELETE FROM user;\n" +
 ```java
     @Bean
     public DdlApplicationRunner ddlApplicationRunner(List<IDdl> ddlList) {
-        DdlApplicationRunner ddlApplicationRunner = new DdlApplicationRunner(ddlList);
+          DdlApplicationRunner ddlApplicationRunner = new DdlApplicationRunner(ddlList);
         // 下面属性自 3.5.11 开始 ...
-        ddlApplicationRunner.setAutoCommit(false);	//关闭自动提交
-        ddlApplicationRunner.setDdlScriptErrorHandler(DdlScriptErrorHandler.ThrowsErrorHandler.INSTANCE); // 设置错误处理方式为抛异常
+        // 设置是否自动提交 默认: true
+        ddlApplicationRunner.setAutoCommit(false);
+        // 设置脚本遇到错误的处理方式 默认: 忽略错误,打印异常 (如果设置为抛出异常,那会终止下一个sql文件处理)
+        ddlApplicationRunner.setDdlScriptErrorHandler(DdlScriptErrorHandler.ThrowsErrorHandler.INSTANCE);
+        //是否抛出异常中断下个处理器处理 默认: false
+        ddlApplicationRunner.setThrowException(true);
         ddlApplicationRunner.setScriptRunnerConsumer(scriptRunner -> {
             scriptRunner.setLogWriter(null);   // 关闭执行日志打印 默认: System.out
             scriptRunner.setErrorLogWriter(null); // 关闭错误日志打印  默认:System.err
