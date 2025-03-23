@@ -73,7 +73,7 @@ public class MysqlInsertAllBatch extends AbstractMethod {
                       "(#{list[0].id}, #{list[0].name}, #{list[0].age}), " +
                       "(#{list[1].id}, #{list[1].name}, #{list[1].age})";
         // 第三个参数必须和baseMapper的自定义方法名一致
-        return this.addInsertMappedStatement(mapperClass, modelClass, "mysqlInsertAllBatch", sqlSource, new NoKeyGenerator(), null, null);
+        return this.addInsertMappedStatement(mapperClass, modelClass, "mysqlInsertAllBatch", sql, new NoKeyGenerator(), null, null);
     }
 }
 ```
