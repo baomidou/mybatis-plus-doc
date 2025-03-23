@@ -9,6 +9,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "MyBatis-Plus",
+      defaultLocale: 'root',
       logo: {
         src: "./src/assets/logo.svg",
       },
@@ -61,6 +62,14 @@ export default defineConfig({
         root: {
           label: "简体中文",
           lang: "zh-CN",
+        },
+        en: {
+          label: 'English',
+          lang: 'en',
+        },
+        ja: {
+          label: '日本語',
+          lang: 'ja',
         }
       },
       editLink: {
@@ -73,34 +82,58 @@ export default defineConfig({
       sidebar: [
         {
           label: "简介",
+          translations: {
+            en: 'Introduction',
+            ja: 'イントロダクション'
+          },
           link: "/introduce",
         },
         {
           label: "从这里开始",
+          translations: {
+            en: 'Start Here',
+            ja: 'ここから始める'
+          },
           autogenerate: {
             directory: "getting-started",
           },
         },
         {
           label: "指南",
+          translations: {
+            en: 'Guides',
+            ja: 'ガイドライン'
+          },
           autogenerate: {
             directory: "guides",
           },
         },
         {
           label: "插件",
+          translations: {
+            en: 'Plugins',
+            ja: 'プラグイン'
+          },
           autogenerate: {
             directory: "plugins",
           },
         },
         {
           label: "参考",
+          translations: {
+            en: 'Reference',
+            ja: 'リファレンス'
+          },
           autogenerate: {
             directory: "reference",
           },
         },
         {
           label: "资源",
+          translations: {
+            en: 'Resources',
+            ja: 'リソース'
+          },
           autogenerate: {
             directory: "resources",
           },

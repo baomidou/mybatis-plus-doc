@@ -1,0 +1,199 @@
+---
+title: クイックスタート
+sidebar:
+  order: 1
+---
+
+import LastedDependency from '@/components/LastedDependency.astro';
+
+簡単なデモを通して、MyBatis-Plus の強力な機能を説明します。前提知識は以下の通りです：
+
+- Java 開発環境と対応した IDE を所有している
+- Spring Bootを熟知している
+- Maven または Gradleを熟知している
+
+---
+
+1つの User テーブルがあり、以下のような構造となっています：
+
+| id | name   | age | email              |
+|----|--------|-----|--------------------|
+| 1  | Jone   | 18  | test1@baomidou.com |
+| 2  | Jack   | 20  | test2@baomidou.com |
+| 3  | Tom    | 28  | test3@baomidou.com |
+| 4  | Sandy  | 21  | test4@baomidou.com |
+| 5  | Billie | 24  | test5@baomidou.com |
+
+対応するデータベース Schema スクリプトは以下の通りです：
+
+```sql
+<!-- schema-h2.sql -->
+
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user`
+(
+    id BIGINT NOT NULL COMMENT '主键ID',
+    name VARCHAR(30) NULL DEFAULT NULL COMMENT '姓名',
+    age INT NULL DEFAULT NULL COMMENT '年龄',
+    email VARCHAR(50) NULL DEFAULT NULL COMMENT '邮箱',
+    PRIMARY KEY (id)
+);
+```
+
+対応するデータベース Data スクリプトは以下の通りです：
+
+```sql
+<!-- data-h2.sql -->
+
+DELETE FROM `user`;
+
+INSERT INTO `user` (id, name, age, email) VALUES
+(1, 'Jone', 18, 'test1@baomidou.com'),
+(2, 'Jack', 20, 'test2@baomidou.com'),
+(3, 'Tom', 28, 'test3@baomidou.com'),
+(4, 'Sandy', 21, 'test4@baomidou.com'),
+(5, 'Billie', 24, 'test5@baomidou.com');
+```
+
+---
+
+:::tip[分かりますか？]
+ゼロから MyBatis-Plus を使ってこのテーブルの CRUD（作成・読み取り・更新・削除）を実現するには、どのような作業が必要でしょうか？
+:::
+
+## プロジェクトの新規作成
+
+空の Spring Boot プロジェクトを作成し、H2 データベースを導入して結合テストを行います。
+
+:::tip
+[Spring Initializer](https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.1.8&packaging=jar&jvmVersion=17&groupId=com.example&artifactId=demo&name=demo&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.demo&dependencies=h2) をクリックすると、すぐに Spring Boot プロジェクトをセットアップできます
+:::
+
+## 依存関係の追加
+
+MyBatis-Plus Starter への依存関係を追加します
+
+### Spring Boot2
+
+<LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-boot-starter" />
+
+### Spring Boot3
+
+<LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-spring-boot3-starter" />
+
+
+## 設定
+
+`application.yml` 設定ファイルに、H2 データベース関連の設定を追加します：
+
+```yaml
+<!-- application.yml -->
+
+# DataSource Config
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: root
+    password: test
+  sql:
+    init:
+      schema-locations: classpath:db/schema-h2.sql
+      data-locations: classpath:db/data-h2.sql
+```
+
+上記の設定は、どの Spring Boot プロジェクトでも共通して使用されるデータベース接続情報です。もし MySQL など他のデータベースを使用している場合は、対応する設定内容を変更する必要があります。
+
+Spring Boot の起動クラスに `@MapperScan` アノテーションを追加し、Mapper フォルダをスキャンします：
+
+```java {2}
+<!-- Application.java -->
+
+@SpringBootApplication
+@MapperScan("com.baomidou.mybatisplus.samples.quickstart.mapper")
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
+}
+```
+
+## コーディング
+
+エンティティクラス `User.java` を作成します：
+
+```java
+<!-- User.java -->
+
+@Data
+@TableName("`user`")
+public class User {
+    private Long id;
+    private String name;
+    private Integer age;
+    private String email;
+}
+```
+
+:::note
+上記の例では 、[Lombok](https://projectlombok.org/) を使用してコードを生成しています。この方法に慣れていなければ、Getter/Setterメソッドを手動で作成してください。
+:::
+
+
+Mapper インターフェース `UserMapper.java` を作成します：
+
+```java
+public interface UserMapper extends BaseMapper<User> {
+
+}
+```
+
+## 使用開始
+
+テストクラスを追加して、機能テストを行います：
+
+```java
+@SpringBootTest
+public class SampleTest {
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Test
+    public void testSelect() {
+        System.out.println(("----- selectAll method test ------"));
+        List<User> userList = userMapper.selectList(null);
+        Assert.isTrue(5 == userList.size(), "");
+        userList.forEach(System.out::println);
+    }
+
+}
+```
+
+:::tip
+UserMapper の `selectList()` メソッドのパラメータは、MyBatis-Plus に組み込まれている条件ラッパー `Wrapper` です。そのため、パラメータを指定しない場合は条件なしになります。
+:::
+
+コンソール出力結果：
+
+```txt
+User(id=1, name=Jone, age=18, email=test1@baomidou.com)
+User(id=2, name=Jack, age=20, email=test2@baomidou.com)
+User(id=3, name=Tom, age=28, email=test3@baomidou.com)
+User(id=4, name=Sandy, age=21, email=test4@baomidou.com)
+User(id=5, name=Billie, age=24, email=test5@baomidou.com)
+```
+
+:::note
+完全なコードサンプルは、以下のリンクをご覧ください：[Spring Boot 快速启动示例](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart) | [Spring MVC 快速启动示例](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart-springmvc)
+:::
+
+## まとめ
+
+以上の数ステップで、User テーブルの CRUD 機能を実装することができました。XML ファイルさえ書く必要はありません！
+
+これらの手順から分かるように、MyBatis-Plus の導入はとても簡単で、starter 依存関係を追加し、簡単な設定を行うだけで使用できます。
+
+しかし、MyBatis-Plus の強みはこれだけではありません。MyBatis-Plus のより強力な機能を詳しく知りたい方は、このまま読み進めてください！

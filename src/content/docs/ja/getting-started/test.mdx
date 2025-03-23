@@ -1,0 +1,52 @@
+---
+title: ユニットテスト
+sidebar:
+  order: 4
+---
+
+import { Steps, LinkCard } from '@astrojs/starlight/components';
+import LastedDependency from '@/components/LastedDependency.astro';
+
+MyBatis-Plus のテストに必要な関連設定を自動的に導入し、`@MybatisPlusTest` アノテーションを使用してテストクラスを素早く設定できます。
+
+
+## サンプルプロジェクト
+
+<LinkCard
+  title="mybatis-plus-boot-starter-test"
+  description="MyBatis-Plus クイックテスト機能関連コード"
+  href="https://github.com/baomidou/mybatis-plus/tree/master/mybatis-plus-boot-starter-test"
+/>
+
+## 使用方法
+
+
+<Steps>
+
+    1. テスト依存性を追加
+        <LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-boot-starter-test"/>
+
+    2. テストケースを記述
+
+        ```java
+        import org.junit.jupiter.api.Test;
+        import org.springframework.beans.factory.annotation.Autowired;
+
+        import static org.assertj.core.api.Assertions.assertThat;
+
+        @MybatisPlusTest
+        class MybatisPlusSampleTest {
+
+            @Autowired
+            private SampleMapper sampleMapper;
+
+            @Test
+            void testInsert() {
+                Sample sample = new Sample();
+                sampleMapper.insert(sample);
+                assertThat(sample.getId()).isNotNull();
+            }
+        }
+        ```
+
+</Steps>

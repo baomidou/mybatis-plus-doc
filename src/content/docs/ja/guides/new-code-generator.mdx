@@ -1,0 +1,195 @@
+---
+title: コードジェネレーター
+sidebar:
+  order: 1
+  badge:
+    text: New
+---
+
+import LastedDependency from '@/components/LastedDependency.astro';
+
+MyBatis-Plus の新しいコードジェネレーターは、builder パターンを使用して必要なコードを迅速に生成できます。高速でエレガントな実装を、以下のコードでご確認ください。
+
+```java
+<!-- CodeGenerator.java -->
+
+FastAutoGenerator.create("url", "username", "password")
+        .globalConfig(builder -> builder
+                .author("Baomidou")
+                .outputDir(Paths.get(System.getProperty("user.dir")) + "/src/main/java")
+                .commentDate("yyyy-MM-dd")
+        )
+        .packageConfig(builder -> builder
+                .parent("com.baomidou.mybatisplus")
+                .entity("entity")
+                .mapper("mapper")
+                .service("service")
+                .serviceImpl("service.impl")
+                .xml("mapper.xml")
+        )
+        .strategyConfig(builder -> builder
+                .entityBuilder()
+                .enableLombok()
+        )
+        .templateEngine(new FreemarkerTemplateEngine())
+        .execute();
+```
+
+## インストール
+
+<LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-generator" />
+
+:::note
+新しいコードジェネレーターは 3.5.1 バージョンで追加され、以前のバージョンとは互換性がありません！3.5.1 未満のバージョンを使用している場合は、[コードジェネレーター](/ja/guides/code-generator/)を参照して設定・使用してください。
+:::
+
+コードジェネレーターはテンプレートエンジンを使用するため、お好みのテンプレートエンジンを導入してください。MyBatis-Plus Generator は以下のテンプレートエンジンをサポートしています：
+
+- VelocityTemplateEngine（デフォルト）
+- FreemarkerTemplateEngine
+- BeetlTemplateEngine
+- EnjoyTemplateEngine
+
+他のテンプレートエンジンを使用または適応させたい場合は、`AbstractTemplateEngine` を継承し、他のテンプレートエンジンを参考にカスタム実装を作成できます。
+
+## 生成方式
+
+コードジェネレーターは現在、2つの生成方式をサポートしています：
+
+1. **DefaultQuery（メタデータクエリ）**
+   - **利点：** 共通インターフェースを使用してデータベースのメタデータ関連情報を読み取るので、データベースに対する汎用性が高い。
+   - **欠点：** データベースベンダーのドライバー実装に依存する。
+   - **注意：** デフォルトの方式。一部の型処理が理想的でない場合がある。
+
+2. **SQLQuery（SQLクエリ）**
+   - **利点：** データベースに応じて対応するテーブル、主キー、フィールド取得などのクエリ文を記述する必要がある。
+   - **欠点：** 汎用性が低く、同じデータベースベンダーの異なるバージョン間で互換性の問題が発生する可能性がある（例：H2データベースは1.Xバージョンのみをサポート）。
+   - **注意：** 今後はメンテナンスされない。
+
+既知のデータベース（バージョン互換性の問題がない）の場合は、従来のSQLクエリ方式を継続して使用してください。コード例：
+
+```java
+// MYSQL 例：SQL クエリ方式に切り替えるには、dbQuery と typeConvert を指定して生成する必要があります
+FastAutoGenerator.create("url", "username", "password")
+                .dataSourceConfig(builder ->
+                        builder.databaseQueryClass(SQLQuery.class)
+                                .typeConvert(new MySqlTypeConvert())
+                                .dbQuery(new MySqlQuery())
+                )
+                // その他の設定 ...
+```
+
+メタデータクエリには現在、以下の問題があります：
+
+1. NotLike を使用した逆方向のテーブル生成をサポートしていない。
+2. テーブルコメントを読み取れない。解決方法：
+   - MySQL接続に `remarks=true&useInformationSchema=true` を追加
+   - Oracle接続に `remarks=true` または `remarksReporting=true`（一部のドライバーバージョン）を追加
+   - SqlServer：ドライバーがサポートしていない
+3. 一部の PostgreSQL 型の処理が不十分（json、jsonb、uuid、xml、money型など）。解決方法：
+   - カスタム型に変換し、カスタム TypeHandler で処理
+   - typeConvertHandler を拡張して処理（3.5.3.3以降で typeName の取得が追加）
+4. MySQL の tinyint フィールド変換の問題：
+   - フィールド長が 1 の場合、Boolean フィールドに変換できない。データベース接続指定時に `&tinyInt1isBit=true` を追加することを推奨。
+   - フィールド長が 1 より大きい場合、デフォルトで Byte に変換される。Integer に変換したい場合は、以下のコードを使用：
+
+        ```java
+        FastAutoGenerator.create("url", "username", "password")
+                .dataSourceConfig(builder ->
+                        builder.typeConvertHandler((globalConfig, typeRegistry, metaInfo) -> {
+                            // 旧バージョンとの互換性のため Integer に変換
+                            if (JdbcType.TINYINT == metaInfo.getJdbcType()) {
+                                return DbColumnType.INTEGER;
+                            }
+                            return typeRegistry.getColumnType(metaInfo);
+                        })
+                );
+        ```
+
+## 使用方法
+
+コードジェネレーターは以下の2つの形式で使用できます。
+
+### クイック生成
+
+CodeGenerator の main メソッドに直接ジェネレーターコードを追加し、関連する設定を行った後、実行するだけでコードを生成できます。
+
+```java
+<!-- CodeGenerator.java -->
+
+public static void main(String[] args) {
+    FastAutoGenerator.create("url", "username", "password")
+            .globalConfig(builder -> {
+                builder.author("baomidou") // 作者の設定
+                        .enableSwagger() // swagger モードの有効化
+                        .outputDir("D://"); // 出力ディレクトリの指定
+            })
+            .dataSourceConfig(builder ->
+                    builder.typeConvertHandler((globalConfig, typeRegistry, metaInfo) -> {
+                        int typeCode = metaInfo.getJdbcType().TYPE_CODE;
+                        if (typeCode == Types.SMALLINT) {
+                            // カスタム型変換
+                            return DbColumnType.INTEGER;
+                        }
+                        return typeRegistry.getColumnType(metaInfo);
+                    })
+            )
+            .packageConfig(builder ->
+                    builder.parent("com.baomidou.mybatisplus.samples.generator") // 親パッケージ名の設定
+                            .moduleName("system") // 親パッケージモジュール名の設定
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, "D://")) // mapperXml 生成パスの設定
+            )
+            .strategyConfig(builder ->
+                    builder.addInclude("t_simple") // 生成するテーブル名の設定
+                            .addTablePrefix("t_", "c_") // テーブルプレフィックスのフィルタリング設定
+            )
+            .templateEngine(new FreemarkerTemplateEngine()) // Freemarker エンジンテンプレートの使用。デフォルトは Velocity エンジンテンプレート
+            .execute();
+}
+```
+
+### インタラクティブ生成
+
+インタラクティブ生成は実行後、必要な内容の入力を促し、設定の入力が完了すると自動的に関連コードを生成します。
+
+```java
+<!-- CodeGenerator.java -->
+
+public static void main(String[] args) {
+    FastAutoGenerator.create("url", "username", "password")
+            // グローバル設定
+            .globalConfig((scanner, builder) -> builder.author(scanner.apply("作者名を入力してください")))
+            // パッケージ設定
+            .packageConfig((scanner, builder) -> builder.parent(scanner.apply("パッケージ名を入力してください")))
+            // 戦略設定
+            .strategyConfig((scanner, builder) -> builder.addInclude(getTables(scanner.apply("テーブル名を入力してください。複数の場合はカンマで区切ってください。すべての場合はallと入力してください")))
+                    .entityBuilder()
+                    .enableLombok()
+                    .addTableFills(
+                            new Column("create_time", FieldFill.INSERT)
+                    )
+                    .build())
+            // Freemarker エンジンテンプレートの使用、デフォルトは Velocity エンジンテンプレート
+            .templateEngine(new FreemarkerTemplateEngine())
+            .execute();
+}
+
+// all の場合の処理
+protected static List<String> getTables(String tables) {
+    return "all".equals(tables) ? Collections.emptyList() : Arrays.asList(tables.split(","));
+}
+```
+
+より多くのサンプルが必要な場合は、test パッケージ内の samples を参照してください。
+
+- [H2CodeGeneratorTest](https://github.com/baomidou/generator/blob/develop/mybatis-plus-generator/src/test/java/com/baomidou/mybatisplus/generator/samples/H2CodeGeneratorTest.java)
+- [FastAutoGeneratorTest](https://github.com/baomidou/generator/blob/develop/mybatis-plus-generator/src/test/java/com/baomidou/mybatisplus/generator/samples/FastAutoGeneratorTest.java)
+
+## 設定
+
+[コードジェネレーター設定](/ja/reference/new-code-generator-configuration/)を参照してください。
+
+## リソース
+
+- [👉 ソースコード](https://github.com/baomidou/mybatis-plus)：ソースコードの閲覧とコミットを歓迎します。
+- [👉 ビデオチュートリアル詳細](https://space.bilibili.com/483260422)：フォロー、いいね、投げ銭、コメントを歓迎します。

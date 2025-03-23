@@ -1,0 +1,759 @@
+---
+title: 各種設定
+sidebar:
+  order: 1
+---
+
+import Badge from "@/components/Badge.astro";
+
+MyBatis-Plus は、さまざまなユーザーのニーズを満たすために豊富な設定オプションを提供しています。これらの設定の一部は MyBatis ネイティブでサポートされている設定を継承しており、一方で MyBatis-Plus 固有の拡張設定も存在します。
+
+## 使用方法
+
+### Spring Boot 設定
+
+Spring Boot プロジェクトでは、`application.yml` または `application.properties` ファイルを使用して MyBatis-Plus を設定できます。
+
+```yaml
+mybatis-plus:
+  configuration:
+    # MyBatis 設定
+    map-underscore-to-camel-case: true
+  global-config:
+    # グローバル設定
+    db-config:
+      # データベース設定
+      id-type: auto
+```
+
+### Spring MVC 設定
+
+従来の Spring MVC プロジェクトでは、XML 設定ファイルを使用して MyBatis-Plus を設定できます。
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="mapperLocations" value="classpath*:mapper/**/*.xml"/>
+    <property name="typeAliasesPackage" value="com.your.domain"/>
+    <!-- その他の設定 -->
+</bean>
+```
+
+## Base
+
+### configLocation
+
+- **タイプ**：`String`
+- **デフォルト値**：`null`
+
+MyBatis 設定ファイルの場所を指定します。独立した MyBatis 設定ファイルがある場合は、そのパスを `configLocation` に設定する必要があります。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  config-location: classpath:/mybatis-config.xml
+```
+
+### mapperLocations
+
+- **タイプ**：`String[]`
+- **デフォルト値**：`["classpath*:/mapper/**/*.xml"]`
+
+MyBatis Mapper に対応する XML ファイルの場所を指定します。Mapper にカスタムメソッドがある場合は、この項目を設定する必要があります。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**.xml
+```
+
+:::note
+Maven マルチモジュールプロジェクトの場合、複数の JAR パッケージ内の XML ファイルをロードするために、スキャンパスは `classpath*:` で始める必要があります。
+:::
+
+### typeAliasesPackage
+
+- **タイプ**：`String`
+- **デフォルト値**：`null`
+
+MyBatis エイリアスパッケージのスキャンパスを指定し、パッケージ内のクラスにエイリアスを登録します。登録後、Mapper に対応する XML ファイルでクラス名を直接使用でき、完全修飾クラス名を使用する必要はありません。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  type-aliases-package: com.your.domain
+```
+
+### typeAliasesSuperType
+
+- **タイプ**：`Class<?>`
+- **デフォルト値**：`null`
+
+`typeAliasesPackage` と一緒に使用し、指定された親クラスのサブクラスのみをスキャンします。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  type-aliases-super-type: com.your.domain.BaseEntity
+```
+
+### typeHandlersPackage
+
+- **タイプ**：`String`
+- **デフォルト値**：`null`
+
+TypeHandler のスキャンパスを指定し、カスタムタイプコンバーターを登録します。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  type-handlers-package: com.your.typehandlers
+```
+
+:::tip
+TypeHandler はカスタムタイプ変換に使用されます。
+:::
+
+### ~~typeEnumsPackage~~
+
+- **タイプ**：`String`
+- **デフォルト値**：`null`
+
+バージョン 3.5.2 以降、この設定は無効です。汎用列挙型機能は設定なしで使用できます。
+
+### checkConfigLocation <Badge text="Spring Boot のみ" type="error"/>
+
+- **タイプ**：`boolean`
+- **デフォルト値**：`false`
+
+起動時に MyBatis XML ファイルの存在を確認するかどうかを指定します。デフォルトでは確認しません。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  check-config-location: true
+```
+
+### executorType <Badge text="Spring Boot のみ" type="error"/>
+
+- **タイプ**：`ExecutorType`
+- **デフォルト値**：`simple`
+
+MyBatis の Executor タイプを指定します。`SIMPLE`、`REUSE`、`BATCH` が含まれます。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  executor-type: reuse
+```
+
+### configurationProperties
+
+- **タイプ**：`Properties`
+- **デフォルト値**：`null`
+
+外部化された MyBatis Properties 設定を指定します。設定を分離し、異なる環境での設定デプロイメントを実現するために使用されます。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  configuration-properties: classpath:/mybatis-properties.properties
+```
+
+### configuration
+
+- **タイプ**：`Configuration`
+- **デフォルト値**：`null`
+
+MyBatis ネイティブでサポートされている設定です。詳細については [Configuration](#Configuration) を参照してください。
+
+### globalConfig
+
+- **タイプ**：`com.baomidou.mybatisplus.core.config.GlobalConfig`
+- **デフォルト値**：`GlobalConfig::new`
+
+MyBatis-Plus グローバル戦略設定です。詳細については [GlobalConfig](#GlobalConfig) を参照してください。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: tbl_
+      id-type: auto
+```
+
+## Configuration
+
+MyBatis-Plus の `Configuration` 設定は MyBatis ネイティブでサポートされている設定を継承しています。これは、MyBatis XML 設定ファイルの形式で設定することも、Spring Boot または Spring MVC の設定ファイルで設定することもできることを意味します。
+
+### mapUnderscoreToCamelCase
+
+- **タイプ**：`boolean`
+- **デフォルト値**：`true`
+
+自動キャメルケースマッピングを有効にします。つまり、典型的なデータベース列名 `A_COLUMN`（スネークケース）から典型的な Java プロパティ名 `aColumn`（キャメルケース命名）への類似マッピングです。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+```
+
+:::tip
+MyBatis-Plus では、このプロパティは最終的な SQL の select body の生成にも使用されます。データベースの命名が規則に準拠している場合、`@TableField` アノテーションを使用してデータベースフィールド名を指定する必要はありません。
+:::
+
+### defaultEnumTypeHandler
+
+- **タイプ**：`Class<? extends TypeHandler>`
+- **デフォルト値**：`org.apache.ibatis.type.EnumTypeHandler`
+
+デフォルトの列挙型ハンドラークラスです。このプロパティが設定されている場合、列挙型は指定されたハンドラーを使用して統一的に処理されます。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
+```
+
+:::tip
+MyBatis-Plus は、列挙型の名前、インデックス、またはカスタム処理の保存を含む、複数の列挙型処理方法をサポートしています。バージョン 3.5.2 以降、デフォルトの列挙型ハンドラーは `CompositeEnumTypeHandler` であり、列挙型が汎用列挙型であるかどうかに基づいて適切な処理方法を選択します。
+
+- `org.apache.ibatis.type.EnumTypeHandler`: 列挙型の名前を保存します。
+- `org.apache.ibatis.type.EnumOrdinalTypeHandler`: 列挙型のインデックスを保存します。
+- `com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler`: 列挙型クラスは `IEnum` インターフェースを実装するか、フィールドに `@EnumValue` アノテーションを付ける必要があります。(バージョン 3.1.2 未満では `EnumTypeHandler`)
+- ~~`com.baomidou.mybatisplus.extension.handlers.EnumAnnotationTypeHandler`: 列挙型クラスのフィールドには `@EnumValue` アノテーションを付ける必要があります。~~
+
+バージョン 3.5.2 以降、デフォルトの列挙型ハンドラーは `CompositeEnumTypeHandler` です。MyBatis-Plus 汎用列挙型として定義された列挙型（`IEnum` を実装しているか、`@EnumValue` アノテーションが付いている）に対して、内部で `MybatisEnumTypeHandler` を使用して列挙型を処理します。
+
+その他の列挙型は、内部プロパティ `defaultEnumTypeHandler`（デフォルトは `org.apache.ibatis.type.EnumTypeHandler`）を使用して処理されます。
+
+この設定は `CompositeEnumTypeHandler#defaultEnumTypeHandler` の値のみを変更します。
+:::
+
+### aggressiveLazyLoading
+
+- **タイプ**：`boolean`
+- **デフォルト値**：`true`
+
+true に設定すると、遅延ロードされたオブジェクトは任意の遅延プロパティによってすべてロードされる可能性があります。それ以外の場合、各プロパティは必要に応じてロードされます。`lazyLoadingEnabled` と一緒に使用する必要があります。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    aggressive-lazy-loading: false
+```
+
+### autoMappingBehavior
+
+- **タイプ**：`AutoMappingBehavior`
+- **デフォルト値**：`partial`
+
+MyBatis 自動マッピング戦略です。この設定により、MyBatis がデータテーブルフィールドとオブジェクトのプロパティを自動的にマッピングするかどうか、およびその方法を指定できます。
+
+- `AutoMappingBehavior.NONE`：自動マッピングを有効にしません。
+- `AutoMappingBehavior.PARTIAL`：ネストされていない resultMap のみ自動マッピングします。
+- `AutoMappingBehavior.FULL`：すべての resultMap を自動マッピングします。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    auto-mapping-behavior: full
+```
+
+### autoMappingUnknownColumnBehavior
+
+- **タイプ**：`AutoMappingUnknownColumnBehavior`
+- **デフォルト値**：`NONE`
+
+MyBatis 自動マッピング時の未知の列または未知のプロパティの処理戦略です。この設定により、MyBatis が自動マッピングプロセス中に未知の列または未知のプロパティに遭遇した場合の処理方法を指定できます。
+
+- AutoMappingUnknownColumnBehavior.NONE：何も処理しません（デフォルト値）
+- AutoMappingUnknownColumnBehavior.WARNING：関連する警告情報をログ形式で出力します
+- AutoMappingUnknownColumnBehavior.FAILING：マッピング失敗として処理し、例外と詳細情報をスローします
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    auto-mapping-unknown-column-behavior: warning
+```
+
+### localCacheScope
+
+- **タイプ**：`String`
+- **デフォルト値**：`SESSION`
+
+Mybatis 一次キャッシュです。デフォルトは `SESSION` です。
+
+- `SESSION`：セッションレベルのキャッシュ。同一セッション内で同じクエリが再実行される場合、データベースへの再問い合わせは行われません。
+- `STATEMENT`：一次キャッシュを無効にします。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    local-cache-scope: statement
+```
+
+:::note
+単一サービスアーキテクチャ（同じサービスを提供するプログラムが 1 つだけ）では、一次キャッシュを有効にしてもビジネスに影響はなく、パフォーマンスが向上するだけです。マイクロサービスアーキテクチャでは、一次キャッシュを無効にする必要があります。理由は、Service1 がデータを問い合わせた後、Service2 がデータを変更した場合、Service1 が再度問い合わせると古いデータを取得する可能性があるためです。
+:::
+
+### cacheEnabled
+
+- **タイプ**：`boolean`
+- **デフォルト値**：`true`
+
+MyBatis 二次キャッシュを有効にするかどうか。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    cache-enabled: false
+```
+
+### callSettersOnNulls
+
+- **タイプ**：`boolean`
+- **デフォルト値**：`false`
+
+結果セットの値が null の場合に、マッピングされたオブジェクトの Setter メソッド（Map オブジェクトの場合は put メソッド）を呼び出すかどうかを指定します。通常、`Map.keySet()` への依存関係がある場合や null 値の初期化が必要な場合に使用されます。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    call-setters-on-nulls: true
+```
+
+:::note
+基本型（int、boolean など）は null に設定できません。
+:::
+
+### configurationFactory
+
+- **タイプ**：`Class<?>`
+- **デフォルト値**：`null`
+
+デシリアライズされたオブジェクトの遅延ロードプロパティの値を読み込むために使用される Configuration インスタンスを提供するファクトリークラスを指定します。指定するファクトリークラスには、シグネチャ `static Configuration getConfiguration()` を持つメソッドが含まれている必要があります。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  configuration:
+    configuration-factory: com.your.config.MyConfigurationFactory
+```
+
+## GlobalConfig
+
+`GlobalConfig` は MyBatis-Plus が提供するグローバル戦略設定であり、開発者が MyBatis-Plus の動作をグローバルにカスタマイズすることを可能にします。
+
+### banner
+
+- **タイプ**：`boolean`
+- **デフォルト値**：`true`
+
+コンソールに MyBatis-Plus のロゴを印刷するかどうかを制御します。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    banner: false
+```
+
+### enableSqlRunner
+
+- **タイプ**：`boolean`
+- **デフォルト値**：`false`
+
+`SqlRunner`（`com.baomidou.mybatisplus.extension.toolkit.SqlRunner`）を初期化するかどうかを制御します。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    enable-sql-runner: true
+```
+
+### sqlInjector
+
+- **タイプ**：`com.baomidou.mybatisplus.core.injector.ISqlInjector`
+- **デフォルト値**：`com.baomidou.mybatisplus.core.injector.DefaultSqlInjector`
+
+SQL インジェクターです。MyBatis-Plus が提供する汎用メソッドを注入するために使用されます。Starter では `@Bean` 注入をサポートしています。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    sql-injector: com.baomidou.mybatisplus.core.injector.DefaultSqlInjector
+```
+
+```java
+@Bean
+public MybatisPlusInterceptor mybatisPlusInterceptor() {
+    MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+    interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
+    return interceptor;
+}
+```
+
+### superMapperClass
+
+- **タイプ**：`Class`
+- **デフォルト値**：`com.baomidou.mybatisplus.core.mapper.Mapper.class`
+
+汎用 Mapper の親クラスです。この親クラスのサブクラスである Mapper のみが `sqlInjector` 内のメソッドを注入します。
+
+### metaObjectHandler
+
+- **タイプ**：`com.baomidou.mybatisplus.core.handlers.MetaObjectHandler`
+- **デフォルト値**：`null`
+
+メタオブジェクトフィールド補完コントローラーです。エンティティクラスのフィールドを自動的に補完するために使用されます。Starter では `@Bean` 注入をサポートしています。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    meta-object-handler: com.example.MyMetaObjectHandler
+```
+
+```java
+@Bean
+public MetaObjectHandler metaObjectHandler() {
+    return new MyMetaObjectHandler();
+}
+```
+
+### identifierGenerator<Badge text="Since 3.3.0" type="error"/>
+
+- **タイプ**：`com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator`
+- **デフォルト値**：`com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator`
+
+ID ジェネレーターです。エンティティクラスの一意の識別子を生成するために使用されます。Starter では `@Bean` 注入をサポートしています。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    identifier-generator: com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator
+```
+
+```java
+@Bean
+public IdentifierGenerator identifierGenerator() {
+    return new CustomIdentifierGenerator();
+}
+```
+
+### dbConfig
+
+- **タイプ**：`com.baomidou.mybatisplus.core.config.GlobalConfig$DbConfig`
+- **デフォルト値**：`null`
+
+MyBatis-Plus グローバル戦略における DB 戦略設定です。詳細については [DbConfig](#DbConfig) を参照してください。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: tbl_
+      id-type: ASSIGN_ID
+```
+
+
+## DbConfig
+
+### idType
+
+- タイプ：`com.baomidou.mybatisplus.annotation.IdType`
+- デフォルト値：`ASSIGN_ID`
+
+グローバルデフォルト主キータイプ。
+
+- `IdType.AUTO`：データベースの自動インクリメント ID を主キーとして使用します。
+- `IdType.NONE`：特定の生成戦略はありません。グローバル設定に IdType 関連の設定がある場合、グローバル設定に従います。
+- `IdType.INPUT`：データを挿入する前に、ユーザーが主キー値を自分で設定します。
+- `IdType.ASSIGN_ID`：自動的に `ID` を割り当てます。`Long`、`Integer`、`String` タイプの主キーに適しています。デフォルトでは、`IdentifierGenerator` の `nextId` を使用して Snowflake アルゴリズムで実装されます。<Badge text="@since 3.3.0"/>
+- `IdType.ASSIGN_UUID`：自動的に `UUID` を割り当てます。`String` タイプの主キーに適しています。デフォルトの実装は `IdentifierGenerator` の `nextUUID` メソッドです。<Badge text="@since 3.3.0"/>
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+```
+
+### tablePrefix
+
+- タイプ：`String`
+- デフォルト値：`null`
+
+テーブル名のプレフィックス
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: tbl_
+```
+
+### schema
+
+- タイプ：`String`
+- デフォルト値：`null`
+
+データベースのスキーマ名を指定します。通常は設定する必要はありません。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      schema: my_schema
+```
+
+### columnFormat
+
+- タイプ：`String`
+- デフォルト値：`null`
+
+SQL 生成時にフィールド名をフォーマットするために使用されます。例えば、プレフィックスやサフィックスを追加します。主キーには無効です。例: `%s`。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      column-format: %s_field
+```
+
+### tableFormat<Badge text="Since 3.5.3.2" type="error"/>
+
+- タイプ：`String`
+- デフォルト値：`null`
+
+SQL 生成時にテーブル名をフォーマットするために使用されます。例: `%s`。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      table-format: tbl_%s
+```
+
+### propertyFormat<Badge text="Since 3.3.0" type="error"/>
+
+- タイプ：`String`
+- デフォルト値：`null`
+
+Entity のフィールドがデータベースフィールドにマッピングされる際にフォーマットするために使用されます。`column as property` のような場合にのみ有効です。主キーには無効です。例: `%s`。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      property-format: %s_prop
+```
+
+### tableUnderline
+
+- タイプ：`boolean`
+- デフォルト値：`true`
+
+テーブル名がキャメルケースからスネークケースを使用するかどうかを制御します。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      table-underline: false
+```
+
+### capitalMode
+
+- タイプ：`boolean`
+- デフォルト値：`false`
+
+テーブル名とフィールド名が大文字命名を使用するかどうかを制御します。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      capital-mode: true
+```
+
+### keyGenerator
+
+- タイプ：`com.baomidou.mybatisplus.core.incrementer.IKeyGenerator`
+- デフォルト値：`null`
+
+カスタムテーブル主キー生成器。Starter では `@Bean` 注入をサポートしています。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      key-generator: com.example.CustomKeyGenerator
+```
+
+```java
+@Bean
+public IKeyGenerator keyGenerator() {
+    return new CustomKeyGenerator();
+}
+```
+
+### logicDeleteField
+
+- タイプ：`String`
+- デフォルト値：`null`
+
+グローバル Entity 論理削除フィールドのプロパティ名。論理削除機能が有効な場合にのみ有効です。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+```
+
+### logicDeleteValue
+
+- タイプ：`String`
+- デフォルト値：`1`
+
+論理削除値。論理削除機能が有効な場合にのみ有効です。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-value: true
+```
+
+### logicNotDeleteValue
+
+- タイプ：`String`
+- デフォルト値：`0`
+
+論理未削除値。論理削除機能が有効な場合にのみ有効です。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-not-delete-value: false
+```
+
+### insertStrategy
+
+- タイプ：`com.baomidou.mybatisplus.annotation.FieldStrategy`
+- デフォルト値：`NOT_NULL`
+
+Insert 時のフィールド検証戦略を制御します。
+
+- FieldStrategy.DEFAULT：グローバル設定の戦略に従います。グローバル設定が指定されていない場合、デフォルトの動作はフィールド値が NULL でない場合にのみフィールドを挿入します。
+- FieldStrategy.ALWAYS：フィールド値が NULL かどうかに関わらず、常にフィールドを挿入します。
+- FieldStrategy.NOT_NULL：フィールド値が NULL でない場合にのみフィールドを挿入します。
+- FieldStrategy.NOT_EMPTY：フィールド値が空でない（文字列タイプの場合）または NULL でない（他のタイプの場合）場合にのみフィールドを挿入します。
+- FieldStrategy.NEVER：フィールド値が NULL でなくても、フィールドを挿入しません。
+- FieldStrategy.IGNORED： 判断を無視します。効果は "ALWAYS" と同等です <Badge text="@Deprecated" type="error"/>
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      insert-strategy: NEVER
+```
+
+### updateStrategy
+
+- タイプ：`com.baomidou.mybatisplus.annotation.FieldStrategy`
+- デフォルト値：`NOT_NULL`
+
+Update 時のフィールド検証戦略を制御します。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      update-strategy: IGNORED
+```
+
+### whereStrategy
+
+- タイプ：`com.baomidou.mybatisplus.annotation.FieldStrategy`
+- デフォルト値：`NOT_NULL`
+
+Update 時のフィールド検証戦略を制御します。Wrapper が内部 Entity に基づいて生成する Where 条件です。
+
+**設定例**：
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      where-strategy: ALWAYS
+```

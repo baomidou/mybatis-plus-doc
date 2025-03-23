@@ -1,0 +1,104 @@
+---
+title: ページネーションプラグイン
+sidebar:
+  order: 2
+---
+
+import SupportDb from '@/components/SupportDb.astro';
+
+MyBatis-Plus のページネーションプラグイン `PaginationInnerInterceptor` は、強力なページネーション機能を提供し、多くのデータベースをサポートしており、ページネーションクエリを簡単かつ効率的にします。
+
+:::tip
+`v3.5.9` 以降、`PaginationInnerInterceptor` は分離されました。使用するには、`mybatis-plus-jsqlparser` 依存関係を個別に追加する必要があります。詳細については、[インストール](/ja/getting-started/install) の章を参照してください。
+:::
+
+## サポートされているデータベース
+
+`PaginationInnerInterceptor` は、以下を含む広範なデータベースをサポートしています：
+
+<SupportDb />
+
+サポートが必要なデータベースがリストにない場合は、[Pull Request](https://github.com/baomidou/mybatis-plus/pull/1550/files) で追加をリクエストできます。
+
+## 設定方法
+
+Spring Boot プロジェクトでは、Java 設定を使用してページネーションプラグインを追加できます：
+
+```java
+@Configuration
+@MapperScan("scan.your.mapper.package")
+public class MybatisPlusConfig {
+
+    /**
+     * ページネーションプラグインを追加
+     */
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL)); // 複数のプラグインを設定する場合、ページネーションは最後に追加することを忘れないでください
+        // 複数のデータソースがある場合は、特定のタイプを設定しないこともできますが、それ以外の場合は具体的な DbType を設定することをお勧めします
+        return interceptor;
+    }
+}
+```
+
+## プロパティ紹介
+
+`PaginationInnerInterceptor` は、ページネーションの動作をカスタマイズするための以下のプロパティを提供します：
+
+| プロパティ名 | タイプ | デフォルト値 | 説明 |
+| :-: | :-: | :-: | :-: |
+| overflow | boolean | false | 総ページ数を超えた場合に処理を行うかどうか |
+| maxLimit | Long |  | 1ページあたりの最大件数制限 |
+| dbType | DbType |  | データベースタイプ |
+| dialect | IDialect |  | 方言実装クラス |
+
+> 単一のデータベースタイプの場合は、dbType を設定することをお勧めします
+
+## カスタム Mapper メソッドでのページネーションの使用
+
+Mapper メソッドでページネーションを使用するには、次の方法があります：
+
+```java
+IPage<UserVo> selectPageVo(IPage<?> page, Integer state);
+// またはカスタムページネーションクラス
+MyPage selectPageVo(MyPage page);
+// または List を返す
+List<UserVo> selectPageVo(IPage<UserVo> page, Integer state);
+```
+
+対応する XML 設定：
+
+```xml
+<select id="selectPageVo" resultType="xxx.xxx.xxx.UserVo">
+    SELECT id,name FROM user WHERE state=#{state}
+</select>
+```
+
+> 戻り値の型が IPage の場合、入力パラメータの IPage は null であってはなりません。一時的にページネーションを行わない場合は、IPage の初期化時に size パラメータに 0 未満の値を渡します。
+> 戻り値の型が List の場合、入力パラメータの IPage は null でもかまいませんが、手動で入力パラメータの IPage.setRecords(返された List) を設定する必要があります。
+> XML で page から値を取得する必要がある場合は、`page.プロパティ` を使用して取得します。
+
+## その他の注意事項
+
+- countSql を生成する際、left join されたテーブルが where 条件に関与しない場合、最適化されて削除されます。left join を含む SQL では、テーブルとフィールドにエイリアスを付けることをお勧めします。
+- 複数のプラグインを使用する場合、COUNT SQL の実行が不正確になる問題を避けるため、ページネーションプラグインをプラグイン実行チェーンの最後に配置してください。
+
+## Page クラス
+
+`Page` クラスは `IPage` クラスを継承し、シンプルなページネーションモデルを実装しています。独自のページネーションモデルを実装する必要がある場合は、`Page` クラスを継承するか、`IPage` クラスを実装します。
+
+| プロパティ名 | タイプ | デフォルト値 | 説明 |
+| :-: | :-: | :-: | :-: |
+| records | List&#60;T&#62; | emptyList | クエリデータリスト |
+| total | Long | 0 | クエリリストの総レコード数 |
+| size | Long | 10 | 1ページあたりの表示件数、デフォルト 10 |
+| current | Long | 1 | 現在のページ |
+| orders | List&#60;OrderItem&#62; | emptyList | ソートフィールド情報 |
+| optimizeCountSql | boolean | true | COUNT SQL の自動最適化 |
+| optimizeJoinOfCountSql | boolean | true | COUNT SQL の自動最適化で join クエリ部分を削除するかどうか |
+| searchCount | boolean | true | count クエリを実行するかどうか |
+| maxLimit | Long |  | 1ページあたりの最大件数制限 |
+| countId | String | | XML カスタム count クエリの statementId |
+
+これらの設定と使用方法により、MyBatis-Plus で簡単にページネーションクエリを実装し、アプリケーションのパフォーマンスとユーザーエクスペリエンスを向上させることができます。
