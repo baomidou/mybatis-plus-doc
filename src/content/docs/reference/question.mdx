@@ -274,7 +274,7 @@ FieldStrategy 有三种策略：
          .set(User::getEmail, null) //把email设置成null
          .eq(User::getId, 2)
   );
-  
+
   ```
 
 </Accordion>
@@ -366,16 +366,19 @@ public interface DataResourceMapper extends BaseMapper<DataResource>{}
 </Accordion>
 
 
-<Accordion client:load title={'`Cause: org.apache.ibatis.type.TypeException:Error setting null for parameter #1 with JdbcType OTHER`'}>
+<Accordion client:load title={'Cause: org.apache.ibatis.type.TypeException:Error setting null for parameter #1 with JdbcType OTHER . Try setting a different JdbcType for this parameter or a different jdbcTypeForNull configuration property. Cause: java.sql.SQLException: 无效的列类型: 1111'}>
+在 MyBatis-Plus 中, `jdbcTypeForNull` 是一个重要的配置选项, 它决定了如何将Java的 `null` 值映射到数据库中.  
 
-> 配置 jdbcTypeForNull=NULL
-> Spring Bean 配置方式：
+默认情况下, 当某个字段在 Java 中为 `null` 时, MyBatis-Plus 会将其映射为数据库中的 `JdbcType.OTHER` 值。但某些 JDBC 驱动程序 (例如 Oracle) 不支持 `JdbcType.OTHER` ，因此默认设置会导致错误: `Cause: org.apache.ibatis.type.TypeException:Error setting null for parameter #1 with JdbcType OTHER . Try setting a different JdbcType for this parameter or a different jdbcTypeForNull configuration property. Cause: java.sql.SQLException: 无效的列类型: 1111`.  
+
+要设置 `jdbcTypeForNull` , 你需要在 MyBatis-Plus 的配置类中添加以下代码: 
+
+> Spring Bean 配置
 
 ```java
 MybatisConfiguration configuration = new MybatisConfiguration();
 configuration.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
 configuration.setJdbcTypeForNull(JdbcType.NULL);
-configuration.setMapUnderscoreToCamelCase(true);//开启下划线转驼峰
 sqlSessionFactory.setConfiguration(configuration);
 ```
 
@@ -386,6 +389,21 @@ mybatis-plus:
     jdbc-type-for-null: 'null' 
 ```
 
+> properties 配置
+```properties
+mybatis-plus.configuration.jdbc-type-for-null=NULL
+```
+
+> XML 配置
+```XML
+<configuration>
+    <settings>
+        <setting name="jdbcTypeForNull" value="NULL" />
+    </settings>
+</configuration>
+```
+
+> 需要注意的是, 如果你在项目中自定义 `SqlSessionFactory` 可能导致 `jdbc-type-for-null` 配置失效. 
 </Accordion>
 
 
@@ -526,7 +544,7 @@ There is one backward incompatible changes since 3.5.0.
 
 解决方案：
 1. 将 Spring Boot 降级至 2.1.x 版本，或升级至 2.2.1 版本以上。建议直接升级至 Spring Boot 2.2.2 版本以获取更好的稳定性和修复。
-   
+
 
 </Accordion>
 
@@ -555,7 +573,7 @@ There is one backward incompatible changes since 3.5.0.
 mybatis-plus:
   configuration:
     # 如果项目无日志框架，可以考虑指定为 org.apache.ibatis.logging.stdout.StdOutImpl (请勿在实际生产中使用).
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl 
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 ```
 
 这将使用 MyBatis 内置的 StdOutImpl 日志记录实现将日志输出到控制台。
@@ -638,7 +656,7 @@ mybatis-plus:
 
 ```xml
 <select id="selectAllNames" resultType="java.lang.String">
-select 
+select
 <choose>
     <when test="_databaseId == 'mysql'">
         GROUP_CONCAT(name SEPARATOR ',')
@@ -701,7 +719,7 @@ MyBatis Plus 不支持复合主键并强制使用唯一的 ID，这是出于以�
 
   碰到过使用hikari在linux系统下启动缓慢
 
-  解决方案: 
+  解决方案:
 
   在java启动命令中指定 -Djava.security.egd=file:/dev/urandom把获取随机数的方式从 /dev/random改为/dev/urandom
 
