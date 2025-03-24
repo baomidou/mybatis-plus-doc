@@ -84,8 +84,9 @@ public class MysqlInsertAllBatch extends AbstractMethod {
                 .collect(Collectors.joining(",")) + ")";
         String valuesScript = SqlScriptUtils.convertForeach(value, "list", null, ENTITY, COMMA);
         SqlSource sqlSource = super.createSqlSource(configuration, "<script>" + sql + valuesScript + "</script>", modelClass);
+        KeyGenerator keyGenerator = tableInfo.getIdType() == IdType.AUTO ? Jdbc3KeyGenerator.INSTANCE : NoKeyGenerator.INSTANCE;
         // 第三个参数必须和baseMapper的自定义方法名一致
-        return this.addInsertMappedStatement(mapperClass, modelClass, this.methodName, sqlSource, new NoKeyGenerator(), null, null);
+        return this.addInsertMappedStatement(mapperClass, modelClass, this.methodName, sqlSource, keyGenerator,tableInfo.getKeyProperty(), tableInfo.getKeyColumn());
     }
 }
 ```
