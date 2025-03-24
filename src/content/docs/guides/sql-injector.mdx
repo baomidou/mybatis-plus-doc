@@ -66,14 +66,26 @@ public interface ISqlInjector {
 
 ```java
 public class MysqlInsertAllBatch extends AbstractMethod {
+    
+    /**
+     * @since 3.5.0
+     */
+    public MysqlInsertAllBatch() {
+        super("mysqlInsertAllBatch");
+    }
+    
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        // 定义SQL语句
-        String sql = "INSERT INTO " + tableInfo.getTableName() + "(" + StringUtils.join(tableInfo.getFieldList(), ",") + ") VALUES " +
-                      "(#{list[0].id}, #{list[0].name}, #{list[0].age}), " +
-                      "(#{list[1].id}, #{list[1].name}, #{list[1].age})";
+ 		// 定义SQL语句 (主键+普通字段)  insert into table(....) values(....),(....)
+        String sql = "INSERT INTO " + tableInfo.getTableName() + "(" + tableInfo.getKeyColumn() + "," +
+                tableInfo.getFieldList().stream().map(TableFieldInfo::getColumn).collect(Collectors.joining(",")) + ") VALUES ";
+        String value = "(" + "#{" + ENTITY + DOT + tableInfo.getKeyProperty() + "}" + ","
+                + tableInfo.getFieldList().stream().map(tableFieldInfo -> "#{" + ENTITY + DOT + tableFieldInfo.getProperty() + "}")
+                .collect(Collectors.joining(",")) + ")";
+        String valuesScript = SqlScriptUtils.convertForeach(value, "list", null, ENTITY, COMMA);
+        SqlSource sqlSource = super.createSqlSource(configuration, "<script>" + sql + valuesScript + "</script>", modelClass);
         // 第三个参数必须和baseMapper的自定义方法名一致
-        return this.addInsertMappedStatement(mapperClass, modelClass, "mysqlInsertAllBatch", sqlSource, new NoKeyGenerator(), null, null);
+        return this.addInsertMappedStatement(mapperClass, modelClass, this.methodName, sqlSource, new NoKeyGenerator(), null, null);
     }
 }
 ```
