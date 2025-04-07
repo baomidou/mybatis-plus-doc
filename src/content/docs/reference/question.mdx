@@ -838,3 +838,29 @@ mybatis-plus:
         shrink-whitespaces-in-sql: true
 ```
 </Accordion>
+
+<Accordion client:load title={'代码生成器如何配置生成 XXXRepository '}>
+
+后续不再维护Service与Repository，建议不要在继续使用，如果需要生成，请按如下步骤将service转换为repository。
+
+```java
+AutoGenerator generator = new AutoGenerator(DATA_SOURCE_CONFIG);
+generator.packageInfo(new PackageConfig.Builder()
+    //-- 转换开始----
+    .service("repository")
+    .serviceImpl("repository.impl")
+    //-- 转换结束----
+    .build());
+generator.strategy(
+    new StrategyConfig.Builder()
+        //-- 转换开始----
+        .serviceBuilder().convertServiceFileName(entityName -> "I" + entityName + "Repository")
+        .superServiceClass(IRepository.class).convertServiceImplFileName(entityName -> entityName + "Repository")
+        .superServiceImplClass(CrudRepository.class)
+        //-- 转换结束----
+        .build());
+generator.execute();
+```
+
+</Accordion>
+
