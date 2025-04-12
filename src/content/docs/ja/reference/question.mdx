@@ -790,3 +790,75 @@ compileKotlin {
 ```
 
 </Accordion>
+
+<Accordion client:load title={'Encountered unexpected token: "\n\n\n" <ST_SEMICOLON>'}>
+
+- 原因：`jsqlParser` 4.9 から、連続する改行はステートメントの終了と見なされるようになりました。
+
+  参考リンク: https://github.com/JSQLParser/JSqlParser/issues/1988
+
+  MyBatis-Plus はバージョン 3.5.3.2 から、フレームワーク内蔵の SQL 注入文に対して改行処理を行うようになりましたが、プロジェクト内で独自に記述した SQL 文については、開発者が自ら改行処理を行う必要があります。
+
+- 注意: 3.5.10 と 3.5.10.1 バージョンではプロジェクト内の改行に対応しましたが、単一行コメント (`--` または `#`) の処理はサポートされていません。3.5.11 バージョン以降はこの処理は行われません。
+
+方法1: 
+```java
+static {
+    JsqlParserGlobal.setParserMultiFunc((sql)-> {
+        String formatSql = CCJSqlParserUtil.sanitizeSingleSql(sql);
+        return CCJSqlParserUtil.parseStatements(formatSql, JsqlParserGlobal.getExecutorService(), null);
+    });
+    JsqlParserGlobal.setParserSingleFunc((sql)-> {
+        String formatSql = CCJSqlParserUtil.sanitizeSingleSql(sql);
+        return CCJSqlParserUtil.parse(formatSql, JsqlParserGlobal.getExecutorService(), null);
+    });
+}
+
+// 如果jsqlParser低于5.0，请把如下方法复制到自己工程里，代码来源JsqlParser5.0版本。
+public static String sanitizeSingleSql(String sqlStr) {
+        Pattern SQL_DELIMITER_SPLIT = Pattern.compile("((?:'[^']*+'|[^\\n])*+)");
+        StringBuilder builder = new StringBuilder();
+        Matcher matcher = SQL_DELIMITER_SPLIT.matcher(sqlStr);
+        while(matcher.find()) {
+            for(int i = 1; i <= matcher.groupCount(); ++i) {
+                if (!matcher.group(i).isEmpty()) {
+                    builder.append("\n").append(matcher.group(i));
+                }
+            }
+        }
+        return builder.toString();
+}
+```
+
+方法2: MyBatis の改行削除機能を有効にします (汎用性はあまり高くない可能性があり、単一行コメント `--` や `#` は処理できません)。
+```yaml
+mybatis-plus:
+    configuration:
+        shrink-whitespaces-in-sql: true
+```
+</Accordion>
+
+<Accordion client:load title={'コードジェネレーターで XXXRepository を生成するように設定する方法'}>
+
+メンテナンスされなくなるため、使用しないことをお勧めします。生成する必要がある場合は、以下の手順に従って `Service` を `Repository` に変換してください。
+
+```java
+AutoGenerator generator = new AutoGenerator(DATA_SOURCE_CONFIG);
+generator.packageInfo(new PackageConfig.Builder()
+    //-- 変換開始 ----
+    .service("repository")
+    .serviceImpl("repository.impl")
+    //-- 変換終了 ----
+    .build());
+generator.strategy(
+    new StrategyConfig.Builder()
+        //-- 変換開始 ----
+        .serviceBuilder().convertServiceFileName(entityName -> "I" + entityName + "Repository")
+        .superServiceClass(IRepository.class).convertServiceImplFileName(entityName -> entityName + "Repository")
+        .superServiceImplClass(CrudRepository.class)
+        //-- 変換終了 ----
+        .build());
+generator.execute();
+```
+
+</Accordion>
