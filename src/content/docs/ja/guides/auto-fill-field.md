@@ -41,14 +41,14 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         log.info("挿入補完の開始...");
-        this.strictInsertFill(metaObject, "createUserId", Long.class, 123456L)
+        this.strictInsertFill(metaObject, "createUserId", Long.class, 123456L);
         this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now());
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         log.info("更新補完の開始...");
-        this.strictInsertFill(metaObject, "updateUserId", Long.class, 123456L)
+        this.strictInsertFill(metaObject, "updateUserId", Long.class, 123456L);
         this.strictUpdateFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
     }
 }
