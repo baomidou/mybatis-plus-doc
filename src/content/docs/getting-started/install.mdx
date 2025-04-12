@@ -45,11 +45,13 @@ import LastedDependency from '@/components/LastedDependency.astro';
 
 ## Snapshot
 
-快照 SNAPSHOT 版本需要添加仓库，且版本号为快照版本 [点击查看最新快照版本号](https://oss.sonatype.org/content/repositories/snapshots/com/baomidou/mybatis-plus-boot-starter/)。
+快照 SNAPSHOT 版本需要添加仓库，且版本号为快照版本 [点击查看最新快照版本号](https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/com/baomidou/mybatis-plus/)。
 
 :::caution[注意事项]
 
 自3.5.11-SNAPSHOTS开始，中央快照仓库地址变更为 https://central.sonatype.com/repository/maven-snapshots/ ，版本有效期为90天。
+
+当你使用旧版本时,需要修改为: https://oss.sonatype.org/content/repositories/snapshots/
 
 :::
 
@@ -58,7 +60,7 @@ Maven：
 ```xml
 <repository>
     <id>snapshots</id>
-    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
 </repository>
 ```
 
@@ -77,7 +79,7 @@ Gradle：
 
 ```groovy
 repositories {
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'https://central.sonatype.com/repository/maven-snapshots/' }
 }
 ```
 

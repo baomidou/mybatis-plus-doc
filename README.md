@@ -22,15 +22,8 @@
 
 <br/>
 
-## 当前最新版本
-
-```xml
-<dependency>
-    <groupId>com.baomidou</groupId>
-    <artifactId>mybatis-plus</artifactId>
-    <version>3.5.5</version>
-</dependency>
-```
+## 在线文档
+- **[baomidou.com](https://baomidou.com/)**
 
 ## 代码托管
 

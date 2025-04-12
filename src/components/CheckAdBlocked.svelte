@@ -26,21 +26,21 @@
     }
 
     // check script banned
-    checkAdScriptBanned('https://log.mmstat.com/eg.js');
+    checkAdScriptBanned("https://hm.baidu.com/hm.js");
   }
-  
+
   function checkAdScriptBanned(scriptUrl) {
     fetch(scriptUrl)
-        .then(response => {
-            if (!response.ok) {
-              console.log("ADBlock detected, cause script can't be loaded");
-              hasAdBlockDetected = true;
-            }
-        })
-        .catch(() => {
-          console.log("ADBlock detected, cause script banned");
+      .then((response) => {
+        if (!response.ok) {
+          console.log("ADBlock detected, cause script can't be loaded");
           hasAdBlockDetected = true;
-        });
+        }
+      })
+      .catch(() => {
+        console.log("ADBlock detected, cause script banned");
+        hasAdBlockDetected = true;
+      });
   }
 
   onMount(() => {
@@ -55,10 +55,6 @@
     : 'hidden'} fixed inset-0 bg-black bg-opacity-90 z-[99999]"
 >
   <div class="m-auto p-5 bg-white rounded-lg text-center space-y-4">
-    <button
-      class="absolute top-3 right-3 text-black text-white bg-transparent"
-      on:click={closeNotice}>×</button
-    >
     <p class="text-center text-lg text-gray-700">
       我们的广告服务商并不跟踪您的隐私，为了支持本站的长期运营，请将我们的网站加入广告拦截器的白名单，谢谢！
     </p>
@@ -77,6 +73,12 @@
       >
         查看加入白名单教程
       </a>
+      <button
+        class="px-4 py-2 bg-neutral-300 text-white rounded hover:bg-neutral-400 transition duration-300 text-current no-underline hover:no-underline"
+        on:click={closeNotice}
+      >
+        关闭
+      </button>
     </div>
   </div>
 </div>
