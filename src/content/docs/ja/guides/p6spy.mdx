@@ -1,0 +1,129 @@
+---
+title: SQL分析と出力
+sidebar:
+  order: 15
+---
+
+import LastedDependency from '@/components/LastedDependency.astro';
+
+MyBatis-Plus は SQL の解析および出力機能を提供しており、`p6spy` コンポーネントを統合することで、SQL 文とその実行時間を簡単に出力できます。この機能は MyBatis-Plus 3.1.0 以上のバージョンで使用可能です。
+
+## p6spyの概要
+
+[`p6spy`](https://github.com/p6spy/p6spy) は、データベースアクセスをインターセプトして記録するツールで、JDBC ドライバーをプロキシすることで動作します。これは、アプリケーションが通常通り JDBC を使用できることを意味し、`p6spy` はバックグラウンドで全てのSQLステートメントとその実行時間を記録します。これは開発とデバッグプロセスにおけるSQL最適化に非常に役立ちます。
+
+`p6spy` はSQLログの記録だけでなく、以下のような高度な機能も提供します：
+
+- **スロークエリの検出**：`outagedetection` と `outagedetectioninterval` を設定することで、`p6spy` は設定されたしきい値を超える実行時間を持つSQLステートメントを記録できます。
+- **カスタムログフォーマット**：`logMessageFormat` を使用して、タイムスタンプ、実行時間、SQLステートメントなどを含むSQLログの出力フォーマットをカスタマイズできます。
+- **ログ出力の制御**：`appender` 設定により、ログをコンソール、ファイル、またはログシステムに出力するかを選択できます。
+
+`p6spy` は強力なツールで、MyBatis-Plus ユーザーに便利なSQL分析と出力機能を提供します。適切に設定することで、開発とテスト段階で効果的にSQLステートメントを監視し最適化できます。ただし、パフォーマンスへの影響があるため、本番環境での使用は慎重に行うことをお勧めします。
+
+## サンプルプロジェクト
+
+この機能の使用方法をより良く理解するために、公式のサンプルプロジェクトを参照できます：
+
+- [mybatis-plus-sample-crud](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-crud)
+
+## 依存関係の追加
+
+まず、プロジェクトに `p6spy` の依存関係を追加する必要があります。以下は Maven と Gradle の2つのビルドツールでの追加方法です：
+
+<LastedDependency groupId="p6spy" artifactId="p6spy" />
+
+## 設定
+
+次に、`application.yml` または `application.properties` で適切な設定を行う必要があります。
+
+### application.yml
+
+```yaml
+spring:
+  datasource:
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:h2:mem:test
+    # その他のデータベース設定...
+```
+
+### spy.properties
+
+`p6spy` の設定ファイル `spy.properties` には複数の設定項目が含まれており、以下は主要な設定の例です：
+
+```properties
+# モジュールリスト。バージョンに応じて適切な設定を選択
+modulelist=com.baomidou.mybatisplus.extension.p6spy.MybatisPlusLogFactory,com.p6spy.engine.outage.P6OutageFactory
+
+# カスタムログフォーマット
+logMessageFormat=com.baomidou.mybatisplus.extension.p6spy.P6SpyLogger
+
+# ログをコンソールに出力
+appender=com.baomidou.mybatisplus.extension.p6spy.StdoutLogger
+
+# JDBC ドライバーの登録を解除
+deregisterdrivers=true
+
+# プレフィックスを使用
+useprefix=true
+
+# 除外するログカテゴリ
+excludecategories=info,debug,result,commit,resultset
+
+# 日付フォーマット
+dateformat=yyyy-MM-dd HH:mm:ss
+
+# 実際のドライバーリスト
+# driverlist=org.h2.Driver
+
+# スロークエリの記録を有効化
+outagedetection=true
+
+# スロークエリの記録基準（単位：秒）
+outagedetectioninterval=2
+
+# flw_ で始まるテーブルのSQL出力をフィルタリング
+filter=true
+exclude=flw_*
+```
+
+## Spring Boot 統合
+
+Spring Boot プロジェクトでは、`p6spy-spring-boot-starter` を使用して統合プロセスを簡素化できます。
+
+### 依存関係
+
+<LastedDependency groupId="com.github.gavlyukovskiy" artifactId="p6spy-spring-boot-starter" />
+
+### 設定
+
+```yaml
+decorator:
+  datasource:
+    p6spy:
+      # ログフォーマット
+      log-format: "\ntime:%(executionTime) || sql:%(sql)\n"
+      # カスタムログクラス
+      logging: custom
+      custom-appender-class: com.example.testinit.config.StdoutLogger
+```
+
+```java
+public class StdoutLogger extends com.p6spy.engine.spy.appender.StdoutLogger {
+    public void logText(String text) {
+        System.err.println(text);
+    }
+}
+```
+
+`p6spy-spring-boot-starter` の設定に関する詳細情報については、[GitHub](https://github.com/gavlyukovskiy/spring-boot-data-source-decorator)を参照してください。
+
+## 注意事項
+
+- `driver-class-name` は `p6spy` が提供するドライバークラスに設定する必要があります。
+- `url` のプレフィックスは `jdbc:p6spy` とし、その後に実際のデータベース接続アドレスを続けます。
+- 出力されるSQLが `null` の場合は、`excludecategories` に `commit` を追加してください。
+- バッチ操作でSQLが出力されない場合は、`excludecategories` から `batch` を削除してください。
+- バッチ操作でSQLが重複して出力される問題については、`MybatisPlusLogFactory` を使用してください（3.2.1で追加）。
+- このプラグインはパフォーマンスに影響を与える可能性があるため、本番環境での使用は推奨されません。
+
+上記の手順に従うことで、開発プロセスでSQLステートメントを簡単に分析し出力することができます。実際のニーズに応じて設定を調整し、最適な使用効果を得ることを忘れないでください。

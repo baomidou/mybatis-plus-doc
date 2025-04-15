@@ -1,0 +1,737 @@
+---
+title: コードジェネレーターの設定
+sidebar:
+  order: 4
+---
+
+import Badge from "@/components/Badge.astro";
+
+MyBatis-Plus コードジェネレーターは、データベースのテーブル構造に基づいて、対応するエンティティクラス、Mapper インターフェース、XML マッピングファイル、および Service レイヤーのコードを自動生成できる強力なツールです。このツールは、MyBatis フレームワークに基づく開発プロセスを大幅に簡素化し、開発効率を向上させます。特に多数のデータベーステーブルを扱う必要がある場合に役立ちます。
+
+### 主な特徴
+
+- **自動化**：コードジェネレーターは、データベースのテーブル構造に基づいて対応する Java コードを自動的に生成し、繰り返しコードを手動で書く作業を減らします。
+- **設定可能性**：設定ファイルやコードを通じて、生成されるコードのパッケージパス、テーブル名、フィールド名、テンプレートなどを柔軟に指定でき、さまざまなプロジェクトのニーズを満たします。
+- **テンプレートサポート**：カスタムコードテンプレートをサポートし、プロジェクトの要件に応じてコードスタイルと構造をカスタマイズできます。
+- **複数データベースサポート**：MySQL、Oracle、SQL Serverなど、さまざまなデータベースタイプをサポートしています。対応するデータベース接続情報を設定するだけで使用できます。
+- **簡単な統合**：既存のプロジェクトに簡単に統合でき、数行のコードでコード生成プロセスを開始できます。
+
+### 使用シーン
+
+- **新規プロジェクトの構築**：新しいプロジェクトの開始時に、コードジェネレーターを使用して基本的な CRUD コードを迅速に生成し、プロジェクトの立ち上げ速度を上げることができます。
+- **テーブル構造の変更**：データベーステーブルの構造が変更された場合、コードジェネレーターを使用して対応する Java コードを更新し、コードとデータベースの一貫性を維持できます。
+- **繰り返し作業**：多数の類似した CRUD 操作を記述する必要があるシナリオでは、コードジェネレーターが繰り返し作業を大幅に削減し、開発効率を向上させることができます。
+
+### 使用方法
+
+1. **データソースの設定**：データベースタイプ、接続URL、ユーザー名、パスワードなどを指定します。
+2. **戦略の設定**：コードを生成するテーブルを選択し、テーブル名とフィールド名の命名戦略などを設定します。
+3. **パッケージ情報の設定**：エンティティクラス、Mapper インターフェース、Service など、生成されるコードのパッケージパスを設定します。
+4. **テンプレートの設定**：コードスタイルをカスタマイズする必要がある場合は、カスタムコードテンプレートを設定または作成できます。
+5. **生成の実行**：コードジェネレーターを実行し、設定に基づいて対応する Java コードを生成します。
+
+### サンプルコード
+
+```java
+import com.baomidou.mybatisplus.generator.AutoGenerator;
+import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.rules.DbType;
+import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+
+public class CodeGenerator {
+
+    public static void main(String[] args) {
+        // グローバル設定
+        GlobalConfig globalConfig = new GlobalConfig();
+        globalConfig.setOutputDir(System.getProperty("user.dir") + "/src/main/java") // 出力ディレクトリの設定
+                .setAuthor("Your Name") // 作者の設定
+                .setOpen(false) // 生成後にディレクトリを自動的に開くかどうかを設定
+                .setFileOverride(true) // ファイルが存在する場合に上書きするかどうかを設定
+                .setServiceName("%sService") // Service インターフェース名の接尾辞を設定
+                .setIdType(IdType.AUTO) // 主キー生成戦略の設定
+                .setSwagger2(true); // Swagger アノテーションを生成するかどうかを設定
+
+        // データソース設定
+        DataSourceConfig dataSourceConfig = new DataSourceConfig();
+        dataSourceConfig.setDbType(DbType.MYSQL) // データベースタイプの設定
+                .setUrl("jdbc:mysql://localhost:3306/mybatis_plus?useSSL=false&serverTimezone=UTC") // データベース接続 URL
+                .setUsername("root") // データベースユーザー名
+                .setPassword("password") // データベースパスワード
+                .setDriverName("com.mysql.cj.jdbc.Driver"); // データベースドライバークラス名
+
+        // 戦略設定
+        StrategyConfig strategyConfig = new StrategyConfig();
+        strategyConfig.setInclude("user", "order") // コード生成が必要なテーブル名を指定
+                .setNaming(NamingStrategy.underline_to_camel) // テーブル名からクラス名への変換戦略を設定
+                .setColumnNaming(NamingStrategy.underline_to_camel) // 列名から属性名への変換戦略を設定
+                .setEntityLombokModel(true) // エンティティクラスで Lombok モデルを使用するように設定
+                .setRestControllerStyle(true) // Controller で REST スタイルを使用するように設定
+                .setTablePrefix(new String[]{"tbl_"}); // テーブル名のプレフィックスを設定
+
+        // パッケージ設定
+        PackageConfig packageConfig = new PackageConfig();
+        packageConfig.setParent("com.example") // 親パッケージ名を設定
+                .setMapper("mapper") // Mapper インターフェースが存在するサブパッケージ名を設定
+                .setEntity("entity") // エンティティクラスが存在するサブパッケージ名を設定
+                .setController("controller") // Controller が存在するサブパッケージ名を設定
+                .setService("service") // Service が存在するサブパッケージ名を設定
+                .setXml("mapper"); // Mapper XML ファイルが存在するサブパッケージ名を設定
+
+        // テンプレート設定
+        TemplateConfig templateConfig = new TemplateConfig();
+        templateConfig.setXml(null) // XMLファイルを生成しない
+                .setController("templates/controller.java.vm") // Controller テンプレートパスを設定
+                .setEntity("templates/entity.java.vm") // エンティティクラステンプレートパスを設定
+                .setMapper("templates/mapper.java.vm"); // Mapper インターフェーステンプレートパスを設定
+
+        // 統合設定
+        AutoGenerator autoGenerator = new AutoGenerator();
+        autoGenerator.setGlobalConfig(globalConfig)
+                .setDataSource(dataSourceConfig)
+                .setStrategy(strategyConfig)
+                .setPackageInfo(packageConfig)
+                .setTemplate(templateConfig);
+
+        // 生成の実行
+        autoGenerator.execute();
+    }
+}
+```
+
+MyBatis-Plus コードジェネレーターを使用することで、開発者は面倒な CRUD コードの記述ではなく、ビジネスロジックの実装に集中でき、開発効率とコード品質を向上させることができます。
+
+## 基本設定
+
+### データソース設定（dataSource）
+
+- タイプ：`DataSourceConfig`
+- デフォルト値：`null`
+
+データソース設定は、コードを生成するための特定のデータベースを指定するために使用されます。データソースを設定することで、コードジェネレーターはデータベースに接続してテーブル構造情報を取得し、対応するコードを生成することができます。
+
+**設定例：**
+
+```java
+DataSourceConfig dataSourceConfig = new DataSourceConfig();
+dataSourceConfig.setDbType(DbType.MYSQL) // MySQL、Oracle などのデータベースタイプを設定
+    .setUrl("jdbc:mysql://localhost:3306/mybatis_plus") // データベース接続 URL
+    .setUsername("root") // データベースユーザー名
+    .setPassword("password") // データベースパスワード
+    .setDriverName("com.mysql.cj.jdbc.Driver"); // データベースドライバークラス名
+```
+
+### データベーステーブル設定（strategy）
+
+- タイプ：`StrategyConfig`
+- デフォルト値：`null`
+
+データベーステーブル設定は、どのテーブルのコードを生成するか、またはどのテーブルを除外するかを指定するために使用されます。戦略設定を通じて、コード生成の範囲を柔軟に制御できます。
+
+**設定例：**
+
+```java
+StrategyConfig strategyConfig = new StrategyConfig();
+strategyConfig.setInclude("user", "order") // コード生成が必要なテーブル名を指定
+    .setExclude("user_detail") // コード生成が不要なテーブル名を除外
+    .setEntityLombokModel(true) // エンティティクラスで Lombok モデルを使用するように設定
+    .setRestControllerStyle(true); // Controller で REST スタイルを使用するように設定
+```
+
+### パッケージ名設定（packageInfo）
+
+- タイプ：`PackageConfig`
+- デフォルト値：`null`
+
+パッケージ名設定は、生成されるコードのパッケージパスを指定するために使用されます。パッケージ名を設定することで、生成されたコードが正しいディレクトリ構造に配置されるようになります。
+
+**設定例：**
+
+```java
+PackageConfig packageConfig = new PackageConfig();
+packageConfig.setParent("com.example") // 親パッケージ名を設定
+    .setMapper("mapper") // Mapper インターフェースが存在するサブパッケージ名を設定
+    .setEntity("entity") // エンティティクラスが存在するサブパッケージ名を設定
+    .setController("controller"); // Controller が存在するサブパッケージ名を設定
+```
+
+### テンプレート設定（template）
+
+- タイプ：`TemplateConfig`
+- デフォルト値：`null`
+
+テンプレート設定では、コード生成のテンプレートをカスタマイズし、個別の操作を実現できます。テンプレート設定を通じて、生成されるコードの形式や内容をカスタマイズできます。
+
+**設定例：**
+
+```java
+TemplateConfig templateConfig = new TemplateConfig();
+templateConfig.setXml(null) // XML ファイルを生成しない
+    .setController("templates/controller.java.vm") // Controller テンプレートパスを設定
+    .setEntity("templates/entity.java.vm") // エンティティクラステンプレートパスを設定
+    .setMapper("templates/mapper.java.vm"); // Mapper インターフェーステンプレートパスを設定
+```
+
+### グローバル戦略設定（globalConfig）
+
+- タイプ：`GlobalConfig`
+- デフォルト値：`null`
+
+グローバル戦略設定は、作者情報や生成パスなど、いくつかのグローバル設定を提供します。
+
+**設定例：**
+
+```java
+GlobalConfig globalConfig = new GlobalConfig();
+globalConfig.setOutputDir("src/main/java") // 生成されるコードの出力ディレクトリを設定
+    .setAuthor("Your Name") // 作者情報を設定
+    .setOpen(false) // 生成後にディレクトリを自動的に開くかどうかを設定
+    .setFileOverride(true); // ファイルが存在する場合に上書きするかどうかを設定
+```
+
+### インジェクション設定（injectionConfig）
+
+- タイプ：`InjectionConfig`
+- デフォルト値：`null`
+
+インジェクション設定では、カスタムパラメータのインジェクションなどの操作を許可し、個別の操作を実現できます。インジェクション設定を通じて、コード生成プロセス中に追加のロジックを加えることができます。
+
+**設定例：**
+
+```java
+InjectionConfig injectionConfig = new InjectionConfig() {
+    // カスタムインジェクションパラメータ
+    @Override
+    public void initMap() {
+        // 何もしない
+    }
+
+    // カスタムパラメータ
+    @Override
+    public MappedStatement injectMappedStatement(MappedStatement ms, Configuration configuration, SqlSource sqlSource, String mapperId) {
+        // カスタムインジェクションロジック
+        return ms;
+    }
+};
+```
+
+上記の設定を通じて、MyBatis-Plus コードジェネレーターは、要件に基づいてプロジェクト構造に合ったコードを生成し、開発効率を大幅に向上させることができます。実際のプロジェクトの要件に合わせて設定パラメータを調整し、最適なコード生成効果を達成することを忘れないでください。
+
+
+## データソース設定（dataSource）詳細
+
+データソース設定は MyBatis-Plus コードジェネレーターの重要な部分であり、データベースへの接続方法およびデータベース情報のクエリ方法を定義します。以下はデータソース設定の詳細な説明と例です。
+
+### dbQuery
+
+- **説明**：データベース情報クエリクラスで、データベースクエリ操作を実行するために使用されます。
+- **デフォルト実装**：`dbType` に基づいて、対応するデータベースの組み込み実装が自動的に選択されます。
+- **カスタマイズ**：`IDbQuery` インターフェースを実装して、データベースクエリ SQL ステートメントをカスタマイズし、特定の内容を返すことができます。
+
+### dbType
+
+- **説明**：データベースタイプで、必須の設定オプションです。
+- **組み込みサポート**：MyBatis-Plus は MySQL、Oracle、PostgreSQL など、多くの一般的なデータベースタイプを組み込みでサポートしています。
+
+### schemaName
+
+- **説明**：データベースのスキーマ名で、PostgreSQL など一部のデータベースシステムでは指定が必要です。
+- **例**：PostgreSQL では、`public` と指定できます。
+
+### typeConvert
+
+- **説明**：タイプ変換で、データベースのフィールドタイプを Java タイプに変換するために使用されます。
+- **デフォルト実装**：`dbType` に基づいて、対応するデータベースの組み込み実装が自動的に選択されます。
+- **カスタマイズ**：組み込みの変換タイプが要件を満たさない場合は、`ITypeConvert` インターフェースを実装してデータベースフィールドタイプから Java タイプへの変換をカスタマイズするか、`IColumnType` インターフェースを実装し、より高度なカスタマイズを行うことができます。
+
+### url
+
+- **説明**：データベース接続の URL。データベースへの接続に必要なすべての情報が含まれています。
+
+### driverName
+
+- **説明**：データベースドライバークラス名で、データベース接続を確立するために使用されます。
+
+### username
+
+- **説明**：データベース接続のユーザー名で、認証のために使用されます。
+
+### password
+
+- **説明**：データベース接続のパスワードで、認証のために使用されます。
+
+### 設定例
+
+```java
+DataSourceConfig dataSourceConfig = new DataSourceConfig();
+dataSourceConfig.setDbType(DbType.MYSQL) // データベースタイプを MySQL に設定
+    .setUrl("jdbc:mysql://localhost:3306/mybatis_plus?useSSL=false&serverTimezone=UTC") // データベース接続 URLを設定
+    .setUsername("root") // データベースユーザー名を設定
+    .setPassword("password") // データベースパスワードを設定
+    .setDriverName("com.mysql.cj.jdbc.Driver"); // データベースドライバークラス名を設定
+```
+
+この例では、MySQL データベースのデータソースを設定しています。データベースタイプ、接続 URL、ユーザー名、パスワード、およびドライバークラス名を指定しています。これらの情報は、データベースに接続し、テーブル構造情報を取得し、対応する Java コードを生成するために使用されます。
+
+実際のデータベース設定に応じてこれらのパラメータを調整し、データベース環境に適合させてください。
+
+
+## データベーステーブル設定（strategy）詳細
+
+データベーステーブル設定は、コード生成時にデータベーステーブルとフィールドをどのように処理するかを定義するために使用されます。戦略設定を通じて、対象とするテーブル、エンティティクラスやフィールドの命名方法、特定のアノテーションやプロパティを含めるかどうかを指定できます。
+
+### isCapitalMode
+
+- **説明**：大文字命名モードを使用するかどうか。
+- **デフォルト値**：`false`
+
+### skipView
+
+- **説明**：ビューをスキップするかどうか。
+- **デフォルト値**：`false`
+
+### naming
+
+- **説明**：データベーステーブルからエンティティへのマッピング命名戦略。
+- **デフォルト値**：スネークケースをキャメルケースに変換する。
+
+### columnNaming
+
+- **説明**：データベーステーブルからエンティティへのマッピング命名戦略。
+- **デフォルト値**：未指定時は `naming` 戦略を実行します。
+
+### tablePrefix
+
+- **説明**：テーブルプレフィックスで、特定のプレフィックスを持つテーブルをフィルタリングするために使用されます。
+
+### fieldPrefix
+
+- **説明**：フィールドプレフィックスで、特定のプレフィックスを持つフィールドをフィルタリングするために使用されます。
+
+### superEntityClass
+
+- **説明**：カスタムの継承 Entity クラスの完全修飾名で、パッケージ名を含む。
+
+### superEntityColumns
+
+- **説明**：カスタムの基底 Entity クラスで、共通フィールド。
+
+### superMapperClass
+
+- **説明**：カスタムの継承 Mapper クラスの完全修飾名で、パッケージ名を含む。
+
+### superServiceClass
+
+- **説明**：カスタムの継承 Service クラスの完全修飾名で、パッケージ名を含む。
+
+### superServiceImplClass
+
+- **説明**：カスタムの継承 ServiceImpl クラスの完全修飾名で、パッケージ名を含む。
+
+### superControllerClass
+
+- **説明**：カスタムの継承 Controller クラスの完全修飾名で、パッケージ名を含む。
+
+### enableSqlFilter <Badge text="Since 3.3.1" type="error"/>
+
+- **説明**：SQL によるテーブル名のあいまいマッチをデフォルトで有効にします。無効にすると、`likeTable` と `notLikeTable` は機能せず、`include` と `exclude` はメモリフィルタリングを使用します。
+- **デフォルト値**：`true`
+- **注意**：SQL 構文互換性の問題がある場合は手動で `false` に設定してください。既知の非対応ケースには、 MyCat ミドルウェアが含まれます。詳細は [ISSUE-2102](https://github.com/baomidou/mybatis-plus/issues/2102) を参照してください。
+
+### include
+
+- **説明**：含む必要があるテーブル名を指定します。`enableSqlFilter` が `false` の場合に正規表現を許可します。
+
+### likeTable <Badge text="Since 3.3.0" type="error"/>
+
+- **説明**：テーブル名をフィルタリングするために使用されます。`likeTable` と `notLikeTable` のいずれかを設定します。
+
+### exclude
+
+- **説明**：除外する必要があるテーブル名を指定します。`enableSqlFilter` が `false` の場合に正規表現を許可します。
+
+### notLikeTable <Badge text="Since 3.3.0" type="error"/>
+
+- **説明**：テーブル名をフィルタリングするために使用されます。`likeTable` と `notLikeTable` のいずれかを設定します。
+
+### entityColumnConstant
+
+- **説明**：【エンティティ】フィールド定数を生成するかどうか。
+- **デフォルト値**：`false`
+
+### ~~entityBuilderModel~~ <Badge text="@Deprecated" type="error"/>
+
+- **説明**：【エンティティ】ビルダーモデルを構築するかどうか。
+- **デフォルト値**：`false`
+- **注意**：3.3.2 から更名されました[chainModel](#chainmodel)
+
+### chainModel <Badge text="Since 3.3.2" type="error"/>
+
+- **説明**：【エンティティ】チェーンモデルを構築するかどうか。
+- **デフォルト値**：`false`
+- **注意**：3.3.2 未満のバージョンではデフォルトでチェーンモデルが生成されます。3.3.2 以降、デフォルトでは生成されません。必要に応じて開始してください。
+
+### entityLombokModel
+
+- **説明**：【エンティティ】Lombok モデルを使用するかどうか。
+- **デフォルト値**：`false`
+
+### entityBooleanColumnRemoveIsPrefix
+
+- **説明**：Boolean 型フィールドの is プレフィックスを削除するかどうか。
+- **デフォルト値**：`false`
+
+### restControllerStyle
+
+- **説明**：@RestController コントローラーを生成するかどうか。
+- **デフォルト値**：`false`
+
+### controllerMappingHyphenStyle
+
+- **説明**：キャメルケースをケバブケースに変換するかどうか。
+- **デフォルト値**：`false`
+
+### entityTableFieldAnnotationEnable
+
+- **説明**：エンティティを生成するときにフィールドアノテーションを生成するかどうか。
+- **デフォルト値**：`false`
+
+### versionFieldName
+
+- **説明**：楽観ロックプロパティ名。
+
+### logicDeleteFieldName
+
+- **説明**：論理削除プロパティ名。
+
+### tableFillList
+
+- **説明**：テーブルフィールド。
+
+### 設定例
+
+```java
+StrategyConfig strategyConfig = new StrategyConfig();
+strategyConfig.setCapitalMode(true) // 大文字命名モードを使用
+    .setEntityLombokModel(true) // Lombok モデルを使用
+    .setRestControllerStyle(true) // @RestController コントローラーを生成
+    .setInclude("user", "order") // 特定のテーブルを含む
+    .setExclude("user_detail") // 特定のテーブルを除外
+    .setEntityBooleanColumnRemoveIsPrefix(true) // Boolean 型フィールドの is プレフィックスを削除
+    .setTablePrefix("tbl_") // テーブルプレフィックスを設定
+    .setControllerMappingHyphenStyle(true); // キャメルケースをケバブケースに変換
+```
+
+この例では、戦略を設定し、テーブル名の大文字命名規則、Lombok モデルの使用、REST スタイルのコントローラー生成を指定しています。また、含めるテーブルと除外するテーブルも定義しています。さらに、テーブル接頭辞や、コントローラのマッピングにおけるキャメルケースからケバブケースへの変換スタイルも設定しています。
+
+プロジェクトの要件に応じて、これらの設定パラメータを調整し、生成されるコードが期待どおりになるようにしてください。
+
+
+## パッケージ名設定（packageInfo）詳細
+パッケージ名の設定は、生成されるコードのパッケージ構成を定義するためのものです。これにより、コードが適切なディレクトリに配置されるようになります。パッケージ名を設定することで、コードの構造をプロジェクトのアーキテクチャ設計に沿った形で整理できます。
+
+### parent
+
+- **説明**：親パッケージ名で、すべての生成されたコードの最上位パッケージ名です。
+- **デフォルト値**：未設定の場合は、各サブパッケージ名に完全なパッケージパスを指定する必要があります。
+
+### moduleName
+
+- **説明**：親パッケージモジュール名で、異なるモジュールまたはサブシステムを区別するために使用されます。
+
+### entity
+
+- **説明**：Entity パッケージ名で、エンティティクラスが存在するパッケージ名です。
+
+### service
+
+- **説明**：Service パッケージ名で、サービスインターフェースが存在するパッケージ名です。
+
+### serviceImpl
+
+- **説明**：Service Impl パッケージ名で、サービス実装クラスが存在するパッケージ名です。
+
+### mapper
+
+- **説明**：Mapper パッケージ名で、Mapper インターフェースが存在するパッケージ名です。
+
+### xml
+
+- **説明**：Mapper XML パッケージ名で、Mapper XML ファイルが存在するパッケージ名です。
+
+### controller
+
+- **説明**：Controller パッケージ名で、コントローラークラスが存在するパッケージ名です。
+
+### pathInfo
+
+- **説明**：パス設定情報で、生成されたコードの物理パスを指定するために使用されます。
+
+### 設定例
+
+```java
+PackageConfig packageConfig = new PackageConfig();
+packageConfig.setParent("com.example") // 親パッケージ名を設定
+    .setModuleName("mybatisplus") // 親パッケージモジュール名を設定
+    .setEntity("entity") // エンティティクラスが存在するサブパッケージ名を設定
+    .setService("service") // サービスインターフェースが存在するサブパッケージ名を設定
+    .setServiceImpl("service.impl") // サービス実装クラスが存在するサブパッケージ名を設定
+    .setMapper("mapper") // Mapper インターフェースが存在するサブパッケージ名を設定
+    .setXml("mapper") // Mapper XML ファイルが存在するサブパッケージ名を設定
+    .setController("controller"); // コントローラークラスが存在するサブパッケージ名を設定
+```
+
+このサンプルでは、`com.example` を親パッケージとして設定し、各機能に応じてサブパッケージを構成しています。たとえば、エンティティクラスは `com.example.mybatisplus.entity` に、サービスインターフェースは `com.example.mybatisplus.service` に配置されるようになっています。その他の要素も同様に、それぞれの役割に応じたパッケージに整理されます。
+
+プロジェクトの構成や組織の慣習に応じて、これらの設定パラメータを調整し、生成されたコードが正しくプロジェクトに統合されるようにしてください。
+
+
+## テンプレート設定（template）詳細
+
+テンプレート設定を使用すると、開発者はコードジェネレーターで使用するテンプレートをカスタマイズでき、プロジェクトのスタイルや要件に合ったコードを生成できます。MyBatis-Plus のコードジェネレーターは、エンティティクラス、サービスクラス、Mapper インターフェース、XML マッピングファイル、コントローラクラスなど、さまざまな種類のテンプレートに対応しています。
+
+### entity
+
+- **説明**：Java エンティティクラステンプレートで、Java エンティティクラスコードを生成するために使用されます。
+
+### entityKt
+
+- **説明**：Kotlin エンティティクラステンプレートで、Kotlin エンティティクラスコードを生成するために使用されます。
+
+### service
+
+- **説明**：Service クラステンプレートで、サービスインターフェースコードを生成するために使用されます。
+
+### serviceImpl
+
+- **説明**：Service impl 実装クラステンプレートで、サービス実装クラスコードを生成するために使用されます。
+
+### mapper
+
+- **説明**：mapper テンプレートで、Mapper インターフェースコードを生成するために使用されます。
+
+### xml
+
+- **説明**：mapper xml テンプレートで、Mapper XML マッピングファイルコードを生成するために使用されます。
+
+### controller
+
+- **説明**：controller コントローラーテンプレートで、コントローラークラスコードを生成するために使用されます。
+
+### 設定例
+
+```java
+TemplateConfig templateConfig = new TemplateConfig();
+templateConfig.setEntity("templates/entity.java.vm") // エンティティクラステンプレートパスを設定
+    .setService("templates/service.java.vm") // Service クラステンプレートパスを設定
+    .setServiceImpl("templates/serviceImpl.java.vm") // Serviceimpl 実装クラステンプレートパスを設定
+    .setMapper("templates/mapper.java.vm") // Mapper インターフェーステンプレートパスを設定
+    .setXml("templates/mapper.xml.vm") // Mapper XML テンプレートパスを設定
+    .setController("templates/controller.java.vm"); // Controller テンプレートパスを設定
+```
+
+このサンプルでは、各種テンプレートのパスを設定しています。たとえば、エンティティクラスのテンプレートパスは `templates/entity.java.vm` に、サービスクラスのテンプレートパスは `templates/service.java.vm` に設定されています。これらのパスは、プロジェクト内でカスタマイズされたテンプレートファイルを指しており、コードジェネレーターはそれらのテンプレートを基に対応するコードを生成します。
+
+テンプレートファイルのパスが正しく設定されていること、またテンプレートファイルが Velocity や Freemarker などのテンプレートエンジンの構文に従っていることを確認してください。テンプレートをカスタマイズすることで、生成されるコードの構造、コメント、命名規則などを自由にコントロールでき、プロジェクト固有の要件に対応できます。
+
+実際の使用においては、プロジェクトの具体的な要件に応じてテンプレート設定を調整する必要があります。たとえば、プロジェクトが Kotlin を使用している場合は、`entityKt` のテンプレートパスを設定する必要があります。また、XML マッピングファイルなど特定の種類のコードが不要な場合は、対応するテンプレートを設定しないことも可能です。
+
+
+## グローバル戦略設定（globalConfig）詳細
+
+グローバル設定では、出力ディレクトリ、ファイルの上書き、開発者情報などの全体的な設定を行うことができます。また、Kotlin モード、Swagger2 の統合、ActiveRecord モードなどの高度なオプションも用意されています。
+
+### outputDir
+
+- **説明**：生成されたファイルの出力ディレクトリ。
+- **デフォルト値**：`Dドライブのルート`
+
+### fileOverride
+
+- **説明**：既存のファイルを上書きするかどうか。
+- **デフォルト値**：`false`
+
+### open
+
+- **説明**：生成後に出力ディレクトリを自動的に開くかどうか。
+- **デフォルト値**：`true`
+
+### enableCache
+
+- **説明**：XML にセカンダリキャッシュ設定を追加するかどうか。
+- **デフォルト値**：`false`
+
+### author
+
+- **説明**：開発者名。
+- **デフォルト値**：`null`
+
+### kotlin
+
+- **説明**：Kotlin モードを有効にするかどうか。
+- **デフォルト値**：`false`
+
+### swagger2
+
+- **説明**：Swagger2 モードを有効にするかどうか。
+- **デフォルト値**：`false`
+
+### activeRecord
+
+- **説明**：ActiveRecord モードを有効にするかどうか。
+- **デフォルト値**：`false`
+
+### baseResultMap
+
+- **説明**：BaseResultMap を有効にするかどうか。
+- **デフォルト値**：`false`
+
+### baseColumnList
+
+- **説明**：baseColumnList を有効にするかどうか。
+- **デフォルト値**：`false`
+
+### dateType
+
+- **説明**：時間タイプ対応戦略。
+- **デフォルト値**：`TIME_PACK`
+
+### entityName
+
+- **説明**：エンティティ命名方法で、`%s` はプレースホルダーです。
+- **デフォルト値**：`null`
+- **例**：`%sEntity` は `UserEntity` となります
+
+### mapperName
+
+- **説明**：Mapper 命名方法で、`%s` はプレースホルダーです。
+- **デフォルト値**：`null`
+- **例**：`%sDao` は `UserDao` となります
+
+### xmlName
+
+- **説明**：MapperXML命名方法で、`%s`はプレースホルダーです。
+- **デフォルト値**：`null`
+- **例**：`%sDao` は `UserDao.xml` となります
+
+### serviceName
+
+- **説明**：Service 命名方法で、`%s` はプレースホルダーです。
+- **デフォルト値**：`null`
+- **例**：`%sBusiness` は `UserBusiness` となります
+
+### serviceImplName
+
+- **説明**：Serviceimpl命名方法で、`%s`はプレースホルダーです。
+- **デフォルト値**：`null`
+- **例**：`%sBusinessImpl` は `UserBusinessImpl` となります
+
+### controllerName
+
+- **説明**：Controller 命名方法で、`%s` はプレースホルダーです。
+- **デフォルト値**：`null`
+- **例**：`%sAction` は `UserAction` となります
+
+### idType
+
+- **説明**：生成される主キーの ID タイプを指定します。
+- **デフォルト値**：`null`
+
+### 設定例
+
+```java
+GlobalConfig globalConfig = new GlobalConfig();
+globalConfig.setOutputDir("src/main/java") // 出力ディレクトリを設定
+    .setFileOverride(true) // 既存のファイルを上書きするかどうかを設定
+    .setOpen(false) // 出力ディレクトリを自動的に開かない
+    .setEnableCache(true) // XML にセカンダリキャッシュ設定を追加
+    .setAuthor("Your Name") // 開発者名を設定
+    .setKotlin(false) // Kotlin モードを無効化
+    .setSwagger2(true) // Swagger2 モードを有効化
+    .setActiveRecord(false) // ActiveRecord モードを無効化
+    .setBaseResultMap(true) // BaseResultMap を有効化
+    .setBaseColumnList(true) // baseColumnList を有効化
+    .setDateType(DateType.TIME_PACK) // 時間タイプ対応戦略を設定
+    .setEntityName("%sEntity") // エンティティ命名方法を設定
+    .setMapperName("%sDao") // Mapper 命名方法を設定
+    .setXmlName("%sDao") // Mapper XML 命名方法を設定
+    .setServiceName("%sService") // Service 命名方法を設定
+    .setServiceImplName("%sServiceImpl") // Serviceimpl 命名方法を設定
+    .setControllerName("%sController") // Controller 命名方法を設定
+    .setIdType(IdType.AUTO); // 主キーIDタイプをオートインクリメントに設定
+```
+
+この例では、グローバル戦略を設定し、出力ディレクトリ、ファイルの上書き、開発者情報などを設定し、さまざまな命名方法と主キー ID タイプを設定します。これらの設定は生成されるコードの構造と内容に影響します。
+
+プロジェクトの要件や好みに応じて、これらの設定パラメータを調整し、生成されるコードが期待どおりになるようにしてください。たとえば、エンティティクラス名を `Entity` で終わらせたい場合は、`entityName` を `%sEntity` に設定します。生成される XML ファイルにセカンドレベルキャッシュの設定を含めたい場合は、`enableCache` を `true` に設定してください。
+
+
+## インジェクション設定（injectionConfig）詳細
+
+インジェクション設定を使用することで、開発者はコードジェネレーターの挙動をカスタマイズできます。たとえば、カスタム返却設定、出力ファイルの指定、ファイル生成ロジックの定義などが可能です。これらの設定により、コードジェネレーターはより複雑なプロジェクト要件にも柔軟に対応できるようになります。
+
+### map
+
+- **説明**：カスタム返却設定 Map オブジェクトです。テンプレート内では `cfg.xxx` の形式で参照できます。
+- **用途**：テンプレートでカスタム設定情報にアクセスするために使用されます。
+
+### fileOutConfigList
+
+- **説明**：出力ファイルをカスタマイズします。`FileOutConfig` を設定することで、テンプレートファイルと出力先ファイルを指定し、カスタムファイルの生成を実現します。
+- **用途**：標準的でない形式のファイルを生成したり、特定のディレクトリにファイルを出力したりする場合に使用します。
+
+### fileCreate
+
+- **説明**：カスタムファイル作成判断を実現するために使用されます。`IFileCreate` インターフェースを実装します。
+- **用途**：特定のクラスのファイルを上書きするかどうかの判定、またはファイル差分アルゴリズム（`merge`）の実装に使用されます。
+
+### initMap
+
+- **説明**：カスタム Map オブジェクトを注入します。 `setMap` メソッドを通じて設定する必要があります。
+- **用途**：コードジェネレーターに追加の設定情報を注入するために使用されます。
+
+### 設定例
+
+```java
+InjectionConfig injectionConfig = new InjectionConfig() {
+    @Override
+    public void initMap() {
+        // カスタム Map オブジェクトを作成し、テンプレートで cfg.xxx を通して参照できるようにします
+        this.setMap(new HashMap<String, Object>() {{
+            put("author", "Your Name");
+            put("project", "MyBatis-Plus Code Generator");
+        }});
+    }
+
+    @Override
+    public FileOutConfig getFileOutConfig(TableInfo tableInfo) {
+        // カスタムファイル出力設定を返します
+        return new FileOutConfig(tableInfo.getEntityName()) {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                // カスタムファイル出力パスを返します
+                return "src/main/java/" + tableInfo.getEntityName() + ".java";
+            }
+        };
+    }
+
+    @Override
+    public IFileCreate getFileCreate() {
+        // カスタムファイル作成ロジックを返します
+        return new IFileCreate() {
+            @Override
+            public boolean isCreate(File file) {
+                // カスタムファイル作成判断ロジックを実装します
+                return !file.exists() || file.length() == 0;
+            }
+        };
+    }
+};
+```
+
+この例では、インジェクションの設定を行い、カスタム Map オブジェクト、カスタム出力ファイル設定、カスタムファイル作成ロジックを実装します。
+
+- `initMap` メソッド内では、著者名やプロジェクト名を含む Map オブジェクトを作成しており、これらの情報はテンプレート内で `cfg.xxx` の形式で参照できます。
+- `getFileOutConfig` メソッドでは、出力ファイルのパスを指定するカスタムの `FileOutConfig` オブジェクトを返します。
+- `getFileCreate` メソッドでは、ファイルの生成が必要かどうかを判断するカスタムの `IFileCreate` 実装を返します。
+
+プロジェクトの要件に応じて、これらの設定パラメータを調整し、生成されるコードが期待どおりになるようにしてください。たとえば、テンプレート内で追加の設定情報にアクセスしたい場合は、`initMap` メソッド内にその情報を追加してください。特定の形式のファイルを生成する必要がある場合は、`getFileOutConfig` メソッドで対応するテンプレートと出力パスを指定します。ファイルの生成ロジックをカスタマイズしたい場合は、`getFileCreate` メソッド内で独自の判定処理を実装してください。
