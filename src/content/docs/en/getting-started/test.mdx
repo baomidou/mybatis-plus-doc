@@ -1,0 +1,51 @@
+---
+title: Unit Testing
+sidebar:
+  order: 4
+---
+
+import { Steps, LinkCard } from '@astrojs/starlight/components';
+import LastedDependency from '@/components/LastedDependency.astro';
+
+It will automatically import the configurations required for MyBatis-Plus testing. You can quickly configure test classes using the `@MybatisPlusTest` annotation.
+
+## Sample Project
+
+<LinkCard
+  title="mybatis-plus-boot-starter-test"
+  description="Source code related to the MyBatis-Plus quick testing feature."
+  href="https://github.com/baomidou/mybatis-plus/tree/master/mybatis-plus-boot-starter-test"
+/>
+
+## Usage Guide
+
+
+<Steps>
+
+    1. Add Test Dependency
+        <LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-boot-starter-test"/>
+
+    2. Write Test Cases
+
+        ```java
+        import org.junit.jupiter.api.Test;
+        import org.springframework.beans.factory.annotation.Autowired;
+
+        import static org.assertj.core.api.Assertions.assertThat;
+
+        @MybatisPlusTest
+        class MybatisPlusSampleTest {
+
+            @Autowired
+            private SampleMapper sampleMapper;
+
+            @Test
+            void testInsert() {
+                Sample sample = new Sample();
+                sampleMapper.insert(sample);
+                assertThat(sample.getId()).isNotNull();
+            }
+        }
+        ```
+
+</Steps>
