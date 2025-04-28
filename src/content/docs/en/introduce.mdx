@@ -1,0 +1,60 @@
+---
+title: Introduction
+---
+
+import SupportDb from '@/components/SupportDb.astro';
+import Partner from '@/components/Partner.astro';
+
+[MyBatis-Plus](https://github.com/baomidou/mybatis-plus) (MP) is an enhancement tool for [MyBatis](https://www.mybatis.org/mybatis-3/) (MB). It provides enhancements without altering the core MB functionalities, and is born to simplify development and improve efficiency.
+
+:::tip[Vision]
+Our vision is to be the best partner for MyBatis, just like Player 1 and Player 2 in **Contra**. Like a dynamic duo, doubling efficiency.
+:::
+
+<Partner />
+
+## Features
+
+- **Non-invasive**: Only enhances, does not change. Introducing MP won't affect existing projects, offering a seamless integration.
+- **Low overhead**: Automatically injects basic CRUD operations upon startup with virtually no performance loss, allowing direct object-oriented operations.
+- **Powerful CRUD operations**: Built-in generic mapper and service enable most CRUD operations for single tables with minimal configuration. Includes a powerful query builder to meet various usage needs.
+- **Supports lambda expressions**: Conveniently write various query conditions using lambda expressions, eliminating worries about mistyping field names.
+- **Supports automatic primary key generation**: Supports up to 4 primary key strategies (including a distributed unique ID generator - Sequence), freely configurable, perfectly solving primary key issues.
+- **Supports active record pattern**: Entity classes can perform powerful CRUD operations simply by extending the model class.
+- **Supports custom global generic operations**: Supports global generic method injection (Write once, use anywhere).
+- **Built-in code generator**: Use code or a Maven plugin to quickly generate code for mapper, model, service, and controller layers. Supports template engines and numerous custom configurations.
+- **Built-in pagination plugin**: Based on MyBatis physical pagination. Developers don't need to worry about specific operations; after configuring the plugin, writing pagination code is like a normal list query.
+- **Pagination plugin supports multiple databases**: Supports MySQL, MariaDB, Oracle, DB2, H2, HSQL, SQLite, PostgreSQL, SQL Server, and more.
+- **Built-in performance analysis plugin**: Can output SQL statements and their execution time. Recommended to enable this feature during development and testing to quickly identify slow queries.
+- **Built-in global interception plugin**: Provides intelligent analysis and blocking for full-table delete and update operations. Also allows custom interception rules to prevent accidental operations.
+
+## Supported Databases
+
+<SupportDb />
+
+:::tip
+Any database that can perform CRUD operations using MyBatis and supports standard SQL should be compatible with MyBatis-Plus. Specific support is listed above.
+
+If your desired database type is not in the list above, feel free to submit a PR with your database dialect.
+:::
+
+## Framework Structure
+
+![framework](/images/content/mybatis-plus-framework.jpg)
+
+## Code Hosting
+
+- **[Github](https://github.com/baomidou/mybatis-plus)**
+- **[Gitee](https://gitee.com/baomidou/mybatis-plus)**
+
+## Contributing
+
+We welcome contributions from everyone to improve MyBatis-Plus. We look forward to your PRs!
+
+- **Contribute Code**: Code repository [MyBatis-Plus](https://github.com/baomidou/mybatis-plus). Feel free to submit Issues or Pull Requests.
+- **Maintain Documentation**: Documentation repository [MyBatis-Plus-Doc](https://github.com/baomidou/mybatis-plus-doc). Welcome to participate in translation and revision.
+- **Authorization Description**: [MyBatis-Plus LOGO Official Authorization Communication Email](/document/logo-request.html)
+
+## Tutorials, Examples, User List
+
+Please refer to [Awesome-MyBatis-Plus](https://github.com/baomidou/awesome-mybatis-plus) for details.
