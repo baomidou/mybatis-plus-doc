@@ -792,15 +792,15 @@ compileKotlin {
 
 </Accordion>
 
-<Accordion client:load title={'Encountered unexpected token: "\n\n\n" <ST_SEMICOLON>'}>
+<Accordion client:load title={'Encountered unexpected token: "\n\n\n" 或 Could not set parameters for mapping'}>
 
-- 原因：jsqlParser从4.9开始，连续的换行会认为是结束语句 
+- 原因：jsqlParser4.9，连续的换行会认为是结束语句会抛出Encountered unexpected token解析错误，5.0开始如果碰到连续\n\n会把后面的语句截断导致在mybatis层出现Could not set parameters for mapping错误。
 
   参考链接: https://github.com/JSQLParser/JSqlParser/issues/1988
 
   mybatis-plus自3.5.3.2开始处理了框架内置注入的sql换行处理，但项目里自行编写的得语句需要自行处理。
 
-- 注意: 3.5.10和3.5.10.1版本虽然处理项目里的换行情况，但对项目里使用单行注释(`--`或`#`这种语句处理无法支持)，3.5.11版本后将不再处理。
+- 注意: 3.5.10和3.5.10.1版本虽然处理项目里的换行情况，但对项目里使用单行注释(`--`或`#`这种语句处理无法支持)，3.5.11版本后将不再处理，如果你需要处理连续换行语句可通过下面的方式进行处理。
 
 方式一: 
 ```java
