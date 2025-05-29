@@ -28,7 +28,7 @@ MyBatis-Plus 的逻辑删除功能会在执行数据库操作时自动处理逻�
 
 ## 使用方法
 
-### 步骤 1: 配置全局逻辑删除属性
+### 方法 1: 配置全局逻辑删除属性
 
 在 `application.yml` 中配置 MyBatis-Plus 的全局逻辑删除属性：
 
@@ -37,11 +37,11 @@ mybatis-plus:
   global-config:
     db-config:
       logic-delete-field: deleted # 全局逻辑删除字段名
-      logic-delete-value: 1 # 逻辑已删除值
-      logic-not-delete-value: 0 # 逻辑未删除值
+      logic-delete-value: 1 # 逻辑已删除值。可选，默认值为 1
+      logic-not-delete-value: 0 # 逻辑未删除值。可选，默认值为 0
 ```
 
-### 步骤 2: 在实体类中使用 `@TableLogic` 注解
+### 方法 2: 如不想使用全局配置，可以在实体类中使用 `@TableLogic` 注解，对类单独进行配置
 
 在实体类中，对应数据库表的逻辑删除字段上添加 `@TableLogic` 注解：
 
@@ -55,7 +55,7 @@ public class User {
     private Integer deleted;
 }
 ```
-
+同样，逻辑未删除值默认为 0，逻辑已删除值默认为 1。这两个值可以通过设置 `@TableLogic` 注解的 `value` 属性和 `delval` 属性的值来进行修改。
 ## 常见问题解答
 
 :::note[注意事项]
