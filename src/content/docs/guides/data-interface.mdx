@@ -1179,7 +1179,7 @@ UPDATE user SET email = ? WHERE id = 1
 ```java
 // 根据 ID 查询
 T selectById(Serializable id);
-// 根据 entity 条件，查询一条记录
+// 根据 entity 条件，查询一条记录。结果集，如果是多个会抛出异常，随机取一条加上限制条件 wrapper.last("LIMIT 1")
 T selectOne(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
 // 查询（根据ID 批量查询）
