@@ -647,7 +647,7 @@ select
         array_to_string(ARRAY_AGG(name), ',')
     </otherwise>
 </choose>
-form user
+from user
 </select>
 ```
 
@@ -655,10 +655,10 @@ form user
 
 ```xml
 <select id="selectAllNames" databaseId="mysql" resultType="java.lang.String">
-     select GROUP_CONCAT(name SEPARATOR ',') form user
+     select GROUP_CONCAT(name SEPARATOR ',') from user
 </select>
 <select id="selectAllNames" databaseId="pgsql" resultType="java.lang.String">
-     select array_to_string(ARRAY_AGG(name), ',') form user
+     select array_to_string(ARRAY_AGG(name), ',') from user
 </select>
 ```
 
