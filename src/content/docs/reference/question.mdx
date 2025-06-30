@@ -4,13 +4,9 @@ sidebar:
   order: 6
 ---
 
-import Accordion from '@/components/Accordion.svelte';
-
 本文档收录了 MyBatis-Plus 使用时遇到的各种常见问题，如果您在使用 MyBatis-Plus 的时候遇到了问题，请您优先查看本文档。
 
-<br/>
-
-<Accordion client:load title={'如何排除非表中字段？'}>
+## 如何排除非表中字段？
 
 以下三种方式选择一种即可：
 
@@ -33,24 +29,18 @@ import Accordion from '@/components/Accordion.svelte';
   private String noColumn;
   ```
 
-</Accordion>
-
-
-<Accordion client:load title={'如何排除实体父类属性？'}>
+## 如何排除实体父类属性？
 
 使用 `transient` 修饰需要排除的父类属性
 
-``` java
+```java
 /**
  * 忽略父类 createTime 字段映射
  */
 private transient String createTime;
 ```
 
-</Accordion>
-
-
-<Accordion client:load title={'出现 `Invalid bound statement (not found)` 异常'}>
+## 出现 `Invalid bound statement (not found)` 异常
 
 出现该异常通常是由于配置不正确或者 Mapper 没有被正确扫描到导致的。解决方案如下：
 
@@ -84,10 +74,8 @@ private transient String createTime;
 - 检查是否自定义了 SqlInjector，是否复写了 `getMethodList()` 方法。在该方法中是否注入了你需要的方法（可参考 DefaultSqlInjector）。
 - IDEA 默认的 build 步骤可能会导致 mapper 文件无法正常编译到对应的 resources 文件夹中。请检查 build 后相关资源文件夹是否有对应的 XML 文件。如果没有，请调整 IDEA 的 build 设置。推荐调整为 Maven 或 Gradle 的 build。
 
-</Accordion>
 
-
-<Accordion client:load title={'自定义 SQL 无法执行'}>
+## 自定义 SQL 无法执行
 
 问题描述：指在 XML 中里面自定义 SQL，却无法调用。本功能同 `MyBatis` 一样需要配置 XML 扫描路径：
 
@@ -136,10 +124,8 @@ mybatis-plus:
 注意！Maven 多模块项目的扫描路径需以 `classpath*:` 开头 （即加载多个 jar 包下的 XML 文件）
 :::
 
-</Accordion>
 
-
-<Accordion client:load title={'启动异常时异常问题排查'}>
+## 启动异常时异常问题排查
 
 - 异常一：
 
@@ -173,20 +159,17 @@ mybatis-plus:
 
   版本引入问题：3.4.1 版本里没有，3.4.2 里面才有！
 
-</Accordion>
 
-
-<Accordion client:load title={'关于 Long 型主键填充不生效的问题'}>
+## 关于 Long 型主键填充不生效的问题
 
 检查是不是用了`long`而不是`Long`！
+
 :::tip
 `long`类型默认值为 0，而 MP 只会判断是否为 `null`
 :::
 
-</Accordion>
 
-
-<Accordion client:load title={'生成主键太长导致 JS 精度丢失'}>
+## 生成主键太长导致 JS 精度丢失
 
 JavaScript 无法处理 Java 的长整型 Long 导致精度丢失，具体表现为主键最后两位永远为 0，解决思路： Long 转为 String 返回
 
@@ -228,10 +211,8 @@ JavaScript 无法处理 Java 的长整型 Long 导致精度丢失，具体表现
 
 - 比较一般的处理方式：增加一个 `public String getIdStr()` 方法，前台获取 `idStr`
 
-</Accordion>
 
-
-<Accordion client:load title={'插入或更新的字段有 空字符串 或者 `null`'}>
+## 插入或更新的字段有 空字符串 或者 `null`
 
 FieldStrategy 有三种策略：
 
@@ -277,10 +258,8 @@ FieldStrategy 有三种策略：
   
   ```
 
-</Accordion>
 
-
-<Accordion client:load title={'字段类型为 `bit`、`tinyint(1)` 时映射为 `boolean` 类型'}>
+## 字段类型为 `bit`、`tinyint(1)` 时映射为 `boolean` 类型
 
 默认mysql驱动会把tinyint(1)字段映射为boolean: 0=false, 非0=true
 
@@ -293,24 +272,16 @@ MyBatis 是不会自动处理该映射，如果不想把tinyint(1)映射为boole
 jdbc:mysql://127.0.0.1:3306/mp?tinyInt1isBit=false
 ```
 
-</Accordion>
 
-
-<Accordion client:load title={'出现 2 个 `limit` 语句'}>
+## 出现 2 个 `limit` 语句
 
 原因：配了 2 个分页拦截器! 检查配置文件或者代码，只留一个！
 
-</Accordion>
-
-
-<Accordion client:load title={'insert 后如何返回主键'}>
+## insert 后如何返回主键
 
 insert 后主键会自动 set 到实体的 ID 字段，所以你只需要 getId() 就好
 
-</Accordion>
-
-
-<Accordion client:load title={'MP 如何查指定的几个字段'}>
+## MP 如何查指定的几个字段
 
 EntityWrapper.sqlSelect 配置你想要查询的字段
 
@@ -338,17 +309,12 @@ mapper.selectList(
 
 ```
 
-</Accordion>
 
-
-<Accordion client:load title={'Mapper 层二级缓存问题'}>
+## Mapper 层二级缓存问题
 
 我们建议缓存放到 service 层，你可以自定义自己的 BaseServiceImpl 重写注解父类方法，继承自己的实现。
 
-</Accordion>
-
-
-<Accordion client:load title={'Mapper 层二级缓存刷新问题'}>
+## Mapper 层二级缓存刷新问题
 
 如果你按照 mybatis 的方式配置第三方二级缓存，并且使用 2.0.9 以上的版本，则会发现自带的方法无法更新缓存内容，那么请按如下方式解决（二选一）：
 
@@ -363,10 +329,8 @@ public interface DataResourceMapper extends BaseMapper<DataResource>{}
 <cache-ref namespace="com.mst.cms.dao.DataResourceMapper"></cache-ref>
 ```
 
-</Accordion>
 
-
-<Accordion client:load title={'`Cause: org.apache.ibatis.type.TypeException:Error setting null for parameter #1 with JdbcType OTHER`'}>
+## `Cause: org.apache.ibatis.type.TypeException:Error setting null for parameter #1 with JdbcType OTHER`
 
 > 配置 jdbcTypeForNull=NULL
 > Spring Bean 配置方式：
@@ -386,10 +350,8 @@ mybatis-plus:
     jdbc-type-for-null: 'null' 
 ```
 
-</Accordion>
 
-
-<Accordion client:load title={'无法通过 Page 对象在自定义 SQL 中传递参数'}>
+## 无法通过 Page 对象在自定义 SQL 中传递参数
 
 在自定义 SQL 中，由于 Page 对象继承自 RowBounds，在 Mapper 中无法直接获取。为了解决这个问题，请考虑以下替代方案：
 
@@ -398,10 +360,8 @@ mybatis-plus:
 
 这些方法可以帮助您在自定义 SQL 中正确传递参数，确保代码的顺利运行。
 
-</Accordion>
 
-
-<Accordion client:load title={'如何使用 Map 下划线自动转驼峰'}>
+## 如何使用 Map 下划线自动转驼峰
 
 当使用 `resultType="java.util.Map"` 时，您可以通过以下步骤在 Spring Boot 中实现下划线自动转换为驼峰：
 
@@ -419,10 +379,8 @@ public class MybatisConfigurationCustomizer {
 
 通过这样配置，您就可以实现自动将 Map 中的下划线转换为驼峰形式。这样，在 MyBatis 查询结果映射到 Map 对象时，键名会自动进行转换，使得您在代码中更加便捷地访问数据。
 
-</Accordion>
 
-
-<Accordion client:load title={'如何在 Wrapper 中使用 `limit` 限制 SQL'}>
+## 如何在 Wrapper 中使用 `limit` 限制 SQL
 
 您可以通过以下方式在 Wrapper 中使用 `limit` 限制 SQL 结果集：
 
@@ -433,10 +391,8 @@ wrapper.last("limit 1");
 
 这段代码会在 SQL 语句末尾添加 limit 1，以限制结果集返回的行数为 1。
 
-</Accordion>
 
-
-<Accordion client:load title={'为什么将通用的批量插入操作放在 Service 层处理'}>
+## 为什么将通用的批量插入操作放在 Service 层处理
 
 将通用的批量插入操作放在 Service 层处理有以下原因：
 
@@ -446,9 +402,7 @@ wrapper.last("limit 1");
 
 如果您想使用单条 SQL 插入方案，可以自行注入选装方法 [insertbatchsomecolumn](https://baomidou.com/pages/49cc81/#insertbatchsomecolumn)，或查看[SQL 注入器](https://baomidou.com/pages/42ea4a/)中提供的方法。
 
-</Accordion>
-
-<Accordion client:load title={'3.x版本中数据库关键字处理方法'}>
+## 3.x版本中数据库关键字处理方法
 
 在 MyBatis Plus 3.x 中，不再提供自动识别关键字进行处理的功能。处理数据库关键字的方法有以下几种：
 
@@ -462,10 +416,8 @@ wrapper.last("limit 1");
 
 综上所述，为了避免出现问题，建议尽量避免在数据库设计中使用关键字。
 
-</Accordion>
 
-
-<Accordion client:load title={'MybatisPlusException: Your property named "xxx" cannot find the corresponding database column name!'}>
+## MybatisPlusException: Your property named "xxx" cannot find the corresponding database column name!
 
 针对 MyBatis Plus 3.1.1 及更高版本出现的问题：
 
@@ -475,10 +427,8 @@ wrapper.last("limit 1");
 
 解决方案：移除 dev-tools 插件。这样可以避免使用不同的类加载器加载 `.class`，从而解决该异常问题。
 
-</Accordion>
 
-
-<Accordion client:load title={'Error attempting to get column "create_time" from result set. Cause: java.sql.SQLFeatureNotSupportedException'}>
+## Error attempting to get column "create_time" from result set. Cause: java.sql.SQLFeatureNotSupportedException
 
 针对 MyBatis Plus 3.1.1 及更高版本出现的问题：
 
@@ -491,10 +441,8 @@ wrapper.last("limit 1");
 2. 如果无法升级 Druid 数据源，可以选择保持 MyBatis Plus 版本在 3.1.0 及之前的版本。
 3. 若要继续使用最新的 MyBatis Plus 版本，可以考虑更换其他兼容新版 JDBC 的数据源，以避免出现此异常。
 
-</Accordion>
 
-
-<Accordion client:load title={'升级 MyBatis Plus 到 3.1.1 及更高版本后，新日期类型无法映射报错'}>
+## 升级 MyBatis Plus 到 3.1.1 及更高版本后，新日期类型无法映射报错
 
 如果您将 MyBatis Plus 从 3.1.0 及以下版本升级到较高版本，且遇到新日期类型（如 LocalDateTime）无法映射的报错，可能是由于以下原因：
 
@@ -513,10 +461,8 @@ There is one backward incompatible changes since 3.5.0.
 - 升级您的 JDBC 驱动至支持 JDBC 4.2 API 的版本。
 - 如果无法升级 JDBC 驱动，可以考虑将 MyBatis Plus 版本回滚至 3.1.0 或之前的版本。
 
-</Accordion>
 
-
-<Accordion client:load title={'Failed to bind properties under "mybatis-plus.configuration.incomplete-result-maps[0].assistant.configuration.mapped-statements[0].parameter-map.parameter-mappings[0]" to org.apache.ibatis.mapping.ParameterMapping'}>
+## Failed to bind properties under "mybatis-plus.configuration.incomplete-result-maps[0].assistant.configuration.mapped-statements[0].parameter-map.parameter-mappings[0]" to org.apache.ibatis.mapping.ParameterMapping
 
 如果您在将 Spring Boot 版本从 2.2.0 升级到更高版本时遇到此问题，可能是由于以下原因：
 
@@ -528,10 +474,8 @@ There is one backward incompatible changes since 3.5.0.
 1. 将 Spring Boot 降级至 2.1.x 版本，或升级至 2.2.1 版本以上。建议直接升级至 Spring Boot 2.2.2 版本以获取更好的稳定性和修复。
    
 
-</Accordion>
 
-
-<Accordion client:load title={'分离打包部署出现 ClassNotFoundException'}>
+## 分离打包部署出现 ClassNotFoundException
 
 现象：在开发工具中运行没有问题，但是将项目打包部署到服务器后，执行 Lambda 表达式时出现 ClassNotFoundException。
 
@@ -541,10 +485,8 @@ There is one backward incompatible changes since 3.5.0.
 1. 去除 `spring-boot-maven-plugin` 插件进行打包，或者
 2. 升级至 MyBatis Plus 3.3.2 版本。您可以参考示例 [分离打包](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-assembly) 进行操作。
 
-</Accordion>
 
-
-<Accordion client:load title={'启用 MyBatis 内部日志记录'}>
+## 启用 MyBatis 内部日志记录
 
 您可以通过以下两种方式来启用 MyBatis 内部的日志记录：
 
@@ -574,10 +516,8 @@ logging:
 
 通过以上配置，您可以启用 MyBatis 内部的日志记录，并根据需要调整日志级别。
 
-</Accordion>
 
-
-<Accordion client:load title={'如何在 update 时对字段进行自增操作'}>
+## 如何在 update 时对字段进行自增操作
 
 如果您想要在更新操作时对某个字段进行自增操作，您可以使用 MyBatis Plus 提供的 `Wrapper` 进行更新。以下是一种可行的解决方案：
 
@@ -595,10 +535,8 @@ baseMapper.update(null, wrapper);
 
 这样可以在更新时对字段进行自增操作。请注意，需要在 `setSql` 方法中直接指定 SQL 更新语句。
 
-</Accordion>
 
-
-<Accordion client:load title={'如何全局处理数据库关键词'}>
+## 如何全局处理数据库关键词
 
 如果您想要全局处理数据库关键词，可以使用 MyBatis Plus 提供的全局配置。以下是配置示例（以 MySQL 为例）：
 
@@ -617,10 +555,8 @@ mybatis-plus:
 
 通过以上配置，您可以全局处理数据库关键词，确保生成的 SQL 语句不会受到关键词影响。
 
-</Accordion>
 
-
-<Accordion client:load title={'如何在 XML 中根据数据库类型选择不同的 SQL 片段'}>
+## 如何在 XML 中根据数据库类型选择不同的 SQL 片段
 
 如果您想要在 XML 中根据数据库类型选择不同的 SQL 片段，您可以使用 MyBatis Plus 提供的 `database-id` 参数。以下是配置示例（以 MySQL 为例）：
 
@@ -664,10 +600,8 @@ from user
 
 通过以上配置，您可以根据不同的数据库类型选择不同的 SQL 片段。
 
-</Accordion>
 
-
-<Accordion client:load title={'为何 MyBatis Plus 不支持复合主键，强制唯一 ID 问题解答'}>
+## 为何 MyBatis Plus 不支持复合主键，强制唯一 ID 问题解答
 
 MyBatis Plus 不支持复合主键并强制使用唯一的 ID，这是出于以下考虑：
 
@@ -683,10 +617,8 @@ MyBatis Plus 不支持复合主键并强制使用唯一的 ID，这是出于以�
 
 综上所述，虽然使用复合主键可以省去一个 ID 字段，但是这种做法的缺点大于优点，不建议也不推荐这样做。MyBatis Plus 坚持使用唯一的 ID，以保证数据管理的简单性、可维护性和性能。
 
-</Accordion>
 
-
-<Accordion client:load title={'项目启动速度缓慢'}>
+## 项目启动速度缓慢
 - 初始化默认雪花ID导致
 
   1. 查看本机hostname
@@ -706,15 +638,13 @@ MyBatis Plus 不支持复合主键并强制使用唯一的 ID，这是出于以�
   在java启动命令中指定 -Djava.security.egd=file:/dev/urandom把获取随机数的方式从 /dev/random改为/dev/urandom
 
   示例: java -Djava.security.egd=file:/dev/urandom -jar xxxx.jar
-</Accordion>
 
-<Accordion client:load title={'3.5.7+ 版本 Db.saveBatch 返回值一直为 false'}>
+## 3.5.7+ 版本 Db.saveBatch 返回值一直为 false
 
 - 原因：驱动配置不兼容
 > 解决方案：驱动连接去掉 `rewriteBatchedStatements=true` 配置
-</Accordion>
 
-<Accordion client:load title={'Page或List返回的结果集为null或者包含部分null元素'}>
+## Page或List返回的结果集为null或者包含部分null元素
 - 原因：mybatis默认情况下, 当返回行的所有列都是空时(含属性无法自动映射), 默认返回 null
 > 解决方案：配置returnInstanceForEmptyRow 为true
 ```yaml
@@ -722,9 +652,8 @@ mybatis-plus:
     configuration:
         return-instance-for-empty-row: true
 ```
-</Accordion>
 
-<Accordion client:load title={'当返回值为Map或List<Map>时,null值对应的key没有添加至Map里'}>
+## 当返回值为 Map 或 List&lt;Map&gt; 时，null 值对应的 key 没有添加至 Map 里
 
 - 原因：mybatis默认情况下, 当返回 null 时,不会调用put方法
 > 解决方案：配置callSettersOnNulls 为true
@@ -733,9 +662,8 @@ mybatis-plus:
     configuration:
         call-setters-on-nulls: true
 ```
-</Accordion>
 
-<Accordion client:load title={'如何重写BaseMapper方法'}>
+## 如何重写BaseMapper方法
 重写接口方法请区分default方法和抽象接口方法,重写的方法需要以最终调用的实际方法为准.
 
 抽象接口方法: 直接在XML重写此方法可完成
@@ -760,9 +688,7 @@ default <P extends IPage<User>> P selectPage(P page, @Param(Constants.WRAPPER) W
 }
 ```
 
-</Accordion>
-
-<Accordion client:load title={'Kotlin调用接口defalut方法出现 Invalid bound statement (not found)'}>
+## Kotlin调用接口defalut方法出现 Invalid bound statement (not found)
 
 - 原因：https://blog.jetbrains.com/kotlin/2020/07/kotlin-1-4-m3-generating-default-methods-in-interfaces/
 
@@ -790,9 +716,7 @@ compileKotlin {
 }
 ```
 
-</Accordion>
-
-<Accordion client:load title={'Encountered unexpected token: "\n\n\n" 或 Could not set parameters for mapping'}>
+## Encountered unexpected token: "\n\n\n" 或 Could not set parameters for mapping
 
 - 原因：jsqlParser4.9，连续的换行会认为是结束语句会抛出Encountered unexpected token解析错误，5.0开始如果碰到连续\n\n会把后面的语句截断导致在mybatis层出现Could not set parameters for mapping错误。
 
@@ -837,9 +761,8 @@ mybatis-plus:
     configuration:
         shrink-whitespaces-in-sql: true
 ```
-</Accordion>
 
-<Accordion client:load title={'代码生成器如何配置生成 XXXRepository '}>
+## 代码生成器如何配置生成 XXXRepository 
 
 后续不再维护Service与Repository，建议不要在继续使用，如果需要生成，请按如下步骤将service转换为repository。
 
@@ -861,6 +784,4 @@ generator.strategy(
         .build());
 generator.execute();
 ```
-
-</Accordion>
 
