@@ -1,0 +1,31 @@
+{
+  "targetLanguages": ["en", "ja"],
+  "frontmatterKeys": ["title", "description", "tagline"],
+  "sourceDir": "src/content/docs",
+  "excludeFiles": [
+    "404.md",
+    "index.mdx"
+  ],
+  "excludeDirs": [
+    "en",
+    "ja"
+  ],
+  "aiProvider": {
+    "service": "deepseek",
+    "model": "deepseek-chat",
+    "maxTokens": 4000,
+    "temperature": 0.1
+  },
+  "retryConfig": {
+    "maxRetries": 3,
+    "retryDelay": 1000
+  },
+  "cache": {
+    "enabled": true,
+    "cacheDir": "translation-plugin/cache"
+  },
+  "parallel": {
+    "enabled": true,
+    "maxConcurrency": 3
+  }
+}

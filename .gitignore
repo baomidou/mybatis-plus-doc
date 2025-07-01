@@ -24,3 +24,9 @@ package-lock.json
 
 # macOS-specific files
 .DS_Store
+
+# Translation plugin
+translation-plugin/cache/
+translation-plugin/logs/
+translation-plugin/temp/
+*.log
