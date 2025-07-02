@@ -2,9 +2,9 @@
 
 import { Command } from 'commander';
 import chalk from 'chalk';
-import { TranslationPlugin } from '../translation-plugin/src/translator.js';
-import { FileProcessor } from '../translation-plugin/src/file-processor.js';
-import { loadConfig } from '../translation-plugin/src/config.js';
+import { TranslationPlugin } from './src/translator.js';
+import { FileProcessor } from './src/file-processor.js';
+import { loadConfig } from './src/config.js';
 
 const program = new Command();
 
