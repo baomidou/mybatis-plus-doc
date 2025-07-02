@@ -74,7 +74,7 @@ ${document}
    - Git
    - GitHub
    - Gitee
-5. 保持所有 URL 链接、文件路径、代码示例不变。
+5. 保持所有 URL 链接、文件路径、代码示例不变，但如果 URL 链接中是指向其他文档的，需要添加当前多语言路由。
 6. 保持 Markdown 格式标记（如 #、**、*、[]()、![](） 不变。
 7. 保持 MDX 组件调用（如 <Card>、<CardGrid>、<LinkCard> 等）不变。
 8. 翻译文档中的其他文本内容，确保翻译自然流畅，符合目标语言的表达习惯。
@@ -149,7 +149,7 @@ export function generateBodySegmentTranslationPrompt(targetLanguage, segment, se
    - Git
    - GitHub
    - Gitee
-4. 保持所有 URL 链接、文件路径、代码示例不变。
+4. 保持所有 URL 链接、文件路径、代码示例不变，但如果 URL 链接中是指向其他文档的，需要添加当前多语言路由。
 5. 保持 Markdown 格式标记（如 #、**、*、[]()、![](） 不变。
 6. 保持 MDX 组件调用（如 <Card>、<CardGrid>、<LinkCard> 等）不变。
 7. 翻译文档中的其他文本内容，确保翻译自然流畅，符合目标语言的表达习惯。

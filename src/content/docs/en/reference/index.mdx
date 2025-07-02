@@ -1,0 +1,757 @@
+---
+title: Using Configuration
+sidebar:
+  order: 1
+---
+import Badge from "@/components/Badge.astro";
+
+MyBatis-Plus offers a rich set of configuration options to meet the needs of different users. Among these configurations, some are inherited from the native configurations supported by MyBatis, while others are extended configurations unique to MyBatis-Plus.
+
+## Usage
+
+### Spring Boot Configuration
+
+In a Spring Boot project, you can configure MyBatis-Plus through the `application.yml` or `application.properties` file.
+
+```yaml
+mybatis-plus:
+  configuration:
+    # MyBatis configuration
+    map-underscore-to-camel-case: true
+  global-config:
+    # Global configuration
+    db-config:
+      # Database configuration
+      id-type: auto
+```
+
+### Spring MVC Configuration  
+
+In traditional Spring MVC projects, MyBatis-Plus can be configured via XML configuration files.  
+
+```xml
+<bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="mapperLocations" value="classpath*:mapper/**/*.xml"/>
+    <property name="typeAliasesPackage" value="com.your.domain"/>
+    <!-- Other configurations -->
+</bean>
+```
+
+## Base
+
+### configLocation
+
+- **Type**: `String`
+- **Default**: `null`
+
+Specifies the location of the MyBatis configuration file. If there is a separate MyBatis configuration file, its path should be configured in `configLocation`.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  config-location: classpath:/mybatis-config.xml
+```
+
+### mapperLocations
+
+- **Type**: `String[]`
+- **Default**: `["classpath*:/mapper/**/*.xml"]`
+
+Specifies the location of the XML files corresponding to MyBatis Mappers. If you have custom methods in your Mapper, this configuration is required.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**.xml
+```
+
+:::note
+For Maven multi-module projects, the scan path should start with `classpath*:` to load XML files from multiple JAR packages.
+:::
+
+### typeAliasesPackage  
+
+- **Type**: `String`  
+- **Default**: `null`  
+
+Specifies the package scan path for MyBatis type aliases, used to register aliases for classes in the package. After registration, the class name can be used directly in the Mapper XML files without the need for a fully qualified class name.  
+
+**Configuration Example**:  
+
+```yaml  
+mybatis-plus:  
+  type-aliases-package: com.your.domain  
+```
+
+### typeAliasesSuperType
+
+- **Type**: `Class<?>`
+- **Default**: `null`
+
+Used together with `typeAliasesPackage`, only scans subclasses of the specified parent class.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  type-aliases-super-type: com.your.domain.BaseEntity
+```
+
+### typeHandlersPackage
+
+- **Type**: `String`
+- **Default**: `null`
+
+Specifies the TypeHandler scan path for registering custom type converters.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  type-handlers-package: com.your.typehandlers
+```
+
+:::tip
+TypeHandler is used for custom type conversion.
+:::
+
+### ~~typeEnumsPackage~~
+
+- **Type**: `String`
+- **Default Value**: `null`
+
+Starting from version 3.5.2, this configuration is invalid. The general enum feature can be used without any configuration.
+
+### checkConfigLocation <Badge text="Spring Boot Only" type="error"/>
+
+- **Type**: `boolean`
+- **Default**: `false`
+
+Specifies whether to check for the existence of MyBatis XML files during startup. By default, no check is performed.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  check-config-location: true
+```
+
+### executorType <Badge text="Spring Boot Only" type="error"/>
+
+- **Type**: `ExecutorType`
+- **Default**: `simple`
+
+Specifies the executor type for MyBatis, including `SIMPLE`, `REUSE`, and `BATCH`.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  executor-type: reuse
+```
+
+### configurationProperties
+
+- **Type**: `Properties`
+- **Default**: `null`
+
+Specifies externalized MyBatis Properties configuration, used to extract configurations for deployment across different environments.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  configuration-properties: classpath:/mybatis-properties.properties
+```
+
+### configuration
+
+- **Type**: `Configuration`
+- **Default**: `null`
+
+Native MyBatis supported configurations. For details, please refer to [Configuration](#Configuration).
+
+### globalConfig
+
+- **Type**: `com.baomidou.mybatisplus.core.config.GlobalConfig`
+- **Default**: `GlobalConfig::new`
+
+Global strategy configuration for MyBatis-Plus. For details, refer to [GlobalConfig](#GlobalConfig).
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: tbl_
+      id-type: auto
+```
+
+## Configuration  
+
+MyBatis-Plus's `Configuration` inherits from the native MyBatis-supported configuration, which means you can configure it either through MyBatis XML configuration files or via Spring Boot or Spring MVC configuration files.
+
+### mapUnderscoreToCamelCase
+
+- **Type**: `boolean`
+- **Default**: `true`
+
+Enables automatic camel case naming convention mapping, which converts classic database column names like A_COLUMN (underscore naming) to classic Java property names like aColumn (camel case naming).
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+```
+
+:::tip
+In MyBatis-Plus, this property will also be used to generate the final SQL's select body. If your database naming follows the convention, there is no need to specify the database field name using the `@TableField` annotation.
+:::
+
+### defaultEnumTypeHandler
+
+- **Type**: `Class<? extends TypeHandler>`
+- **Default Value**: `org.apache.ibatis.type.EnumTypeHandler`
+
+The default enum type handler. If this property is configured, all enums will be processed using the specified handler.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  configuration:
+    default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
+```
+
+:::tip
+MyBatis-Plus supports multiple enum handling methods, including storing enum names, indices, or custom processing. Starting from version 3.5.2, the default enum handler is `CompositeEnumTypeHandler`, which automatically selects the appropriate processing method based on whether the enum is a generic enum.
+
+- org.apache.ibatis.type.EnumTypeHandler: Stores the enum name
+- org.apache.ibatis.type.EnumOrdinalTypeHandler: Stores the enum index
+- com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler: The enum class must implement the `IEnum` interface or have fields annotated with `@EnumValue` (versions below 3.1.2 used `EnumTypeHandler`)
+- ~~com.baomidou.mybatisplus.extension.handlers.EnumAnnotationTypeHandler: Enum class fields must be annotated with `@EnumValue`~~
+
+Starting from version 3.5.2, the default enum handler is `CompositeEnumTypeHandler`, which internally uses `MybatisEnumTypeHandler` to process enums defined as MyBatis-Plus generic enums (those implementing `IEnum` or annotated with `EnumValue`).
+
+For other enums, the internal property `defaultEnumTypeHandler` (defaulting to `org.apache.ibatis.type.EnumTypeHandler`) is used for processing.
+
+This configuration only modifies the value of `CompositeEnumTypeHandler#defaultEnumTypeHandler`.
+:::
+
+### aggressiveLazyLoading  
+
+- **Type**: `boolean`  
+- **Default**: `true`  
+
+When set to `true`, lazy-loaded objects may be fully loaded by any lazy property. Otherwise, each property is loaded on demand. Must be used in conjunction with `lazyLoadingEnabled`.  
+
+**Configuration Example**:  
+
+```yaml  
+mybatis-plus:  
+  configuration:  
+    aggressive-lazy-loading: false  
+```
+
+### autoMappingBehavior
+
+- **Type**: `AutoMappingBehavior`
+- **Default**: `partial`
+
+MyBatis auto-mapping strategy. This configuration specifies whether and how MyBatis should automatically map database table fields to object properties.
+
+- AutoMappingBehavior.NONE: Disables auto-mapping
+- AutoMappingBehavior.PARTIAL: Only auto-maps non-nested resultMap
+- AutoMappingBehavior.FULL: Auto-maps all resultMap
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  configuration:
+    auto-mapping-behavior: full
+```
+
+### autoMappingUnknownColumnBehavior
+
+- **Type**: `AutoMappingUnknownColumnBehavior`
+- **Default**: `NONE`
+
+The handling strategy for unknown columns or properties during MyBatis auto-mapping. This configuration specifies how MyBatis should handle unknown columns or properties encountered during the auto-mapping process.
+
+- AutoMappingUnknownColumnBehavior.NONE: Take no action (default)
+- AutoMappingUnknownColumnBehavior.WARNING: Log relevant warning messages
+- AutoMappingUnknownColumnBehavior.FAILING: Treat as a mapping failure and throw an exception with detailed information
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  configuration:
+    auto-mapping-unknown-column-behavior: warning
+```
+
+### localCacheScope
+
+- **Type**: `String`
+- **Default**: `SESSION`
+
+MyBatis first-level cache, defaults to SESSION.
+
+- SESSION: Session-level cache. The same query statement within the same Session will not query the database again.
+- STATEMENT: Disables the first-level cache.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  configuration:
+    local-cache-scope: statement
+```
+
+:::note
+In a monolithic architecture (where only one program provides the same service), enabling the first-level cache does not affect business logic and only improves performance. In a microservices architecture, the first-level cache should be disabled because: If Service1 queries data and Service2 modifies the data, Service1 may retrieve stale data upon subsequent queries.
+:::
+
+### cacheEnabled  
+
+- **Type**: `boolean`  
+- **Default**: `true`  
+
+Whether to enable MyBatis second-level caching.  
+
+**Configuration Example**:  
+
+```yaml  
+mybatis-plus:  
+  configuration:  
+    cache-enabled: false  
+```
+
+### callSettersOnNulls
+
+- **Type**: `boolean`
+- **Default**: `false`
+
+Specifies whether to call the Setter method of the mapped object (or the put method for Map objects) when the value in the result set is null. Typically used for scenarios involving `Map.keySet()` dependencies or null value initialization.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  configuration:
+    call-setters-on-nulls: true
+```
+
+:::note
+Primitive types (int, boolean, etc.) cannot be set to null.
+:::
+
+### configurationFactory  
+
+- **Type**: `Class<?>`  
+- **Default**: `null`  
+
+Specifies a factory class that provides Configuration instances. The instances produced by this factory will be used to load lazy-loaded property values for deserialized objects. The factory class must contain a signature method `static Configuration getConfiguration()`.  
+
+**Configuration Example**:  
+
+```yaml  
+mybatis-plus:  
+  configuration:  
+    configuration-factory: com.your.config.MyConfigurationFactory  
+```
+
+## GlobalConfig  
+
+`GlobalConfig` is a global strategy configuration provided by MyBatis-Plus, allowing developers to customize the behavior of MyBatis-Plus globally.
+
+### banner  
+
+- **Type**: `boolean`  
+- **Default**: `true`  
+
+Controls whether to print the MyBatis-Plus LOGO in the console.  
+
+**Configuration Example**:  
+
+```yaml  
+mybatis-plus:  
+  global-config:  
+    banner: false  
+```
+
+### enableSqlRunner  
+
+- **Type**: `boolean`  
+- **Default**: `false`  
+
+Controls whether to initialize `SqlRunner` (`com.baomidou.mybatisplus.extension.toolkit.SqlRunner`).  
+
+**Configuration Example**:  
+
+```yaml  
+mybatis-plus:  
+  global-config:  
+    enable-sql-runner: true  
+```
+
+### sqlInjector
+
+- **Type**: `com.baomidou.mybatisplus.core.injector.ISqlInjector`
+- **Default**: `com.baomidou.mybatisplus.core.injector.DefaultSqlInjector`
+
+SQL injector, used to inject the general methods provided by MyBatis-Plus. Under Starter, `@Bean` injection is supported.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  global-config:
+    sql-injector: com.baomidou.mybatisplus.core.injector.DefaultSqlInjector
+```
+
+```java
+@Bean
+public MybatisPlusInterceptor mybatisPlusInterceptor() {
+    MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+    interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
+    return interceptor;
+}
+```
+
+### superMapperClass
+
+- **Type**: `Class`
+- **Default**: `com.baomidou.mybatisplus.core.mapper.Mapper.class`
+
+The parent class for generic Mapper. Only the child Mapper classes of this parent class will have the methods in `sqlInjector` injected.
+
+### metaObjectHandler
+
+- **Type**: `com.baomidou.mybatisplus.core.handlers.MetaObjectHandler`
+- **Default Value**: `null`
+
+Meta-object field filler controller, used for automatically populating fields of entity classes. Supports `@Bean` injection under Starter.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  global-config:
+    meta-object-handler: com.example.MyMetaObjectHandler
+```
+
+```java
+@Bean
+public MetaObjectHandler metaObjectHandler() {
+    return new MyMetaObjectHandler();
+}
+```
+
+### identifierGenerator<Badge text="Since 3.3.0" type="error"/>
+
+- **Type**: `com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator`
+- **Default**: `com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator`
+
+ID generator, used to generate unique identifiers for entity classes. Supports `@Bean` injection in Starter.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  global-config:
+    identifier-generator: com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator
+```
+
+```java
+@Bean
+public IdentifierGenerator identifierGenerator() {
+    return new CustomIdentifierGenerator();
+}
+```
+
+### dbConfig
+
+- **Type**: `com.baomidou.mybatisplus.core.config.GlobalConfig$DbConfig`
+- **Default**: `null`
+
+DB strategy configuration in MyBatis-Plus global strategy. For details, refer to [DbConfig](#DbConfig).
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: tbl_
+      id-type: ASSIGN_ID
+```
+
+## DbConfig
+
+### idType
+
+- Type: `com.baomidou.mybatisplus.annotation.IdType`
+- Default: `ASSIGN_ID`
+
+Global default primary key type.
+
+- `IdType.AUTO`: Uses database auto-increment ID as the primary key.
+- `IdType.NONE`: No specific generation strategy. If there are global configurations related to IdType, it will follow the global settings.
+- `IdType.INPUT`: The user manually sets the primary key value before inserting data.
+- `IdType.ASSIGN_ID`: Automatically assigns an `ID`, suitable for primary keys of type `Long`, `Integer`, or `String`. By default, it uses the snowflake algorithm implemented via `IdentifierGenerator`'s `nextId` method. <Badge text="@since 3.3.0"/>
+- `IdType.ASSIGN_UUID`: Automatically assigns a `UUID`, suitable for primary keys of type `String`. The default implementation is the `nextUUID` method of `IdentifierGenerator`. <Badge text="@since 3.3.0"/>
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+```
+
+### tablePrefix  
+
+- Type: `String`  
+- Default: `null`  
+
+Table name prefix  
+
+**Configuration example**:  
+
+```yaml  
+mybatis-plus:  
+  global-config:  
+    db-config:  
+      table-prefix: tbl_  
+```
+
+### schema  
+
+- Type: `String`  
+- Default: `null`  
+
+Specifies the name of the database Schema, usually no need to set.  
+
+**Configuration Example**:  
+
+```yaml  
+mybatis-plus:  
+  global-config:  
+    db-config:  
+      schema: my_schema  
+```
+
+### columnFormat
+
+- Type: `String`
+- Default: `null`
+
+Used to format column names when generating SQL, such as adding prefixes or suffixes. Does not apply to primary keys. Example: `%s`.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      column-format: %s_field
+```
+
+### tableFormat<Badge text="Since 3.5.3.2" type="error"/>
+
+- Type: `String`
+- Default: `null`
+
+Formats table names when generating SQL, e.g., `%s`.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      table-format: tbl_%s
+```
+
+### propertyFormat<Badge text="Since 3.3.0" type="error"/>
+
+- Type: `String`
+- Default: `null`
+
+Used to format Entity field names when mapping to database columns. This only takes effect in the case of `column as property` and does not apply to primary keys. Example: `%s`.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      property-format: %s_prop
+```
+
+### tableUnderline  
+
+- Type: `boolean`  
+- Default: `true`  
+
+Controls whether table names should be converted from camelCase to underscore naming.  
+
+**Configuration Example**:  
+
+```yaml  
+mybatis-plus:  
+  global-config:  
+    db-config:  
+      table-underline: false  
+```
+
+### capitalMode  
+
+- Type: `boolean`  
+- Default: `false`  
+
+Controls whether table names and field names use uppercase naming.  
+
+**Configuration Example**:  
+
+```yaml  
+mybatis-plus:  
+  global-config:  
+    db-config:  
+      capital-mode: true  
+```
+
+### keyGenerator  
+
+- Type: `com.baomidou.mybatisplus.core.incrementer.IKeyGenerator`  
+- Default: `null`  
+
+Custom table primary key generator. Supported in Starter via `@Bean` injection.  
+
+**Configuration Example**:  
+
+```yaml  
+mybatis-plus:  
+  global-config:  
+    db-config:  
+      key-generator: com.example.CustomKeyGenerator  
+```  
+
+```java  
+@Bean  
+public IKeyGenerator keyGenerator() {  
+    return new CustomKeyGenerator();  
+}  
+```
+
+### logicDeleteField
+
+- Type: `String`
+- Default: `null`
+
+The global Entity logical delete field property name, only effective when the logical delete feature is enabled.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+```
+
+### logicDeleteValue
+
+- Type: `String`
+- Default: `1`
+
+The value indicating a logically deleted record, only effective when the logical delete feature is enabled.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-value: true
+```
+
+### logicNotDeleteValue
+
+- Type: `String`
+- Default: `0`
+
+The value indicating a record is not logically deleted, only effective when the logical delete feature is enabled.
+
+**Configuration Example**:
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-not-delete-value: false
+```
+
+### insertStrategy  
+
+- Type: `com.baomidou.mybatisplus.annotation.FieldStrategy`  
+- Default: `NOT_NULL`  
+
+Controls the field validation strategy during Insert operations.  
+
+- `FieldStrategy.DEFAULT`: Follows the global configuration strategy. If the global configuration is not specified, the default behavior is to insert the field only when its value is not NULL.  
+- `FieldStrategy.ALWAYS`: Always inserts the field, regardless of whether the value is NULL.  
+- `FieldStrategy.NOT_NULL`: Inserts the field only when its value is not NULL.  
+- `FieldStrategy.NOT_EMPTY`: Inserts the field only when its value is not empty (for string types) or not NULL (for other types).  
+- `FieldStrategy.NEVER`: Never inserts the field, even if the value is not NULL.  
+- `FieldStrategy.IGNORED`: Ignores validation, equivalent to "ALWAYS" <Badge text="@Deprecated" type="error"/>  
+
+**Configuration Example**:  
+
+```yaml  
+mybatis-plus:  
+  global-config:  
+    db-config:  
+      insert-strategy: NEVER  
+```
+
+### updateStrategy  
+
+- Type: `com.baomidou.mybatisplus.annotation.FieldStrategy`  
+- Default: `NOT_NULL`  
+
+Controls the field validation strategy during Update operations.  
+
+**Configuration Example**:  
+
+```yaml  
+mybatis-plus:  
+  global-config:  
+    db-config:  
+      update-strategy: IGNORED  
+```
+
+### whereStrategy  
+
+- Type: `com.baomidou.mybatisplus.annotation.FieldStrategy`  
+- Default: `NOT_NULL`  
+
+Controls the field validation strategy during Update operations. Specifically, it determines the WHERE conditions generated by the Wrapper based on the internal Entity.  
+
+**Configuration Example**:  
+
+```yaml  
+mybatis-plus:  
+  global-config:  
+    db-config:  
+      where-strategy: ALWAYS  
+```
