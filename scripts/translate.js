@@ -52,8 +52,66 @@ program
       let successCount = 0;
       let errorCount = 0;
       
+      // 创建所有翻译任务
+      const translationTasks = [];
       for (const filePath of filesToTranslate) {
         for (const targetLang of targetLanguages) {
+          translationTasks.push({ filePath, targetLang });
+        }
+      }
+      
+      console.log(chalk.green(`📋 总共 ${translationTasks.length} 个翻译任务`));
+      
+      // 根据配置决定是否并行执行
+      const { parallel } = config;
+      if (parallel?.enabled && translationTasks.length > 1) {
+        const maxConcurrency = parallel.maxConcurrency || 3;
+        console.log(chalk.blue(`🚀 启用并行翻译模式，最大并发数: ${maxConcurrency}`));
+        
+        // 分批并行处理
+        for (let i = 0; i < translationTasks.length; i += maxConcurrency) {
+          const batch = translationTasks.slice(i, i + maxConcurrency);
+          console.log(chalk.cyan(`📦 处理批次 ${Math.floor(i / maxConcurrency) + 1}/${Math.ceil(translationTasks.length / maxConcurrency)} (${batch.length} 个任务)`));
+          
+          const batchPromises = batch.map(async ({ filePath, targetLang }) => {
+            try {
+              console.log(chalk.blue(`🔄 翻译 ${filePath} -> ${targetLang}`));
+              await translator.translateFile(filePath, targetLang);
+              console.log(chalk.green(`✅ 完成: ${filePath} -> ${targetLang}`));
+              return { success: true, filePath, targetLang };
+            } catch (error) {
+              console.error(chalk.red(`❌ 错误: ${filePath} -> ${targetLang}`));
+              console.error(chalk.red(`   ${error.message}`));
+              return { success: false, filePath, targetLang, error };
+            }
+          });
+          
+          const batchResults = await Promise.allSettled(batchPromises);
+          
+          // 统计批次结果
+          batchResults.forEach(result => {
+            if (result.status === 'fulfilled') {
+              if (result.value.success) {
+                successCount++;
+              } else {
+                errorCount++;
+              }
+            } else {
+              errorCount++;
+            }
+          });
+          
+          // 批次间延迟
+          if (i + maxConcurrency < translationTasks.length) {
+            console.log(chalk.gray(`⏳ 批次间延迟 1 秒...`));
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
+        }
+      } else {
+        console.log(chalk.blue(`📝 使用顺序翻译模式`));
+        
+        // 顺序执行
+        for (const { filePath, targetLang } of translationTasks) {
           try {
             console.log(chalk.blue(`🔄 翻译 ${filePath} -> ${targetLang}`));
             await translator.translateFile(filePath, targetLang);

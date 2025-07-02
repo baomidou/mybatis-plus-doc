@@ -154,42 +154,26 @@ export class TranslationPlugin {
       const bodySegments = this.splitBodyByHeadings(body);
       console.log(`📄 正文分为 ${bodySegments.length} 个标题段落`);
       
-      const translatedBodySegments = [];
+      // 检查是否启用段落级并行处理
+      const { parallel } = this.config;
+      const segmentParallelEnabled = parallel?.enabled && parallel?.segmentParallel && bodySegments.length > 1;
       
-      for (let i = 0; i < bodySegments.length; i++) {
-        const segment = bodySegments[i];
-        const segmentLength = segment.content.length;
-        const estimatedTokens = Math.ceil(segmentLength / 4);
-        const titleInfo = segment.title ? `"${segment.title}" (H${segment.level})` : '无标题段落';
-        
-        console.log(`🔄 翻译第 ${i + 1}/${bodySegments.length} 段: ${titleInfo}`);
-        console.log(`📊 段落信息: ${segmentLength} 字符, 约 ${estimatedTokens} tokens`);
-        console.log(`⏱️ 预计剩余: ${bodySegments.length - i - 1} 段`);
-        
-        try {
-          const segmentPrompt = this.generateBodySegmentPrompt(targetLanguage, segment, i, bodySegments.length);
-          const translatedSegment = await this.callAI(segmentPrompt);
-          translatedBodySegments.push(translatedSegment);
-          
-          console.log(`✅ 第 ${i + 1} 段翻译完成`);
-        } catch (error) {
-          console.error(`❌ 第 ${i + 1} 段翻译失败:`, error.message);
-          // 如果段落翻译失败，使用原始内容
-          translatedBodySegments.push(segment.content);
+      if (segmentParallelEnabled) {
+        console.log(`🚀 启用段落并行翻译模式，最大并发数: ${parallel.maxConcurrency || 3}`);
+        console.log(`⚠️ 注意：并行翻译可能影响段落间的上下文连贯性`);
+        translatedBody = await this.translateBodySegmentsParallel(bodySegments, targetLanguage);
+      } else {
+        if (parallel?.enabled && !parallel?.segmentParallel) {
+          console.log(`📝 使用段落顺序翻译模式（保持上下文连贯性）`);
+        } else {
+          console.log(`📝 使用顺序翻译模式`);
         }
-        
-        // 添加延迟避免API限制
-        if (i < bodySegments.length - 1) {
-          console.log(`⏸️ 等待 3 秒后继续下一段...`);
-          await this.sleep(3000);
-        }
+        translatedBody = await this.translateBodySegmentsSequential(bodySegments, targetLanguage);
       }
-      
-      translatedBody = translatedBodySegments.join('\n\n');
     }
     
     // 3. 合并结果
-    const result = translatedFrontmatter + translatedBody;
+    const result = translatedFrontmatter + '\n' + translatedBody;
     console.log(`🎉 智能分段翻译完成！`);
     
     return result;
@@ -209,6 +193,98 @@ export class TranslationPlugin {
     );
     
     return await this.callAI(prompt);
+  }
+
+  /**
+   * 并行翻译正文段落
+   * @param {Array} bodySegments 正文段落数组
+   * @param {string} targetLanguage 目标语言
+   * @returns {Promise<string>} 翻译后的正文
+   */
+  async translateBodySegmentsParallel(bodySegments, targetLanguage) {
+    const maxConcurrency = this.config.parallel.maxConcurrency || 3;
+    const translatedSegments = new Array(bodySegments.length);
+    
+    // 创建翻译任务
+    const translateSegment = async (segment, index) => {
+      const segmentLength = segment.content.length;
+      const estimatedTokens = Math.ceil(segmentLength / 4);
+      const titleInfo = segment.title ? `"${segment.title}" (H${segment.level})` : '无标题段落';
+      
+      console.log(`🔄 [并行] 翻译第 ${index + 1}/${bodySegments.length} 段: ${titleInfo}`);
+      console.log(`📊 段落信息: ${segmentLength} 字符, 约 ${estimatedTokens} tokens`);
+      
+      try {
+        const segmentPrompt = this.generateBodySegmentPrompt(targetLanguage, segment, index, bodySegments.length);
+        const translatedSegment = await this.callAI(segmentPrompt);
+        translatedSegments[index] = translatedSegment;
+        console.log(`✅ [并行] 第 ${index + 1} 段翻译完成`);
+      } catch (error) {
+        console.error(`❌ [并行] 第 ${index + 1} 段翻译失败:`, error.message);
+        // 如果段落翻译失败，使用原始内容
+        translatedSegments[index] = segment.content;
+      }
+    };
+    
+    // 分批并行处理
+    for (let i = 0; i < bodySegments.length; i += maxConcurrency) {
+      const batch = bodySegments.slice(i, i + maxConcurrency);
+      const batchPromises = batch.map((segment, batchIndex) => 
+        translateSegment(segment, i + batchIndex)
+      );
+      
+      console.log(`🚀 处理第 ${Math.floor(i / maxConcurrency) + 1} 批，包含 ${batch.length} 个段落`);
+      await Promise.allSettled(batchPromises);
+      
+      // 批次间添加延迟避免API限制
+      if (i + maxConcurrency < bodySegments.length) {
+        console.log(`⏸️ 批次间等待 1 秒...`);
+        await this.sleep(1000);
+      }
+    }
+    
+    return translatedSegments.join('\n\n');
+  }
+
+  /**
+   * 顺序翻译正文段落
+   * @param {Array} bodySegments 正文段落数组
+   * @param {string} targetLanguage 目标语言
+   * @returns {Promise<string>} 翻译后的正文
+   */
+  async translateBodySegmentsSequential(bodySegments, targetLanguage) {
+    const translatedBodySegments = [];
+    
+    for (let i = 0; i < bodySegments.length; i++) {
+      const segment = bodySegments[i];
+      const segmentLength = segment.content.length;
+      const estimatedTokens = Math.ceil(segmentLength / 4);
+      const titleInfo = segment.title ? `"${segment.title}" (H${segment.level})` : '无标题段落';
+      
+      console.log(`🔄 [顺序] 翻译第 ${i + 1}/${bodySegments.length} 段: ${titleInfo}`);
+      console.log(`📊 段落信息: ${segmentLength} 字符, 约 ${estimatedTokens} tokens`);
+      console.log(`⏱️ 预计剩余: ${bodySegments.length - i - 1} 段`);
+      
+      try {
+        const segmentPrompt = this.generateBodySegmentPrompt(targetLanguage, segment, i, bodySegments.length);
+        const translatedSegment = await this.callAI(segmentPrompt);
+        translatedBodySegments.push(translatedSegment);
+        
+        console.log(`✅ [顺序] 第 ${i + 1} 段翻译完成`);
+      } catch (error) {
+        console.error(`❌ [顺序] 第 ${i + 1} 段翻译失败:`, error.message);
+        // 如果段落翻译失败，使用原始内容
+        translatedBodySegments.push(segment.content);
+      }
+      
+      // 添加延迟避免API限制
+      if (i < bodySegments.length - 1) {
+        console.log(`⏸️ 等待 1 秒后继续下一段...`);
+        await this.sleep(1000);
+      }
+    }
+    
+    return translatedBodySegments.join('\n\n');
   }
 
   /**
@@ -256,27 +332,38 @@ export class TranslationPlugin {
     const segments = [];
     let currentSegment = { title: null, content: '', level: 0 };
     
+    // 获取最大标题级别配置，默认为 3（即只分段到 ###）
+    const maxHeadingLevel = this.config.segmentation?.maxHeadingLevel || 3;
+    console.log(`📄 分段配置: 最大标题级别 H${maxHeadingLevel}`);
+    
     for (const line of lines) {
       const headingMatch = line.match(/^(#{1,6})\s+(.+)$/);
       
       if (headingMatch) {
-        // 如果当前段落有内容，保存它
-        if (currentSegment.content.trim()) {
-          segments.push({
-            title: currentSegment.title,
-            content: currentSegment.content.trim(),
-            level: currentSegment.level
-          });
-        }
-        
-        // 开始新段落
         const level = headingMatch[1].length;
-        const title = headingMatch[2];
-        currentSegment = {
-          title: title,
-          content: line + '\n',
-          level: level
-        };
+        
+        // 只有当标题级别小于等于配置的最大级别时才进行分段
+        if (level <= maxHeadingLevel) {
+          // 如果当前段落有内容，保存它
+          if (currentSegment.content.trim()) {
+            segments.push({
+              title: currentSegment.title,
+              content: currentSegment.content.trim(),
+              level: currentSegment.level
+            });
+          }
+          
+          // 开始新段落
+          const title = headingMatch[2];
+          currentSegment = {
+            title: title,
+            content: line + '\n',
+            level: level
+          };
+        } else {
+          // 超过最大级别的标题不分段，直接添加到当前段落
+          currentSegment.content += line + '\n';
+        }
       } else {
         // 添加到当前段落
         currentSegment.content += line + '\n';

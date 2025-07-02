@@ -246,10 +246,39 @@ node scripts/translate.js --lang ja --incremental --dry-run
 {
   "parallel": {
     "enabled": true,
-    "maxConcurrency": 3
+    "maxConcurrency": 3,
+    "segmentParallel": false
   }
 }
 ```
+
+**配置说明：**
+- `enabled`: 是否启用并行处理（文件级别）
+- `maxConcurrency`: 最大并发数，建议 2-5
+- `segmentParallel`: 是否对同一文档的段落使用并行翻译
+  - `true`: 段落并行翻译，速度更快但可能影响上下文连贯性
+  - `false`: 段落顺序翻译，保持上下文连贯性（推荐）
+
+### 分段配置 (segmentation)
+
+```json
+{
+  "segmentation": {
+    "maxLength": 8000,
+    "enabled": true,
+    "maxHeadingLevel": 3
+  }
+}
+```
+
+**配置说明：**
+- `maxLength`: 单段最大长度，超过此长度会触发分段翻译
+- `enabled`: 是否启用智能分段翻译
+- `maxHeadingLevel`: 分段的最大标题级别
+  - `1`: 只按 H1 (`#`) 分段
+  - `2`: 按 H1-H2 (`#`, `##`) 分段
+  - `3`: 按 H1-H3 (`#`, `##`, `###`) 分段（推荐）
+  - `4-6`: 按更细粒度分段（可能导致段落过多）
 
 ### 重试配置 (retryConfig)
 
