@@ -13,7 +13,10 @@
     "translate:en": "node translation-plugin/translate.js --lang en",
     "translate:ja": "node translation-plugin/translate.js --lang ja",
     "translate:check": "node translation-plugin/translate.js --dry-run",
-    "translate:incremental": "node translation-plugin/translate.js --incremental"
+    "translate:incremental": "node translation-plugin/translate.js --incremental",
+    "translate:file": "node translation-plugin/translate.js --file",
+    "translate:en:file": "node translation-plugin/translate.js --lang en --file",
+    "translate:ja:file": "node translation-plugin/translate.js --lang ja --file"
   },
   "dependencies": {
     "@astrojs/check": "^0.5.10",

@@ -63,6 +63,13 @@ npm run translate
 npm run translate:en
 npm run translate:ja
 
+# 翻译指定文件到所有配置的语言
+npm run translate:file introduce.mdx
+
+# 翻译指定文件到指定语言
+npm run translate:en:file introduce.mdx
+npm run translate:ja:file introduce.mdx
+
 # 预览模式（不实际写入文件）
 npm run translate:check
 
@@ -73,14 +80,20 @@ npm run translate:incremental
 ### 高级用法
 
 ```bash
-# 翻译指定文件
-node scripts/translate.js --file introduce.mdx --lang en
+# 翻译指定文件到指定语言
+node translation-plugin/translate.js --file introduce.mdx --lang en
+
+# 翻译指定文件到所有配置的语言
+node translation-plugin/translate.js --file getting-started/install.mdx
 
 # 使用自定义配置文件
-node scripts/translate.js --config ./custom-config.json
+node translation-plugin/translate.js --config ./custom-config.json
 
-# 组合使用
-node scripts/translate.js --lang ja --incremental --dry-run
+# 组合使用：翻译指定文件到指定语言（预览模式）
+node translation-plugin/translate.js --file introduce.mdx --lang ja --dry-run
+
+# 组合使用：增量翻译到指定语言
+node translation-plugin/translate.js --lang ja --incremental --dry-run
 ```
 
 ## 配置选项详解
@@ -105,6 +118,44 @@ node scripts/translate.js --lang ja --incremental --dry-run
   "frontmatterKeys": ["title", "description", "tagline"]
 }
 ```
+
+### 文件和目录排除配置
+
+#### 排除文件 (excludeFiles)
+
+指定不需要翻译的文件：
+```json
+{
+  "excludeFiles": [
+    "404.md",           // 排除所有目录下的 404.md 文件
+    "index.mdx",        // 排除所有目录下的 index.mdx 文件
+    "getting-started/index.mdx"  // 仅排除 getting-started 目录下的 index.mdx
+  ]
+}
+```
+
+**配置说明：**
+- **文件名匹配**：如果配置项只包含文件名（如 `"index.mdx"`），会排除所有目录下的同名文件
+- **相对路径匹配**：如果配置项包含路径分隔符（如 `"getting-started/index.mdx"`），会进行精确的相对路径匹配
+- 相对路径基于 `sourceDir` 配置的源目录
+
+#### 排除目录 (excludeDirs)
+
+指定不需要翻译的目录：
+```json
+{
+  "excludeDirs": [
+    "en",              // 排除英文翻译目录
+    "ja",              // 排除日文翻译目录
+    "temp",            // 排除临时目录
+    "drafts"           // 排除草稿目录
+  ]
+}
+```
+
+**配置说明：**
+- 排除的目录及其所有子目录和文件都不会被翻译
+- 通常用于排除已翻译的目标语言目录，避免重复翻译
 
 ### AI 提供商配置 (aiProvider)
 

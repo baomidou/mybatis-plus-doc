@@ -96,34 +96,19 @@ function validateConfig(config) {
   
   // 验证 AI 提供商配置
   if (config.aiProvider) {
-    // 兼容旧的 type 字段，自动转换为 service
-    if (config.aiProvider.type && !config.aiProvider.service) {
-      config.aiProvider.service = config.aiProvider.type;
-      delete config.aiProvider.type;
-    }
-    
+    // 校验 AI 服务提供商
     if (!config.aiProvider.service) {
       throw new Error('aiProvider.service 是必需的');
     }
     
-    // 从环境变量加载 API 密钥（如果配置中未指定）
-    if (!config.aiProvider.apiKey) {
-      const service = config.aiProvider.service.toLowerCase();
-      const envKeyMap = {
-        'openai': 'OPENAI_API_KEY',
-        'anthropic': 'ANTHROPIC_API_KEY',
-        'google': 'GOOGLE_API_KEY',
-        'groq': 'GROQ_API_KEY',
-        'xai': 'XAI_API_KEY',
-        'deepseek': 'DEEPSEEK_API_KEY'
-      };
-      
-      const envKey = envKeyMap[service];
-      if (envKey && process.env[envKey]) {
-        config.aiProvider.apiKey = process.env[envKey];
-      } else {
-        console.warn(`警告: ${service} API Key 未配置，请设置环境变量 ${envKey} 或在配置文件中设置`);
-      }
+    // 校验 API 密钥，config or env
+    if (!config.aiProvider.apiKey && !process.env.API_KEY) {
+      throw new Error('aiProvider.apiKey 是必需的');
+    }
+
+    // 校验 Model
+    if (!config.aiProvider.model) {
+      throw new Error('aiProvider.model 是必需的');
     }
   }
 }

@@ -53,11 +53,17 @@ export class FileProcessor {
       patterns.push(path.join(this.config.sourceDir, dir, '**/*'));
     });
     
-    // 忽略指定文件
+    // 忽略指定文件（支持相对路径精确匹配）
     const excludeFiles = this.config.excludeFiles || [];
     excludeFiles.forEach(file => {
-      patterns.push(path.join(this.config.sourceDir, file));
-      patterns.push(path.join(this.config.sourceDir, '**', file));
+      // 如果包含路径分隔符，视为相对路径，进行精确匹配
+      if (file.includes('/') || file.includes('\\')) {
+        patterns.push(path.join(this.config.sourceDir, file));
+      } else {
+        // 如果只是文件名，则匹配所有目录下的同名文件（保持向后兼容）
+        patterns.push(path.join(this.config.sourceDir, file));
+        patterns.push(path.join(this.config.sourceDir, '**', file));
+      }
     });
     
     return patterns;
