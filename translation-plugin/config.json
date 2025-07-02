@@ -11,14 +11,11 @@
     "ja"
   ],
   "aiProvider": {
-    "service": "deepseek",
-    "model": "deepseek-chat",
-    "maxTokens": 4000,
-    "temperature": 0.1
-  },
-  "retryConfig": {
-    "maxRetries": 3,
-    "retryDelay": 1000
+    "service": "openrouter",
+    "model": "deepseek/deepseek-chat-v3-0324:free",
+    "maxTokens": 12800,
+    "temperature": 0.1,
+    "baseURL": "https://openrouter.ai/api/v1"
   },
   "cache": {
     "enabled": true,
@@ -27,5 +24,14 @@
   "parallel": {
     "enabled": true,
     "maxConcurrency": 3
+  },
+  "segmentation": {
+    "maxLength": 8000,
+    "enabled": true
+  },
+  "retryConfig": {
+    "maxRetries": 3,
+    "baseDelay": 1000,
+    "maxDelay": 10000
   }
 }

@@ -3,7 +3,7 @@ import path from 'path';
 import crypto from 'crypto';
 import LLM from '@themaximalist/llm.js';
 import { FileProcessor } from './file-processor.js';
-import { generateTranslationPrompt, validateTranslationResult } from './prompt-template.js';
+import { generateTranslationPrompt, generateFrontmatterTranslationPrompt, generateBodySegmentTranslationPrompt, validateTranslationResult } from './prompt-template.js';
 
 export class TranslationPlugin {
   constructor(config) {
@@ -103,13 +103,205 @@ export class TranslationPlugin {
    * @returns {Promise<string>} 翻译后的内容
    */
   async translateContent(content, targetLanguage) {
-    const prompt = generateTranslationPrompt(
+    // 检查内容长度，决定是否分段翻译
+    const maxLength = this.config.segmentation?.maxLength || 8000;
+    
+    if (content.length <= maxLength) {
+      const prompt = generateTranslationPrompt(
+        targetLanguage,
+        this.config.frontmatterKeys,
+        content
+      );
+      
+      return await this.callAI(prompt);
+    } else {
+      return await this.translateContentInSegments(content, targetLanguage);
+    }
+  }
+
+  /**
+   * 分段翻译内容（分离 frontmatter 和正文处理）
+   * @param {string} content 原始内容
+   * @param {string} targetLanguage 目标语言
+   * @returns {Promise<string>} 翻译后的内容
+   */
+  async translateContentInSegments(content, targetLanguage) {
+    console.log(`📄 开始智能分段翻译...`);
+    
+    // 分离 frontmatter 和正文
+    const { frontmatter, body } = this.separateFrontmatterAndBody(content);
+    console.log(`📋 内容分析: ${frontmatter ? '包含' : '不包含'} frontmatter, 正文长度: ${body.length} 字符`);
+    
+    let translatedFrontmatter = '';
+    let translatedBody = '';
+    
+    // 1. 处理 frontmatter（如果存在）
+    if (frontmatter) {
+      console.log(`📋 翻译 frontmatter...`);
+      try {
+        translatedFrontmatter = await this.translateFrontmatter(frontmatter, targetLanguage);
+        console.log(`✅ frontmatter 翻译完成`);
+      } catch (error) {
+        console.error('❌ frontmatter 翻译失败:', error.message);
+        // 如果 frontmatter 翻译失败，使用原始内容
+        translatedFrontmatter = frontmatter;
+      }
+    }
+    
+    // 2. 按标题层级分段处理正文
+    if (body) {
+      console.log(`📝 按标题层级分段翻译正文...`);
+      const bodySegments = this.splitBodyByHeadings(body);
+      console.log(`📄 正文分为 ${bodySegments.length} 个标题段落`);
+      
+      const translatedBodySegments = [];
+      
+      for (let i = 0; i < bodySegments.length; i++) {
+        const segment = bodySegments[i];
+        const segmentLength = segment.content.length;
+        const estimatedTokens = Math.ceil(segmentLength / 4);
+        const titleInfo = segment.title ? `"${segment.title}" (H${segment.level})` : '无标题段落';
+        
+        console.log(`🔄 翻译第 ${i + 1}/${bodySegments.length} 段: ${titleInfo}`);
+        console.log(`📊 段落信息: ${segmentLength} 字符, 约 ${estimatedTokens} tokens`);
+        console.log(`⏱️ 预计剩余: ${bodySegments.length - i - 1} 段`);
+        
+        try {
+          const segmentPrompt = this.generateBodySegmentPrompt(targetLanguage, segment, i, bodySegments.length);
+          const translatedSegment = await this.callAI(segmentPrompt);
+          translatedBodySegments.push(translatedSegment);
+          
+          console.log(`✅ 第 ${i + 1} 段翻译完成`);
+        } catch (error) {
+          console.error(`❌ 第 ${i + 1} 段翻译失败:`, error.message);
+          // 如果段落翻译失败，使用原始内容
+          translatedBodySegments.push(segment.content);
+        }
+        
+        // 添加延迟避免API限制
+        if (i < bodySegments.length - 1) {
+          console.log(`⏸️ 等待 3 秒后继续下一段...`);
+          await this.sleep(3000);
+        }
+      }
+      
+      translatedBody = translatedBodySegments.join('\n\n');
+    }
+    
+    // 3. 合并结果
+    const result = translatedFrontmatter + translatedBody;
+    console.log(`🎉 智能分段翻译完成！`);
+    
+    return result;
+  }
+
+  /**
+   * 翻译 frontmatter
+   * @param {string} frontmatter frontmatter 内容
+   * @param {string} targetLanguage 目标语言
+   * @returns {Promise<string>} 翻译后的 frontmatter
+   */
+  async translateFrontmatter(frontmatter, targetLanguage) {
+    const prompt = generateFrontmatterTranslationPrompt(
       targetLanguage,
       this.config.frontmatterKeys,
-      content
+      frontmatter
     );
     
     return await this.callAI(prompt);
+  }
+
+  /**
+   * 生成正文段落翻译提示词
+   * @param {string} targetLanguage 目标语言
+   * @param {Object} segment 段落对象
+   * @param {number} index 段落索引
+   * @param {number} total 总段落数
+   * @returns {string} 提示词
+   */
+  generateBodySegmentPrompt(targetLanguage, segment, index, total) {
+    return generateBodySegmentTranslationPrompt(
+      targetLanguage,
+      segment,
+      index,
+      total
+    );
+  }
+
+  /**
+   * 分离 frontmatter 和正文
+   * @param {string} content 原始内容
+   * @returns {Object} { frontmatter: string, body: string }
+   */
+  separateFrontmatterAndBody(content) {
+    const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n?/;
+    const match = content.match(frontmatterRegex);
+    
+    if (match) {
+      const frontmatter = match[0]; // 包含 --- 分隔符的完整 frontmatter
+      const body = content.slice(match[0].length);
+      return { frontmatter, body };
+    }
+    
+    return { frontmatter: null, body: content };
+  }
+  
+  /**
+   * 按标题层级分割正文
+   * @param {string} body 正文内容
+   * @returns {Array} 段落数组，每个段落包含 title 和 content
+   */
+  splitBodyByHeadings(body) {
+    const lines = body.split('\n');
+    const segments = [];
+    let currentSegment = { title: null, content: '', level: 0 };
+    
+    for (const line of lines) {
+      const headingMatch = line.match(/^(#{1,6})\s+(.+)$/);
+      
+      if (headingMatch) {
+        // 如果当前段落有内容，保存它
+        if (currentSegment.content.trim()) {
+          segments.push({
+            title: currentSegment.title,
+            content: currentSegment.content.trim(),
+            level: currentSegment.level
+          });
+        }
+        
+        // 开始新段落
+        const level = headingMatch[1].length;
+        const title = headingMatch[2];
+        currentSegment = {
+          title: title,
+          content: line + '\n',
+          level: level
+        };
+      } else {
+        // 添加到当前段落
+        currentSegment.content += line + '\n';
+      }
+    }
+    
+    // 添加最后一个段落
+    if (currentSegment.content.trim()) {
+      segments.push({
+        title: currentSegment.title,
+        content: currentSegment.content.trim(),
+        level: currentSegment.level
+      });
+    }
+    
+    // 如果没有标题，将整个正文作为一个段落
+    if (segments.length === 0 && body.trim()) {
+      segments.push({
+        title: null,
+        content: body.trim(),
+        level: 0
+      });
+    }
+    
+    return segments;
   }
 
   /**
@@ -119,49 +311,92 @@ export class TranslationPlugin {
    */
   async callAI(prompt) {
     const { type, apiKey, model, baseURL, maxTokens, temperature, service } = this.config.aiProvider;
+    const retryConfig = this.config.retryConfig || { maxRetries: 3, baseDelay: 1000, maxDelay: 10000 };
     
-    try {
-      // 使用 llm.js 统一接口
-      const options = {
-        model: model || 'gpt-4',
-        max_tokens: maxTokens || 4000,
-        temperature: temperature || 0.1,
-        extended: true // 获取详细信息包括 token 使用量
-      };
-      
-      // 如果指定了 API 密钥，添加到选项中
-      if (apiKey) {
-        options.apiKey = apiKey;
-      }
-      
-      // 如果指定了服务类型，添加到选项中
-      if (service) {
-        options.service = service;
-      }
-      
-      // 如果指定了自定义 baseURL，添加到选项中
-      if (baseURL) {
-        options.baseUrl = baseURL;
-      }
-      
-      console.log(`🤖 调用 AI 服务: ${service || model || 'default'}`);
-      
-      const response = await LLM(prompt, options);
-      
-      // 如果是扩展响应，提取内容和使用信息
-      if (response.content) {
-        if (response.usage) {
-          console.log(`📊 Token 使用: 输入 ${response.usage.input_tokens}, 输出 ${response.usage.output_tokens}, 成本 $${response.usage.total_cost || 'N/A'}`);
+    let lastError;
+    
+    for (let attempt = 0; attempt <= retryConfig.maxRetries; attempt++) {
+      try {
+        // 使用 llm.js 统一接口
+        const options = {
+          model: model || 'gpt-4',
+          max_tokens: maxTokens || 4000,
+          temperature: temperature || 0.1,
+          extended: true // 获取详细信息包括 token 使用量
+        };
+        
+        // 设置 API 密钥：优先使用配置文件中的 apiKey，其次使用环境变量 API_KEY
+        const finalApiKey = apiKey || process.env.API_KEY;
+        if (finalApiKey) {
+          options.apiKey = finalApiKey;
         }
-        return response.content;
+        
+        // 如果指定了服务类型，添加到选项中
+        if (service) {
+          options.service = service;
+        }
+        
+        // 如果指定了自定义 baseURL，添加到选项中
+        if (baseURL) {
+          options.baseUrl = baseURL;
+        }
+        
+        // 通用 API 密钥检查
+        if (!finalApiKey) {
+          console.warn('⚠️ API 密钥未设置，请在配置文件中设置 apiKey 或在环境变量中设置 API_KEY');
+        }
+        
+        const attemptText = attempt > 0 ? ` (重试 ${attempt}/${retryConfig.maxRetries})` : '';
+        console.log(`🤖 调用 AI 服务: ${service || model || 'default'}${attemptText}`);
+        console.log(`📤 发送请求 - 模型: ${options.model}, 最大Token: ${options.max_tokens}`);
+        console.log(`⏳ 请求进行中，请耐心等待...`);
+        
+        const startTime = Date.now();
+        const response = await LLM(prompt, options);
+        const endTime = Date.now();
+        const duration = ((endTime - startTime) / 1000).toFixed(2);
+        
+        console.log(`✅ 请求完成，耗时: ${duration}秒`);
+        
+        // 确保返回字符串类型
+        let content;
+        if (response && typeof response === 'object' && response.content) {
+          if (response.usage) {
+            console.log(`📊 Token 使用: 输入 ${response.usage.input_tokens}, 输出 ${response.usage.output_tokens}, 成本 $${response.usage.total_cost || 'N/A'}`);
+          }
+          content = response.content;
+        } else {
+          content = response;
+        }
+        
+        // 确保内容是字符串
+        if (typeof content !== 'string') {
+          content = String(content || '');
+        }
+        
+        return content;
+        
+      } catch (error) {
+        lastError = error;
+        console.error(`❌ AI 调用失败 (尝试 ${attempt + 1}/${retryConfig.maxRetries + 1}): ${error.message}`);
+        
+        // 如果是最后一次尝试，直接抛出错误
+        if (attempt === retryConfig.maxRetries) {
+          break;
+        }
+        
+        // 计算延迟时间（指数退避）
+        const delay = Math.min(
+          retryConfig.baseDelay * Math.pow(2, attempt),
+          retryConfig.maxDelay
+        );
+        
+        console.log(`⏸️ ${delay}ms 后重试...`);
+        await this.sleep(delay);
       }
-      
-      // 如果是简单字符串响应
-      return response;
-    } catch (error) {
-      console.error(`❌ AI 调用失败: ${error.message}`);
-      throw error;
     }
+    
+    throw lastError;
   }
 
 

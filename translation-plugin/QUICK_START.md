@@ -17,33 +17,13 @@ npm install
 cp .env.example .env
 ```
 
-编辑 `.env` 文件，添加你的 API 密钥（根据使用的 AI 服务选择）：
+编辑 `.env` 文件，添加你的 API 密钥：
 ```bash
-# OpenAI API 密钥
-OPENAI_API_KEY=your_openai_api_key_here
-
-# Anthropic Claude API 密钥
-ANTHROPIC_API_KEY=your_anthropic_api_key_here
-
-# Google Gemini API 密钥
-GOOGLE_API_KEY=your_google_api_key_here
-
-# Groq API 密钥
-GROQ_API_KEY=your_groq_api_key_here
-
-# xAI API 密钥
-XAI_API_KEY=your_xai_api_key_here
-
-# DeepSeek API 密钥
-DEEPSEEK_API_KEY=your_deepseek_api_key_here
+# 统一的 API 密钥（适用于所有 AI 服务）
+API_KEY=your_api_key_here
 ```
 
 ### 3. 配置翻译选项
-
-复制配置文件模板：
-```bash
-cp translation-plugin/config.example.json translation-plugin/config.json
-```
 
 编辑 `translation-plugin/config.json`：
 ```json
@@ -52,8 +32,8 @@ cp translation-plugin/config.example.json translation-plugin/config.json
   "frontmatterKeys": ["title", "description"],
   "sourceDir": "src/content/docs",
   "aiProvider": {
-    "service": "openai",
-    "model": "gpt-4",
+    "service": "openrouter",
+    "model": "anthropic/claude-3.5-sonnet",
     "maxTokens": 4000,
     "temperature": 0.1
   }
@@ -61,6 +41,7 @@ cp translation-plugin/config.example.json translation-plugin/config.json
 ```
 
 **支持的 AI 服务**：
+- `openrouter`: OpenRouter 统一接口（推荐）
 - `openai`: OpenAI GPT 模型
 - `anthropic`: Anthropic Claude 模型
 - `google`: Google Gemini 模型

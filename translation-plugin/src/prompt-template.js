@@ -83,27 +83,82 @@ ${document}
 }
 
 /**
- * 生成简化版翻译 Prompt（用于较短的内容）
+ * 生成 frontmatter 翻译的 Prompt
  * @param {string} targetLanguage 目标语言代码
  * @param {string[]} frontmatterKeys 需要翻译的 frontmatter 键
- * @param {string} document 待翻译的文档内容
- * @returns {string} 简化的翻译 Prompt
+ * @param {string} frontmatter frontmatter 内容
+ * @returns {string} 生成的 Prompt
  */
-export function generateSimpleTranslationPrompt(targetLanguage, frontmatterKeys, document) {
+export function generateFrontmatterTranslationPrompt(targetLanguage, frontmatterKeys, frontmatter) {
   const languageName = getLanguageName(targetLanguage);
   const keysString = frontmatterKeys.join(', ');
   
-  return `将以下技术文档翻译为${languageName}。
+  return `请翻译以下 YAML frontmatter 中的指定字段到${languageName}。
 
-规则：
-- 仅翻译 frontmatter 中的这些键：${keysString}
-- 保持代码块、技术术语、链接、格式不变
-- 保持 MyBatis-Plus、Spring Boot 等专有名词不变
+翻译规则：
+1. 只翻译这些字段：${keysString}
+2. 保持 YAML 格式不变
+3. 保持其他字段不变
+4. 保持 --- 分隔符
+5. 直接返回完整的 frontmatter，不要添加任何解释
 
-文档：
-${document}
+需要翻译的 frontmatter：
 
-直接输出翻译结果：`;
+${frontmatter}
+
+请直接输出翻译结果，不需要额外的标签包装或说明。确保输出的格式与原文档完全一致。`;
+}
+
+/**
+ * 生成正文段落翻译的 Prompt
+ * @param {string} targetLanguage 目标语言代码
+ * @param {Object} segment 段落对象 { title, content, level }
+ * @param {number} segmentIndex 当前段落索引
+ * @param {number} totalSegments 总段落数
+ * @returns {string} 生成的 Prompt
+ */
+export function generateBodySegmentTranslationPrompt(targetLanguage, segment, segmentIndex, totalSegments) {
+  const languageName = getLanguageName(targetLanguage);
+  const titleInfo = segment.title ? `标题：${segment.title}` : '无标题段落';
+  
+  return `请将以下 Markdown 段落翻译成${languageName}。
+
+翻译规则：
+1. 保持 Markdown 格式不变（包括标题层级 #、##、### 等）
+2. 识别文档中的代码块（以 \`\`\` 开头和结尾的部分）和 MDX 导入语句（如 import ... from ...），这些内容保持不变。
+3. 识别技术相关专有名词（如编程语言、框架名、库名等），这些内容保持不变。特别注意以下专有名词：
+   - MyBatis-Plus
+   - MyBatis
+   - Spring Boot
+   - Maven
+   - Gradle
+   - Java
+   - SQL
+   - CRUD
+   - ORM
+   - JPA
+   - Hibernate
+   - MySQL
+   - PostgreSQL
+   - Oracle
+   - SQLServer
+   - Redis
+   - MongoDB
+   - Docker
+   - Kubernetes
+   - Git
+   - GitHub
+   - Gitee
+4. 保持所有 URL 链接、文件路径、代码示例不变。
+5. 保持 Markdown 格式标记（如 #、**、*、[]()、![](） 不变。
+6. 保持 MDX 组件调用（如 <Card>、<CardGrid>、<LinkCard> 等）不变。
+7. 翻译文档中的其他文本内容，确保翻译自然流畅，符合目标语言的表达习惯。
+
+当前段落 ${segmentIndex + 1}/${totalSegments}（${titleInfo}）：
+
+${segment.content}
+
+请直接输出翻译结果，不需要额外的标签包装或说明。确保输出的格式与原文档完全一致。`;
 }
 
 /**
@@ -157,27 +212,4 @@ export function validateTranslationResult(originalContent, translatedContent) {
     valid: issues.length === 0,
     issues
   };
-}
-
-/**
- * 提取需要保持不变的内容模式
- * @returns {RegExp[]} 正则表达式数组
- */
-export function getPreservePatterns() {
-  return [
-    // 代码块
-    /```[\s\S]*?```/g,
-    // 行内代码
-    /`[^`]+`/g,
-    // MDX 导入
-    /^import .+ from .+;$/gm,
-    // MDX 组件
-    /<[A-Z][\w\s="'{}:.-]*\/?>/g,
-    // URL 链接
-    /https?:\/\/[^\s)]+/g,
-    // 文件路径
-    /[\w-]+\.[\w]+/g,
-    // 技术术语（可以根据需要扩展）
-    /\b(MyBatis-Plus|MyBatis|Spring Boot|Maven|Gradle|Java|SQL|CRUD|ORM|JPA|Hibernate|MySQL|PostgreSQL|Oracle|SQLServer|Redis|MongoDB|Docker|Kubernetes|Git|GitHub|Gitee)\b/g
-  ];
 }

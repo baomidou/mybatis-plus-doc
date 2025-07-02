@@ -43,8 +43,13 @@ npm install
 你也可以通过环境变量设置 API Key：
 
 ```bash
-export OPENAI_API_KEY="your-api-key"
+# 统一的 API 密钥环境变量（适用于所有 AI 服务）
+export API_KEY="your-api-key"
 ```
+
+**注意：** 
+- 环境变量的优先级低于配置文件中的 `apiKey` 设置
+- 所有 AI 服务统一使用 `API_KEY` 环境变量，具体服务类型通过配置文件中的 `service` 字段指定
 
 ## 使用方法
 
@@ -196,6 +201,34 @@ node scripts/translate.js --lang ja --incremental --dry-run
 }
 ```
 
+#### OpenRouter (推荐)
+```json
+{
+  "aiProvider": {
+    "service": "openrouter",
+    "apiKey": "your-openrouter-api-key",
+    "model": "anthropic/claude-3.5-sonnet",
+    "baseURL": "https://openrouter.ai/api/v1",
+    "maxTokens": 8000,
+    "temperature": 0.1
+  }
+}
+```
+
+**OpenRouter 热门模型推荐：**
+- `anthropic/claude-3.5-sonnet` - 最佳质量，适合技术文档
+- `openai/gpt-4o` - OpenAI 最新模型
+- `meta-llama/llama-3.1-70b-instruct` - 开源高质量模型
+- `google/gemini-pro` - Google 模型
+- `anthropic/claude-3-haiku` - 快速且经济的选择
+
+**OpenRouter 优势：**
+- 🌟 统一接口访问多种顶级模型
+- 💰 透明的按使用量计费
+- 🚀 无需管理多个 API 密钥
+- 📊 详细的使用统计和成本跟踪
+- 🔄 模型间轻松切换
+
 ### 缓存配置 (cache)
 
 ```json
@@ -312,7 +345,7 @@ npm run translate:check
 
 ### v1.0.0
 - 初始版本发布
-- 支持 OpenAI API
+- 支持 LLM API
 - 基础翻译功能
 - 缓存和增量翻译
 - 并行处理支持
