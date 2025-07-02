@@ -4,13 +4,13 @@ sidebar:
   order: 3
 ---
 
-Integrating MyBatis-Plus is very simple. We only need some basic configuration to leverage the powerful features of MyBatis-Plus!
+Integrating MyBatis-Plus is extremely simple! We only need some basic configuration to utilize the powerful features of MyBatis-Plus.
 
 :::tip
-Before discussing configuration, please ensure that you have installed MyBatis-Plus. If you haven't installed it yet, please refer to the [Install](/getting-started/install) chapter.
+Before diving into the configuration, please ensure you have installed MyBatis-Plus. If you haven't installed it yet, refer to the [Installation](/getting-started/install) chapter.
 :::
 
-## Spring Boot Application
+## Spring Boot Project
 
 - Configure the MapperScan annotation
 
@@ -26,7 +26,7 @@ Before discussing configuration, please ensure that you have installed MyBatis-P
   }
   ```
 
-## Spring Application
+## Spring Project
 
 - Configure MapperScan
 
@@ -44,8 +44,8 @@ Before discussing configuration, please ensure that you have installed MyBatis-P
   </bean>
   ```
 
-Typically, for simple projects, the configurations above are sufficient to use MyBatis-Plus normally. For specific examples, refer to the following projects: [Spring Boot Quick Start Sample](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart), [Spring MVC Quick Start Sample](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart-springmvc).
+Generally, for simple projects, the above configurations are sufficient to use MyBatis-Plus normally. You can refer to the following sample projects: [Spring Boot Quick Start Example](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart), [Spring MVC Quick Start Example](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart-springmvc).
 
-Additionally, MyBatis-Plus provides numerous personalized configurations to meet the needs of projects with varying complexities. You can choose them according to your project requirements. For detailed configuration, please refer to the [Using Configuration](/en/reference/) article.
+Additionally, MyBatis-Plus provides extensive customization options to meet the needs of projects with varying complexity. You can select configurations as needed for your project. For detailed configurations, refer to the [Configuration Reference](/reference/) article.
 
-For complex table structures, we also offer a rich set of field annotations to meet your special needs. For details, please refer to the [Annotations](/en/reference/annotation/) article.
+For complex table structures, we also offer a rich set of field annotations to address special requirements. For details, refer to the [Annotations](/reference/annotation/) article.

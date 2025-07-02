@@ -1,0 +1,285 @@
+---
+title: Advanced Features
+sidebar:
+  order: 19
+---
+import { LinkCard } from '@astrojs/starlight/components';
+
+Mybatis-Mate is an enterprise-level module designed for MyBatis-Plus, aiming to handle data more agilely and elegantly.
+
+- Example usage: [Portal](https://gitee.com/baomidou/mybatis-mate-examples)
+- Contact the author for confirmation. After publishing an introduction article about Mybatis-Mate on an official WeChat public account, you can obtain a free permanent personal license certificate.
+- This module is an extension library for MyBatis-Plus, not a paid version of MyBatis-Plus. Any issues are the responsibility of `Qing Miao` individually.
+
+<LinkCard
+  title="Free Video Tutorials"
+  description="Produced by Qing Miao, quality guaranteed"
+  href="https://space.bilibili.com/212983666/channel/collectiondetail?sid=606288"
+/>
+
+## Data Auditing (Reconciliation)
+
+- Example usage: 👉 [mybatis-mate-audit](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-audit)
+- Compare property differences between two objects, e.g., bank statement reconciliation.
+  ```java
+  // 1. Asynchronous callback, note: enable async with @EnableAsync
+  applicationEventPublisher.publishEvent(new DataAuditEvent((t) -> {
+      List<Change> changes = t.apply(newVersion, oldVersion);
+      for (Change valueChange : changes) {
+          ValueChange change = (ValueChange) valueChange;
+          System.err.println(String.format("%s mismatch, expected value %s actual value %s", change.getPropertyName(), change.getLeft(), change.getRight()));
+      }
+  }));
+
+  // 2. Manual comparison
+  DataAuditor.compare(obj1, obj2);
+  ```
+
+## Data Sensitive Word Filtering  
+
+- Usage Example👉 [mybatis-mate-sensitive-words](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sensitive-words)  
+- Data sensitive word filtering (AC algorithm) automatically processes all string-sensitive word filtering in requests after configuring the handler. It supports nested keywords, leaving no room for sensitive words to hide.  
+- The database maintains its own sensitive word library (free and controllable). By default, cached word roots are loaded, and the word library can be reloaded on demand.
+
+## Data Scope (Data Permission)
+
+- Example usage: [mybatis-mate-datascope](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-datascope)
+- Annotation @DataScope
+  |  Property  |     Type     | Required | Default | Description                                  |
+  | :--------: | :----------: | :------: | :-----: | ------------------------------------------- |
+  |   type     |    String    |    No    |   ""    | Scope type, used to distinguish business categories, empty by default |
+  |   value    | DataColumn[] |    No    |   {}    | Data permission fields, supports multi-field combinations |
+  |  ignore    |   boolean    |    No    |  false  | Ignore permission processing logic (true: yes, false: no) |
+- Annotation @DataColumn
+  | Property |  Type  | Required | Default | Description    |
+  | :------: | :----: | :------: | :-----: | -------------- |
+  |  alias   | String |    No    |   ""    | Associated table alias |
+  |  name    | String |   Yes    |         | Field name     |
+- Row-level granular permission control, e.g., a parent department can view sub-department information.
+  ```java
+  // Testing test-type data permission scope with mixed pagination mode
+  @DataScope(type = "test", value = {
+          // Associated table user alias u specifying department field permission
+          @DataColumn(alias = "u", name = "department_id"),
+          // Associated table user alias u specifying mobile field (handle as needed)
+          @DataColumn(alias = "u", name = "mobile")
+  })
+  @Select("select u.* from user u")
+  List<User> selectTestList(IPage<User> page, Long id, @Param("name") String username);
+
+  // Testing data permission, final executed SQL statement
+  SELECT u.* FROM user u WHERE (u.department_id IN ('1', '2', '3', '5')) AND u.mobile LIKE '%1533%' LIMIT 1,10
+  ```
+
+:::note[About `IDataScopeProvider`]
+
+Note that you must inject an IDataScopeProvider implementation class to handle data permissions. There are 2 supported ways for data parameter passing:
+1. Custom mapper method passing through method parameters, obtained in the setWhere method's `Object[] args` parameter
+2. Using ThreadLocal to pass parameters. You can intercept the controller layer or service layer to set data permission processing parameters. For more details 👉[reference](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-dynamic-tablename)
+
+:::
+
+## Automatic Table Structure Maintenance  
+
+- Usage Examples:  
+  - 👉 [mybatis-mate-ddl-mysql](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-ddl-mysql)  
+  - 👉 [mybatis-mate-ddl-postgres](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-ddl-postgres)  
+- Database `Schema` initialization and `SQL` upgrade auto-maintenance. Unlike `flyway`, it supports sharding databases/tables and allows controlled execution of SQL scripts via code.  
+- On the first run, a `ddl_history` table will be created in the database, and version information will be automatically maintained for each executed SQL script.  
+  ```java
+  @Component
+  public class MysqlDdl implements IDdl {
+
+      /**
+       * Method for executing SQL scripts  
+       */
+      @Override
+      public List<String> getSqlFiles() {
+          return Arrays.asList(
+                  "db/tag-schema.sql",
+                  "D:\\db\\tag-data.sql"
+          );
+      }
+  }
+
+  // Switch to the MySQL secondary database and execute the SQL script  
+  ShardingKey.change("mysqlt2");
+  ddlScript.run(new StringReader("DELETE FROM user;\n" +
+          "INSERT INTO user (id, username, password, sex, email) VALUES\n" +
+          "(20, 'Duo', '123456', 0, 'Duo@baomidou.com');"));
+  ```
+
+## Field Data Binding (Dictionary Write-back)  
+
+- Example: 👉 [mybatis-mate-dict](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-dict)  
+- Annotation `@FieldBind`  
+  | Property | Type   | Required | Default | Description                                           |  
+  | :------: | :----: | :------: | :----:  | ---------------------------------------------------- |  
+  | sharding | String |    No    |   ""    | Specifies the sharding data source                   |  
+  |   type   | String |   Yes    |         | Type (used to distinguish different businesses)      |  
+  |  target  | String |   Yes    |         | Target display property (property to be bound, ensure non-database fields are excluded) |  
+- Database `sex` values `0`, `1` are automatically mapped to `Male`, `Female`  
+- Can be bound and mapped to an object, e.g., mapping an order ID to an order object or number  
+  ```java  
+  @FieldBind(type = "user_sex", target = "sexText")  
+  private Integer sex;  
+  // Bound display property, non-table dictionary (excluded)  
+  @TableField(exist = false)  
+  private String sexText;  
+  ```  
+- The binding business handler class must implement the `IDataBind` interface and be injected into the Spring container  
+  ```java  
+  @Component  
+  public class DataBind implements IDataBind {  
+    ...  
+  }  
+  ```
+
+## Virtual Attribute Binding  
+
+- Example: 👉 [mybatis-mate-jsonbind](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-jsonbind)  
+- Annotation `@JsonBind`  
+  ```java
+  @JsonBind("bindingType")
+  public class User {
+      ...
+  }
+  ```  
+- Return Json virtual attribute binding strategy  
+  ```java
+  @Component
+  public class JsonBindStrategy implements IJsonBindStrategy {
+
+      @Override
+      public Map<String, Function<Object, Map<String, Object>>> getStrategyFunctionMap() {
+          return new HashMap<String, Function<Object, Map<String, Object>>>(16) {
+              {
+                  // Inject virtual nodes  
+                  put(Type.departmentRole, (obj) -> new HashMap(2) {{
+                      User user = (User) obj;
+                      // Enum type conversion  
+                      put("statusText", StatusEnum.get(user.getStatus()).getDesc());
+                      // Can query role information from the database  
+                      put("roleName", "Manager");
+                  }});
+              }
+          };
+      }
+  }
+  ```
+
+## Field Encryption and Decryption  
+
+- Example usage: 👉 [mybatis-mate-encrypt](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-encrypt)  
+- Annotation `@FieldEncrypt`  
+  |   Attribute   |   Type    | Required |    Default Value    | Description          |  
+  | :-----------: | :-------: | :------: | :-----------------: | -------------------- |  
+  |   password    |  String   |    No    |         ""          | Encryption password  |  
+  |  algorithm   | Algorithm |    No    | PBEWithMD5AndDES    | PBE MD5 DES hybrid algorithm |  
+  |   encryptor   |   Class   |    No    |     IEncryptor      | Encryption processor |  
+- Algorithm `Algorithm`  
+  |          Algorithm          |              Description              |  
+  | :--------------------------: | :-----------------------------------: |  
+  |           MD5_32             |       32-bit MD5 algorithm            |  
+  |           MD5_16             |       16-bit MD5 algorithm            |  
+  |           BASE64             | Algorithm representing arbitrary binary data with 64 characters |  
+  |             AES              | AES symmetric algorithm 【Must use this algorithm for fuzzy queries】 |  
+  |             RSA              |       Asymmetric encryption algorithm       |  
+  |             SM2              | National SM2 asymmetric encryption algorithm, based on ECC |  
+  |             SM3              | National SM3 message digest algorithm, comparable to MD5 |  
+  |             SM4              | National SM4 symmetric encryption algorithm, a block data algorithm for WLAN standards |  
+  |      PBEWithMD5AndDES        |             Hybrid algorithm             |  
+  |   PBEWithMD5AndTripleDES     |             Hybrid algorithm             |  
+  | PBEWithHMACSHA512AndAES_256  |             Hybrid algorithm             |  
+  |    PBEWithSHA1AndDESede      |             Hybrid algorithm             |  
+  |    PBEWithSHA1AndRC2_40      |             Hybrid algorithm             |  
+- 👉 [National SM2.3.4 Algorithm Usage Specification](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/%E5%9B%BD%E5%AF%86SM2.3.4%E7%AE%97%E6%B3%95%E4%BD%BF%E7%94%A8%E8%A7%84%E8%8C%83)  
+  :::note  
+
+  - The MD5 algorithm is irreversible; both stored data and query results are ciphertext.  
+  - The SM4 algorithm requires the bouncycastle encryption library.  
+  - Hybrid algorithms require the jasypt encryption library.  
+  - 【Note】The query result must include the `encryption annotation` information for decryption. Simply returning a String or a List collection will not support decryption.  
+
+  :::  
+- The `@FieldEncrypt` annotation enables data encryption and decryption, supporting multiple encryption algorithms.  
+  ```java  
+  @FieldEncrypt  
+  private String email;  
+  ```
+
+## Field Desensitization  
+
+- Example usage: 👉 [mybatis-mate-sensitive-jackson](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sensitive-jackson)  
+- Annotation `@FieldSensitive`  
+- The `FieldSensitive` annotation implements data desensitization, with built-in 9 common desensitization rules such as `phone number`, `email`, and `bank card number`.  
+  ```java  
+  @FieldSensitive("testStrategy")  
+  private String username;  
+
+  @Configuration  
+  public class SensitiveStrategyConfig {  
+
+      /**  
+       * Inject desensitization strategy  
+       */  
+      @Bean  
+      public ISensitiveStrategy sensitiveStrategy() {  
+          // Custom desensitization handling for the "testStrategy" type  
+          return new SensitiveStrategy().addStrategy("testStrategy", t -> t + "***test***");  
+      }  
+  }  
+
+  // Skip desensitization processing for editing scenarios  
+  RequestDataTransfer.skipSensitive();  
+  ```
+
+## Multiple Data Sources Sharding (Read-Write Separation)
+
+- Example usage: 👉 [mybatis-mate-sharding](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding)
+- Annotation @Sharding
+  |   Attribute  |  Type  | Required |       Default Value      | Description                  |
+  | :----------: | :----: | :------: | :----------------------: | ---------------------------- |
+  |    value     | String |   Yes    |           ""            | Sharding group name, empty uses default primary data source |
+  |   strategy   | Class  |    No    | RandomShardingStrategy  | Sharding & Table strategy    |
+- Configuration
+  ```xml
+  mybatis-mate:
+    sharding:
+      health: true # Health check
+      primary: mysql # Default selected data source
+      datasource:
+        mysql: # Database group
+          - key: node1
+            ...
+          - key: node2
+            cluster: slave # In read-write separation, slave nodes handle SQL queries (master nodes default to "master" if unspecified)
+            ...
+        postgres:
+          - key: node1 # Data node
+            ...
+  ```
+- Use `@Sharding` annotation to switch data sources (random selection within group by default, read from slave and write to master)
+  ```java
+  @Mapper
+  @Sharding("mysql")
+  public interface UserMapper extends BaseMapper<User> {
+
+      @Sharding("postgres")
+      Long selectByUsername(String username);
+
+  }
+  ```
+- Switch to a specified database node
+  ```java
+  // Switch to mysql slave node2
+  ShardingKey.change("mysqlnode2");
+  ```
+
+## Dynamic Loading and Unloading of Multiple Data Sources  
+
+- Usage example: 👉 [mybatis-mate-sharding-dynamic](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding-dynamic)
+
+## Multi-DataSource Transactions (JTA Atomikos)
+
+- Example usage: 👉 [mybatis-mate-sharding-jta-atomikos](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding-jta-atomikos)

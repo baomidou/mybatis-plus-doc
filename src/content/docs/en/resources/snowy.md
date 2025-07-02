@@ -1,6 +1,8 @@
 ---
 title: SpringBoot Low-Code Rapid Development Platform
-description: SpringBoot enterprise-level open-source low-code application development platform & low-code microservice development management platform
+description: >-
+  SpringBoot Enterprise-Grade Open-Source Low-Code Application Development
+  Platform_Low-Code Microservice Development Management Platform
 sidebar:
   hidden: true
 ---
@@ -9,11 +11,11 @@ sidebar:
 
 ### Product Introduction
 
-Snowy is the first domestic front-end and back-end separated rapid development platform based on Chinese national cryptography, using Vue3+AntDesignVue3 + Vite+SpringBoot+Mp+HuTool+SaToken. It integrates encryption and decryption plugins based on Chinese national cryptography, truly achieving encrypted front-end and back-end separation; it also supports adaptation for domestic hardware models, middleware, and databases, making it your top choice.
+Snowy is China's first national cryptographic frontend-backend separated rapid development platform, adopting Vue3+AntDesignVue3 + Vite+SpringBoot+Mp+HuTool+SaToken. It integrates national cryptographic encryption/decryption plugins, achieving true "inseparable" frontend-backend separation in a separated framework. Simultaneously, it supports adaptation to domestic hardware, middleware, and databases, making it your optimal choice.
 
-The official website offers rich plugins like enterprise edition workflow, multi-tenancy, multiple data sources, and Vue3 form designer for flexible use.
+The official website offers enterprise edition plugins such as workflow, multi-tenancy, multi-data sources, and Vue3 form designer for flexible use.
 
-> PS: The Joint Edition (Mp Enterprise Edition + Snowy Enterprise Edition) refers to joint authorization from both parties, which is more cost-effective than purchasing separately.
+> PS: The Combined Edition (Mp Enterprise Edition + Snowy Enterprise Edition) refers to joint authorization from both parties, offering better value than purchasing separately.
 
 ### Quick Links
 
@@ -23,45 +25,45 @@ Product Documentation: [https://www.xiaonuo.vip/doc](https://www.xiaonuo.vip/doc
 
 ![](https://pan.xiaonuo.vip/?explorer/share/file&hash=87aezjDgKhZAtVBvlw0lkiiLfz6MmgIF3Q4aRp6B9pjbP10oHPz4QXrR&name=/admin_index_01.0edb73a4.png)
 
-### Architecture Features
+### Architectural Features
 
-- Front-end and back-end separated architecture, independent development, conforming to mainstream development models.
-- Front-end primarily uses Vue3+Vite technology, with AntdV as the UI framework.
-- Back-end based on SpringBoot2, MybatisPlus as the data operation framework, and Redis as the caching framework.
-- Maven multi-module management, plugin-based development for convenient installation, uninstallation, upgrading, and reduced coupling.
-- Business modules are separated from APIs, allowing for convenient referencing between modules.
-- Exquisite database design with standardized fields, easy to extend.
-- Supports Chinese national cryptography algorithm encryption and decryption, stress-free for classified protection evaluation of domestic projects.
-- Supports mainstream standard relational databases such as MYSQL, ORACLE, SQLSERVER, PGSQL.
-- Supports domestic databases (e.g., DM DBMS, KingbaseES) and middleware.
-- Supports deployment on Windows, Linux, and domestic operating systems.
+- Frontend-backend separated architecture, independent development, aligned with mainstream development models
+- Frontend primarily uses Vue3+Vite with AntdV as the UI framework
+- Backend based on SpringBoot2, MybatisPlus as the data operation framework, and Redis as the caching framework
+- Maven multi-module management, plugin-based development for easy installation, uninstallation, and upgrades, reducing coupling
+- Business modules and APIs are decoupled, enabling convenient cross-module references
+- Ingenious database design with standardized fields and easy extensibility
+- Supports national cryptographic algorithms for encryption/decryption, effortlessly meeting domestic project security evaluation requirements
+- Supports mainstream structured databases like MYSQL, ORACLE, SQLSERVER, and PGSQL
+- Supports domestic databases and middleware such as Dameng and Kingbase
+- Supports deployment on Windows, Linux, and domestic operating systems
 
 ### Security Features
 
-- Adopts SaToken, a lightweight Java permission authentication framework that is powerful and has a low learning curve.
-- Supports authentication modes such as login authentication, permission authentication, Single Sign-On (SSO), third-party login and OAuth2.0.
-- Enhanced RBAC permission design with independent authorization for resources and interfaces for greater flexibility.
-- Supports fine-grained independent authorization at the button level, with dynamic display of interface buttons.
-- Supports annotation-based and route-interception-based authentication for API interfaces to prevent unauthorized access.
-- Unique data scope mechanism, allowing each interface to be configured with different data scopes.
-- Supports rate limiting and debouncing, prevents duplicate submissions, effectively preventing the generation of dirty data.
-- Passwords, phone numbers, ID card numbers, etc., are transmitted and stored encrypted using Chinese national cryptography algorithms for enhanced data security.
-- Operation logs use SM2 for integrity protection, meeting security audit requirements.
+- Utilizes SaToken, a lightweight Java permission authentication framework, powerful yet easy to learn
+- Supports authentication modes like login authentication, permission authentication, SSO, third-party login, and OAuth2.0
+- Enhanced RBAC permission design with independent resource and interface authorization for greater flexibility
+- Supports button-level granular authorization with dynamic UI button display
+- Supports API interface annotation-based and route interception-based authentication to prevent unauthorized access
+- Innovative data scope mechanism allowing different data scopes per interface
+- Supports rate limiting, anti-shake, and anti-duplicate submission to prevent dirty data
+- Encrypts passwords, phone numbers, ID cards, etc., during transmission and storage using national cryptographic algorithms for enhanced security
+- Operation logs use SM2 for integrity protection, meeting security audit requirements
 
 ### Benefits
 
-1. One copy of the Enterprise Edition source code.
-2. VIP exclusive group chat (1 front-end and 1 back-end person each).
-3. Verifiable official authorization.
-4. Formal invoice.
-5. Perpetual use with a 1-year update subscription.
-6. Download updates from a private GitLab server.
-7. Chinese-style workflow.
-8. Exclusive dual-mode multi-tenancy (database isolation, ID isolation).
-9. Multiple data sources.
-10. Payment module.
-11. Advanced example module.
-12. Complimentary reporting features currently in the demo (limited to integrated ureport functions).
-13. Perpetual Mate authorization.
-14. Mate after-sales service.
-15. Mate authorization letter.
+1. Enterprise Edition source code (1 copy)
+2. VIP-exclusive group chat (1 frontend + 1 backend member)
+3. Official verifiable authorization
+4. Formal invoice
+5. Permanent usage with 1-year update subscription
+6. GitLab private server for updates
+7. Chinese-style workflow
+8. Exclusive dual-mode multi-tenancy (database isolation + ID isolation)
+9. Multi-data source support
+10. Payment module
+11. Advanced example module
+12. Complimentary reporting functionality (limited to integrated ureport features)
+13. Permanent Mate authorization
+14. Mate after-sales service
+15. Mate authorization certificate

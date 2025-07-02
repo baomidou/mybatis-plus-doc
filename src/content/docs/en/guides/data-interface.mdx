@@ -1,0 +1,1918 @@
+---
+title: Persistence Layer Interface
+sidebar:
+  order: 3
+---
+This article provides a detailed introduction to various methods of performing persistence operations with MyBatis-Plus, including insertion, update, deletion, query, and pagination. Through this article, you will learn how the various methods provided by MyBatis-Plus perform data operations and their corresponding SQL statements.
+
+## Service Interface  
+
+[IService](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/service/IService.java) is a generic Service layer interface provided by MyBatis-Plus. It encapsulates common CRUD operations, including insertion, deletion, querying, and pagination. By extending the `IService` interface, you can quickly implement basic database operations while maintaining code simplicity and maintainability.  
+
+The method naming in the `IService` interface follows certain conventions, such as `get` for single-row queries, `remove` for deletion, `list` for collection queries, and `page` for paginated queries. This helps avoid confusion with Mapper layer methods.  
+
+:::tip  
+
+- The generic `T` represents any entity object.  
+- If there is a possibility of custom generic Service methods, it is recommended to create your own `IBaseService` that extends the `IService` base class provided by MyBatis-Plus.  
+- The `Wrapper` object refers to the [Conditional Constructor](/guides/wrapper).  
+
+:::
+
+### save
+
+```java
+// Insert a record (selective fields, strategy insertion)
+boolean save(T entity);
+// Batch insert
+boolean saveBatch(Collection<T> entityList);
+// Batch insert
+boolean saveBatch(Collection<T> entityList, int batchSize);
+```
+
+<p>
+    **Function Description:** Inserts records with strategic insertion based on the fields of the entity object. <br/>
+    **Return Value:** boolean, indicating whether the insertion operation was successful. <br/>
+    **Parameter Description:** <br/>
+    |          Type          | Parameter Name |     Description     |
+    | :-------------------: | :--------: | :----------: |
+    |           T           |   entity   |   Entity object   |
+    | Collection&#60;T&#62; | entityList | Collection of entity objects |
+    |          int          | batchSize  | Batch size for insertion |
+</p>
+
+
+**Example (save):**
+
+```java
+// Assume a User entity object
+User user = new User();
+user.setName("John Doe");
+user.setEmail("john.doe@example.com");
+boolean result = userService.save(user); // Call the save method
+if (result) {
+    System.out.println("User saved successfully.");
+} else {
+    System.out.println("Failed to save user.");
+}
+```
+
+Generated SQL:
+
+```sql
+INSERT INTO user (name, email) VALUES ('John Doe', 'john.doe@example.com')
+```
+
+**Example (saveBatch):**
+
+```java
+// Assume a list of User entity objects
+List<User> users = Arrays.asList(
+    new User("Alice", "alice@example.com"),
+    new User("Bob", "bob@example.com"),
+    new User("Charlie", "charlie@example.com")
+);
+// Batch insert with default batch size
+boolean result = userService.saveBatch(users); // Call the saveBatch method with default batch size
+if (result) {
+    System.out.println("Users saved successfully.");
+} else {
+    System.out.println("Failed to save users.");
+}
+```
+
+Generated SQL (assuming default batch size is 3):
+
+```sql
+INSERT INTO user (name, email) VALUES 
+('Alice', 'alice@example.com'),
+('Bob', 'bob@example.com'),
+('Charlie', 'charlie@example.com')
+```
+
+**Example (saveBatch with specified batch size):**
+
+```java
+// Assume a list of User entity objects
+List<User> users = Arrays.asList(
+    new User("David", "david@example.com"),
+    new User("Eve", "eve@example.com"),
+    new User("Frank", "frank@example.com"),
+    new User("Grace", "grace@example.com")
+);
+// Batch insert with specified batch size of 2
+boolean result = userService.saveBatch(users, 2); // Call the saveBatch method with specified batch size
+if (result) {
+    System.out.println("Users saved successfully.");
+} else {
+    System.out.println("Failed to save users.");
+}
+```
+
+Generated SQL (with specified batch size of 2):
+
+```sql
+-- First batch
+INSERT INTO user (name, email) VALUES 
+('David', 'david@example.com'),
+('Eve', 'eve@example.com')
+
+-- Second batch
+INSERT INTO user (name, email) VALUES 
+('Frank', 'frank@example.com'),
+('Grace', 'grace@example.com')
+```
+
+Through the above examples, we can see how the save series methods perform batch insert operations at the Service layer and their corresponding SQL statements. These methods greatly simplify the code for insertion operations and improve development efficiency.
+
+### saveOrUpdate
+
+```java
+// Updates the record if the TableId annotated property value exists, otherwise inserts a new record
+boolean saveOrUpdate(T entity);
+// Attempts to update based on updateWrapper, otherwise executes saveOrUpdate(T) method
+boolean saveOrUpdate(T entity, Wrapper<T> updateWrapper);
+// Batch update or insert
+boolean saveOrUpdateBatch(Collection<T> entityList);
+// Batch update or insert
+boolean saveOrUpdateBatch(Collection<T> entityList, int batchSize);
+```
+
+<p>
+    **Function Description:** Determines whether to update or insert a record based on the primary key ID of the entity object. <br/>
+    **Return Value:** boolean, indicating whether the insert or update operation was successful. <br/>
+    **Parameter Description:** <br/>
+    |          Type          |   Parameter   |     Description     |
+    | :-------------------: | :--------: | :----------: |
+    |           T           |   entity   |   Entity object   |
+    |  Wrapper&#60;T&#62;   | updateWrapper | Entity object wrapper class UpdateWrapper |
+    | Collection&#60;T&#62; | entityList | Collection of entity objects |
+    |          int          | batchSize  | Batch size for insertion |
+</p>
+
+**Example (saveOrUpdate):**
+
+```java
+// Assume a User entity object where id is a property annotated with TableId
+User user = new User();
+user.setId(1);
+user.setName("John Doe");
+user.setEmail("john.doe@example.com");
+boolean result = userService.saveOrUpdate(user); // Call saveOrUpdate method
+if (result) {
+    System.out.println("User updated or saved successfully.");
+} else {
+    System.out.println("Failed to update or save user.");
+}
+```
+
+Generated SQL (assuming a record with id 1 exists):
+
+```sql
+UPDATE user SET name = 'John Doe', email = 'john.doe@example.com' WHERE id = 1
+```
+
+Generated SQL (assuming a record with id 1 does not exist):
+
+```sql
+INSERT INTO user (id, name, email) VALUES (1, 'John Doe', 'john.doe@example.com')
+```
+
+**Example (saveOrUpdateBatch):**
+
+```java
+// Assume a list of User entity objects, each with an id property
+List<User> users = Arrays.asList(
+    new User(1, "Alice", "alice@example.com"),
+    new User(2, "Bob", "bob@example.com"),
+    new User(3, "Charlie", "charlie@example.com")
+);
+// Perform batch update or insert with default batch size
+boolean result = userService.saveOrUpdateBatch(users); // Call saveOrUpdateBatch method with default batch size
+if (result) {
+    System.out.println("Users updated or saved successfully.");
+} else {
+    System.out.println("Failed to update or save users.");
+}
+```
+
+Generated SQL (assuming records with id 1 and 2 exist, and id 3 does not):
+
+```sql
+UPDATE user SET name = 'Alice', email = 'alice@example.com' WHERE id = 1
+UPDATE user SET name = 'Bob', email = 'bob@example.com' WHERE id = 2
+INSERT INTO user (id, name, email) VALUES (3, 'Charlie', 'charlie@example.com')
+```
+
+**Example (saveOrUpdateBatch with specified batch size):**
+
+```java
+// Assume a list of User entity objects
+List<User> users = Arrays.asList(
+    new User(4, "David", "david@example.com"),
+    new User(5, "Eve", "eve@example.com"),
+    new User(6, "Frank", "frank@example.com")
+);
+// Perform batch update or insert with a batch size of 2
+boolean result = userService.saveOrUpdateBatch(users, 2); // Call saveOrUpdateBatch method with specified batch size
+if (result) {
+    System.out.println("Users updated or saved successfully.");
+} else {
+    System.out.println("Failed to update or save users.");
+}
+```
+
+Generated SQL (assuming batch size is 2):
+
+```sql
+-- First batch
+UPDATE user SET name = 'David', email = 'david@example.com' WHERE id = 4
+UPDATE user SET name = 'Eve', email = 'eve@example.com' WHERE id = 5
+
+-- Second batch
+INSERT INTO user (id, name, email) VALUES (6, 'Frank', 'frank@example.com')
+```
+
+Through the above examples, we can see how the saveOrUpdate series methods perform batch update or insert operations at the Service layer, along with their corresponding SQL statements. These methods provide efficient data operations, allowing updates or inserts based on different conditions.
+
+### remove
+
+```java
+// Delete records based on conditions set by queryWrapper
+boolean remove(Wrapper<T> queryWrapper);
+// Delete by ID
+boolean removeById(Serializable id);
+// Delete records based on columnMap conditions
+boolean removeByMap(Map<String, Object> columnMap);
+// Batch delete (by ID list)
+boolean removeByIds(Collection<? extends Serializable> idList);
+```
+
+<p>
+    **Function Description:** Deletes records that match the specified conditions.<br/>
+    **Return Value:** boolean, indicating whether the deletion was successful. <br/>
+    **Parameter Description:** <br/>
+    |                    Type                    |  Parameter  |         Description         |
+    | :----------------------------------------: | :---------: | :-------------------------: |
+    |             Wrapper&#60;T&#62;             | queryWrapper | Entity wrapper QueryWrapper |
+    |                Serializable                |      id      |        Primary key ID       |
+    |        Map&#60;String, Object&#62;         |  columnMap   |    Table field map object   |
+    | Collection&#60;? extends Serializable&#62; |    idList    |     Primary key ID list     |
+</p>
+
+**Example (remove):**
+
+```java
+// Assume a QueryWrapper object with deletion condition: name = 'John Doe'
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.eq("name", "John Doe");
+boolean result = userService.remove(queryWrapper); // Call remove method
+if (result) {
+    System.out.println("Record deleted successfully.");
+} else {
+    System.out.println("Failed to delete record.");
+}
+```
+
+Generated SQL:
+
+```sql
+DELETE FROM user WHERE name = 'John Doe'
+```
+
+**Example (removeById):**
+
+```java
+// Assume deleting a user with ID = 1
+boolean result = userService.removeById(1); // Call removeById method
+if (result) {
+    System.out.println("User deleted successfully.");
+} else {
+    System.out.println("Failed to delete user.");
+}
+```
+
+Generated SQL:
+
+```sql
+DELETE FROM user WHERE id = 1
+```
+
+**Example (removeByMap):**
+
+```java
+// Assume a columnMap with deletion condition: age = 30
+Map<String, Object> columnMap = new HashMap<>();
+columnMap.put("age", 30);
+boolean result = userService.removeByMap(columnMap); // Call removeByMap method
+if (result) {
+    System.out.println("Records deleted successfully.");
+} else {
+    System.out.println("Failed to delete records.");
+}
+```
+
+Generated SQL:
+
+```sql
+DELETE FROM user WHERE age = 30
+```
+
+**Example (removeByIds):**
+
+```java
+// Assume a list of IDs for batch user deletion
+List<Integer> ids = Arrays.asList(1, 2, 3);
+boolean result = userService.removeByIds(ids); // Call removeByIds method
+if (result) {
+    System.out.println("Users deleted successfully.");
+} else {
+    System.out.println("Failed to delete users.");
+}
+```
+
+Generated SQL:
+
+```sql
+DELETE FROM user WHERE id IN (1, 2, 3)
+```
+
+Through the above examples, we can see how the remove series methods perform deletion operations at the Service layer and their corresponding SQL statements. These methods provide flexible data manipulation approaches for performing deletions under various conditions.
+
+### update
+
+```java
+// Update records based on UpdateWrapper conditions, sqlset needs to be set
+boolean update(Wrapper<T> updateWrapper);
+// Update records based on whereWrapper conditions
+boolean update(T updateEntity, Wrapper<T> whereWrapper);
+// Update by ID
+boolean updateById(T entity);
+// Batch update by ID
+boolean updateBatchById(Collection<T> entityList);
+// Batch update by ID
+boolean updateBatchById(Collection<T> entityList, int batchSize);
+```
+
+<p>
+    **Function Description:** Updates records that meet specified conditions.<br/>
+    **Return Value:** boolean, indicating whether the update operation was successful. <br/>
+    **Parameter Description:** <br/>
+    |         Type          |   Param Name   |              Description              |
+    | :-------------------: | :-----------: | :-----------------------------------: |
+    |  Wrapper&#60;T&#62;   | updateWrapper | Entity object wrapper class UpdateWrapper |
+    |           T           |    entity     |             Entity object             |
+    | Collection&#60;T&#62; |  entityList   |          Collection of entities       |
+    |          int          |   batchSize   |          Batch size for update        |
+</p>
+
+**Example (Update using UpdateWrapper):**
+
+```java
+// Assume an UpdateWrapper object with update condition name = 'John Doe' and updating the email field
+UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+updateWrapper.eq("name", "John Doe").set("email", "john.doe@newdomain.com");
+boolean result = userService.update(updateWrapper); // Call update method
+if (result) {
+    System.out.println("Record updated successfully.");
+} else {
+    System.out.println("Failed to update record.");
+}
+```
+
+Generated SQL:
+
+```sql
+UPDATE user SET email = 'john.doe@newdomain.com' WHERE name = 'John Doe'
+```
+
+**Example (Update using WhereWrapper):**
+
+```java
+// Assume a User entity object setting the name field to update, and a whereWrapper with condition id = 1
+User updateEntity = new User();
+updateEntity.setName("Updated Name");
+QueryWrapper<User> whereWrapper = new QueryWrapper<>();
+whereWrapper.eq("id", 1);
+boolean result = userService.update(updateEntity, whereWrapper); // Call update method
+if (result) {
+    System.out.println("Record updated successfully.");
+} else {
+    System.out.println("Failed to update record.");
+}
+```
+
+Generated SQL:
+
+```sql
+UPDATE user SET name = 'Updated Name' WHERE id = 1
+```
+
+**Example (updateById):**
+
+```java
+// Assume a User entity object setting the email field to update by ID
+User updateEntity = new User();
+updateEntity.setId(1);
+updateEntity.setEmail("updated.email@example.com");
+boolean result = userService.updateById(updateEntity); // Call updateById method
+if (result) {
+    System.out.println("Record updated successfully.");
+} else {
+    System.out.println("Failed to update record.");
+}
+```
+
+Generated SQL:
+
+```sql
+UPDATE user SET email = 'updated.email@example.com' WHERE id = 1
+```
+
+**Example (updateBatchById):**
+
+```java
+// Assume a list of User entity objects for batch update
+List<User> users = Arrays.asList(
+    new User(1, null, "new.email1@example.com"),
+    new User(2, null, "new.email2@example.com")
+);
+boolean result = userService.updateBatchById(users); // Call updateBatchById method with default batch size
+if (result) {
+    System.out.println("Records updated successfully.");
+} else {
+    System.out.println("Failed to update records.");
+}
+```
+
+Generated SQL (assuming default batch size is 2):
+
+```sql
+UPDATE user SET email = 'new.email1@example.com' WHERE id = 1
+UPDATE user SET email = 'new.email2@example.com' WHERE id = 2
+```
+
+**Example (updateBatchById with specified batch size):**
+
+```java
+// Assume a list of User entity objects for batch update with batch size 1
+List<User> users = Arrays.asList(
+    new User(1, null, "new.email1@example.com"),
+    new User(2, null, "new.email2@example.com")
+);
+boolean result = userService.updateBatchById(users, 1); // Call updateBatchById method with specified batch size
+if (result) {
+    System.out.println("Records updated successfully.");
+} else {
+    System.out.println("Failed to update records.");
+}
+```
+
+Generated SQL (assuming batch size is 1):
+
+```sql
+-- First batch
+UPDATE user SET email = 'new.email1@example.com' WHERE id = 1
+-- Second batch
+UPDATE user SET email = 'new.email2@example.com' WHERE id = 2
+```
+
+Through the above examples, we can see how the `update` series methods perform update operations at the Service layer and their corresponding SQL statements. These methods provide flexible data manipulation approaches for performing updates under different conditions.
+
+### get
+
+```java
+// Query by ID
+T getById(Serializable id);
+// Query one record based on Wrapper. If the result set contains multiple records, an exception will be thrown. To get a random record, add limit condition wrapper.last("LIMIT 1")
+T getOne(Wrapper<T> queryWrapper);
+// Query one record based on Wrapper
+T getOne(Wrapper<T> queryWrapper, boolean throwEx);
+// Query one record based on Wrapper
+Map<String, Object> getMap(Wrapper<T> queryWrapper);
+// Query one record based on Wrapper
+<V> V getObj(Wrapper<T> queryWrapper, Function<? super Object, V> mapper);
+```
+
+<p>
+    **Functionality:** Query records that meet specified conditions.<br/>
+    **Return Value:** Query result, which may be an entity object, Map object, or other types. <br/>
+    **Parameter Description:** <br/>
+    |                 Type                 |   Param Name   |              Description              |
+    | :----------------------------------: | :------------: | :-----------------------------------: |
+    |            Serializable             |      id      |             Primary Key ID            |
+    |         Wrapper&#60;T&#62;          | queryWrapper | Entity object encapsulation class QueryWrapper |
+    |               boolean               |   throwEx    |   Whether to throw exception when multiple results exist   |
+    |                  T                  |    entity    |            Entity object              |
+    | Function&#60;? super Object, V&#62; |    mapper    |            Conversion function        |
+</p>
+
+**Example (getById):**
+
+```java
+// Assume querying a user with ID 1
+User user = userService.getById(1); // Call getById method
+if (user != null) {
+    System.out.println("User found: " + user);
+} else {
+    System.out.println("User not found.");
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE id = 1
+```
+
+**Example (getOne):**
+
+```java
+// Assume a QueryWrapper object with query condition name = 'John Doe'
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.eq("name", "John Doe");
+User user = userService.getOne(queryWrapper); // Call getOne method
+if (user != null) {
+    System.out.println("User found: " + user);
+} else {
+    System.out.println("User not found.");
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE name = 'John Doe'
+```
+
+**Example (getOne without throwing exception):**
+
+```java
+// Assume a QueryWrapper object with query condition name = 'John Doe' and not throwing exception
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.eq("name", "John Doe");
+User user = userService.getOne(queryWrapper, false); // Call getOne method
+if (user != null) {
+    System.out.println("User found: " + user);
+} else {
+    System.out.println("User not found.");
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE name = 'John Doe'
+```
+
+**Example (getMap):**
+
+```java
+// Assume a QueryWrapper object with query condition name = 'John Doe' and mapping result to Map
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.eq("name", "John Doe");
+Map<String, Object> userMap = userService.getMap(queryWrapper); // Call getMap method
+if (userMap != null) {
+    System.out.println("User found: " + userMap);
+} else {
+    System.out.println("User not found.");
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE name = 'John Doe'
+```
+
+**Example (getObj):**
+
+```java
+// Assume a QueryWrapper object with query condition name = 'John Doe' and converting result to String
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.eq("name", "John Doe");
+String userName = userService.getObj(queryWrapper, obj -> ((User) obj).getName()); // Call getObj method
+if (userName != null) {
+    System.out.println("User name found: " + userName);
+} else {
+    System.out.println("User name not found.");
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE name = 'John Doe'
+```
+
+Through the above examples, we can see how the `get` series methods perform query operations at the Service layer and their corresponding SQL statements. These methods provide flexible data querying approaches for different conditions.
+
+### list
+
+```java
+// Query all
+List<T> list();
+// Query list
+List<T> list(Wrapper<T> queryWrapper);
+// Query (batch query by IDs)
+Collection<T> listByIds(Collection<? extends Serializable> idList);
+// Query (by columnMap conditions)
+Collection<T> listByMap(Map<String, Object> columnMap);
+// Query all as maps
+List<Map<String, Object>> listMaps();
+// Query list as maps
+List<Map<String, Object>> listMaps(Wrapper<T> queryWrapper);
+// Query all records
+List<Object> listObjs();
+// Query all records
+<V> List<V> listObjs(Function<? super Object, V> mapper);
+// Query all records by Wrapper conditions
+List<Object> listObjs(Wrapper<T> queryWrapper);
+// Query all records by Wrapper conditions
+<V> List<V> listObjs(Wrapper<T> queryWrapper, Function<? super Object, V> mapper);
+```
+
+<p>
+    **Functionality:** Queries records that meet the specified conditions.<br/>
+    **Return Value:** Query results, which may be entity objects, Map objects, or other types. <br/>
+    **Parameter Description:** <br/>
+    |                    Type                    |  Parameter  |             Description             |
+    | :----------------------------------------: | :---------: | :---------------------------------: |
+    |             Wrapper&#60;T&#62;             | queryWrapper | Entity object wrapper class QueryWrapper |
+    | Collection&#60;? extends Serializable&#62; |    idList    |          List of primary key IDs          |
+    |         Map&#60;String, Object&#62;        |  columnMap   |         Table field map object         |
+    |    Function&#60;? super Object, V&#62;     |    mapper    |            Conversion function            |
+</p>
+
+**Example (list):**
+
+```java
+// Query all users
+List<User> users = userService.list(); // Call list method
+for (User user : users) {
+    System.out.println("User: " + user);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user
+```
+
+**Example (list with QueryWrapper):**
+
+```java
+// Assume a QueryWrapper object with query condition age > 25
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+List<User> users = userService.list(queryWrapper); // Call list method
+for (User user : users) {
+    System.out.println("User: " + user);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25
+```
+
+**Example (listByIds):**
+
+```java
+// Assume a list of IDs for batch querying users
+List<Integer> ids = Arrays.asList(1, 2, 3);
+Collection<User> users = userService.listByIds(ids); // Call listByIds method
+for (User user : users) {
+    System.out.println("User: " + user);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE id IN (1, 2, 3)
+```
+
+**Example (listByMap):**
+
+```java
+// Assume a columnMap with query condition age = 30
+Map<String, Object> columnMap = new HashMap<>();
+columnMap.put("age", 30);
+Collection<User> users = userService.listByMap(columnMap); // Call listByMap method
+for (User user : users) {
+    System.out.println("User: " + user);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE age = 30
+```
+
+**Example (listMaps):**
+
+```java
+// Query all users and map results to Map
+List<Map<String, Object>> userMaps = userService.listMaps(); // Call listMaps method
+for (Map<String, Object> userMap : userMaps) {
+    System.out.println("User Map: " + userMap);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user
+```
+
+**Example (listMaps with QueryWrapper):**
+
+```java
+// Assume a QueryWrapper object with query condition age > 25 and map results to Map
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+List<Map<String, Object>> userMaps = userService.listMaps(queryWrapper); // Call listMaps method
+for (Map<String, Object> userMap : userMaps) {
+    System.out.println("User Map: " + userMap);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25
+```
+
+**Example (listObjs):**
+
+```java
+// Query all users and convert results to String list
+List<String> userNames = userService.listObjs(obj -> ((User) obj).getName()); // Call listObjs method
+for (String userName : userNames) {
+    System.out.println("User Name: " + userName);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user
+```
+
+**Example (listObjs with QueryWrapper):**
+
+```java
+// Assume a QueryWrapper object with query condition age > 25 and convert results to String list
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+List<String> userNames = userService.listObjs(queryWrapper, obj -> ((User) obj).getName()); // Call listObjs method
+for (String userName : userNames) {
+    System.out.println("User Name: " + userName);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25
+```
+
+Through the above examples, we can see how the `list` series methods perform query operations at the Service layer and their corresponding SQL statements. These methods provide flexible data querying approaches for different conditions.
+
+### page
+
+```java
+// Unconditional pagination query
+IPage<T> page(IPage<T> page);
+// Conditional pagination query
+IPage<T> page(IPage<T> page, Wrapper<T> queryWrapper);
+// Unconditional pagination query
+IPage<Map<String, Object>> pageMaps(IPage<T> page);
+// Conditional pagination query
+IPage<Map<String, Object>> pageMaps(IPage<T> page, Wrapper<T> queryWrapper);
+```
+
+<p>
+    **Function Description:** Pagination query for records matching the conditions.<br/>
+    **Return Value:** Pagination query result, including the record list and total record count. <br/>
+    **Parameter Description:** <br/>
+    |                    Type                    |  Parameter  |              Description              |
+    | :----------------------------------------: | :----------: | :-----------------------------------: |
+    |              IPage&#60;T&#62;               |     page     |            Pagination object          |
+    |             Wrapper&#60;T&#62;             | queryWrapper | Entity object encapsulation class QueryWrapper |
+</p>
+
+**Example (page):**
+
+```java
+// Assume an unconditional pagination query, displaying 10 records per page, querying the 1st page
+IPage<User> page = new Page<>(1, 10);
+IPage<User> userPage = userService.page(page); // Call the page method
+List<User> userList = userPage.getRecords();
+long total = userPage.getTotal();
+System.out.println("Total users: " + total);
+for (User user : userList) {
+    System.out.println("User: " + user);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user LIMIT 10 OFFSET 0
+```
+
+**Example (page QueryWrapper form):**
+
+```java
+// Assume a QueryWrapper object with the query condition age > 25, performing a conditional pagination query
+IPage<User> page = new Page<>(1, 10);
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+IPage<User> userPage = userService.page(page, queryWrapper); // Call the page method
+List<User> userList = userPage.getRecords();
+long total = userPage.getTotal();
+System.out.println("Total users (age > 25): " + total);
+for (User user : userList) {
+    System.out.println("User: " + user);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25 LIMIT 10 OFFSET 0
+```
+
+**Example (pageMaps):**
+
+```java
+// Assume an unconditional pagination query, mapping results to Map, displaying 10 records per page, querying the 1st page
+IPage<Map<String, Object>> page = new Page<>(1, 10);
+IPage<Map<String, Object>> userPageMaps = userService.pageMaps(page); // Call the pageMaps method
+List<Map<String, Object>> userMapList = userPageMaps.getRecords();
+long total = userPageMaps.getTotal();
+System.out.println("Total users: " + total);
+for (Map<String, Object> userMap : userMapList) {
+    System.out.println("User Map: " + userMap);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user LIMIT 10 OFFSET 0
+```
+
+**Example (pageMaps QueryWrapper form):**
+
+```java
+// Assume a QueryWrapper object with the query condition age > 25, performing a conditional pagination query, mapping results to Map
+IPage<Map<String, Object>> page = new Page<>(1, 10);
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+IPage<Map<String, Object>> userPageMaps = userService.pageMaps(page, queryWrapper); // Call the pageMaps method
+List<Map<String, Object>> userMapList = userPageMaps.getRecords();
+long total = userPageMaps.getTotal();
+System.out.println("Total users (age > 25): " + total);
+for (Map<String, Object> userMap : userMapList) {
+    System.out.println("User Map: " + userMap);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25 LIMIT 10 OFFSET 0
+```
+
+Through the above examples, we can see how the `page` series methods perform pagination queries at the Service layer and their corresponding SQL statements. These methods provide flexible data querying capabilities, allowing pagination queries under different conditions.
+
+### count
+
+```java
+// Query total record count
+int count();
+// Query total record count based on Wrapper conditions
+int count(Wrapper<T> queryWrapper);
+
+// Starting from version 3.4.3.2, return type changed to long
+// Query total record count
+long count();
+// Query total record count based on Wrapper conditions
+long count(Wrapper<T> queryWrapper);
+```
+
+<p>
+    **Function Description:** Queries the total number of records that meet the specified conditions.<br/>
+    **Return Value:** The total count of records that match the conditions. <br/>
+    **Parameter Description:** <br/>
+    |             Type             |  Parameter  |              Description              |
+    | :--------------------------: | :----------: | :----------------------------------: |
+    | Wrapper&#60;T&#62; | queryWrapper | Entity object wrapper class QueryWrapper |
+</p>
+
+**Example (count):**
+
+```java
+// Query the total record count in the user table
+int totalUsers = userService.count(); // Call count method
+System.out.println("Total users: " + totalUsers);
+```
+
+Generated SQL:
+
+```sql
+SELECT COUNT(*) FROM user
+```
+
+**Example (count with QueryWrapper):**
+
+```java
+// Assume a QueryWrapper object with condition age > 25, query total users meeting the condition
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+int totalUsers = userService.count(queryWrapper); // Call count method
+System.out.println("Total users (age > 25): " + totalUsers);
+```
+
+Generated SQL:
+
+```sql
+SELECT COUNT(*) FROM user WHERE age > 25
+```
+
+Through the above examples, we can see how the `count` method performs record counting operations at the Service layer, along with their corresponding SQL statements. These methods provide flexible data counting approaches that can perform record counting based on different conditions.
+
+## Mapper Interface  
+
+BaseMapper is a universal Mapper interface provided by MyBatis-Plus, which encapsulates a series of common database operation methods, including CRUD (Create, Read, Update, Delete). By inheriting BaseMapper, developers can quickly perform database operations without writing cumbersome SQL statements.  
+
+:::tip  
+
+- The generic `T` represents any entity object.  
+- The parameter `Serializable` can be any type of primary key. MyBatis-Plus does not recommend using composite primary keys and expects each table to have its own unique `id` primary key.  
+- The object `Wrapper` refers to the [Condition Constructor](/guides/wrapper).  
+
+:::
+
+### insert
+
+```java
+// Insert a record
+int insert(T entity);
+```
+
+<p>
+    **Function Description:** Insert a record.<br/>
+    **Return Value:** int, indicating the number of affected rows, typically 1 for a successful insertion. <br/>
+    **Parameter Description:** <br/>
+    |  Type  | Parameter |   Description   |
+    | :----: | :-------: | :-------------: |
+    |   T    |  entity   | Entity object   |
+</p>
+
+**Example (insert):**
+
+```java
+User user = new User();
+user.setName("John Doe");
+user.setEmail("john.doe@example.com");
+int rows = userMapper.insert(user); // Call the insert method
+if (rows > 0) {
+    System.out.println("User inserted successfully.");
+} else {
+    System.out.println("Failed to insert user.");
+}
+```
+
+Generated SQL:
+
+```sql
+INSERT INTO user (name, email) VALUES (?, ?)
+```
+
+From the above example, we can see how the `insert` method performs insertion operations at the Mapper layer and its corresponding SQL statement. This method simplifies the implementation of insertion operations, eliminating the need for developers to manually write SQL statements.
+
+### delete
+
+```java
+// Delete records based on entity conditions
+int delete(@Param(Constants.WRAPPER) Wrapper<T> wrapper);
+// Batch delete by IDs
+int deleteBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
+// Delete by ID
+int deleteById(Serializable id);
+// Delete records based on columnMap conditions
+int deleteByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
+```
+
+<p>
+    **Function Description:** Deletes records that match the specified conditions.<br/>
+    **Return Value:** int, indicating the number of affected rows (typically 1 for successful deletion). <br/>
+    **Parameter Description:** <br/>
+    |                     Type                    | Parameter |               Description                |
+    | :----------------------------------------: | :-------: | :--------------------------------------: |
+    |             Wrapper&#60;T&#62;             |  wrapper  | Entity wrapper class (can be null)       |
+    | Collection&#60;? extends Serializable&#62; |  idList   | Primary key ID list (cannot be null/empty) |
+    |                Serializable                |    id     |             Primary key ID              |
+    |        Map&#60;String, Object&#62;         | columnMap |          Table column map object        |
+</p>
+
+**Example (delete):**
+
+```java
+// Assume a QueryWrapper object with condition age > 25 to delete matching users
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+int rows = userMapper.delete(queryWrapper); // Call delete method
+if (rows > 0) {
+    System.out.println("Users deleted successfully.");
+} else {
+    System.out.println("No users deleted.");
+}
+```
+
+Generated SQL:
+
+```sql
+DELETE FROM user WHERE age > 25
+```
+
+**Example (deleteBatchIds):**
+
+```java
+// Batch delete users with given ID list
+List<Integer> ids = Arrays.asList(1, 2, 3);
+int rows = userMapper.deleteBatchIds(ids); // Call deleteBatchIds method
+if (rows > 0) {
+    System.out.println("Users deleted successfully.");
+} else {
+    System.out.println("No users deleted.");
+}
+```
+
+Generated SQL:
+
+```sql
+DELETE FROM user WHERE id IN (1, 2, 3)
+```
+
+**Example (deleteById):**
+
+```java
+// Delete single user by ID
+int userId = 1;
+int rows = userMapper.deleteById(userId); // Call deleteById method
+if (rows > 0) {
+    System.out.println("User deleted successfully.");
+} else {
+    System.out.println("No user deleted.");
+}
+```
+
+Generated SQL:
+
+```sql
+DELETE FROM user WHERE id = 1
+```
+
+**Example (deleteByMap):**
+
+```java
+// Delete users matching columnMap condition (age = 30)
+Map<String, Object> columnMap = new HashMap<>();
+columnMap.put("age", 30);
+int rows = userMapper.deleteByMap(columnMap); // Call deleteByMap method
+if (rows > 0) {
+    System.out.println("Users deleted successfully.");
+} else {
+    System.out.println("No users deleted.");
+}
+```
+
+Generated SQL:
+
+```sql
+DELETE FROM user WHERE age = 30
+```
+
+Through these examples, we can observe how the `delete` series methods perform deletion operations at the Mapper layer and their corresponding SQL statements. These methods provide flexible data deletion approaches based on different conditions.
+
+### update
+
+```java
+// Update records based on whereWrapper conditions
+int update(@Param(Constants.ENTITY) T updateEntity, @Param(Constants.WRAPPER) Wrapper<T> whereWrapper);
+// Update by ID
+int updateById(@Param(Constants.ENTITY) T entity);
+```
+
+<p>
+    **Function Description:** Updates records that meet the specified conditions.<br/>
+    **Return Value:** int, representing the number of affected rows, typically 1 indicating a successful update. <br/>
+    **Parameter Description:** <br/>
+    |        Type        |   Param Name   |                               Description                               |
+    | :----------------: | :------------: | :--------------------------------------------------------------------: |
+    |         T          |     entity     |                  Entity object (set condition values, can be null)                  |
+    | Wrapper&#60;T&#62; | updateWrapper | Entity object wrapper class (can be null, where the entity inside generates WHERE clauses) |
+</p>
+
+**Example (update):**
+
+```java
+// Assume an UpdateWrapper object with query condition age > 25, updating emails of matching users
+UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+updateWrapper.gt("age", 25);
+User updateUser = new User();
+updateUser.setEmail("new.email@example.com");
+int rows = userMapper.update(updateUser, updateWrapper); // Call update method
+if (rows > 0) {
+    System.out.println("Users updated successfully.");
+} else {
+    System.out.println("No users updated.");
+}
+```
+
+Generated SQL:
+
+```sql
+UPDATE user SET email = ? WHERE age > 25
+```
+
+**Example (updateById):**
+
+```java
+// Assume updating the email of user with ID 1
+User updateUser = new User();
+updateUser.setId(1);
+updateUser.setEmail("new.email@example.com");
+int rows = userMapper.updateById(updateUser); // Call updateById method
+if (rows > 0) {
+    System.out.println("User updated successfully.");
+} else {
+    System.out.println("No user updated.");
+}
+```
+
+Generated SQL:
+
+```sql
+UPDATE user SET email = ? WHERE id = 1
+```
+
+Through the above examples, we can see how the `update` series methods perform update operations at the Mapper layer and their corresponding SQL statements. These methods provide flexible data update approaches for different conditional operations.
+
+### select
+
+```java
+// Query by ID
+T selectById(Serializable id);
+// Query a single record based on entity conditions
+T selectOne(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+
+// Batch query (by ID list)
+List<T> selectBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
+// Query all records based on entity conditions
+List<T> selectList(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+// Query (based on columnMap conditions)
+List<T> selectByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
+// Query all records based on Wrapper conditions
+List<Map<String, Object>> selectMaps(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+// Query all records based on Wrapper conditions. Note: Only returns the value of the first field
+List<Object> selectObjs(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+
+// Query all records with pagination based on entity conditions
+IPage<T> selectPage(IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+// Query all records with pagination based on Wrapper conditions
+IPage<Map<String, Object>> selectMapsPage(IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+// Query total record count based on Wrapper conditions
+Integer selectCount(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+```
+
+<p>
+    **Function Description:** Query records that meet the specified conditions.<br/>
+    **Return Value:** Query results, which may be entity objects, Map objects, or other types. <br/>
+    **Parameter Description:** <br/>
+    |                    Type                    |  Param Name  |                  Description                  |
+    | :----------------------------------------: | :----------: | :------------------------------------------: |
+    |                Serializable                |      id      |                 Primary Key ID               |
+    |             Wrapper&#60;T&#62;             | queryWrapper | Entity encapsulation class (can be null)     |
+    | Collection&#60;? extends Serializable&#62; |    idList    |   Primary Key ID list (cannot be null/empty) |
+    |        Map&#60;String, Object&#62;         |  columnMap   |            Table field map object            |
+    |              IPage&#60;T&#62;              |     page     | Pagination condition (can be RowBounds.DEFAULT) |
+</p>
+
+**Example (selectById):**
+
+```java
+// Query a single user by ID
+int userId = 1;
+User user = userMapper.selectById(userId); // Call selectById method
+System.out.println("User: " + user);
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE id = 1
+```
+
+**Example (selectOne):**
+
+```java
+// Assume a QueryWrapper object with condition age > 25, query one matching user
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+User user = userMapper.selectOne(queryWrapper); // Call selectOne method
+System.out.println("User: " + user);
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25
+```
+
+**Example (selectBatchIds):**
+
+```java
+// Assume an ID list for batch query
+List<Integer> ids = Arrays.asList(1, 2, 3);
+List<User> users = userMapper.selectBatchIds(ids); // Call selectBatchIds method
+for (User u : users) {
+    System.out.println("User: " + u);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE id IN (1, 2, 3)
+```
+
+**Example (selectList):**
+
+```java
+// Assume a QueryWrapper object with condition age > 25, query all matching users
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+List<User> users = userMapper.selectList(queryWrapper); // Call selectList method
+for (User u : users) {
+    System.out.println("User: " + u);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25
+```
+
+**Example (selectByMap):**
+
+```java
+// Assume a columnMap with condition age > 30, query matching users
+Map<String, Object> columnMap = new HashMap<>();
+columnMap.put("age", 30);
+List<User> users = userMapper.selectByMap(columnMap); // Call selectByMap method
+for (User u : users) {
+    System.out.println("User: " + u);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE age > 30
+```
+
+**Example (selectMaps):**
+
+```java
+// Assume a QueryWrapper object with condition age > 25, query all matching users and map results to Map
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+List<Map<String, Object>> userMaps = userMapper.selectMaps(queryWrapper); // Call selectMaps method
+for (Map<String, Object> userMap : userMaps) {
+    System.out.println("User Map: " + userMap);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25
+```
+
+**Example (selectObjs):**
+
+```java
+// Assume a QueryWrapper object with condition age > 25, query all matching users but only return the first field value
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+List<Object> userIds = userMapper.selectObjs(queryWrapper); // Call selectObjs method
+for (Object userId : userIds) {
+    System.out.println("User ID: " + userId);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT id FROM user WHERE age > 25
+```
+
+**Example (selectPage):**
+
+```java
+// Pagination query: 10 records per page, page 1, condition age > 25
+IPage<User> page = new Page<>(1, 10);
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+IPage<User> userPage = userMapper.selectPage(page, queryWrapper); // Call selectPage method
+List<User> userList = userPage.getRecords();
+long total = userPage.getTotal();
+System.out.println("Total users (age > 25): " + total);
+for (User user : userList) {
+    System.out.println("User: " + user);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25 LIMIT 10 OFFSET 0
+```
+
+**Example (selectMapsPage):**
+
+```java
+// Pagination query: 10 records per page, page 1, condition age > 25, map results to Map
+IPage<Map<String, Object>> = new Page<>(1, 10);
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+IPage<Map<String, Object>> userPageMaps = userMapper.selectMapsPage(page, queryWrapper); // Call selectMapsPage method
+List<Map<String, Object>> userMapList = userPageMaps.getRecords();
+long total = userPageMaps.getTotal();
+System.out.println("Total users (age > 25): " + total);
+for (Map<String, Object> userMap : userMapList) {
+    System.out.println("User Map: " + userMap);
+}
+```
+
+Generated SQL:
+
+```sql
+SELECT * FROM user WHERE age > 25 LIMIT 10 OFFSET 0
+```
+
+**Example (selectCount):**
+
+```java
+// Assume a QueryWrapper object with condition age > 25, query total record count
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 25);
+Integer totalUsers = userMapper.selectCount(queryWrapper); // Call selectCount method
+System.out.println("Total users (age > 25): " + totalUsers);
+```
+
+Generated SQL:
+
+```sql
+SELECT COUNT(*) FROM user WHERE age > 25
+```
+
+Through these examples, we can see how the `select` series methods perform query operations at the Mapper layer and their corresponding SQL statements. These methods provide flexible data query approaches, including single-record queries, batch queries, conditional queries, pagination queries, etc., based on different conditions.
+
+## Mapper Layer Optional Components  
+
+Optional components are extension methods provided by MyBatis-Plus, located in the `com.baomidou.mybatisplus.extension.injector.methods` package. These methods require the use of the [SQL Injector](/guides/sql-injector) to extend the functionality of the Mapper interface.  
+
+Before using these optional components, ensure that the SQL Injector has been properly configured. For more usage examples and detailed information, refer to the [official samples](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-sql-injector) and [source code comments](https://github.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods).
+
+### Optional Components Description
+
+#### alwaysUpdateSomeColumnById
+
+```java
+int alwaysUpdateSomeColumnById(T entity);
+```
+
+<p>
+**Source**: [alwaysUpdateSomeColumnById](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/AlwaysUpdateSomeColumnById.java) <br/>
+**Function**: This method is used to forcibly update certain fields during an update operation, regardless of whether these fields have changed in the entity object. This is particularly useful in certain business scenarios, such as updating timestamp fields to ensure they are updated with every operation. <br/>
+**Use Case**: When you need to update specific fields (e.g., update time, version number, etc.) every time a record is updated, even if these fields remain unchanged in the entity object.
+</p>
+
+#### insertBatchSomeColumn
+
+```java
+int insertBatchSomeColumn(List<T> entityList);
+```
+
+<p>
+**Source**: [insertBatchSomeColumn](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/InsertBatchSomeColumn.java) <br/>
+**Function**: This method is used for batch insertion of entity objects but only inserts specified fields within the entities. This is useful when you need to batch insert data but do not want to include all fields. <br/>
+**Use Case**: When you need to batch insert data and only want to include specific fields from the entity objects, either to improve insertion efficiency or protect sensitive data.
+</p>
+
+#### logicDeleteByIdWithFill
+
+```java
+int logicDeleteByIdWithFill(T entity);
+```
+
+<p>
+**Source**: [logicDeleteByIdWithFill](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/LogicDeleteByIdWithFill.java) <br/>
+**Function**: This method is used for logical deletion of records while populating certain fields in the entity object. Logical deletion means the record is not physically removed from the database but is instead marked as deleted by updating a specific field (e.g., a `deleted` field). <br/>
+**Use Case**: When you need to implement logical deletion functionality and want certain fields (e.g., deletion time, deleter, etc.) in the entity object to be automatically populated during the deletion operation.
+</p>
+
+### Usage Tips
+
+- Before using these optional components, ensure that the SQL injector is properly configured in your project.
+- These methods typically need to be explicitly declared in the Mapper interface so that MyBatis-Plus can recognize and generate the corresponding SQL statements.
+- Each optional component has its specific use cases; choose the appropriate method based on business requirements.
+- In practical use, you may need to combine annotations on entity objects (such as `@TableField`, `@TableLogic`, etc.) to achieve more complex functionalities.
+
+By utilizing these optional components, you can further extend the capabilities of MyBatis-Plus to meet more diverse business needs.
+
+## Chain  
+
+Chain is a fluent programming style provided by MyBatis-Plus, allowing developers to write database operation code in a more concise and intuitive way. Chain is divided into two main categories: `query` and `update`, used for query and update operations respectively. Each category further includes two styles: regular chain and lambda chain. The lambda chain provides type-safe query condition construction but does not support Kotlin.
+
+### Usage Steps  
+
+#### query  
+
+Provides chained query operations, allowing methods to be called consecutively to build query conditions.  
+
+```java  
+// Chained query - standard  
+QueryChainWrapper<T> query();  
+// Chained query - lambda style. Note: Kotlin is not supported  
+LambdaQueryChainWrapper<T> lambdaQuery();  
+```  
+
+**Example**:  
+
+```java  
+// Standard chained query example  
+query().eq("name", "John").list(); // Query all records where name is "John"  
+
+// Lambda chained query example  
+lambdaQuery().eq(User::getAge, 30).one(); // Query a single record where age is 30  
+```  
+
+#### update  
+
+Provides chained update operations, allowing methods to be called consecutively to build update conditions.  
+
+```java  
+// Chained update - standard  
+UpdateChainWrapper<T> update();  
+// Chained update - lambda style. Note: Kotlin is not supported  
+LambdaUpdateChainWrapper<T> lambdaUpdate();  
+```  
+
+**Example**:  
+
+```java  
+// Standard chained update example  
+update().set("status", "inactive").eq("name", "John").update(); // Update the status to "inactive" for records where name is "John"  
+
+// Lambda chained update example  
+User updateUser = new User();  
+updateUser.setEmail("new.email@example.com");  
+lambdaUpdate().set(User::getEmail, updateUser.getEmail()).eq(User::getId, 1).update(); // Update the email for the user with ID 1  
+```
+
+### Usage Tips  
+
+- Chained operations return instances of `QueryChainWrapper` or `UpdateChainWrapper`, allowing developers to sequentially call methods to build query or update conditions.  
+- Lambda-style chained operations provide type-safe query condition construction through method references like `Entity::getId`, avoiding hardcoded strings and improving code readability and safety.  
+- When using chained operations, pay attention to the order of method calls—typically, conditions are set first, followed by query or update operations.  
+- Chained operations support various condition-building methods, such as `eq`, `ne`, `gt`, `lt`, `like`, etc. Choose the appropriate method based on actual needs.  
+- The results returned by chained operations can be a single record, multiple records, total record count, etc., depending on the final method called.  
+
+By using Chain, developers can write database operation code more efficiently while maintaining clarity and maintainability.
+
+## ActiveRecord  
+
+The ActiveRecord pattern is a design pattern that allows entity classes to interact directly with the database, where the entity class serves as both the domain model and the data access object. In MyBatis-Plus, an entity class only needs to inherit the `Model` class to gain powerful CRUD operation capabilities.  
+
+:::note  
+Before using the ActiveRecord pattern, ensure that the corresponding entity's `BaseMapper` has been injected into the project.  
+:::
+
+### Usage Steps
+
+**Extend the Model Class**
+
+```java
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
+public class User extends Model<User> {
+    // Entity class field definitions...
+    private Long id;
+    private String name;
+    private Integer age;
+    // ... Other fields and getter/setter methods
+}
+```
+
+**Invoke CRUD Methods**
+
+```java
+// Create a new user and insert into the database
+User user = new User();
+user.setName("John Doe");
+user.setAge(30);
+boolean isInserted = user.insert(); // Return value indicates whether the operation succeeded
+
+// Query all users
+List<User> allUsers = user.selectAll();
+
+// Update user information by ID
+user.setId(1L);
+user.setName("Updated Name");
+boolean isUpdated = user.updateById(); // Return value indicates whether the operation succeeded
+
+// Delete a user by ID
+boolean isDeleted = user.deleteById(); // Return value indicates whether the operation succeeded
+```
+
+### Usage Tips  
+
+- In ActiveRecord mode, entity classes can directly call methods like `insert`, `selectAll`, `updateById`, and `deleteById` to perform database operations.  
+- After an entity class inherits the `Model` class, it automatically gains a series of database operation methods, eliminating the need to manually write SQL statements.  
+- The fields in the entity class must correspond to the columns in the database table, typically specified through annotations (e.g., `@TableField`, `@TableId`, etc.) to define the mapping between fields and columns.  
+- For update or delete operations, it is usually necessary to first query the entity object, modify its properties, and then call the update or delete method.  
+- Insert and update operations typically return a boolean value indicating whether the operation was successful.  
+- Query operations return the corresponding query results, such as a single entity object or a list of entity objects.  
+
+By using the ActiveRecord pattern, developers can write database operation code more concisely while maintaining clarity and maintainability. This pattern is particularly suitable for simple CRUD operations, significantly reducing the need for repetitive code.
+
+## SimpleQuery  
+
+SimpleQuery is a utility class provided by MyBatis-Plus. It encapsulates the results of a `selectList` query, allowing them to be processed in a `Stream`-like manner, thereby simplifying API calls.  
+
+A notable feature of SimpleQuery is its `peeks` parameter, which is a variable argument of type `Consumer...`. This means you can chain multiple operations, and these operations will be executed sequentially when the query results are processed.  
+
+For usage examples of SimpleQuery, refer to the [official test case](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus/src/test/java/com/baomidou/mybatisplus/test/toolkit/SimpleQueryTest.java).  
+
+:::note  
+Before using SimpleQuery, ensure that the `BaseMapper` of the corresponding entity is injected in your project.  
+:::
+
+### Usage Steps
+
+**Import the SimpleQuery Utility Class**
+
+```java
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+import com.baomidou.mybatisplus.core.toolkit.support.SerializedLambda;
+import com.baomidou.mybatisplus.core.toolkit.support.SimpleQuery;
+```
+
+**Using SimpleQuery for Queries**
+
+```java
+// Assume there is a User entity class and its corresponding BaseMapper
+List<Long> ids = SimpleQuery.list(
+    Wrappers.lambdaQuery(User.class), // Use the lambda query builder
+    User::getId, // The field to extract, here it's the User's id
+    System.out::println, // The first peek operation, printing each user
+    user -> userNames.add(user.getName()) // The second peek operation, adding each user's name to the userNames list
+);
+```
+
+### Usage Tips  
+
+- The SimpleQuery utility class provides a concise way to handle query results, allowing you to apply multiple operations on the query results, which are executed sequentially in the order they are added.  
+- When using SimpleQuery, you need to provide a query builder (e.g., `Wrappers.lambdaQuery()`), a field for extracting results (e.g., `User::getId`), and one or more `peek` operations of the `Consumer` type.  
+- The `peek` operation can be used to perform any side-effect actions, such as logging, updating caches, sending notifications, etc., without affecting the query results themselves.  
+- SimpleQuery returns a list containing all queried entity objects, which have already had all `peek` operations applied.  
+- By using SimpleQuery, you can separate query logic from result processing logic, making the code clearer and easier to maintain.  
+
+By leveraging the SimpleQuery utility class, developers can handle query results more efficiently while maintaining code simplicity and readability. This utility is particularly suitable for scenarios requiring complex processing of query results.
+
+### Feature Details
+
+#### keyMap
+
+The `keyMap` method of SimpleQuery provides a convenient way to query the database and encapsulate the results into a `Map`, where a specific attribute of the entity serves as the key and the entity itself as the value. This method also supports performing additional side-effect operations during result processing, such as logging or cache updates.
+
+##### Method Signature
+
+```java
+// Query records from the table and encapsulate them as Map<attribute, entity>
+Map<A, E> keyMap(LambdaQueryWrapper<E> wrapper, SFunction<E, A> sFunction, Consumer<E>... peeks);
+
+// Query records from the table and encapsulate them as Map<attribute, entity>, with support for parallel streams
+Map<A, E> keyMap(LambdaQueryWrapper<E> wrapper, SFunction<E, A> sFunction, boolean isParallel, Consumer<E>... peeks);
+```
+
+##### Parameter Description
+
+| Type | Parameter | Description |
+| :-: | :-: | :-: |
+| E | entity | The entity object type, representing the query result's entity type. |
+| A | attribute | The entity attribute type, also the type of the key in the returned `Map`. |
+| LambdaQueryWrapper&#60;E&#62; | wrapper | A lambda-enabled condition builder for constructing query conditions. |
+| SFunction&#60;E, A&#62; | sFunction | A getter method reference for the entity attribute, used to determine the key value in the `Map`. |
+| boolean | isParallel | If set to `true`, the underlying query will use parallel streams, improving efficiency for large datasets. |
+| Consumer&#60;E&#62;... | peeks | A variable argument for specifying additional operations during result processing, such as logging or cache updates. |
+
+##### Usage Example
+
+```java
+// Assume a User entity class and its corresponding BaseMapper
+LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+queryWrapper.eq(User::getStatus, "active"); // Query users with status "active"
+
+// Use keyMap to query and encapsulate results
+Map<String, User> userMap = SimpleQuery.keyMap(
+    queryWrapper, // Query condition builder
+    User::getUsername, // Use username as the key
+    user -> System.out.println("Processing user: " + user.getUsername()) // Log the processed username
+);
+
+// Iterate through results
+for (Map.Entry<String, User> entry : userMap.entrySet()) {
+    System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+}
+```
+
+##### Usage Tips
+
+- The `keyMap` method is suitable for scenarios requiring quick entity lookup based on a specific attribute.
+- The `sFunction` parameter allows specifying any entity attribute as the `Map` key, making result access more intuitive and efficient.
+- The `peeks` parameter enables additional side-effect operations during result processing, which do not affect the final `Map` result.
+- For large datasets, consider setting `isParallel` to `true` to enable parallel streams and improve query efficiency.
+
+By using SimpleQuery's `keyMap` method, developers can handle query results more efficiently, encapsulate them into easy-to-use data structures, and perform additional side-effect operations, making the code more concise and flexible.
+
+#### map
+
+The `map` method of SimpleQuery provides a convenient way to query the database and encapsulate the results into a `Map`, where one entity attribute serves as the key and another as the value. This method also supports performing additional side-effect operations during result processing, such as logging or cache updates.
+
+##### Method Signature
+
+```java
+// Query records from the table and encapsulate them as Map<attribute, attribute>
+Map<A, P> map(LambdaQueryWrapper<E> wrapper, SFunction<E, A> keyFunc, SFunction<E, P> valueFunc, Consumer<E>... peeks);
+
+// Query records from the table and encapsulate them as Map<attribute, attribute>, with support for parallel streams
+Map<A, P> map(LambdaQueryWrapper<E> wrapper, SFunction<E, A> keyFunc, SFunction<E, P> valueFunc, boolean isParallel, Consumer<E>... peeks);
+```
+
+##### Parameter Description
+
+| Type | Parameter | Description |
+| :-: | :-: | :-: |
+| E | entity | The entity object type, representing the query result's entity type. |
+| A | attribute | The entity attribute type, serving as the key type in the returned `Map`. |
+| P | attribute | The entity attribute type, serving as the value type in the returned `Map`. |
+| LambdaQueryWrapper&#60;E&#62; | wrapper | A lambda-enabled condition builder for constructing query conditions. |
+| SFunction&#60;E, A&#62; | keyFunc | A getter method reference for the entity attribute, used to determine the key value in the `Map`. |
+| SFunction&#60;E, P&#62; | valueFunc | A getter method reference for the entity attribute, used to determine the value in the `Map`. |
+| boolean | isParallel | If set to `true`, the underlying query will use parallel streams, improving efficiency for large datasets. |
+| Consumer&#60;E&#62;... | peeks | A variable argument for specifying additional operations during result processing, such as logging or cache updates. |
+
+##### Usage Example
+
+```java
+// Assume a User entity class and its corresponding BaseMapper
+LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+queryWrapper.eq(User::getStatus, "active"); // Query users with status "active"
+
+// Use map to query and encapsulate results
+Map<String, Integer> userMap = SimpleQuery.map(
+    queryWrapper, // Query condition builder
+    User::getUsername, // Use username as the key
+    User::getAge, // Use age as the value
+    user -> System.out.println("Processing user: " + user.getUsername()) // Log the processed username
+);
+
+// Iterate through results
+for (Map.Entry<String, Integer> entry : userMap.entrySet()) {
+    System.out.println("Username: " + entry.getKey() + ", Age: " + entry.getValue());
+}
+```
+
+##### Usage Tips
+
+- The `map` method is suitable for scenarios requiring quick lookup of one attribute based on another.
+- The `keyFunc` and `valueFunc` parameters allow specifying any entity attributes as the `Map` key and value, making result access more intuitive and efficient.
+- The `peeks` parameter enables additional side-effect operations during result processing, which do not affect the final `Map` result.
+- For large datasets, consider setting `isParallel` to `true` to enable parallel streams and improve query efficiency.
+
+By using SimpleQuery's `map` method, developers can handle query results more efficiently, encapsulate them into easy-to-use data structures, and perform additional side-effect operations, making the code more concise and flexible.
+
+#### group
+
+The `group` method of SimpleQuery provides a convenient way to query the database and group the results by a specific entity attribute, encapsulating them into a `Map`. This method also supports performing additional side-effect operations during result processing, such as logging or cache updates. Additionally, it allows further processing of grouped collections using a `Collector`.
+
+##### Method Signature
+
+```java
+// Query records from the table and encapsulate them as Map<attribute, List<entity>>
+Map<K, List<T>> group(LambdaQueryWrapper<T> wrapper, SFunction<T, K> sFunction, Consumer<T>... peeks);
+
+// Query records from the table and encapsulate them as Map<attribute, List<entity>>, with support for parallel streams
+Map<K, List<T>> group(LambdaQueryWrapper<T> wrapper, SFunction<T, K> sFunction, boolean isParallel, Consumer<T>... peeks);
+
+// Query records from the table and encapsulate them as Map<attribute, downstream collector for grouped collections>
+M group(LambdaQueryWrapper<T> wrapper, SFunction<T, K> sFunction, Collector<? super T, A, D> downstream, Consumer<T>... peeks);
+
+// Query records from the table and encapsulate them as Map<attribute, downstream collector for grouped collections>, with support for parallel streams
+M group(LambdaQueryWrapper<T> wrapper, SFunction<T, K> sFunction, Collector<? super T, A, D> downstream, boolean isParallel, Consumer<T>... peeks);
+```
+
+##### Parameter Description
+
+| Type | Parameter | Description |
+| :-: | :-: | :-: |
+| T | entity | The entity object type, representing the query result's entity type. |
+| K | attribute | The entity attribute type, serving as the key type in the returned `Map`. |
+| D | - | The downstream collector's return type, serving as the value type in the `Map`. |
+| A | - | The intermediate type for downstream operations, used for `Collector` intermediate results. |
+| M | - | The final return type, `Map<K, D>`. |
+| LambdaQueryWrapper&#60;T&#62; | wrapper | A lambda-enabled condition builder for constructing query conditions. |
+| SFunction&#60;T, K&#62; | sFunction | The grouping criterion, a getter method reference for the entity attribute, used to determine the key value in the `Map`. |
+| Collector&#60;T, A, D&#62; | downstream | A downstream collector for further processing of grouped collections. |
+| boolean | isParallel | If set to `true`, the underlying query will use parallel streams, improving efficiency for large datasets. |
+| Consumer&#60;T&#62;... | peeks | A variable argument for specifying additional operations during result processing, such as logging or cache updates. |
+
+##### Usage Example
+
+```java
+// Assume a User entity class and its corresponding BaseMapper
+LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+queryWrapper.eq(User::getStatus, "active"); // Query users with status "active"
+
+// Use group to query and encapsulate results, grouped by username
+Map<String, List<User>> userGroup = SimpleQuery.group(
+    queryWrapper, // Query condition builder
+    User::getUsername, // Use username as the grouping key
+    user -> System.out.println("Processing user: " + user.getUsername()) // Log the processed username
+);
+
+// Iterate through results
+for (Map.Entry<String, List<User>> entry : userGroup.entrySet()) {
+    System.out.println("Username: " + entry.getKey());
+    for (User user : entry.getValue()) {
+        System.out.println(" - User: " + user);
+    }
+}
+```
+
+##### Usage Tips
+
+- The `group` method is suitable for scenarios requiring grouping of query results by a specific attribute.
+- The `sFunction` parameter allows specifying any entity attribute as the grouping criterion, making result organization more flexible.
+- The `downstream` parameter enables further processing of grouped collections using a `Collector`, such as counting, summing, or averaging.
+- The `peeks` parameter enables additional side-effect operations during result processing, which do not affect the final `Map` result.
+- For large datasets, consider setting `isParallel` to `true` to enable parallel streams and improve query efficiency.
+
+By using SimpleQuery's `group` method, developers can handle query results more efficiently, group them by specific attributes, and perform additional side-effect operations, making the code more concise and flexible.
+
+#### list
+
+The `list` method of SimpleQuery provides a convenient way to query the database and encapsulate the results into a `List`, where the elements are specific attributes of the entities. This method also supports performing additional side-effect operations during result processing, such as logging or cache updates.
+
+##### Method Signature
+
+```java
+// Query records from the table and encapsulate them as List<attribute>
+List<A> list(LambdaQueryWrapper<E> wrapper, SFunction<E, A> sFunction, Consumer<E>... peeks);
+
+// Query records from the table and encapsulate them as List<attribute>, with support for parallel streams
+List<A> list(LambdaQueryWrapper<E> wrapper, SFunction<E, A> sFunction, boolean isParallel, Consumer<E>... peeks);
+```
+
+##### Parameter Description
+
+| Type | Parameter | Description |
+| :-: | :-: | :-: |
+| E | entity | The entity object type, representing the query result's entity type. |
+| A | attribute | The entity attribute type, serving as the element type in the returned `List`. |
+| LambdaQueryWrapper&#60;E&#62; | wrapper | A lambda-enabled condition builder for constructing query conditions. |
+| SFunction&#60;E, A&#62; | sFunction | A getter method reference for the entity attribute, used to determine the element value in the `List`. |
+| boolean | isParallel | If set to `true`, the underlying query will use parallel streams, improving efficiency for large datasets. |
+| Consumer&#60;E&#62;... | peeks | A variable argument for specifying additional operations during result processing, such as logging or cache updates. |
+
+##### Usage Example
+
+```java
+// Assume a User entity class and its corresponding BaseMapper
+LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+queryWrapper.eq(User::getStatus, "active"); // Query users with status "active"
+
+// Use list to query and encapsulate results, extracting all usernames
+List<String> userNames = SimpleQuery.list(
+    queryWrapper, // Query condition builder
+    User::getUsername, // Extract usernames as list elements
+    user -> System.out.println("Processing user: " + user.getUsername()) // Log the processed username
+);
+
+// Iterate through results
+for (String username : userNames) {
+    System.out.println("Username: " + username);
+}
+```
+
+##### Usage Tips
+
+- The `list` method is suitable for scenarios requiring quick extraction of a list of specific attributes.
+- The `sFunction` parameter allows specifying any entity attribute as the `List` element, making result access more intuitive and efficient.
+- The `peeks` parameter enables additional side-effect operations during result processing, which do not affect the final `List` result.
+- For large datasets, consider setting `isParallel` to `true` to enable parallel streams and improve query efficiency.
+
+By using SimpleQuery's `list` method, developers can handle query results more efficiently, encapsulate them into easy-to-use data structures, and perform additional side-effect operations, making the code more concise and flexible.
+
+## Db Kit  
+
+Db Kit is a utility class provided by MyBatis-Plus, enabling developers to perform CRUD operations through static method calls. This avoids potential circular dependency issues with Service injection in Spring environments, simplifies code, and improves development efficiency.  
+
+For the complete usage of Db Kit, refer to the [official test case](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus/src/test/java/com/baomidou/mybatisplus/test/toolkit/DbTest.java).  
+
+:::note  
+- Before using Db Kit, ensure that the BaseMapper for the corresponding entity is injected in the project.  
+- When the parameter is a Wrapper, the Wrapper must include either the Entity or EntityClass to locate the corresponding Mapper.  
+- It is not recommended to frequently call Db Kit methods in loops. For batch operations, it is advisable to construct the data first and then use batch methods like `Db.saveBatch(data)` for saving.  
+:::
+
+### Usage Example
+
+```java
+// Assume there is a User entity class and corresponding BaseMapper
+
+// Query a single entity by id
+User user = Db.getById(1L, User.class);
+
+// Query multiple entities by ids
+List<User> userList = Db.listByIds(Arrays.asList(1L, 2L, 3L), User.class);
+
+// Query using condition constructor
+LambdaQueryWrapper<User> queryWrapper = Wrappers.lambdaQuery(User.class)
+    .eq(User::getStatus, "active");
+List<User> activeUsers = Db.list(queryWrapper);
+
+// Insert a new entity
+User newUser = new User();
+newUser.setUsername("newUser");
+newUser.setAge(25);
+boolean isInserted = Db.insert(newUser);
+
+// Update an entity by id
+User updateUser = new User();
+updateUser.setId(1L);
+updateUser.setUsername("updatedUser");
+boolean isUpdated = Db.updateById(updateUser);
+
+// Update using condition constructor
+LambdaUpdateWrapper<User> updateWrapper = Wrappers.lambdaUpdate(User.class)
+    .set(User::getAge, 30)
+    .eq(User::getUsername, "updatedUser");
+boolean isUpdatedByWrapper = Db.update(null, updateWrapper);
+
+// Delete an entity by id
+boolean isDeleted = Db.removeById(1L);
+
+// Delete using condition constructor
+LambdaDeleteWrapper<User> deleteWrapper = Wrappers.lambdaDelete(User.class)
+    .eq(User::getStatus, "inactive");
+boolean isDeletedByWrapper = Db.remove(deleteWrapper);
+
+// Batch insert
+List<User> batchUsers = Arrays.asList(
+    new User("user1", 20),
+    new User("user2", 22),
+    new User("user3", 24)
+);
+boolean isBatchInserted = Db.saveBatch(batchUsers);
+
+// Batch update
+List<User> batchUpdateUsers = Arrays.asList(
+    new User(1L, "user1", 21),
+    new User(2L, "user2", 23),
+    new User(3L, "user3", 25)
+);
+boolean isBatchUpdated = Db.updateBatchById(batchUpdateUsers);
+```
+
+### Usage Tips
+
+- Db Kit provides a series of static methods that can be directly called for database operations without going through the Service layer, simplifying the code structure.
+- When using Db Kit, ensure the parameters passed are correct, especially when using Wrapper, where the entity class or entity object must be specified.
+- For batch operations, such as batch inserts or updates, it is recommended to use the batch methods provided by Db Kit to improve efficiency.
+- Avoid frequently calling Db Kit methods in loops, as this may lead to performance issues.
+
+By using Db Kit, developers can perform database operations more efficiently while maintaining code simplicity and readability. This utility class is particularly suitable for simple CRUD operations, significantly reducing the need for repetitive code.

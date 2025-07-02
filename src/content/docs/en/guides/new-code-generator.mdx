@@ -1,0 +1,195 @@
+---
+title: Code Generator
+sidebar:
+  order: 1
+  badge:
+    text: New
+---
+
+import LastedDependency from '@/components/LastedDependency.astro';
+
+The brand-new MyBatis-Plus code generator allows you to quickly generate desired code through builder pattern, efficiently and elegantly. Follow the code below to see it in action.
+
+```java
+<!-- CodeGenerator.java -->
+
+FastAutoGenerator.create("url", "username", "password")
+        .globalConfig(builder -> builder
+                .author("Baomidou")
+                .outputDir(Paths.get(System.getProperty("user.dir")) + "/src/main/java")
+                .commentDate("yyyy-MM-dd")
+        )
+        .packageConfig(builder -> builder
+                .parent("com.baomidou.mybatisplus")
+                .entity("entity")
+                .mapper("mapper")
+                .service("service")
+                .serviceImpl("service.impl")
+                .xml("mapper.xml")
+        )
+        .strategyConfig(builder -> builder
+                .entityBuilder()
+                .enableLombok()
+        )
+        .templateEngine(new FreemarkerTemplateEngine())
+        .execute();
+```
+
+## Installation
+
+<LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-generator" />
+
+:::note
+The new code generator was added in version 3.5.1 and is not backward compatible! If you're using a version below 3.5.1, please refer to [Code Generator](/guides/code-generator/) for configuration and usage.
+:::
+
+Since the code generator uses template engines, please manually include your preferred template engine. MyBatis-Plus Generator supports the following template engines:
+
+- VelocityTemplateEngine(Default)
+- FreemarkerTemplateEngine
+- BeetlTemplateEngine
+- EnjoyTemplateEngine
+
+If you wish to use or adapt other template engines, you can extend `AbstractTemplateEngine` and implement custom solutions by referring to other template engine implementations.
+
+## Generation Methods
+
+The code generator currently supports two generation methods:
+
+1. **DefaultQuery (Metadata Query)**
+   - **Advantages:** Reads database metadata information through generic interfaces, offering better database compatibility.
+   - **Disadvantages:** Relies on database driver implementations.
+   - **Note:** Default method, some type handling may not be ideal.
+
+2. **SQLQuery (SQL Query)**
+   - **Advantages:** Requires writing specific queries for tables, primary keys, and fields according to the database.
+   - **Disadvantages:** Poor compatibility, may face issues across different versions of the same database (e.g., H2 database only supports 1.X versions).
+   - **Note:** Will not be maintained in the future.
+
+For known databases (without version compatibility issues), continue using the SQL query method as before. Example code:
+
+```java
+// MYSQL example - Switching to SQL query method requires specifying dbQuery and typeConvert
+FastAutoGenerator.create("url", "username", "password")
+                .dataSourceConfig(builder ->
+                        builder.databaseQueryClass(SQLQuery.class)
+                                .typeConvert(new MySqlTypeConvert())
+                                .dbQuery(new MySqlQuery())
+                )
+                // Other Config ...
+```
+
+Current issues with metadata query:
+
+1. Does not support generating tables using NotLike approach.
+2. Unable to read table comments. Solutions:
+   - Add `remarks=true&useInformationSchema=true` to MySQL connection properties.
+   - Add `remarks=true` or `remarksReporting=true` (for certain driver versions) to Oracle connection properties.
+   - SqlServer: Not supported by driver.
+3. Poor handling of some PostgreSQL types (e.g., json, jsonb, uuid, xml, money). Solutions:
+   - Convert to custom types with custom TypeHandlers.
+   - Extend typeConvertHandler (typeName retrieval added in version 3.5.3.3).
+4. MySQL tinyint field conversion issues:
+   - When field length is 1, cannot convert to Boolean. Add `&tinyInt1isBit=true` to database connection.
+   - When field length > 1, defaults to Byte. To convert to Integer, use:
+
+        ```java
+        FastAutoGenerator.create("url", "username", "password")
+                .dataSourceConfig(builder ->
+                        builder.typeConvertHandler((globalConfig, typeRegistry, metaInfo) -> {
+                            // Maintain backward compatibility with Integer conversion
+                            if (JdbcType.TINYINT == metaInfo.getJdbcType()) {
+                                return DbColumnType.INTEGER;
+                            }
+                            return typeRegistry.getColumnType(metaInfo);
+                        })
+                );
+        ```
+
+## Usage
+
+You can use the code generator in the following two ways.
+
+### Quick Generation
+
+Add generator code directly in the main method of CodeGenerator, configure accordingly, and run to generate code.
+
+```java
+<!-- CodeGenerator.java -->
+
+public static void main(String[] args) {
+    FastAutoGenerator.create("url", "username", "password")
+            .globalConfig(builder -> {
+                builder.author("baomidou") // Set author
+                        .enableSwagger() // Enable swagger mode
+                        .outputDir("D://"); // Specify output directory
+            })
+            .dataSourceConfig(builder ->
+                    builder.typeConvertHandler((globalConfig, typeRegistry, metaInfo) -> {
+                        int typeCode = metaInfo.getJdbcType().TYPE_CODE;
+                        if (typeCode == Types.SMALLINT) {
+                            // Custom type conversion
+                            return DbColumnType.INTEGER;
+                        }
+                        return typeRegistry.getColumnType(metaInfo);
+                    })
+            )
+            .packageConfig(builder ->
+                    builder.parent("com.baomidou.mybatisplus.samples.generator") // Set parent package
+                            .moduleName("system") // Set parent module name
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, "D://")) // Set mapperXml output path
+            )
+            .strategyConfig(builder ->
+                    builder.addInclude("t_simple") // Set tables to generate
+                            .addTablePrefix("t_", "c_") // Set table prefix filters
+            )
+            .templateEngine(new FreemarkerTemplateEngine()) // Use Freemarker template engine (default is Velocity)
+            .execute();
+}
+```
+
+### Interactive Generation
+
+Interactive generation prompts for inputs during runtime. After completing configurations, it automatically generates the code.
+
+```java
+<!-- CodeGenerator.java -->
+
+public static void main(String[] args) {
+    FastAutoGenerator.create("url", "username", "password")
+            // Global config
+            .globalConfig((scanner, builder) -> builder.author(scanner.apply("Enter author name?")))
+            // Package config
+            .packageConfig((scanner, builder) -> builder.parent(scanner.apply("Enter package name?")))
+            // Strategy config
+            .strategyConfig((scanner, builder) -> builder.addInclude(getTables(scanner.apply("Enter table names (comma-separated)? Enter 'all' for all tables")))
+                    .entityBuilder()
+                    .enableLombok()
+                    .addTableFills(
+                            new Column("create_time", FieldFill.INSERT)
+                    )
+                    .build())
+            // Use Freemarker template engine (default is Velocity)
+            .templateEngine(new FreemarkerTemplateEngine())
+            .execute();
+}
+
+// Handle 'all' case
+protected static List<String> getTables(String tables) {
+    return "all".equals(tables) ? Collections.emptyList() : Arrays.asList(tables.split(","));
+}
+```
+
+For more examples, check the test package samples:
+
+- [H2CodeGeneratorTest](https://github.com/baomidou/generator/blob/develop/mybatis-plus-generator/src/test/java/com/baomidou/mybatisplus/generator/samples/H2CodeGeneratorTest.java)
+- [FastAutoGeneratorTest](https://github.com/baomidou/generator/blob/develop/mybatis-plus-generator/src/test/java/com/baomidou/mybatisplus/generator/samples/FastAutoGeneratorTest.java)
+
+## Configuration
+
+Refer to [Code Generator Configuration](/reference/new-code-generator-configuration/).
+
+## Resources
+
+- [👉 Source Code](https://github.com/baomidou/mybatis-plus): Welcome to read and contribute.
+- [👉 Video Tutorials](https://space.bilibili.com/483260422): Welcome to follow, like, comment, and share.

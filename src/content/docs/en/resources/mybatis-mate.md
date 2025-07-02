@@ -1,25 +1,25 @@
 ---
 title: MyBatis-Mate
-description: Mybatis-Plus Enterprise-level Low-code Data Processing Solution
+description: Mybatis-Plus Enterprise-Level Data Processing Low-Code Solution
 sidebar:
   hidden: true
 ---
 
-Provides enterprise-level advanced features, aiming for more agile and elegant data handling. [User Guide](/en/guides/advanced-features/)
+Provides enterprise-grade advanced features designed to handle data more agilely and elegantly. [Tutorial](/guides/advanced-features/)
 
-- Data Audit (Reconciliation): Quickly compare property differences between two objects.
-- Sensitive Word Filtering: Autonomous and controllable sensitive word dictionary, automatically filters sensitive words, hiding them completely.
-- Data Scope: Quickly implement data permission functionality through annotations.
-- Automatic Table Structure Maintenance: No more worries about forgetting to execute SQL during deployment.
-- Field Data Binding: Conveniently map data to objects, eliminating the need to manually write data mapping glue code.
-- Field Encryption/Decryption: Fast encryption and decryption for private information.
-- Field Desensitization: Effective tool for user privacy protection.
-- Multiple Data Sources: Comprehensive handling including database & table sharding, dynamic loading, multi-datasource transactions, etc.
+- Data Audit (Reconciliation): Quickly compare property differences between two objects
+- Sensitive Word Filtering: Self-controlled sensitive word library with automatic filtering to eliminate sensitive content
+- Data Scope: Rapidly implement data permission functionality through annotations
+- Automatic Table Structure Maintenance: No more worries about forgetting to execute SQL during deployment
+- Field Data Binding: Effortlessly map data to objects, eliminating the need for manual glue code
+- Field Encryption/Decryption: Convenient privacy information protection
+- Data Masking: A great helper for user privacy protection
+- Multi-DataSource: Comprehensive solutions for sharding, dynamic loading, and multi-datasource transactions
 
 ---
 
-> For official direct purchase, add WeChat `wx153666`
+> Official direct procurement: Add WeChat `wx153666`
 
-MyBatis-Mate + PigX joint licensing limited-time discount, enjoy double the benefits for the price of one. Welcome to scan the WeChat QR code for consultation.
+MyBatis-Mate + PigX joint authorization with limited-time discount. Double the benefits for one price. Scan the QR code to consult via WeChat.
 
-![Joint Licensing](https://minio.pigx.top/oss/1647315825.gif)
+![Joint Authorization](https://minio.pigx.top/oss/1647315825.gif)

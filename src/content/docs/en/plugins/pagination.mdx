@@ -1,0 +1,104 @@
+---
+title: Pagination Plugin
+sidebar:
+  order: 2
+---
+
+import SupportDb from '@/components/SupportDb.astro';
+
+The `PaginationInnerInterceptor` plugin in MyBatis-Plus provides powerful pagination capabilities, supporting multiple databases and making paginated queries simple and efficient.
+
+:::tip
+Starting from `v3.5.9`, `PaginationInnerInterceptor` has been separated. To use it, you need to manually include the `mybatis-plus-jsqlparser` dependency. For details, refer to the [Installation](/getting-started/install) chapter.
+:::
+
+## Supported Databases
+
+`PaginationInnerInterceptor` supports a wide range of databases, including but not limited to:
+
+<SupportDb />
+
+If your required database is not listed, you can request its addition via a [Pull Request](https://github.com/baomidou/mybatis-plus/pull/1550/files).
+
+## Configuration
+
+In a Spring Boot project, you can add the pagination plugin through Java configuration:
+
+```java
+@Configuration
+@MapperScan("scan.your.mapper.package")
+public class MybatisPlusConfig {
+
+    /**
+     * Add pagination plugin
+     */
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL)); // If configuring multiple plugins, ensure pagination is added last
+        // For multi-data sources, you can omit the specific DbType. Otherwise, it's recommended to specify it.
+        return interceptor;
+    }
+}
+```
+
+## Properties
+
+`PaginationInnerInterceptor` offers the following properties to customize pagination behavior:
+
+| Property | Type | Default | Description |
+| :-: | :-: | :-: | :-: |
+| overflow | boolean | false | Whether to handle overflow beyond total pages |
+| maxLimit | Long |  | Maximum number of items per page |
+| dbType | DbType |  | Database type |
+| dialect | IDialect |  | Dialect implementation class |
+
+> It is recommended to set `dbType` for single-database scenarios.
+
+## Using Pagination in Custom Mapper Methods
+
+You can use pagination in Mapper methods as follows:
+
+```java
+IPage<UserVo> selectPageVo(IPage<?> page, Integer state);
+// Or use a custom pagination class
+MyPage selectPageVo(MyPage page);
+// Or return List
+List<UserVo> selectPageVo(IPage<UserVo> page, Integer state);
+```
+
+Corresponding XML configuration:
+
+```xml
+<select id="selectPageVo" resultType="xxx.xxx.xxx.UserVo">
+    SELECT id,name FROM user WHERE state=#{state}
+</select>
+```
+
+> If the return type is `IPage`, the input `IPage` cannot be `null`. To temporarily disable pagination, set the `size` parameter to a value less than 0 when initializing `IPage`.
+> If the return type is `List`, the input `IPage` can be `null`, but you need to manually set `IPage.setRecords(returned List)`.
+> If XML needs to retrieve values from `page`, use `page.property` syntax.
+
+## Additional Notes
+
+- When generating `countSql`, tables in `left join` that do not participate in `where` conditions will be optimized out. It is recommended to always use aliases for tables and fields in SQL with `left join`.
+- When using multiple plugins, place the pagination plugin last in the execution chain to avoid inaccurate `COUNT SQL` execution.
+
+## Page Class
+
+The `Page` class extends `IPage` and implements a simple pagination model. If you need a custom pagination model, you can extend `Page` or implement `IPage`.
+
+| Property | Type | Default | Description |
+| :-: | :-: | :-: | :-: |
+| records | List&#60;T&#62; | emptyList | Query result list |
+| total | Long | 0 | Total number of records |
+| size | Long | 10 | Items per page (default: 10) |
+| current | Long | 1 | Current page |
+| orders | List&#60;OrderItem&#62; | emptyList | Sorting field information |
+| optimizeCountSql | boolean | true | Automatically optimize `COUNT SQL` |
+| optimizeJoinOfCountSql | boolean | true | Whether to remove `join` queries in `COUNT SQL` optimization |
+| searchCount | boolean | true | Whether to perform count query |
+| maxLimit | Long |  | Maximum number of items per page |
+| countId | String | | Custom `count` query `statementId` in XML |
+
+With these configurations and usage methods, you can easily implement paginated queries in MyBatis-Plus, improving application performance and user experience.

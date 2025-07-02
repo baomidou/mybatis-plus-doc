@@ -1,27 +1,27 @@
 ---
-title: Install
+title: Installation
 sidebar:
   order: 2
 ---
 
 import LastedDependency from '@/components/LastedDependency.astro';
 
-The brand new `MyBatis-Plus` 3.0 version is based on JDK 8 and provides `lambda`-style calls, so the installation and integration requirements for MP 3.0 are as follows:
+The brand-new `MyBatis-Plus` 3.0 version is based on JDK8 and provides `lambda`-style calls, so the requirements for installing and integrating MP3.0 are as follows:
 
 - JDK 8+
 - Maven or Gradle
 
-:::caution[Note]
-Starting from version `3.5.9+`, the plugin part is changed to optional dependencies. Please refer to the `maven bom` section below for details and select the corresponding plugin support module according to your project.
+:::caution[Notes]
+Starting from version `3.5.9+`, some plugins have been modified to optional dependencies. Refer to the `maven bom` section below and select the corresponding plugin support modules according to your project needs.
 :::
 
 ## Release
 
-### Spring Boot 2
+### Spring Boot2
 
 <LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-boot-starter" />
 
-### Spring Boot 3
+### Spring Boot3
 
 <LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-spring-boot3-starter" />
 
@@ -35,23 +35,23 @@ Starting from version `3.5.9+`, the plugin part is changed to optional dependenc
 
 ---
 
-:::caution[Note]
+:::caution[Notes]
 
-After introducing `MyBatis-Plus`, please do not introduce `MyBatis`, `mybatis-spring-boot-starter`, or `MyBatis-Spring` again to avoid problems caused by version differences.
+After introducing `MyBatis-Plus`, do not reintroduce `MyBatis`, `mybatis-spring-boot-starter`, or `MyBatis-Spring` to avoid issues caused by version discrepancies.
 
-Starting from **3.5.4**, if you are not using `mybatis-plus-boot-starter` or `mybatis-plus-spring-boot3-starter`, please introduce `mybatis-spring` yourself according to your project situation.
+Starting from **3.5.4**, if you are not using `mybatis-plus-boot-starter` or `mybatis-plus-spring-boot3-starter`, manually introduce `mybatis-spring` based on your project requirements.
 
 :::
 
 ## Snapshot
 
-The SNAPSHOT version requires adding a repository, and the version number is the snapshot version [Click to view the latest snapshot version number](https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/com/baomidou/mybatis-plus/).
+Snapshot SNAPSHOT versions require adding a repository, and the version number is a snapshot version. [Click to view the latest snapshot version](https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/com/baomidou/mybatis-plus/).
 
-:::caution[Note]
+:::caution[Notes]
 
-Starting from 3.5.11-SNAPSHOTS, the central snapshot repository address has changed to https://central.sonatype.com/repository/maven-snapshots/, and the version validity period is 90 days.
+Starting from 3.5.11-SNAPSHOTS, the central snapshot repository URL has changed to https://central.sonatype.com/repository/maven-snapshots/, with a validity period of 90 days.
 
-当你使用旧版本时,需要修改为: https://oss.sonatype.org/content/repositories/snapshots/
+When using older versions, modify it to: https://oss.sonatype.org/content/repositories/snapshots/
 
 :::
 
@@ -64,13 +64,13 @@ Maven:
 </repository>
 ```
 
-When the snapshot cannot be downloaded through a proxy repository, please add `  !snapshots` to mirrorOf.
+If you cannot download snapshots when using a proxy repository, add `!snapshots` to mirrorOf.
 
 ```xml
 <mirror>
   <id>aliyunmaven</id>
   <mirrorOf>*,!snapshots</mirrorOf>
-  <name>阿里云公共仓库</name>
+  <name>Alibaba Cloud Public Repository</name>
   <url>https://maven.aliyun.com/repository/public</url>
 </mirror>
 ```
@@ -85,12 +85,12 @@ repositories {
 
 ## Maven bom
 
-> Use `maven bom` to manage dependencies and reduce version conflicts. Because `jsqlparser 5.0+` versions no longer support `jdk8`, the `jsqlparser` dependency is decoupled to address this issue.
-> The correct way is to introduce the `mybatis-plus-bom` module, and then introduce the `..starter` and `..jsqlparser..` dependencies.
+> Use `maven bom` to manage dependencies and reduce version conflicts. Since `jsqlparser 5.0+` no longer supports `jdk8`, this issue is resolved by decoupling the `jsqlparser` dependency.
+> The correct approach is to introduce the `mybatis-plus-bom` module, then add `..starter` and `..jsqlparser..` dependencies.
 >
-> mybatis-plus-jsqlparser: This dependency will be updated with the latest supported version of jsqlparser.
+> mybatis-plus-jsqlparser: This dependency will follow the latest version of jsqlparser.
 >
-> mybatis-plus-jsqlparser-xx: This is for specific supported versions of jsqlparser, meaning versions that are not compatible with updates.
+> mybatis-plus-jsqlparser-xx: Specific versions of jsqlparser that are incompatible with updates.
 
 - Maven
 
@@ -107,25 +107,25 @@ repositories {
     </dependencies>
 </dependencyManagement>
 
-<!-- Optional module for Spring Boot 3 -->
+<!-- spring boot3 optional module -->
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
 </dependency>
 
-<!-- Optional module for JDK 11+ -->
+<!-- jdk 11+ optional module -->
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus-jsqlparser</artifactId>
 </dependency>
 
-<!-- Optional module for Spring Boot 2 -->
+<!-- spring boot2 optional module -->
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus-boot-starter</artifactId>
 </dependency>
 
-<!-- Optional module for JDK 8+ -->
+<!-- jdk 8+ optional module -->
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus-jsqlparser-4.9</artifactId>
@@ -136,22 +136,22 @@ repositories {
 - Gradle
 
 ```groovy
-// Dependency Management
+// Dependency management
 dependencyManagement {
     imports {
         mavenBom "com.baomidou:mybatis-plus-bom:3.5.9+ version"
     }
 }
 
-// Optional module for Spring Boot 3
+// spring boot3 optional module
 implementation("com.baomidou:mybatis-plus-spring-boot3-starter")
 
-// Optional module for JDK 11+
+// jdk 11+ optional module
 implementation("com.baomidou:mybatis-plus-jsqlparser")
 
-// Optional module for Spring Boot 2
+// spring boot2 optional module
 implementation("com.baomidou:mybatis-plus-boot-starter")
 
-// Optional module for JDK 8+
+// jdk 8+ optional module
 implementation("com.baomidou:mybatis-plus-jsqlparser-4.9")
 ```
