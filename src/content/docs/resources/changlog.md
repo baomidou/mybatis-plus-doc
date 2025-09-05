@@ -2,6 +2,10 @@
 title: 更新日志
 description: 版本更新日志
 ---
+
+## [v3.5.14] 2025.08.29
+- feat: 增加`bom`对`mybatis-plus-spring-boot4-starter`与`mybatis-plus-spring-boot4-starter-test`管理
+
 ## [v3.5.13] 2025.08.29
 - fix: 修复在`Spring`中使用`@PostConstruct`调用`Db`方法查询出现警告日志
 - fix: 修复`Db`使用`count`返回`null`导致的空指针异常
