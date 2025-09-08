@@ -36,7 +36,7 @@ MyBatis-Plus 的逻辑删除功能会在执行数据库操作时自动处理逻�
 mybatis-plus:
   global-config:
     db-config:
-      logic-delete-field: deleted # 全局逻辑删除字段名
+      logic-delete-field: deleted # 全局逻辑删除字段名(deleted为实体类属性名称)
       logic-delete-value: 1 # 逻辑已删除值。可选，默认值为 1
       logic-not-delete-value: 0 # 逻辑未删除值。可选，默认值为 0
 ```
