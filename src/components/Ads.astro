@@ -1,11 +1,49 @@
 ---
-// WWAD
+// WWAD + Google Adsense 侧边栏广告
+export interface Props {
+  showGoogle?: boolean;
+}
+
+const {
+  showGoogle = true
+} = Astro.props;
 ---
 
 <div class="flex xl:flex-col not-content">
+  <!-- WWAD 广告 -->
   <div class="w-full xl:flex-1">
     <div class="w-full p-4 text-sm leading-6">
       <div class="wwads-cn wwads-horizontal xl:wwads-vertical max-w-full xl:max-w-[12rem]" data-id="135" style="min-height: 0; margin-top: 0; border-width: 1px; border-radius: 0.5rem"></div>
     </div>
   </div>
+  
+  <!-- Google Adsense 竖向广告 -->
+  {showGoogle && (
+    <div class="xl:block hidden google-ads-sidebar">
+      <div class="google-ads-container">
+        <ins class="adsbygoogle google-ads"
+             style="display:inline-block;width:200px;height:300px"
+             data-ad-client="ca-pub-4147143076931995"
+             data-ad-slot="1866407052"></ins>
+        <script is:inline>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+    </div>
+  )}
 </div>
+
+<style>
+  .google-ads-container {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  .google-ads {
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+  }
+</style>

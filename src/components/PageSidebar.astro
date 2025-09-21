@@ -11,7 +11,7 @@ import Ads from "@/components/Ads.astro";
 </div>
 
 <div class="ad">
-  <Ads />
+  <Ads showGoogle={true} />
 </div>
 
 <script lang="js" is:inline>
@@ -46,9 +46,21 @@ import Ads from "@/components/Ads.astro";
       }, 100); // 每100毫秒检查一次高度
     }
 
-    // 监测内容变化时重新布局
+    // 监测内容变化时重新布局（包括 Google Adsense 加载）
     const observer = new MutationObserver(startHeightCheck);
     observer.observe(ad, { childList: true, subtree: true });
+    
+    // 等待 Google Adsense 加载完成后重新计算布局
+    if (window.adsbygoogle) {
+      const checkAdsLoaded = setInterval(() => {
+        const googleAds = document.querySelector('.google-ads');
+        if (googleAds && googleAds.offsetHeight > 0) {
+          clearInterval(checkAdsLoaded);
+          setTimeout(adjustLayout, 500); // 延迟一点确保完全加载
+        }
+      }, 200);
+    }
+    
     // 检测窗口变化时重新布局
     window.addEventListener("resize", adjustLayout);
     adjustLayout();
@@ -63,5 +75,12 @@ import Ads from "@/components/Ads.astro";
     position: fixed;
     bottom: 0;
     width: 100%;
+  }
+  
+  /* 确保广告容器协调 */
+  .ad {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 </style>

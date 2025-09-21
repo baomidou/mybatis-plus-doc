@@ -1,9 +1,73 @@
 ---
-// WWAD
+// WWAD + Google Adsense Banner
+export interface Props {
+  showGoogle?: boolean;
+}
+
+const {
+  showGoogle = true
+} = Astro.props;
 ---
 
 <div class="not-content">
+    <!-- WWAD 横幅广告 -->
     <div class="container mx-auto py-6 text-sm leading-6">
         <div class="flex max-w-full wwads-cn wwads-horizontal" data-id="135" style="min-height: 0; margin-top: 0;border-width: 1px; border-radius: 0.5rem"></div>
     </div>
+    
+    <!-- Google Adsense 横幅广告 -->
+    {showGoogle && (
+        <div class="container mx-auto">
+            <div class="google-banner-ads-container">
+                <!-- 固定横向广告 -->
+                <ins class="adsbygoogle google-banner-ads"
+                     style="display:inline-block;width:860px;height:90px"
+                     data-ad-client="ca-pub-4147143076931995"
+                     data-ad-slot="6574899324"></ins>
+                <script is:inline>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+    )}
 </div>
+
+<style>
+  .google-banner-ads-container {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+    margin: 1rem 0;
+    width: 100%;
+  }
+  
+  .google-banner-ads {
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+    max-width: 100%;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+  
+  /* 移动端适配 */
+  @media (max-width: 768px) {
+    .google-banner-ads-container {
+      padding: 0.5rem;
+    }
+    
+    .google-banner-ads {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+      min-height: 50px;
+    }
+  }
+  
+  /* 平板适配 */
+  @media (max-width: 900px) and (min-width: 769px) {
+    .google-banner-ads {
+      width: 728px !important;
+      height: 90px !important;
+    }
+  }
+</style>

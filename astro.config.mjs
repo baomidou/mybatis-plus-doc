@@ -49,6 +49,14 @@ export default defineConfig({
             src: 'https://cdn.wwads.cn/js/makemoney.js',
             async: true,
           }
+        },
+        {
+          tag: 'script',
+          attrs: {
+            src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4147143076931995',
+            crossorigin: 'anonymous',
+            async: true,
+          }
         }
       ],
       customCss: ["./src/styles/tailwind.css", "./src/styles/custom.css"],
