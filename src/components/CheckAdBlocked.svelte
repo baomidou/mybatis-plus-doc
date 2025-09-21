@@ -26,7 +26,7 @@
     }
 
     // check script banned
-    checkAdScriptBanned("https://hm.baidu.com/hm.js");
+    checkAdScriptBanned("https://cdn.wwads.cn/js/makemoney.js");
   }
 
   function checkAdScriptBanned(scriptUrl) {
