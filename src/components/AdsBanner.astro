@@ -21,7 +21,7 @@ const {
             <div class="google-banner-ads-container">
                 <!-- 固定横向广告 -->
                 <ins class="adsbygoogle google-banner-ads"
-                     style="display:inline-block;width:860px;height:90px"
+                     style="display:inline-block;width:100%;height:120px"
                      data-ad-client="ca-pub-4147143076931995"
                      data-ad-slot="6574899324"></ins>
                 <script is:inline>
@@ -45,6 +45,7 @@ const {
     border-radius: 0.5rem;
     border: 1px solid #e5e7eb;
     background-color: #f9fafb;
+    width: 100%;
     max-width: 100%;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   }
@@ -66,8 +67,8 @@ const {
   /* 平板适配 */
   @media (max-width: 900px) and (min-width: 769px) {
     .google-banner-ads {
-      width: 728px !important;
-      height: 90px !important;
+      width: 100% !important;
+      height: 120px !important;
     }
   }
 </style>

@@ -22,7 +22,7 @@ const {
     <div class="xl:block hidden google-ads-sidebar">
       <div class="google-ads-container">
         <ins class="adsbygoogle google-ads"
-             style="display:inline-block;width:200px;height:300px"
+             style="display:inline-block;width:100%;height:300px"
              data-ad-client="ca-pub-4147143076931995"
              data-ad-slot="1866407052"></ins>
         <script is:inline>
@@ -45,5 +45,14 @@ const {
     border-radius: 0.5rem;
     border: 1px solid #e5e7eb;
     background-color: #f9fafb;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* 大屏幕下限制最大宽度，与 WWAD 保持一致 */
+  @media (min-width: 1280px) {
+    .google-ads {
+      max-width: 12rem; /* 约 192px，与 WWAD 的 xl:max-w-[12rem] 一致 */
+    }
   }
 </style>
