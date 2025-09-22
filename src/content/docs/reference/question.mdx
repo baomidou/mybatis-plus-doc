@@ -332,23 +332,43 @@ public interface DataResourceMapper extends BaseMapper<DataResource>{}
 
 ## `Cause: org.apache.ibatis.type.TypeException:Error setting null for parameter #1 with JdbcType OTHER`
 
-> 配置 jdbcTypeForNull=NULL
-> Spring Bean 配置方式：
+在 MyBatis-Plus 中, `jdbcTypeForNull` 是一个重要的配置选项, 它决定了如何将Java的 `null` 值映射到数据库中.  
+
+默认情况下, 当某个字段在 Java 中为 `null` 时, MyBatis-Plus 会将其映射为数据库中的 `JdbcType.OTHER` 值。但某些 JDBC 驱动程序（例如 Oracle） 不支持 `JdbcType.OTHER` ，因此默认设置会导致错误: `Cause: org.apache.ibatis.type.TypeException:Error setting null for parameter #1 with JdbcType OTHER . Try setting a different JdbcType for this parameter or a different jdbcTypeForNull configuration property. Cause: java.sql.SQLException: 无效的列类型: 1111`.  
+
+要设置 `jdbcTypeForNull` , 你需要在 MyBatis-Plus 的配置类中添加以下代码（任选其一即可）: 
+
+> Spring Bean 配置
 
 ```java
 MybatisConfiguration configuration = new MybatisConfiguration();
 configuration.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
 configuration.setJdbcTypeForNull(JdbcType.NULL);
-configuration.setMapUnderscoreToCamelCase(true);//开启下划线转驼峰
 sqlSessionFactory.setConfiguration(configuration);
 ```
 
-> yml 配置
+> Yaml 配置
 ```yaml
 mybatis-plus:
   configuration:
     jdbc-type-for-null: 'null' 
 ```
+
+> Properties 配置
+```properties
+mybatis-plus.configuration.jdbc-type-for-null=NULL
+```
+
+> XML 配置
+```XML
+<configuration>
+    <settings>
+        <setting name="jdbcTypeForNull" value="NULL" />
+    </settings>
+</configuration>
+```
+
+> 需要注意的是, 如果你在项目中自定义 `SqlSessionFactory` 可能导致 `jdbc-type-for-null` 配置失效. 
 
 
 ## 无法通过 Page 对象在自定义 SQL 中传递参数
