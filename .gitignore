@@ -1,8 +1,10 @@
 # build output
 dist/
 
-# IDEA
+# IDE
 .idea/
+.vscode/
+.trea/
 
 # generated types
 .astro/
