@@ -397,9 +397,9 @@ export class TranslationPlugin {
    * @returns {Promise<string>} 翻译结果
    */
   async callAI(prompt) {
-    const { type, apiKey, model, baseURL, maxTokens, temperature, service } = this.config.aiProvider;
+    const { type, apiKey, model, baseURL, maxTokens, temperature, service, providerName } = this.config.aiProvider;
     const retryConfig = this.config.retryConfig || { maxRetries: 3, baseDelay: 1000, maxDelay: 10000 };
-    
+
     let lastError;
     
     for (let attempt = 0; attempt <= retryConfig.maxRetries; attempt++) {
@@ -434,7 +434,8 @@ export class TranslationPlugin {
         }
         
         const attemptText = attempt > 0 ? ` (重试 ${attempt}/${retryConfig.maxRetries})` : '';
-        console.log(`🤖 调用 AI 服务: ${service || model || 'default'}${attemptText}`);
+        const providerInfo = providerName ? `${providerName} (${service})` : (service || model || 'default');
+        console.log(`🤖 调用 AI 服务: ${providerInfo}${attemptText}`);
         console.log(`📤 发送请求 - 模型: ${options.model}, 最大Token: ${options.max_tokens}`);
         console.log(`⏳ 请求进行中，请耐心等待...`);
         

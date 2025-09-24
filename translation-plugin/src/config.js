@@ -59,14 +59,28 @@ export async function loadConfig(configPath) {
     // 验证必要的配置项
     validateConfig(config);
     
+    // 处理 AI Provider 选择
+    const selectedProvider = process.env.AI_PROVIDER || config.defaultProvider;
+    if (config.aiProviders && selectedProvider) {
+      if (!config.aiProviders[selectedProvider]) {
+        throw new Error(`指定的 AI 提供商 '${selectedProvider}' 不存在于配置中`);
+      }
+      // 将选择的 provider 配置复制到 aiProvider（保持向后兼容）
+      config.aiProvider = {
+        ...config.aiProviders[selectedProvider],
+        providerName: selectedProvider
+      };
+      console.log(`🤖 使用 AI 提供商: ${selectedProvider} (${config.aiProvider.service})`);
+    }
+
     // 处理相对路径
     const projectRoot = process.cwd();
     config.sourceDir = path.resolve(projectRoot, config.sourceDir);
-    
+
     if (config.cache?.cacheDir) {
       config.cache.cacheDir = path.resolve(projectRoot, config.cache.cacheDir);
     }
-    
+
     return config;
   } catch (error) {
     throw new Error(`配置文件加载失败: ${error.message}`);
@@ -95,21 +109,32 @@ function validateConfig(config) {
   }
   
   // 验证 AI 提供商配置
-  if (config.aiProvider) {
-    // 校验 AI 服务提供商
-    if (!config.aiProvider.service) {
-      throw new Error('aiProvider.service 是必需的');
-    }
-    
-    // 校验 API 密钥，config or env
-    if (!config.aiProvider.apiKey && !process.env.API_KEY) {
-      throw new Error('aiProvider.apiKey 是必需的');
+  if (config.aiProviders) {
+    if (!config.defaultProvider) {
+      throw new Error('defaultProvider 是必需的');
     }
 
-    // 校验 Model
-    if (!config.aiProvider.model) {
-      throw new Error('aiProvider.model 是必需的');
+    if (!config.aiProviders[config.defaultProvider]) {
+      throw new Error(`默认提供商 ${config.defaultProvider} 不存在于 aiProviders 中`);
     }
+
+    // 验证每个 provider 配置
+    for (const [providerName, providerConfig] of Object.entries(config.aiProviders)) {
+      if (!providerConfig.service) {
+        throw new Error(`aiProviders.${providerName}.service 是必需的`);
+      }
+      if (!providerConfig.model) {
+        throw new Error(`aiProviders.${providerName}.model 是必需的`);
+      }
+    }
+
+    // 校验 API 密钥（环境变量）
+    if (!process.env.API_KEY) {
+      console.warn('⚠️ 环境变量 API_KEY 未设置，请确保在使用前设置正确的 API 密钥');
+    }
+  } else if (config.aiProvider) {
+    // 兼容旧配置格式
+    console.warn('⚠️ 检测到旧版配置格式 aiProvider，建议升级到 aiProviders 格式');
   }
 }
 
@@ -124,11 +149,22 @@ export function getDefaultConfig() {
     sourceDir: 'src/content/docs',
     excludeFiles: ['404.md', 'index.mdx'],
     excludeDirs: ['en', 'ja'],
-    aiProvider: {
-      service: 'openai',
-      model: 'gpt-4',
-      maxTokens: 4000,
-      temperature: 0.1
+    defaultProvider: 'openai',
+    aiProviders: {
+      openai: {
+        service: 'openai',
+        model: 'gpt-4',
+        maxTokens: 4000,
+        temperature: 0.1,
+        baseURL: 'https://api.openai.com/v1'
+      },
+      deepseek: {
+        service: 'deepseek',
+        model: 'deepseek-chat',
+        maxTokens: 8192,
+        temperature: 0.1,
+        baseURL: 'https://api.deepseek.com'
+      }
     },
     retryConfig: {
       maxRetries: 3,
@@ -152,13 +188,9 @@ export function getDefaultConfig() {
  */
 export function mergeConfig(userConfig) {
   const defaultConfig = getDefaultConfig();
-  return {
+  const mergedConfig = {
     ...defaultConfig,
     ...userConfig,
-    aiProvider: {
-      ...defaultConfig.aiProvider,
-      ...userConfig.aiProvider
-    },
     retryConfig: {
       ...defaultConfig.retryConfig,
       ...userConfig.retryConfig
@@ -172,4 +204,55 @@ export function mergeConfig(userConfig) {
       ...userConfig.parallel
     }
   };
+
+  // 合并 AI providers
+  if (userConfig.aiProviders) {
+    mergedConfig.aiProviders = {
+      ...defaultConfig.aiProviders,
+      ...userConfig.aiProviders
+    };
+  }
+
+  // 兼容旧版 aiProvider 配置
+  if (userConfig.aiProvider && !userConfig.aiProviders) {
+    mergedConfig.aiProvider = {
+      ...defaultConfig.aiProviders[defaultConfig.defaultProvider],
+      ...userConfig.aiProvider
+    };
+  }
+
+  return mergedConfig;
+}
+
+/**
+ * 获取当前选择的 AI Provider 配置
+ * @param {Object} config 完整配置对象
+ * @returns {Object} 当前 provider 的配置
+ */
+export function getCurrentProviderConfig(config) {
+  // 如果已经有处理过的 aiProvider，直接返回
+  if (config.aiProvider) {
+    return config.aiProvider;
+  }
+
+  // 从环境变量或默认配置获取 provider
+  const selectedProvider = process.env.AI_PROVIDER || config.defaultProvider;
+
+  if (config.aiProviders && config.aiProviders[selectedProvider]) {
+    return {
+      ...config.aiProviders[selectedProvider],
+      providerName: selectedProvider
+    };
+  }
+
+  throw new Error(`AI Provider '${selectedProvider}' 配置未找到`);
+}
+
+/**
+ * 列出所有可用的 AI Provider
+ * @param {Object} config 配置对象
+ * @returns {Array} provider 名称列表
+ */
+export function listAvailableProviders(config) {
+  return config.aiProviders ? Object.keys(config.aiProviders) : [];
 }

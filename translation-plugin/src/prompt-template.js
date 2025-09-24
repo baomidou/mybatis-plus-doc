@@ -37,49 +37,123 @@ export function getLanguageName(langCode) {
 export function generateTranslationPrompt(targetLanguage, frontmatterKeys, document) {
   const languageName = getLanguageName(targetLanguage);
   const keysString = frontmatterKeys.join(', ');
-  
-  return `你需要将提供的技术文档（md 或 mdx 格式）翻译为指定的目标语言。翻译时需保留技术相关专有名词、代码和 frontmatter 中的指定内容。
 
-目标语言: ${languageName}
+  // Use English prompts for better translation quality
+  const basePrompt = `You are an expert technical documentation translator specializing in ${languageName} localization. Your task is to translate this MyBatis-Plus documentation while maintaining its technical accuracy and making it feel natural to ${languageName} speakers.
 
-需要翻译的 frontmatter 键（以逗号分隔）: ${keysString}
+TARGET LANGUAGE: ${languageName}
+FRONTMATTER KEYS TO TRANSLATE: ${keysString}
 
-以下是待翻译的技术文档:
+DOCUMENT TO TRANSLATE:
 ${document}
 
-翻译时请遵循以下规则和步骤:
-1. 识别文档中的 frontmatter 部分（以 --- 开头和结尾的部分）。
-2. 仅翻译 frontmatter 中指定键的值，其他 frontmatter 内容保持不变。
-3. 识别文档中的代码块（以 \`\`\` 开头和结尾的部分）和 MDX 导入语句（如 import ... from ...），这些内容保持不变。
-4. 识别技术相关专有名词（如编程语言、框架名、库名等），这些内容保持不变。特别注意以下专有名词：
-   - MyBatis-Plus
-   - MyBatis
-   - Spring Boot
-   - Maven
-   - Gradle
-   - Java
-   - SQL
-   - CRUD
-   - ORM
-   - JPA
-   - Hibernate
-   - MySQL
-   - PostgreSQL
-   - Oracle
-   - SQLServer
-   - Redis
-   - MongoDB
-   - Docker
-   - Kubernetes
-   - Git
-   - GitHub
-   - Gitee
-5. 保持所有 URL 链接、文件路径、代码示例不变，但如果 URL 链接中是指向其他文档的，需要添加当前多语言路由。
-6. 保持 Markdown 格式标记（如 #、**、*、[]()、![](） 不变。
-7. 保持 MDX 组件调用（如 <Card>、<CardGrid>、<LinkCard> 等）不变。
-8. 翻译文档中的其他文本内容，确保翻译自然流畅，符合目标语言的表达习惯。
+TRANSLATION GUIDELINES:
 
-请直接输出翻译结果，不需要额外的标签包装或说明。确保输出的格式与原文档完全一致。`;
+## Structure & Format Preservation
+- Preserve all frontmatter structure (--- delimiters)
+- Only translate the specified frontmatter keys: ${keysString}
+- Keep all code blocks (\`\`\` fenced) exactly as they are
+- Preserve all MDX import statements (import ... from ...)
+- Maintain all Markdown formatting (#, **, *, [](), ![]())
+- Keep all MDX component calls unchanged (<Card>, <CardGrid>, <LinkCard>, etc.)
+- Preserve all URLs, file paths, and code examples
+
+## Technical Terms & Proper Nouns
+Keep these technical terms unchanged:
+MyBatis-Plus, MyBatis, Spring Boot, Maven, Gradle, Java, SQL, CRUD, ORM, JPA, Hibernate, MySQL, PostgreSQL, Oracle, SQLServer, Redis, MongoDB, Docker, Kubernetes, Git, GitHub, Gitee
+
+## Translation Approach
+${getLanguageSpecificGuidelines(targetLanguage)}
+
+## Quality Standards
+- Write for developers who are native ${languageName} speakers
+- Use standard ${languageName} terminology for technical concepts
+- Maintain consistent tone throughout the document
+- Ensure the text flows naturally and doesn't feel like a direct translation
+- Adapt examples and explanations to ${languageName} conventions where appropriate
+
+OUTPUT FORMAT:
+Return only the translated document. Do not add explanatory text, headers, or any wrapper content. The output must maintain identical formatting to the source.`;
+
+  return basePrompt;
+}
+
+/**
+ * 获取特定语言的翻译指导
+ * @param {string} targetLanguage 目标语言代码
+ * @returns {string} 语言特定的翻译指导
+ */
+function getLanguageSpecificGuidelines(targetLanguage) {
+  switch (targetLanguage) {
+    case 'en':
+      return `- Write in clear, concise English suitable for technical documentation
+- Use active voice where possible
+- Follow standard English technical writing conventions
+- Use "you" to address the reader directly
+- Prefer shorter sentences for better readability
+- Use standard American English spelling and grammar`;
+
+    case 'ja':
+      return `- Use appropriate levels of formality (敬語) for technical documentation
+- Maintain consistent terminology throughout
+- Use katakana appropriately for foreign technical terms
+- Follow Japanese technical writing conventions
+- Use です/ます調 for consistency`;
+
+    case 'ko':
+      return `- Use appropriate honorific levels for technical documentation
+- Maintain consistent technical terminology
+- Follow Korean technical writing conventions
+- Use 합니다체 for formal documentation`;
+
+    case 'fr':
+      return `- Use formal French appropriate for technical documentation
+- Follow French typography rules (spaces before colons, semicolons, etc.)
+- Use vous form consistently
+- Maintain gender agreement in technical terms where applicable`;
+
+    case 'de':
+      return `- Use formal German (Sie form) consistently
+- Follow German capitalization rules for nouns
+- Use appropriate compound words for technical concepts
+- Maintain formal tone throughout`;
+
+    case 'es':
+      return `- Use formal Spanish appropriate for technical documentation
+- Use usted form consistently
+- Follow Spanish punctuation and grammar rules
+- Maintain consistent technical terminology`;
+
+    case 'pt':
+      return `- Use formal Portuguese appropriate for technical documentation
+- Use você form consistently
+- Follow Portuguese grammar and punctuation rules
+- Maintain consistent technical terminology`;
+
+    case 'ru':
+      return `- Use formal Russian appropriate for technical documentation
+- Maintain proper case usage and grammar
+- Use consistent technical terminology
+- Follow Russian typography conventions`;
+
+    case 'ar':
+      return `- Use formal Arabic appropriate for technical documentation
+- Maintain proper Arabic grammar and syntax
+- Use consistent technical terminology
+- Follow Arabic typography and writing conventions`;
+
+    case 'hi':
+      return `- Use formal Hindi appropriate for technical documentation
+- Maintain proper Devanagari script usage
+- Use consistent technical terminology
+- Balance between Hindi terms and accepted English technical terms`;
+
+    default:
+      return `- Write in clear, natural ${getLanguageName(targetLanguage)}
+- Follow standard conventions for technical documentation in this language
+- Maintain consistent terminology throughout
+- Ensure the text feels native, not translated`;
+  }
 }
 
 /**
@@ -92,21 +166,27 @@ ${document}
 export function generateFrontmatterTranslationPrompt(targetLanguage, frontmatterKeys, frontmatter) {
   const languageName = getLanguageName(targetLanguage);
   const keysString = frontmatterKeys.join(', ');
-  
-  return `请翻译以下 YAML frontmatter 中的指定字段到${languageName}。
 
-翻译规则：
-1. 只翻译这些字段：${keysString}
-2. 保持 YAML 格式不变
-3. 保持其他字段不变
-4. 保持 --- 分隔符
-5. 直接返回完整的 frontmatter，不要添加任何解释
+  return `Translate the specified YAML frontmatter fields to natural ${languageName} for technical documentation.
 
-需要翻译的 frontmatter：
+TRANSLATION TARGETS: Only translate these fields: ${keysString}
+TARGET LANGUAGE: ${languageName}
+
+REQUIREMENTS:
+- Translate only the specified fields: ${keysString}
+- Keep all other fields exactly as they are
+- Maintain YAML format and structure
+- Preserve --- delimiters
+- Write translations suitable for ${languageName}-speaking developers
+- Use natural, professional language appropriate for technical documentation
+
+${getLanguageSpecificGuidelines(targetLanguage)}
+
+FRONTMATTER TO TRANSLATE:
 
 ${frontmatter}
 
-请直接输出翻译结果，不需要额外的标签包装或说明。确保输出的格式与原文档完全一致。`;
+Return only the complete translated frontmatter with no additional explanatory text or wrapper content.`;
 }
 
 /**
@@ -119,46 +199,36 @@ ${frontmatter}
  */
 export function generateBodySegmentTranslationPrompt(targetLanguage, segment, segmentIndex, totalSegments) {
   const languageName = getLanguageName(targetLanguage);
-  const titleInfo = segment.title ? `标题：${segment.title}` : '无标题段落';
-  
-  return `请将以下 Markdown 段落翻译成${languageName}。
+  const titleInfo = segment.title ? `Section: ${segment.title}` : 'Untitled section';
 
-翻译规则：
-1. 保持 Markdown 格式不变（包括标题层级 #、##、### 等）
-2. 识别文档中的代码块（以 \`\`\` 开头和结尾的部分）和 MDX 导入语句（如 import ... from ...），这些内容保持不变。
-3. 识别技术相关专有名词（如编程语言、框架名、库名等），这些内容保持不变。特别注意以下专有名词：
-   - MyBatis-Plus
-   - MyBatis
-   - Spring Boot
-   - Maven
-   - Gradle
-   - Java
-   - SQL
-   - CRUD
-   - ORM
-   - JPA
-   - Hibernate
-   - MySQL
-   - PostgreSQL
-   - Oracle
-   - SQLServer
-   - Redis
-   - MongoDB
-   - Docker
-   - Kubernetes
-   - Git
-   - GitHub
-   - Gitee
-4. 保持所有 URL 链接、文件路径、代码示例不变，但如果 URL 链接中是指向其他文档的，需要添加当前多语言路由。
-5. 保持 Markdown 格式标记（如 #、**、*、[]()、![](） 不变。
-6. 保持 MDX 组件调用（如 <Card>、<CardGrid>、<LinkCard> 等）不变。
-7. 翻译文档中的其他文本内容，确保翻译自然流畅，符合目标语言的表达习惯。
+  return `Translate this Markdown documentation segment to natural ${languageName} for technical documentation.
 
-当前段落 ${segmentIndex + 1}/${totalSegments}（${titleInfo}）：
+TARGET LANGUAGE: ${languageName}
+CURRENT PROGRESS: Segment ${segmentIndex + 1}/${totalSegments} (${titleInfo})
+
+PRESERVATION REQUIREMENTS:
+- Keep all Markdown formatting exactly as is (#, ##, ###, **, *, [](), ![]())
+- Preserve all code blocks (\`\`\` fenced) unchanged
+- Keep all MDX import statements (import ... from ...) unchanged
+- Maintain all MDX component calls (<Card>, <CardGrid>, <LinkCard>, etc.)
+- Preserve all URLs, file paths, and code examples
+- Keep these technical terms unchanged: MyBatis-Plus, MyBatis, Spring Boot, Maven, Gradle, Java, SQL, CRUD, ORM, JPA, Hibernate, MySQL, PostgreSQL, Oracle, SQLServer, Redis, MongoDB, Docker, Kubernetes, Git, GitHub, Gitee
+
+TRANSLATION APPROACH:
+${getLanguageSpecificGuidelines(targetLanguage)}
+
+QUALITY EXPECTATIONS:
+- Write for ${languageName}-speaking developers
+- Create natural, flowing text that doesn't feel translated
+- Use appropriate technical terminology for the ${languageName} audience
+- Maintain the same level of formality and technical depth
+- Ensure consistency with standard ${languageName} technical documentation
+
+CONTENT TO TRANSLATE:
 
 ${segment.content}
 
-请直接输出翻译结果，不需要额外的标签包装或说明。确保输出的格式与原文档完全一致。`;
+Return only the translated content with identical formatting. Do not add any explanatory text or wrapper content.`;
 }
 
 /**

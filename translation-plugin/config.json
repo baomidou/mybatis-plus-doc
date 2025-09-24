@@ -10,12 +10,29 @@
     "en",
     "ja"
   ],
-  "aiProvider": {
-    "service": "deepseek",
-    "model": "deepseek-chat",
-    "maxTokens": 8192,
-    "temperature": 0.1,
-    "baseURL": "https://api.deepseek.com"
+  "defaultProvider": "deepseek",
+  "aiProviders": {
+    "deepseek": {
+      "service": "deepseek",
+      "model": "deepseek-chat",
+      "maxTokens": 8192,
+      "temperature": 0.1,
+      "baseURL": "https://api.deepseek.com"
+    },
+    "kimi": {
+      "service": "kimi",
+      "model": "kimi-k2-0905-preview",
+      "maxTokens": 8192,
+      "temperature": 0.1,
+      "baseURL": "https://api.moonshot.cn/v1"
+    },
+    "ppio": {
+      "service": "ppio",
+      "model": "qwen/qwen3-next-80b-a3b-instruct",
+      "maxTokens": 8192,
+      "temperature": 0.1,
+      "baseURL": "https://api.ppinfra.com/openai"
+    }
   },
   "cache": {
     "enabled": true,

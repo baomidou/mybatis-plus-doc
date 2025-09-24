@@ -14,42 +14,119 @@
 - 📊 **进度显示**: 实时显示翻译进度和统计信息
 - 💰 **成本跟踪**: 实时显示 Token 使用量和成本信息
 
-## 安装依赖
+## 🚀 快速开始
+
+### 1. 安装依赖
 
 ```bash
 npm install
 ```
 
-## 配置
+### 2. 配置环境变量
 
-### 1. 基础配置
+在项目根目录的 `.env` 文件中设置：
 
-编辑 `translation-plugin/config.json` 文件：
+```bash
+# 选择 AI Provider（可选，默认使用 deepseek）
+AI_PROVIDER=deepseek  # 可选值: deepseek, openai, claude, gemini
+
+# 设置 API Key（必需）
+API_KEY=your_api_key_here
+```
+
+或者在终端中临时设置：
+
+```bash
+# 使用 DeepSeek
+export AI_PROVIDER=deepseek
+export API_KEY=your_deepseek_api_key
+
+# 使用 OpenAI
+export AI_PROVIDER=openai
+export API_KEY=your_openai_api_key
+
+# 使用 Claude
+export AI_PROVIDER=claude
+export API_KEY=your_anthropic_api_key
+
+# 使用 Gemini
+export AI_PROVIDER=gemini
+export API_KEY=your_google_api_key
+```
+
+### 3. 开始翻译
+
+```bash
+# 翻译所有文档到所有配置的语言
+npm run translate
+
+# 翻译到指定语言
+npm run translate:en
+npm run translate:ja
+
+# 增量翻译（只翻译修改过的文件）
+npm run translate:incremental
+
+# 预览模式（不实际翻译，只显示会翻译哪些文件）
+npm run translate:check
+```
+
+## 多 AI Provider 支持
+
+插件现在支持多个 AI 提供商配置，通过环境变量轻松切换：
+
+### 支持的 AI Providers
+
+- **deepseek**: DeepSeek API (默认)
+- **openai**: OpenAI GPT-4
+- **claude**: Anthropic Claude 3 Haiku
+- **gemini**: Google Gemini Pro
+
+### 配置结构
 
 ```json
 {
-  "targetLanguages": ["en", "ja"],
-  "frontmatterKeys": ["title", "description", "tagline"],
-  "aiProvider": {
-    "type": "openai",
-    "apiKey": "your-api-key",
-    "model": "gpt-4"
+  "defaultProvider": "deepseek",
+  "aiProviders": {
+    "deepseek": {
+      "service": "deepseek",
+      "model": "deepseek-chat",
+      "maxTokens": 8192,
+      "temperature": 0.1,
+      "baseURL": "https://api.deepseek.com"
+    },
+    "openai": {
+      "service": "openai",
+      "model": "gpt-4",
+      "maxTokens": 4096,
+      "temperature": 0.1,
+      "baseURL": "https://api.openai.com/v1"
+    },
+    "claude": {
+      "service": "anthropic",
+      "model": "claude-3-haiku-20240307",
+      "maxTokens": 4096,
+      "temperature": 0.1,
+      "baseURL": "https://api.anthropic.com"
+    },
+    "gemini": {
+      "service": "google",
+      "model": "gemini-pro",
+      "maxTokens": 4096,
+      "temperature": 0.1,
+      "baseURL": "https://generativelanguage.googleapis.com/v1beta"
+    }
   }
 }
 ```
 
-### 2. 环境变量
+### 优势
 
-你也可以通过环境变量设置 API Key：
-
-```bash
-# 统一的 API 密钥环境变量（适用于所有 AI 服务）
-export API_KEY="your-api-key"
-```
-
-**注意：** 
-- 环境变量的优先级低于配置文件中的 `apiKey` 设置
-- 所有 AI 服务统一使用 `API_KEY` 环境变量，具体服务类型通过配置文件中的 `service` 字段指定
+1. **灵活切换**: 通过环境变量快速切换 AI 提供商
+2. **安全性**: API 密钥通过环境变量管理，不会提交到代码库
+3. **扩展性**: 轻松添加新的 AI 提供商
+4. **向后兼容**: 支持旧版配置格式
+5. **统一接口**: 使用 llm.js 提供统一的 API 接口
 
 ## 使用方法
 
@@ -157,128 +234,23 @@ node translation-plugin/translate.js --lang ja --incremental --dry-run
 - 排除的目录及其所有子目录和文件都不会被翻译
 - 通常用于排除已翻译的目标语言目录，避免重复翻译
 
-### AI 提供商配置 (aiProvider)
+### 添加新的 Provider
 
-基于 [llm.js](https://llmjs.themaximalist.com/) 支持多种 AI 提供商：
+在 `config.json` 的 `aiProviders` 对象中添加新配置：
 
-#### OpenAI
 ```json
 {
-  "aiProvider": {
-    "service": "openai",
-    "apiKey": "your-api-key",
-    "model": "gpt-4",
-    "maxTokens": 4000,
-    "temperature": 0.1
+  "aiProviders": {
+    "your_provider": {
+      "service": "service_name",
+      "model": "model_name",
+      "maxTokens": 4096,
+      "temperature": 0.1,
+      "baseURL": "https://api.example.com"
+    }
   }
 }
 ```
-
-#### Anthropic Claude
-```json
-{
-  "aiProvider": {
-    "service": "anthropic",
-    "apiKey": "your-api-key",
-    "model": "claude-3-sonnet-20240229",
-    "maxTokens": 4000,
-    "temperature": 0.1
-  }
-}
-```
-
-#### Google Gemini
-```json
-{
-  "aiProvider": {
-    "service": "google",
-    "apiKey": "your-api-key",
-    "model": "gemini-pro",
-    "maxTokens": 4000,
-    "temperature": 0.1
-  }
-}
-```
-
-#### Groq (高速推理)
-```json
-{
-  "aiProvider": {
-    "service": "groq",
-    "apiKey": "your-api-key",
-    "model": "llama2-70b-4096",
-    "maxTokens": 4000,
-    "temperature": 0.1
-  }
-}
-```
-
-#### 本地模型 (Ollama)
-```json
-{
-  "aiProvider": {
-    "service": "ollama",
-    "model": "llama2",
-    "baseURL": "http://localhost:11434",
-    "maxTokens": 4000,
-    "temperature": 0.1
-  }
-}
-```
-
-#### xAI Grok
-```json
-{
-  "aiProvider": {
-    "service": "xai",
-    "apiKey": "your-api-key",
-    "model": "grok-beta",
-    "maxTokens": 4000,
-    "temperature": 0.1
-  }
-}
-```
-
-#### DeepSeek
-```json
-{
-  "aiProvider": {
-    "service": "deepseek",
-    "apiKey": "your-api-key",
-    "model": "deepseek-chat",
-    "maxTokens": 4000,
-    "temperature": 0.1
-  }
-}
-```
-
-#### OpenRouter (推荐)
-```json
-{
-  "aiProvider": {
-    "service": "openrouter",
-    "apiKey": "your-openrouter-api-key",
-    "model": "anthropic/claude-3.5-sonnet",
-    "baseURL": "https://openrouter.ai/api/v1",
-    "maxTokens": 8000,
-    "temperature": 0.1
-  }
-}
-```
-
-**OpenRouter 热门模型推荐：**
-- `anthropic/claude-3.5-sonnet` - 最佳质量，适合技术文档
-- `openai/gpt-4o` - OpenAI 最新模型
-- `meta-llama/llama-3.1-70b-instruct` - 开源高质量模型
-- `google/gemini-pro` - Google 模型
-- `anthropic/claude-3-haiku` - 快速且经济的选择
-
-**OpenRouter 优势：**
-- 🌟 统一接口访问多种顶级模型
-- 💰 透明的按使用量计费
-- 🚀 无需管理多个 API 密钥
-- 📊 详细的使用统计和成本跟踪
-- 🔄 模型间轻松切换
 
 ### 缓存配置 (cache)
 
@@ -346,23 +318,66 @@ node translation-plugin/translate.js --lang ja --incremental --dry-run
 
 插件会自动遵循以下翻译规则：
 
-1. **保持不变的内容**：
-   - 代码块（```包围的内容）
-   - 行内代码（`包围的内容）
-   - MDX 导入语句
-   - MDX 组件调用
-   - URL 链接
-   - 技术专有名词（MyBatis-Plus、Spring Boot 等）
+### ✅ 会翻译的内容
 
-2. **翻译的内容**：
-   - 指定的 frontmatter 字段
-   - 正文文本内容
-   - 保持 Markdown 格式
+- 指定的 frontmatter 字段（如 title、description）
+- 正文内容
+- 标题和段落
+- 列表项
+- 表格内容
 
-3. **质量保证**：
-   - 自动验证翻译结果格式
-   - 检查代码块、链接数量一致性
-   - 保持文档结构完整
+### ❌ 不会翻译的内容
+
+- 代码块（```包围的内容）
+- 行内代码（`包围的内容）
+- MDX 导入语句
+- MDX 组件调用
+- URL 链接
+- 技术专有名词（MyBatis-Plus、Spring Boot 等）
+
+### 质量保证
+
+- 自动验证翻译结果格式
+- 检查代码块、链接数量一致性
+- 保持文档结构完整
+
+## 📁 输出结构
+
+翻译后的文件将按以下结构组织：
+
+```
+src/content/docs/
+├── getting-started/
+│   └── introduction.md          # 原始中文文档
+├── en/                          # 英文翻译
+│   └── getting-started/
+│       └── introduction.md
+└── ja/                          # 日文翻译
+    └── getting-started/
+        └── introduction.md
+```
+
+## 📊 监控翻译进度
+
+运行翻译时，你会看到详细的进度信息：
+
+```
+🌍 开始翻译文档...
+📁 扫描文件: src/content/docs
+🎯 目标语言: en, ja
+📄 找到 15 个文件需要翻译
+
+[1/15] 翻译: getting-started/introduction.md → en ✅
+[2/15] 翻译: getting-started/introduction.md → ja ✅
+...
+
+🎉 翻译完成！
+📊 统计信息:
+   - 总文件数: 15
+   - 成功翻译: 30 (15 × 2 语言)
+   - 失败: 0
+   - 耗时: 2分30秒
+```
 
 ## 目录结构
 
@@ -384,21 +399,27 @@ translation-plugin/
 
 1. **API Key 错误**
    ```
-   错误: OpenAI API Key 未配置
+   错误: 401 Unauthorized
+   解决: 检查 .env 文件中的 API_KEY 是否正确
    ```
-   解决：设置环境变量或在配置文件中添加 API Key
 
 2. **文件权限错误**
    ```
    错误: 文件写入失败
+   解决: 检查目标目录的写入权限
    ```
-   解决：检查目标目录的写入权限
 
 3. **网络连接问题**
    ```
    错误: AI 调用失败
+   解决: 检查网络连接，或配置代理
    ```
-   解决：检查网络连接，或配置代理
+
+4. **Provider 配置错误**
+   ```
+   错误: AI Provider 'xxx' 配置未找到
+   解决: 检查 AI_PROVIDER 环境变量和 config.json 中的 aiProviders 配置
+   ```
 
 ### 调试模式
 
@@ -409,6 +430,18 @@ npm run translate:check
 ```
 
 这会显示将要翻译的文件列表，但不会实际执行翻译。
+
+设置环境变量启用详细日志：
+
+```bash
+DEBUG=true VERBOSE=true npm run translate
+```
+
+## 注意事项
+
+- `API_KEY` 环境变量是必需的，确保为选择的 Provider 设置正确的密钥
+- 不同 Provider 的 API 密钥格式可能不同，请参考对应服务的文档
+- 某些 Provider 可能需要额外的配置（如区域、版本等），可在配置中添加相应参数
 
 ## 贡献指南
 
@@ -422,6 +455,12 @@ npm run translate:check
 本项目采用 MIT 许可证。
 
 ## 更新日志
+
+### v1.1.0
+- ✨ 新增多 AI Provider 支持
+- ✨ 支持通过环境变量切换 Provider
+- ✨ 改进配置验证和错误提示
+- ✨ 统一 README 文档
 
 ### v1.0.0
 - 初始版本发布
