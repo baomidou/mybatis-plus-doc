@@ -120,6 +120,13 @@ export const head = [
     },
   },
   {
+    tag: "meta",
+    attrs: {
+      name: "google-adsense-account",
+      content: "ca-pub-4147143076931995"
+    }
+  },
+  {
     tag: "script",
     attrs: {
       src: "https://fundingchoicesmessages.google.com/i/pub-4147143076931995?ers=1",
