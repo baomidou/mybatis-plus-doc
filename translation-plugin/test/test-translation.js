@@ -3,10 +3,10 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { TranslationPlugin } from '../src/translator.js';
-import { FileProcessor } from '../src/file-processor.js';
-import { loadConfig } from '../src/config.js';
-import { generateTranslationPrompt, validateTranslationResult } from '../src/prompt-template.js';
+import { TranslationPlugin } from '../src/core/translator.js';
+import { FileProcessor } from '../src/core/file-processor.js';
+import { loadConfig } from '../src/core/config.js';
+import { generateTranslationPrompt, validateTranslationResult } from '../src/core/prompt-template.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
