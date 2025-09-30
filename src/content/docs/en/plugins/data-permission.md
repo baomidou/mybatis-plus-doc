@@ -8,15 +8,15 @@ DataPermissionInterceptor is a plugin provided by MyBatis-Plus for implementing 
 
 ## Plugin Principle
 
-DataPermissionInterceptor operates similarly to the tenant plugin. It intercepts SQL statements before execution and dynamically adds permission-related SQL fragments based on user permissions. This ensures only data accessible to the user will be queried.
+The working principle of DataPermissionInterceptor is similar to the tenant plugin. It intercepts SQL statements before execution and dynamically adds permission-related SQL fragments based on user permissions. This ensures that only data accessible to the user is queried.
 
-## Plugin Source and Test Cases
+## Plugin Location and Test Cases
 
-- **Plugin Source**: [DataPermissionInterceptor](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-jsqlparser-support/mybatis-plus-jsqlparser-5.0/src/main/java/com/baomidou/mybatisplus/extension/plugins/inner/DataPermissionInterceptor.java)
+- **Plugin Location**: [DataPermissionInterceptor](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-jsqlparser-support/mybatis-plus-jsqlparser-5.0/src/main/java/com/baomidou/mybatisplus/extension/plugins/inner/DataPermissionInterceptor.java)
 - **Test Cases**: [DataPermissionInterceptorTest](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-jsqlparser-support/mybatis-plus-jsqlparser-5.0/src/test/java/com/baomidou/mybatisplus/test/extension/plugins/inner/DataPermissionInterceptorTest.java)
 
 ## Core Code
-Below is the core logic for assembling SQL fragments:
+The following is the core logic code for assembling SQL fragments:
 
 ```java
 new DataPermissionInterceptor(new MultiDataPermissionHandler() {
@@ -42,12 +42,12 @@ new DataPermissionInterceptor(new MultiDataPermissionHandler() {
 
 :::note
 
-Carefully read the main usage instructions of the plugin to ensure proper injection of the data permission interceptor and customize the SQL assembly logic as needed.
+Carefully read the usage instructions for the main parts of the plugin to ensure proper injection of the data permission plugin and customize the SQL assembly logic accordingly.
 
 :::
 
 ## JSQLParser
-**JSQLParser** is an open-source SQL parsing library that facilitates parsing and modifying SQL statements. It is a key tool for implementing permission logic in this plugin, as MyBatis-Plus's data permission feature relies on JSQLParser's parsing capabilities.
+**JSQLParser** is an open-source SQL parsing library that facilitates parsing and modifying SQL statements. It is a key tool for implementing permission logic in the plugin, as MyBatis-Plus's data permission feature relies on JSQLParser's parsing capabilities.
 
 The following example demonstrates how to use JSQLParser to modify SQL:
 
@@ -67,18 +67,18 @@ try {
 }
 ```
 
-## Usage Guide
+## Usage
 
 ### Step 1: Implement Data Permission Logic
-Customize `MultiDataPermissionHandler` to implement specific business logic.
+Customize `MultiDataPermissionHandler` to implement your specific business logic.
 
 ```java
 public class CustomDataPermissionHandler extends MultiDataPermissionHandler {
     @Override
     public Expression getSqlSegment(Table table, Expression where, String mappedStatementId) {
-        // Implement custom data permission logic here
+        // Implement your custom data permission logic here
         try {
-            String sqlSegment = "..."; // Permission-related SQL fragment
+            String sqlSegment = "..."; // Data permission-related SQL fragment
             return CCJSqlParserUtil.parseCondExpression(sqlSegment);
         } catch (JSQLParserException e) {
             e.printStackTrace();
@@ -88,8 +88,8 @@ public class CustomDataPermissionHandler extends MultiDataPermissionHandler {
 }
 ```
 
-### Step 2: Register the Data Permission Interceptor
-Register the custom handler with `DataPermissionInterceptor`.
+### Step 2: Register Data Permission Interceptor
+Register your custom handler with `DataPermissionInterceptor`.
 
 ```java
 // In MyBatis configuration
@@ -97,4 +97,4 @@ Interceptor dataPermissionInterceptor = new DataPermissionInterceptor(new Custom
 mybatisConfiguration.addInterceptor(dataPermissionInterceptor);
 ```
 
-By using DataPermissionInterceptor, you can easily implement data permission control in MyBatis-Plus applications, ensuring users only access data within their authorized scope, thereby enhancing data security.
+By using DataPermissionInterceptor, you can easily implement data permission control in your MyBatis-Plus application, ensuring users can only access data within their permission scope, thereby enhancing data security.

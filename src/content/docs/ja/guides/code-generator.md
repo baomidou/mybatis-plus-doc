@@ -3,30 +3,29 @@ title: コードジェネレーター
 sidebar:
   order: 2
 ---
-
-AutoGenerator は MyBatis-Plus のコードジェネレーターです。AutoGenerator を使用することで、Entity、Mapper、Mapper XML、Service、Controller などの各モジュールのコードを迅速に生成でき、開発効率を大幅に向上させることができます。
+AutoGenerator は MyBatis-Plus のコードジェネレータであり、AutoGenerator を使用することで Entity、Mapper、Mapper XML、Service、Controller などの各モジュールのコードを迅速に生成でき、開発効率を大幅に向上させることができます。
 
 :::note
-古いコードジェネレーターは3.5.0以下のバージョンに適用されます。3.5.1以上のバージョンを使用している場合は、[新コードジェネレーター](/ja/guides/new-code-generator/)を参照して設定・使用してください。新しいコードジェネレーターはよりシンプルかつ強力で、すべてのユーザーに新しいコードジェネレーターへのアップグレードを推奨します。
+旧コードジェネレータは 3.5.1 以下バージョンに適用されます。3.5.1 以上バージョンをご利用の場合は、[新コードジェネレータ](/guides/new-code-generator/) を参照して設定と使用を行ってください。新しいコードジェネレータはより簡潔で強力であり、すべてのユーザーに新しいコードジェネレータへのアップグレードを推奨します。
 :::
 
-デモンストレーション：
+デモ効果図：
 
 ![relationship](/images/content/generator.gif)
 
 ```java
-// デモ例：mainメソッドを実行し、コンソールにモジュールのテーブル名を入力して Enter を押すと、対応するプロジェクトディレクトリ内に自動生成されます
+// 演示例子，执行 main 方法控制台输入模块表名回车自动生成对应项目目录中
 public class CodeGenerator {
 
     /**
      * <p>
-     * コンソールの内容を読み取る
+     * 读取控制台内容
      * </p>
      */
     public static String scanner(String tip) {
         Scanner scanner = new Scanner(System.in);
         StringBuilder help = new StringBuilder();
-        help.append(tip + "を入力してください：");
+        help.append("请输入" + tip + "：");
         System.out.println(help.toString());
         if (scanner.hasNext()) {
             String ipt = scanner.next();
@@ -34,57 +33,57 @@ public class CodeGenerator {
                 return ipt;
             }
         }
-        throw new MybatisPlusException("正しい" + tip + "を入力してください！");
+        throw new MybatisPlusException("请输入正确的" + tip + "！");
     }
 
     public static void main(String[] args) {
-        // コードジェネレーター
+        // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
 
-        // グローバル設定
+        // 全局配置
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("jobob");
         gc.setOpen(false);
-        // gc.setSwagger2(true); エンティティ属性のSwagger2アノテーション
+        // gc.setSwagger2(true); 实体属性 Swagger2 注解
         mpg.setGlobalConfig(gc);
 
-        // データソース設定
+        // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
         dsc.setUrl("jdbc:mysql://localhost:3306/ant?useUnicode=true&useSSL=false&characterEncoding=utf8");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("パスワード");
+        dsc.setPassword("密码");
         mpg.setDataSource(dsc);
 
-        // パッケージ設定
+        // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setModuleName(scanner("モジュール名"));
+        pc.setModuleName(scanner("模块名"));
         pc.setParent("com.baomidou.ant");
         mpg.setPackageInfo(pc);
 
-        // カスタム設定
+        // 自定义配置
         InjectionConfig cfg = new InjectionConfig() {
             @Override
             public void initMap() {
-                // 何もしない
+                // to do nothing
             }
         };
 
-        // テンプレートエンジンが freemarker の場合
+        // 如果模板引擎是 freemarker
         String templatePath = "/templates/mapper.xml.ftl";
-        // テンプレートエンジンが velocity の場合
+        // 如果模板引擎是 velocity
         // String templatePath = "/templates/mapper.xml.vm";
 
-        // カスタム出力設定
+        // 自定义输出配置
         List<FileOutConfig> focList = new ArrayList<>();
-        // カスタム設定が優先的に出力されます
+        // 自定义配置会被优先输出
         focList.add(new FileOutConfig(templatePath) {
             @Override
             public String outputFile(TableInfo tableInfo) {
-                // カスタム出力ファイル名：Entity にプレフィックス/サフィックスを設定した場合、xml の名前もそれに応じて変更されることに注意してください！！
+                // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
                 return projectPath + "/src/main/resources/mapper/" + pc.getModuleName()
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
@@ -93,13 +92,13 @@ public class CodeGenerator {
         cfg.setFileCreate(new IFileCreate() {
             @Override
             public boolean isCreate(ConfigBuilder configBuilder, FileType fileType, String filePath) {
-                // カスタムフォルダの作成が必要かどうかを判断
-                checkDir("デフォルトメソッドで作成されたディレクトリ、カスタムディレクトリ用");
+                // 判断自定义文件夹是否需要创建
+                checkDir("调用默认方法创建的目录，自定义目录用");
                 if (fileType == FileType.MAPPER) {
-                    // mapper ファイルが既に生成されているかどうかを判断し、再生成したくない場合は false を返す
+                    // 已经生成 mapper 文件判断存在，不想重新生成返回 false
                     return !new File(filePath).exists();
                 }
-                // テンプレートファイルの生成を許可
+                // 允许生成模板文件
                 return true;
             }
         });
@@ -107,11 +106,11 @@ public class CodeGenerator {
         cfg.setFileOutConfigList(focList);
         mpg.setCfg(cfg);
 
-        // テンプレート設定
+        // 配置模板
         TemplateConfig templateConfig = new TemplateConfig();
 
-        // カスタム出力テンプレートの設定
-        // カスタムテンプレートパスを指定。.ftl/.vmは付けないでください。使用するテンプレートエンジンに応じて自動的に認識されます
+        // 配置自定义输出模板
+        //指定自定义模板路径，注意不要带上.ftl/.vm, 会根据使用的模板引擎自动识别
         // templateConfig.setEntity("templates/entity2.java");
         // templateConfig.setService();
         // templateConfig.setController();
@@ -119,18 +118,18 @@ public class CodeGenerator {
         templateConfig.setXml(null);
         mpg.setTemplate(templateConfig);
 
-        // ストラテジー設定
+        // 策略配置
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        strategy.setSuperEntityClass("親クラスエンティティ、ない場合は設定不要！");
+        strategy.setSuperEntityClass("你自己的父类实体,没有就不用设置!");
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
-        // 共通の親クラス
-        strategy.setSuperControllerClass("親クラスコントローラー、ない場合は設定不要！");
-        // 親クラスに書かれた共通フィールド
+        // 公共父类
+        strategy.setSuperControllerClass("你自己的父类控制器,没有就不用设置!");
+        // 写于父类中的公共字段
         strategy.setSuperEntityColumns("id");
-        strategy.setInclude(scanner("テーブル名、複数はカンマ区切り").split(","));
+        strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);
@@ -141,15 +140,15 @@ public class CodeGenerator {
 }
 ```
 
-より詳細な設定については、[コードジェネレーター設定](/ja/reference/code-generator-configuration)を参照してください。
+より詳細な設定については、[コードジェネレータ設定](/reference/code-generator-configuration) の記事を参照してください。
 
 ## 使用チュートリアル
 
 ### 依存関係の追加
 
-MyBatis-Plus は `3.0.3` 以降、コードジェネレーターとテンプレートエンジンのデフォルト依存関係を削除し、関連する依存関係を手動で追加する必要があります：
+MyBatis-Plus はバージョン `3.0.3` 以降、コードジェネレータとテンプレートエンジンのデフォルト依存関係を削除しました。関連する依存関係を手動で追加する必要があります：
 
-- コードジェネレーター の依存関係を追加
+- コードジェネレータの依存関係を追加
 
   ```xml
   <dependency>
@@ -159,7 +158,7 @@ MyBatis-Plus は `3.0.3` 以降、コードジェネレーターとテンプレ�
   </dependency>
   ```
 
-- テンプレートエンジンの依存関係を追加、MyBatis-PlusはVelocity（デフォルト）、Freemarker、Beetlをサポートし、ユーザーは慣れ親しんだテンプレートエンジンを選択できます。もし要件を満たさない場合は、カスタムテンプレートエンジンを使用できます。
+- テンプレートエンジンの依存関係を追加。MyBatis-Plus は Velocity（デフォルト）、Freemarker、Beetl をサポートしています。ユーザーは自身が慣れ親しんだテンプレートエンジンを選択できます。いずれも要件を満たさない場合は、カスタムテンプレートエンジンを採用することも可能です。
 
   Velocity（デフォルト）：
 
@@ -167,7 +166,7 @@ MyBatis-Plus は `3.0.3` 以降、コードジェネレーターとテンプレ�
   <dependency>
       <groupId>org.apache.velocity</groupId>
       <artifactId>velocity-engine-core</artifactId>
-      <version>最新バージョン</version>
+      <version>最新版本</version>
   </dependency>
   ```
 
@@ -177,7 +176,7 @@ MyBatis-Plus は `3.0.3` 以降、コードジェネレーターとテンプレ�
   <dependency>
       <groupId>org.freemarker</groupId>
       <artifactId>freemarker</artifactId>
-      <version>最新バージョン</version>
+      <version>最新版本</version>
   </dependency>
   ```
 
@@ -187,7 +186,7 @@ MyBatis-Plus は `3.0.3` 以降、コードジェネレーターとテンプレ�
   <dependency>
       <groupId>com.ibeetl</groupId>
       <artifactId>beetl</artifactId>
-      <version>最新バージョン</version>
+      <version>最新版本</version>
   </dependency>
   ```
 
@@ -196,13 +195,13 @@ MyBatis-Plus は `3.0.3` 以降、コードジェネレーターとテンプレ�
   ```java
   AutoGenerator generator = new AutoGenerator();
 
-  // freemarker エンジンの設定
+  // freemarker エンジンを設定
   generator.setTemplateEngine(new FreemarkerTemplateEngine());
 
-  // beetl エンジンの設定
+  // beetl エンジンを設定
   generator.setTemplateEngine(new BeetlTemplateEngine());
 
-  // カスタムエンジンの設定（参照クラスはカスタムエンジンクラス）
+  // カスタムエンジンを設定 (参照クラスはカスタムエンジンクラス)
   generator.setTemplateEngine(new CustomTemplateEngine());
 
   // その他の設定
@@ -211,7 +210,7 @@ MyBatis-Plus は `3.0.3` 以降、コードジェネレーターとテンプレ�
 
 ### 設定の記述
 
-MyBatis-Plus のコードジェネレーターは、ユーザーが選択できる大量のカスタムパラメータを提供し、ほとんどのユーザーの使用要件を満たすことができます。
+MyBatis-Plus のコードジェネレーターは、ユーザーが選択できる多数のカスタマイズパラメーターを提供しており、ほとんどのユーザーの使用要件を満たすことができます。
 
 - GlobalConfig の設定
 
@@ -229,38 +228,38 @@ MyBatis-Plus のコードジェネレーターは、ユーザーが選択でき�
   dataSourceConfig.setUrl("jdbc:mysql://localhost:3306/ant?useUnicode=true&useSSL=false&characterEncoding=utf8");
   dataSourceConfig.setDriverName("com.mysql.jdbc.Driver");
   dataSourceConfig.setUsername("root");
-  dataSourceConfig.setPassword("パスワード");
+  dataSourceConfig.setPassword("password");
   ```
 
-より詳細なジェネレーター設定については、[コードジェネレーター設定](/ja/reference/code-generator-configuration/)を参照してください。
+その他のジェネレーター設定については、[コードジェネレーター設定](/reference/code-generator-configuration/) をご覧ください。
 
 ## カスタムテンプレートエンジン
 
-`com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine` クラスを継承してください。
+クラス `com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine` を継承してください。
 
 :::tip
-カスタムテンプレートで使用可能なパラメータは？[AbstractTemplateEngine](https://github.com/baomidou/generator/blob/develop/mybatis-plus-generator/src/main/java/com/baomidou/mybatisplus/generator/engine/AbstractTemplateEngine.java) クラスの getObjectMap メソッドが返す objectMap のすべての値が使用可能です。
+カスタムテンプレートで利用可能なパラメータは何ですか？[AbstractTemplateEngine](https://github.com/baomidou/generator/blob/develop/mybatis-plus-generator/src/main/java/com/baomidou/mybatisplus/generator/engine/AbstractTemplateEngine.java) クラスのメソッド `getObjectMap` が返す `objectMap` のすべての値が利用可能です。
 :::
 
 ## カスタムコードテンプレート
 
 ```java
-// カスタムテンプレートパスの指定、場所：/resources/templates/entity2.java.ftl（または.vm）
-// .ftl（または.vm）は付けないでください。使用するテンプレートエンジンに応じて自動的に認識されます
+//カスタムテンプレートのパスを指定、場所：/resources/templates/entity2.java.ftl（または.vm）
+//.ftl（または.vm）を含めないでください。使用するテンプレートエンジンに基づいて自動認識されます
 TemplateConfig templateConfig = new TemplateConfig()
     .setEntity("templates/entity2.java");
 
 AutoGenerator mpg = new AutoGenerator();
-// カスタムテンプレートの設定
+//カスタムテンプレートを設定
 mpg.setTemplate(templateConfig);
 ```
 
-## カスタムプロパティの注入
+## カスタム属性インジェクション
 
 ```java
 InjectionConfig injectionConfig = new InjectionConfig() {
-    // カスタムプロパティの注入: abc
-    // .ftl（または.vm）テンプレートで${cfg.abc}を使用してプロパティを取得
+    //カスタム属性インジェクション:abc
+    //.ftl（または.vm）テンプレート内で${cfg.abc}を使用して属性を取得します
     @Override
     public void initMap() {
         Map<String, Object> map = new HashMap<>();
@@ -269,19 +268,19 @@ InjectionConfig injectionConfig = new InjectionConfig() {
     }
 };
 AutoGenerator mpg = new AutoGenerator();
-// カスタムプロパティ注入の設定
+//カスタム属性インジェクションを設定
 mpg.setCfg(injectionConfig);
 ```
 
 ```xml
 entity2.java.ftl
-カスタムプロパティ注入abc=${cfg.abc}
+カスタム属性インジェクションabc=${cfg.abc}
 
 entity2.java.vm
-カスタムプロパティ注入abc=$!{cfg.abc}
+カスタム属性インジェクションabc=$!{cfg.abc}
 ```
 
-## フィールドの追加情報クエリ注入
+## フィールドその他情報のクエリ注入
 
 ![relationship](/images/content/custom-fields.png)
 
@@ -289,10 +288,10 @@ entity2.java.vm
 new DataSourceConfig().setDbQuery(new MySqlQuery() {
 
     /**
-     * 親クラスのカスタムフィールドクエリ用に予約されたメソッドをオーバーライドします<br>
-     * ここで使用される SQL は、親クラスの tableFieldsSql に対応するクエリフィールドです。デフォルトのクエリが要件を満たさない場合は、このメソッドをオーバーライドしてください<br>
-     * テンプレート内での使用方法：table.fields を呼び出してすべてのフィールド情報を取得し、
-     * 各フィールドに対して field.customMap を使って MAP 内の注入フィールド（例：NULL または PRIVILEGES）を取得します
+     * 親クラスで予約されたカスタムフィールドクエリをオーバーライドします<br>
+     * ここでクエリする SQL は親クラスの tableFieldsSql のクエリフィールドに対応し、デフォルトでは要件を満たさない場合はオーバーライドしてください<br>
+     * テンプレートでの呼び出し： table.fields で全てのフィールド情報を取得し、
+     * フィールドをループ処理して field.customMap から以下の注入フィールドを MAP から取得します  NULL または PRIVILEGES
      */
     @Override
     public String[] fieldCustom() {

@@ -3,56 +3,56 @@ title: Batch Operations
 sidebar:
   order: 7
 ---
-Batch operations are an efficient technique for processing large volumes of data, allowing developers to perform multiple database operations in a single execution. This reduces the number of interactions with the database, improving efficiency and performance in data processing. In MyBatis-Plus, batch operations are primarily used in the following scenarios:
+Batch operations are a technique for efficiently processing large volumes of data, allowing developers to execute multiple database operations at once. This reduces the number of interactions with the database, thereby improving the efficiency and performance of data processing. In MyBatis-Plus, batch operations are primarily used in the following areas:
 
-- **Data Insertion (Insert)**: Batch insertion is one of the most common use cases for batch operations. By inserting multiple records at once, the number of SQL statement executions is significantly reduced, speeding up data writing. This is particularly useful for scenarios like data migration or initializing data.
-- **Data Update (Update)**: Batch updates allow modifying specific fields of multiple records simultaneously, making them suitable for scenarios requiring uniform changes to large datasets, such as updating user statuses or product prices in bulk.
-- **Data Deletion (Delete)**: Batch deletion operations enable the rapid removal of multiple records from the database, often used for data cleanup or user account termination.
+- **Data Insertion (Insert)**: Batch insertion is one of the most common use cases for batch operations. By inserting multiple records in a single operation, it significantly reduces the number of SQL statement executions and speeds up data writing. This is particularly useful in scenarios like data migration and data initialization.
+- **Data Update (Update)**: Batch updates allow modifying specific fields of multiple records simultaneously. This is suitable for situations requiring uniform changes to large datasets, such as batch updating user statuses or product prices.
+- **Data Deletion (Delete)**: Batch delete operations can quickly remove multiple records from the database, commonly used in scenarios like data cleanup or user deregistration.
 
 ## Feature Overview
 
-- **Supported Versions**: `3.5.4 +`
+- **Supported Version**: `3.5.4 +`
 - **Transaction Control**: Requires manual management (disabled by default)
-- **Execution Results**: Returns batch processing results for business logic to determine success or failure
+- **Execution Result**: Returns batch processing results for business logic to determine success or failure
 - **Data Writing**: Depends on whether the code correctly executes `flushStatements`
 - **Compatibility**: Supports both Spring and non-Spring projects
 - **Exception Type**: Throws `PersistenceException` on execution
-- **Recommendation**: For the `saveOrUpdate` method, it is advised to keep operations simple (either insert or update).
+- **Recommendation**: For the `saveOrUpdate` method, it's recommended to keep operations simple for either insertion or update
 
 ## Class Structure Explanation
 
 ### MybatisBatch<?>
 
-- **Generic Type**: Actual data type
-- **sqlSessionFactory**: Can be obtained from the container; in non-Spring environments, Mybatis must be initialized manually with context recorded.
-- **dataList**: List of actual batch data to be processed (cannot be empty).
+- **Generic Type**: The actual data type
+- **sqlSessionFactory**: Can be obtained from the container; in non-Spring environments, you need to initialize MyBatis and maintain the context yourself
+- **dataList**: The actual list of data for batch processing (cannot be empty)
 
 ### MybatisBatch.Method<?>
 
-Simplifies internal framework method calls, essentially a BatchMethod.
+This is essentially BatchMethod, simplifying internal framework method calls.
 
-- **Generic Type**: Actual Mapper method parameter type
-- **mapperClass**: Specific Mapper class
+- **Generic Type**: The actual Mapper method parameter type
+- **mapperClass**: The specific Mapper class
 
 ### BatchMethod<?>
 
-- **Generic Type**: Actual Mapper method parameter type
-- **statementId**: ID of the executed MappedStatement
-- **parameterConvert**: Parameter type conversion handler for cases where data types do not match Mapper method parameters.
+- **Generic Type**: The actual Mapper method parameter type
+- **statementId**: The ID of the MappedStatement to execute
+- **parameterConvert**: Parameter type conversion handler, used when the data type doesn't match the Mapper method parameter type
 
 ## Usage Steps
 
-1. Create a MybatisBatch instance (bind data and sqlSessionFactory).
-2. Create a MybatisBatch.Method instance (specify the Mapper class method to execute).
-3. Execute the operation (convert batch parameters to Mapper method parameters).
+1. Create a MybatisBatch instance (bind data and sqlSessionFactory)
+2. Create a MybatisBatch.Method instance (determine the Mapper class method to execute)
+3. Execute the operation (convert batch parameters to the parameters required by the Mapper method)
 
 ## Return Value Explanation
 
 **Return Type**: `List<BatchResult>`
 
-**Return Content**: Grouped results of each MappedStatement + SQL execution.
+**Return Content**: Groups the results of each MappedStatement + SQL execution.
 
-**Note**: For example, in a batch update by ID, if 5 records update one field and 5 update two fields, the return value is a List of size 2, storing the update results for each group of 5 records.
+**Note**: For example, when performing a batch update by ID, if 5 records update one field and another 5 records update two fields, the return value is a List with a capacity of 2, storing the update status of the 5 records respectively.
 
 ## Usage Examples
 
@@ -62,7 +62,7 @@ The framework provides MybatisBatchUtils for static method calls.
 
 Suitable for insert, update, and delete operations.
 
-#### Example 1: Entity-Type Data
+#### Example 1: Entity Type Data
 
 ```java
 List<H2User> userList = Arrays.asList(new H2User(2000L, "测试"), new H2User(2001L, "测试"));
@@ -71,7 +71,7 @@ MybatisBatch.Method<H2User> method = new MybatisBatch.Method<>(H2UserMapper.clas
 mybatisBatch.execute(method.insert());
 ```
 
-#### Example 2: Non-Entity-Type Data
+#### Example 2: Non-Entity Type Data
 
 ```java
 List<Long> ids = Arrays.asList(120000L, 120001L);
@@ -105,7 +105,7 @@ mybatisBatch.execute(method.get("myInsertWithoutParam"));
 #### Example 4: Custom Method Insert (With Annotation)
 
 ```java
-// annotated mapper method definition
+// mapper method definition with annotation
 @Insert("insert into h2user(name,version) values( #{user1.name}, #{user1.version})")
 int myInsertWithParam(@Param("user1") H2User user1);
 
@@ -126,11 +126,11 @@ mybatisBatch.execute(method.get("myInsertWithParam", (user) -> {
 
 ### saveOrUpdate Method
 
-Performs save or update operations.
+Executes save or update operations.
 
-**Note**: Be mindful of caching and data awareness issues across sqlSessions.
+**Note**: Be aware of caching and data awareness issues when working across different sqlSessions.
 
-#### Cross-sqlSession Example
+#### Cross sqlSession Example
 
 ```java
 @Autowired
@@ -144,7 +144,7 @@ MybatisBatch.Method<H2User> mapperMethod = new MybatisBatch.Method<>(H2UserMappe
 
 new MybatisBatch<>(sqlSessionFactory, h2UserList).saveOrUpdate(
     mapperMethod.insert(), // specify insert method
-    ((sqlSession, h2User) -> userMapper.selectById(h2User.getTestId()) == null), // condition
+    ((sqlSession, h2User) -> userMapper.selectById(h2User.getTestId()) == null), // judgment condition
     mapperMethod.updateById()); // specify update method
 ```
 
@@ -159,7 +159,7 @@ MybatisBatch.Method<H2User> mapperMethod = new MybatisBatch.Method<>(H2UserMappe
 
 new MybatisBatch<>(sqlSessionFactory, h2UserList).saveOrUpdate(
     mapperMethod.insert(), // specify insert method
-    ((sqlSession, h2User) -> sqlSession.selectList(mapperMethod.get("selectById").getStatementId(), h2User.getTestId()).isEmpty()), // condition
+    ((sqlSession, h2User) -> sqlSession.selectList(mapperMethod.get("selectById").getStatementId(), h2User.getTestId()).isEmpty()), // judgment condition
     mapperMethod.updateById()); // specify update method
 ```
 
@@ -180,7 +180,7 @@ transactionTemplate.execute((TransactionCallback<List<BatchResult>>) status -> {
 ```
 ### SQL LOAD csv
 
-> For higher performance requirements when importing tables, you can use the `SQL LOAD csv` approach. Below is an example for `MySQL`:
+> If you have higher performance requirements for importing tables, you can use the `SQL LOAD csv` approach. Below is an example for `MySQL`:
 
 ```sql
 LOAD DATA INFILE '/path/to/your/file.csv'

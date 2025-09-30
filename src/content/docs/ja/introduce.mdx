@@ -1,60 +1,60 @@
 ---
-title: イントロダクション
+title: はじめに
 ---
 
 import SupportDb from '@/components/SupportDb.astro';
 import Partner from '@/components/Partner.astro';
 
-[MyBatis-Plus](https://github.com/baomidou/mybatis-plus) は [MyBatis](https://www.mybatis.org/mybatis-3/) の拡張ツールです。MyBatis をベースに拡張し、変更は加えていません。開発をシンプルにするために生まれました。
+[MyBatis-Plus](https://github.com/baomidou/mybatis-plus) は [MyBatis](https://www.mybatis.org/mybatis-3/) の拡張ツールであり、MyBatis をベースに強化のみを行い変更は加えず、開発の簡素化と効率向上を目的としています。
 
 :::tip[ビジョン]
-私たちのビジョンは、MyBatis にとって最高のパートナーとなることです。ちょうど **魂斗羅** の 1P と 2P のように、コンビを組めば効率は倍増します。
+私たちのビジョンは、MyBatis にとって最高のパートナーとなることです。**魂斗羅**における1Pと2Pのように、二人三脚で組み合わせることで、効率が倍増します。
 :::
 
 <Partner />
 
-## 特性
+## 特徴
 
-- **非侵襲的**：変更を加えず拡張するだけなので、既存のプロジェクトに影響を与えることなく、スムーズに導入できます
-- **軽量**：起動時に基本的なCRUD操作が自動的に導入され、パフォーマンスへの影響はほとんどなく、オブジェクト指向の操作が可能です
-- **強力なCRUD操作**：組み込みの共通Mapper、共通Serviceにより、最小限の設定で単一テーブルの大部分のCRUD操作を実現でき、さらに強力な条件ビルダーで様々なニーズに対応します
-- **Lambda形式の呼び出しをサポート**：Lambda式を通じて、様々なクエリ条件を簡単に記述でき、フィールド名の入力ミスを心配する必要がありません
-- **主キー自動生成のサポート**：4種類の主キー戦略（分散ユニークID生成器 - Sequenceを含む）をサポートし、自由に設定可能で、主キーの問題を完璧に解決します
-- **ActiveRecordモードのサポート**：ActiveRecord形式の呼び出しをサポートし、エンティティクラスはModelクラスを継承するだけで強力なCRUD操作が可能です
-- **カスタムグローバル共通操作のサポート**：グローバル共通メソッドの注入をサポート（Write once, use anywhere）
-- **組み込みコードジェネレーター**：コードまたはMavenプラグインを使用して、Mapper、Model、Service、Controllerを迅速に生成でき、テンプレートエンジンをサポートし、多数のカスタマイズ設定が使用可能です
-- **組み込みページネーションプラグイン**：MyBatisの物理ページネーションに基づき、開発者は具体的な操作を気にする必要がなく、プラグインを設定するだけで、通常のList検索と同様にページネーションを記述できます
-- **ページネーションプラグインは多様なデータベースをサポート**：MySQL、MariaDB、Oracle、DB2、H2、HSQL、SQLite、Postgre、SQLServerなど、多くのデータベースをサポートしています
-- **組み込みパフォーマンス分析プラグイン**：SQL文とその実行時間を出力でき、開発テスト時にこの機能を有効にすることで、遅いクエリを素早く特定できます
-- **組み込みグローバルインターセプタープラグイン**：テーブル全体のdelete、update操作のスマート分析とブロックを提供し、カスタムインターセプトルールも設定可能で、誤操作を防止します
+- **非侵入的**: 強化のみを行い変更は加えません。導入しても既存のプロジェクトに影響を与えず、シームレスに統合できます
+- **低オーバーヘッド**: 起動時に基本的なCRUDが自動的に注入され、パフォーマンスにほとんど影響がなく、直接オブジェクト操作を行えます
+- **強力なCRUD操作**: 汎用Mapper、汎用Serviceが内蔵されており、わずかな設定で単一テーブルの大部分のCRUD操作を実現できます。さらに強力な条件構築器により、様々な使用ニーズを満たします
+- **Lambda形式での呼び出しをサポート**: Lambda式を通じて、様々な検索条件を簡単に記述でき、フィールド名の記述ミスを心配する必要がなくなります
+- **主キーの自動生成をサポート**: 最大4種類の主キー戦略（分散型一意IDジェネレータ - Sequenceを含む）をサポートし、自由に設定可能で、主キー問題を完全に解決します
+- **ActiveRecordモードをサポート**: ActiveRecord形式での呼び出しをサポートし、エンティティクラスがModelクラスを継承するだけで強力なCRUD操作を行えます
+- **カスタムグローバル共通操作をサポート**: グローバル共通メソッドの注入をサポート（一度書けば、どこでも使用可能）
+- **内蔵コードジェネレータ**: コードまたはMavenプラグインを使用して、Mapper、Model、Service、Controller層のコードを迅速に生成できます。テンプレートエンジンをサポートし、多数のカスタム設定が利用可能です
+- **内蔵ページネーションプラグイン**: MyBatisの物理ページネーションに基づき、開発者は具体的な操作を気にする必要がなく、プラグインを設定した後、ページネーションの記述は通常のList検索と同等になります
+- **ページネーションプラグインは多种データベースをサポート**: MySQL、MariaDB、Oracle、DB2、H2、HSQL、SQLite、Postgre、SQLServer等多种データベースをサポート
+- **内蔵パフォーマンス分析プラグイン**: SQL文とその実行時間を出力でき、開発テスト時にこの機能を有効にすることを推奨し、低速クエリを素早く特定できます
+- **内蔵グローバルインターセプタプラグイン**: テーブル全体のdelete、update操作に対するインテリジェントな分析とブロックを提供し、カスタムインターセプトルールも設定可能で、誤操作を防止します
 
-## サポートするデータベース
+## サポートデータベース
 
 <SupportDb />
 
 :::tip
-MyBatisを使用してCRUD操作が可能で、標準SQLをサポートするデータベースは、基本的にMyBatis-Plusでもサポートされています。具体的なサポート状況は上記の通りです。
+MyBatisを使用してCRUD操作が行え、標準SQLをサポートするあらゆるデータベースは、MyBatis-Plusのサポート範囲内であるべきです。具体的なサポート状況は上記の通りです。
 
-もし使いたいデータベースが上記のリストにない場合は、当該データベースについてのプルリクエストを歓迎します。
+ご希望のデータベースタイプが上記のリストにない場合は、データベース方言のPRを歓迎します。
 :::
 
-## フレームワーク構成
+## フレームワーク構造
 
 ![framework](/images/content/mybatis-plus-framework.jpg)
 
-## ソースコードホスティング先
+## コードホスティング
 
 - **[Github](https://github.com/baomidou/mybatis-plus)**
 - **[Gitee](https://gitee.com/baomidou/mybatis-plus)**
 
-## コミットへの参加
+## コントリビュート
 
-MyBatis-Plus を一緒により良いものにしていきましょう。皆さまのプルリクエストをお待ちしています！
+MyBatis-Plusの改善にご協力いただける方を広く募集しており、あなたのPRを心待ちにしています！
 
-- コードへのコミット：ソースコードURLはこちらです。 [MyBatis-Plus](https://github.com/baomidou/mybatis-plus)  Issue や Pull Request のご提出をお待ちしています。
-- ドキュメントのメンテナンス：ドキュメントURLはこちらです。 [MyBatis-Plus-Doc](https://github.com/baomidou/mybatis-plus-doc)  翻訳や修正へのご参加も大歓迎です。
-- ロゴ使用許諾について：[MyBatis-Plus ロゴ公式許諾メール](/document/logo-request.html)
+- コードの貢献: コードリポジトリ [MyBatis-Plus](https://github.com/baomidou/mybatis-plus) 、IssueやPull Requestsの投稿を歓迎します
+- ドキュメントの維持: ドキュメントリポジトリ [MyBatis-Plus-Doc](https://github.com/baomidou/mybatis-plus-doc) 、翻訳と修正への参加を歓迎します
+- ライセンス説明: [MyBatis-Plus LOGO 公式ライセンス連絡メール](/document/logo-request.html)
 
-## チュートリアル、サンプル、利用者一覧
+## チュートリアル、事例、ユーザーリスト
 
-[Awesome-MyBatis-Plus](https://github.com/baomidou/awesome-mybatis-plus) をご覧ください。
+[Awesome-MyBatis-Plus](https://github.com/baomidou/awesome-mybatis-plus) でご確認ください。

@@ -6,16 +6,16 @@ sidebar:
 
 import LastedDependency from '@/components/LastedDependency.astro';
 
-新しい MyBatis-Plus 3.0 バージョンは JDK8 を基盤としており、`lambda` 形式での呼び出しをサポートしています。そのため、MyBatis-Plus 3.0 を導入・統合する際の要件は以下の通りです：
+新しくリリースされた `MyBatis-Plus` 3.0 バージョンは JDK8 をベースとしており、`lambda` 形式の呼び出しを提供しています。そのため、MP3.0 のインストールと統合には以下が必要です：
 
 - JDK 8+
-- Maven or Gradle
+- Maven または Gradle
 
 :::caution[注意事項]
-バージョン `3.5.9` 以降では、プラグインは Optional な依存関係として提供されています。詳細は下記の `maven bom` セクションをご確認の上、プロジェクトに応じて対応するプラグインモジュールを選択してください。
+バージョン `3.5.9+` から、プラグイン部分はオプション依存に変更されました。詳細は以下の `maven bom` セクションを参照し、ご自身のプロジェクトに応じて対応するプラグインサポートモジュールを選択してください。
 :::
 
-## Release
+## リリース版
 
 ### Spring Boot2
 
@@ -24,6 +24,10 @@ import LastedDependency from '@/components/LastedDependency.astro';
 ### Spring Boot3
 
 <LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-spring-boot3-starter" />
+
+### Spring Boot4 (3.5.13以降)
+
+<LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-spring-boot4-starter" />
 
 ### Spring
 
@@ -37,21 +41,21 @@ import LastedDependency from '@/components/LastedDependency.astro';
 
 :::caution[注意事項]
 
-`MyBatis-Plus` を導入した後は、`MyBatis`、`mybatis-spring-boot-starter`、`MyBatis-Spring`を併せて導入しないでください。バージョンの違いによって不具合が発生する可能性があります。
+`MyBatis-Plus` を導入した後は、バージョンの差異による問題を避けるため、`MyBatis` および `mybatis-spring-boot-starter`、`MyBatis-Spring` を再度導入しないでください。
 
-バージョン**3.5.4**より、`mybatis-plus-boot-starter` または `mybatis-plus-spring-boot3-starter` を使用していない場合、プロジェクトの状況に応じて、手動で `mybatis-spring` を導入してください。
+**3.5.4**以降、`mybatis-plus-boot-starter`、`mybatis-plus-spring-boot3-starter`、または`mybatis-plus-spring-boot4-starter`を使用していない場合は、プロジェクトの状況に応じて`mybatis-spring`を導入してください。
 
 :::
 
-## Snapshot
+## スナップショット版
 
-SNAPSHOT バージョンをご利用の際は、リポジトリの追加が必要です。また、バージョン番号は SNAPSHOT バージョンを指定してください。 [最新の SNAPSHOT バージョンはこちらをご確認ください](https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/com/baomidou/mybatis-plus/)。
+スナップショット SNAPSHOT バージョンを使用するにはリポジトリの追加が必要です。また、バージョン番号はスナップショットバージョンとなります [最新のスナップショットバージョン番号を確認する](https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/com/baomidou/mybatis-plus/)。
 
 :::caution[注意事項]
 
-3.5.11-SNAPSHOTS より、セントラルスナップショットリポジトリのアドレスは https://central.sonatype.com/repository/maven-snapshots/ に変更されました。バージョンの有効期限は90日間です。
+3.5.11-SNAPSHOTS以降、中央スナップショットリポジトリのURLは https://central.sonatype.com/repository/maven-snapshots/ に変更されました。バージョンの有効期間は90日間です。
 
-旧バージョンを使用する際のアドレスはこちらです: https://oss.sonatype.org/content/repositories/snapshots/
+旧バージョンを使用する場合は、以下に変更してください: https://oss.sonatype.org/content/repositories/snapshots/
 
 :::
 
@@ -64,7 +68,7 @@ Maven：
 </repository>
 ```
 
-プロキシリポジトリ経由でスナップショットがダウンロードできない場合は、mirrorOf に `  !snapshots` を追加してください。
+プロキシリポジトリを使用してスナップショットをダウンロードできない場合は、mirrorOf に `  !snapshots` を追加してください。
 
 ```xml
 <mirror>
@@ -83,14 +87,14 @@ repositories {
 }
 ```
 
-## Maven bom
+## Maven BOM
 
->  `maven bom` を使用して依存関係を管理し、バージョン番号の競合を減らします。`jsqlparser 5.0+` バージョンは `jdk8` をサポートしなくなったので、この問題に対応するために `jsqlparser` の依存関係を疎結合化しています。
->  正しい導入方法は、`mybatis-plus-bom` モジュールを導入し、`..starter` および `..jsqlparser..` 依存関係を導入することです。
+>  `maven bom` を使用して依存関係を管理し、バージョン番号の競合を減らします。`jsqlparser 5.0+` バージョンは `jdk8` をサポートしなくなったため、この問題に対処するために `jsqlparser` 依存関係を分離しました。
+>  正しい使用方法は、`mybatis-plus-bom` モジュールを導入し、その後 `..starter` と `..jsqlparser..` の依存関係を導入することです。
 >
->  mybatis-plus-jsqlparser:  この依存関係は、JSQLParser の最新バージョンに対応して随時更新されます。
+>  mybatis-plus-jsqlparser:  この依存関係は jsqlparser の最新バージョンサポートに合わせて更新されます。
 >
->  mybatis-plus-jsqlparser-xx: 特定バージョンの JSQLParser に対応したものです。つまり、より新しいバージョンとは互換性がありません。
+>  mybatis-plus-jsqlparser-xx: 特定の jsqlparser バージョンに対応するもので、互換性のない更新が行われるバージョンです。
 
 - Maven
 
@@ -100,32 +104,32 @@ repositories {
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-bom</artifactId>
-            <version>3.5.9+ 版本</version>
+            <version>3.5.9+ バージョン</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
     </dependencies>
 </dependencyManagement>
 
-<!-- spring boot3 オプションモジュール導入 -->
+<!-- Spring Boot3 オプションモジュールを導入 -->
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
 </dependency>
 
-<!-- jdk 11+ オプションモジュール導入 -->
+<!-- JDK 11+ オプションモジュールを導入 -->
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus-jsqlparser</artifactId>
 </dependency>
 
-<!-- spring boot2 オプションモジュール導入 -->
+<!-- Spring Boot2 オプションモジュールを導入 -->
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus-boot-starter</artifactId>
 </dependency>
 
-<!-- jdk 8+ オプションモジュール導入 -->
+<!-- JDK 8+ オプションモジュールを導入 -->
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus-jsqlparser-4.9</artifactId>
@@ -136,22 +140,22 @@ repositories {
 - Gradle
 
 ```groovy
-// 依存性管理
+// 依存関係管理
 dependencyManagement {
     imports {
-        mavenBom "com.baomidou:mybatis-plus-bom:3.5.9+ 版本"
+        mavenBom "com.baomidou:mybatis-plus-bom:3.5.9+ バージョン"
     }
 }
 
-// spring boot3 オプションモジュール導入
+// Spring Boot3 オプションモジュールを導入
 implementation("com.baomidou:mybatis-plus-spring-boot3-starter")
 
-// jdk 11+ オプションモジュール導入
+// JDK 11+ オプションモジュールを導入
 implementation("com.baomidou:mybatis-plus-jsqlparser")
 
-// spring boot2 オプションモジュール導入
+// Spring Boot2 オプションモジュールを導入
 implementation("com.baomidou:mybatis-plus-boot-starter")
 
-// jdk 8+ オプションモジュール導入
+// JDK 8+ オプションモジュールを導入
 implementation("com.baomidou:mybatis-plus-jsqlparser-4.9")
 ```

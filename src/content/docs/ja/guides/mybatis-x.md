@@ -4,92 +4,92 @@ sidebar:
   order: 20
 ---
 
-MybatisX は、IntelliJ IDEA 専用に設計された高速開発プラグインで、MyBatis と MyBatis-Plus フレームワークの開発効率を向上させることを目的としています。
+MybatisX は、IntelliJ IDEA 専用に設計された高速開発プラグインであり、MyBatis および MyBatis-Plus フレームワークの開発効率を向上させることを目的としています。
 
 ### インストールガイド
 
-1. IntelliJ IDEA を開きます。
-2. `File -> Settings -> Plugins -> Browse Repositories` に移動します。
+1. IntelliJ IDEA を起動します。
+2. `ファイル -> 設定 -> プラグイン -> リポジトリを参照` に移動します。
 3. 検索ボックスに `mybatisx` と入力します。
 4. MybatisX プラグインを見つけてインストールをクリックします。
 
-:::note[開発者をサポート]
+:::note[開発者へのサポート]
 
-MybatisXプラグインが役立ったと感じた場合は、プラグインページで[星5評価](https://plugins.jetbrains.com/plugin/10119-mybatisx)をしていただき、開発者の継続的な改善をサポートしてください。
+MybatisX プラグインが役立った場合は、プラグインページで[5つ星の評価](https://plugins.jetbrains.com/plugin/10119-mybatisx)をいただき、開発者の継続的な改善をサポートしてください。
 
-また、MyBatisX プラグインへのコミットも歓迎します。ソースコードはこちら：[MybatisX ソースコード](https://gitee.com/baomidou/MybatisX)
+MyBatisX プラグインへの貢献も大歓迎です。ソースコードはこちら：[MybatisX ソースコード](https://gitee.com/baomidou/MybatisX)
 
 :::
 
-## 主要機能
+## 主な機能
 
-### XML マッピングジャンプ
+### XML マッピングへのジャンプ
 
-MybatisX は、XML マッピングファイルと Java インターフェース間の便利なジャンプ機能を提供しているので、開発者は両者の間を素早く切り替えることができるようになり、開発効率が向上します。
+MybatisX は、XML マッピングファイルと Java インターフェース間の便利なジャンプ機能を提供し、開発者が両者を素早く切り替えて開発効率を向上させることを可能にします。
 
-![XML ジャンプ例](/images/content/mybatisx-jump.gif)
+![XML ジャンプの例](/images/content/mybatisx-jump.gif)
 
 ### コード生成
 
-MybatisX を使用すると、データベーステーブル構造に基づいて、対応する Java エンティティクラス、Mapper インターフェース、XML マッピングファイルを簡単に生成できます。
+MybatisX を使用すると、データベースのテーブル構造に基づいて、対応する Java エンティティクラス、Mapper インターフェース、および XML マッピングファイルを簡単に生成できます。
 
-![コード生成例](/images/content/mybatisx-generate.gif)
+![コード生成の例](/images/content/mybatisx-generate.gif)
 
 ### テンプレートのリセット
 
-MybatisXでは、コード生成テンプレートをリセットして、デフォルト設定に戻すか、カスタムテンプレート内容に設定することができます。
+MybatisX では、コード生成テンプレートをリセットして、デフォルト設定に戻したり、カスタムテンプレート内容に設定したりすることができます。
 
-![テンプレートリセット例](/images/content/mybatisx-reset-template.gif)
+![テンプレートリセットの例](/images/content/mybatisx-reset-template.gif)
 
 ### JPA スタイルのヒント
 
-MybatisX は、JPA スタイルのコードヒントをサポートしています。新規作成、クエリ、更新、削除操作の自動コード生成を含みます。
+MybatisX は JPA スタイルのコードヒントをサポートしており、追加、検索、変更、削除操作の自動コード生成を含みます。
 
-- 新規作成操作の生成
-  ![新規作成例](/images/content/mybatisx-tip-insert.gif)
-- クエリ操作の生成
-  ![クエリ例](/images/content/mybatisx-tip-select.gif)
-- 更新操作の生成
-  ![更新例](/images/content/mybatisx-tip-update.gif)
+- 追加操作の生成
+  ![追加生成の例](/images/content/mybatisx-tip-insert.gif)
+- 検索操作の生成
+  ![検索生成の例](/images/content/mybatisx-tip-select.gif)
+- 変更操作の生成
+  ![変更生成の例](/images/content/mybatisx-tip-update.gif)
 - 削除操作の生成
-  ![削除例](/images/content/mybatisx-tip-delete.gif)
+  ![削除生成の例](/images/content/mybatisx-tip-delete.gif)
 
-## よくある質問と回答
+## よくある質問
 
-### JPA ヒント機能が使用できません
+### JPA ヒント機能が使えない？
 
-JPAヒント機能は、Mapper インターフェースとエンティティクラス間の関連付けに依存しています。Mapper が以下のいずれかの条件を満たしていることを確認してください：
+JPA ヒント機能は、Mapper インターフェースとエンティティクラス間の関連付けに依存しています。お使いの Mapper が以下のいずれかの条件を満たしていることを確認してください：
 
 1. mybatis-plus の BaseMapper を継承している。
 2. Mapper.xml ファイルに resultMap タグが含まれている。
-3. Mapper クラスでコメントを通じてエンティティクラスが指定されている。例：`@Entity com.xx.xx.UserModel`。
+3. Mapper クラスにコメントでエンティティクラスが指定されている（例：`@Entity com.xx.xx.UserModel`）。
 
-### 生成されたテーブル名が想定していたものと異なります
+### 生成されるテーブル名が期待通りではない？
 
-MybatisX は以下のルールでテーブル名を決定します：
+MybatisX は以下のルールに従ってテーブル名を決定します：
 
-1. エンティティクラス上の JPA アノテーション。例：`@Table(name="t_user")`。
-2. エンティティクラス上の mybatis-plus アノテーション。例：`@TableName("t_user")`。
-3. エンティティクラス上のコメント。例：`@TableName com.xx.xx.UserModel`。
-4. 上記のルールに該当しない場合、キャメルケースのクラス名をスネークケースに変換。例：`UserModel` は `user_model` に対応。
+1. エンティティクラス上の JPA アノテーション（例：`@Table(name="t_user")`）。
+2. エンティティクラス上の mybatis-plus アノテーション（例：`@TableName("t_user")`）。
+3. エンティティクラス上のコメント（例：`@TableName com.xx.xx.UserModel`）。
+4. 上記のルールのいずれも満たさない場合、キャメルケースのクラス名をスネークケースに変換します（例：`UserModel` はテーブル名 `user_model` に対応）。
 
 ## コード生成テンプレート設定
 
-MybatisX は柔軟なテンプレート設定オプションを提供し、開発者が必要に応じてコード生成テンプレートをカスタマイズできます。
+MybatisX は柔軟なテンプレート設定オプションを提供しており、開発者は必要に応じてコード生成テンプレートをカスタマイズできます。
 
 ### デフォルトテンプレート
 
-`Scratches and Consoles -> Extensions -> MybatisX` ディレクトリで、`default-all`、`default`、`mybatis-plus2`、`mybatis-plus3` などのデフォルト提供テンプレートを見つけることができます。
+`スクラッチとコンソール -> 拡張機能 -> MybatisX` ディレクトリで、`default-all`、`default`、`mybatis-plus2`、`mybatis-plus3` など、デフォルトで提供されているテンプレートを見つけることができます。
 
 ### デフォルトテンプレートのリセット
 
-テンプレートをデフォルト設定にリセットするには、MybatisX ディレクトリを右クリックし、`Restore Default Extensions` を選択します。
+テンプレートをデフォルト設定にリセットする必要がある場合は、MybatisX ディレクトリを右クリックし、`デフォルトの拡張機能を復元` を選択します。
 
-![コード生成テンプレート設定例](/images/content/mybatisx-template-setting.jpg)
+![コード生成テンプレート設定の例](/images/content/mybatisx-template-setting.jpg)
 
 ### カスタムテンプレート内容
 
-MybatisX では、プロジェクトの要件に応じてテンプレート内容をカスタマイズできます。エンティティクラス、テーブル名、フィールド情報などが含まれています。
+MybatisX では、プロジェクトの要件に応じて、エンティティクラス、テーブル名、フィールド情報など、テンプレート内容をカスタマイズすることができます。
 
 #### エンティティクラス情報
 
@@ -97,22 +97,22 @@ MybatisX では、プロジェクトの要件に応じてテンプレート内�
 - `tableClass.shortClassName`: クラスの短縮名。
 - `tableClass.tableName`: テーブル名。
 - `tableClass.pkFields`: テーブルの主キーフィールド。
-- `tableClass.allFields`: テーブルの全フィールド。
-- `tableClass.baseFields`: 主キーとblobを除く全フィールド。
-- `tableClass.baseBlobFields`: 主キーを除く全フィールド。
-- `tableClass.remark`: テーブルコメント。
+- `tableClass.allFields`: テーブルのすべてのフィールド。
+- `tableClass.baseFields`: 主キーと blob を除くすべてのフィールド。
+- `tableClass.baseBlobFields`: 主キーを除くすべてのフィールド。
+- `tableClass.remark`: テーブルのコメント。
 
 #### フィールド情報
 
 - `field.fieldName`: フィールド名。
 - `field.columnName`: カラム名。
-- `field.jdbcType`: JDBC 型。
+- `field.jdbcType`: JDBC タイプ。
 - `field.columnLength`: カラム長。
-- `field.columnScale`: カラム精度。
-- `field.columnIsArray`: フィールド型が配列かどうか。
-- `field.shortTypeName`: Java 型の短縮名。
-- `field.fullTypeName`: Java 型の完全修飾名。
-- `field.remark`: フィールドコメント。
+- `field.columnScale`: カラムの精度。
+- `field.columnIsArray`: フィールドタイプが配列かどうか。
+- `field.shortTypeName`: Java タイプの短縮名。
+- `field.fullTypeName`: Java タイプの完全修飾名。
+- `field.remark`: フィールドのコメント。
 - `field.autoIncrement`: 自動インクリメントかどうか。
 - `field.nullable`: NULL を許可するかどうか。
 
@@ -124,6 +124,6 @@ MybatisX では、プロジェクトの要件に応じてテンプレート内�
 - `baseInfo.allFields`: サフィックス。
 - `baseInfo.baseFields`: パッケージ名。
 - `baseInfo.baseBlobFields`: テンプレート内容。
-- `baseInfo.remark`: 相対モジュールのリソースファイルパス。
+- `baseInfo.remark`: モジュールに対するリソースファイルの相対パス。
 
-MybatisX プラグインを使用することで、MyBatis と MyBatis-Plus フレームワークの開発効率を大幅に向上させ、便利なコード生成とテンプレートカスタマイズ機能を活用できます。
+MybatisX プラグインを使用することで、MyBatis および MyBatis-Plus フレームワークの開発効率を大幅に向上させるとともに、便利なコード生成とテンプレートカスタマイズ機能を享受できます。

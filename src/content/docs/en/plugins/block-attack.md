@@ -1,15 +1,15 @@
 ---
-title: Block Full Table Update and Delete Plugin
+title: Block Attack Interceptor
 sidebar:
   order: 8
 ---
 
-`BlockAttackInnerInterceptor` is a security plugin provided by the MyBatis-Plus framework, specifically designed to prevent malicious full-table update and delete operations. By intercepting `update` and `delete` statements, this plugin ensures these operations do not inadvertently affect entire database tables, thereby safeguarding data integrity and security.
+`BlockAttackInnerInterceptor` is a security plugin provided by the MyBatis-Plus framework, specifically designed to prevent malicious full-table update and delete operations. This plugin intercepts `update` and `delete` statements to ensure these operations don't inadvertently affect entire database tables, thereby protecting data integrity and security.
 
 ## Features
 
-- **Prevents Full-Table Updates and Deletes**: The plugin identifies and blocks `update` and `delete` statements that lack specified conditions, which could otherwise modify or delete all data in a table.
-- **Enhances Data Security**: By restricting full-table operations, it reduces the risk of data loss due to accidental or malicious actions.
+- **Prevents Full-Table Updates and Deletes**: The plugin can identify and block `update` and `delete` statements that lack specified conditions, which could otherwise modify or delete all data in a table.
+- **Protects Data Security**: By restricting full-table operations, it reduces the risk of data loss due to accidental mistakes or malicious attacks.
 
 ## Usage
 
@@ -28,13 +28,13 @@ public class MybatisPlusConfig {
 }
 ```
 
-2. **Configure Interception Rules**: By default, the plugin intercepts `update` and `delete` statements without specified conditions. For custom interception rules, refer to the MyBatis-Plus documentation.
+2. **Configure Interception Rules**: The plugin by default intercepts `update` and `delete` statements without specified conditions. If you need to customize interception rules, refer to the MyBatis-Plus documentation for configuration details.
 
 ## Test Examples
 
 ### Full-Table Update Test
 
-The following test demonstrates how `BlockAttackInnerInterceptor` prevents full-table update operations.
+The following test example demonstrates how `BlockAttackInnerInterceptor` prevents full-table update operations.
 
 ```java
 @SpringBootTest
@@ -52,7 +52,7 @@ public class QueryWrapperTest {
         user.setId(999L);
         user.setName("custom_name");
         user.setEmail("xxx@mail.com");
-        // Since no update condition is specified, the plugin throws an exception
+        // Since no update condition is specified, the plugin will throw an exception
         // com.baomidou.mybatisplus.core.exceptions.MybatisPlusException: Prohibition of table update operation
         Assertions.assertThrows(MybatisPlusException.class, () -> {
             userService.saveOrUpdate(user, null);
@@ -63,7 +63,7 @@ public class QueryWrapperTest {
 
 ### Partial Update Test
 
-The following test demonstrates how to correctly perform partial updates, which the plugin will not intercept.
+The following test example demonstrates how to correctly perform partial update operations, which the plugin will not intercept.
 
 ```java
 @SpringBootTest
@@ -83,7 +83,7 @@ public class QueryWrapperTest {
         user.setId(10L);
         user.setName("custom_name");
         user.setEmail("xxx@mail.com");
-        // Since an update condition is specified, the plugin will not intercept this operation
+        // Since an update condition is specified, the plugin won't intercept this operation
         userService.saveOrUpdate(user, wrapper);
     }
 }
@@ -91,9 +91,9 @@ public class QueryWrapperTest {
 
 :::note
 
-- **Proper Configuration**: Ensure the plugin is configured according to the project's actual requirements to avoid overly restrictive settings that might hinder normal operations.
-- **Testing and Validation**: Thoroughly test the plugin's functionality before deploying to production to ensure it works as expected.
+- **Proper Configuration**: Ensure that when configuring the plugin, you consider your project's actual requirements to avoid overly restrictive settings that might block legitimate operations.
+- **Test Verification**: Thoroughly test the plugin's functionality before deploying to production to ensure it works as expected.
 
 :::
 
-The `BlockAttackInnerInterceptor` plugin is a critical security tool provided by MyBatis-Plus, effectively preventing full-table update and delete operations and protecting databases from accidental or malicious data corruption. Proper configuration and use of this plugin can significantly enhance an application's data security.
+The `BlockAttackInnerInterceptor` plugin is an important security tool provided by MyBatis-Plus. It effectively prevents full-table update and delete operations, protecting your database from accidental or malicious data destruction. By properly configuring and using this plugin, you can significantly enhance your application's data security.

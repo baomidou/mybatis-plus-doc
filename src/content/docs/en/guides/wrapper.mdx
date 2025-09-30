@@ -5,81 +5,81 @@ sidebar:
 ---
 import Badge from "@/components/Badge.astro";
 
-MyBatis-Plus provides a powerful set of conditional constructors (Wrapper) for building complex database query conditions. The Wrapper class allows developers to construct query conditions in a chained manner without writing cumbersome SQL statements, thereby improving development efficiency and reducing the risk of SQL injection.
+MyBatis-Plus provides a powerful set of conditional constructors (Wrapper) for building complex database query conditions. The Wrapper classes allow developers to construct query conditions using a chainable method call approach, eliminating the need to write verbose SQL statements. This improves development efficiency and reduces the risk of SQL injection.
 
-In MyBatis-Plus, the Wrapper class is the core tool for building query and update conditions. The following are the main Wrapper classes and their functions:
+In MyBatis-Plus, the Wrapper class is the core tool for building query and update conditions. Here are the main Wrapper classes and their functions:
 
-- **AbstractWrapper**: This is an abstract base class that provides methods and properties common to all Wrapper classes. It defines the basic logic for condition construction, including fields (column), values (value), operators (condition), etc. All QueryWrapper, UpdateWrapper, LambdaQueryWrapper, and LambdaUpdateWrapper inherit from AbstractWrapper.
+- **AbstractWrapper**: This is an abstract base class that provides methods and properties common to all Wrapper classes. It defines the basic logic for condition construction, including fields (column), values (value), operators (condition), and more. All QueryWrapper, UpdateWrapper, LambdaQueryWrapper, and LambdaUpdateWrapper classes inherit from AbstractWrapper.
 
-- **QueryWrapper**: Specifically designed for constructing query conditions, it supports basic operations such as equals, not equals, greater than, less than, and more. It allows you to add multiple query conditions in a chained manner and supports combining `and` and `or` logic.
+- **QueryWrapper**: Specifically designed for constructing query conditions, it supports basic operations like equals, not equals, greater than, less than, and various other common operations. It allows you to add multiple query conditions using a chainable approach and supports combining `and` and `or` logic.
 
-- **UpdateWrapper**: Used for constructing update conditions, it allows specifying conditions when updating data. Similar to QueryWrapper, it also supports chained calls and logical combinations. Using UpdateWrapper, you can directly set update fields and conditions without creating entity objects.
+- **UpdateWrapper**: Used for constructing update conditions, allowing you to specify criteria when updating data. Similar to QueryWrapper, it also supports chainable calls and logical combinations. Using UpdateWrapper enables you to directly set update fields and conditions without creating an entity object.
 
-- **LambdaQueryWrapper**: This is a Lambda expression-based query condition constructor. It references entity class properties through Lambda expressions, avoiding hardcoding field names. This approach improves code readability and maintainability, especially when field names may change.
+- **LambdaQueryWrapper**: This is a Lambda expression-based query condition constructor. It references entity class properties through Lambda expressions, thereby avoiding hard-coded field names. This approach improves code readability and maintainability, especially when field names might change.
 
-- **LambdaUpdateWrapper**: Similar to LambdaQueryWrapper, LambdaUpdateWrapper is a Lambda expression-based update condition constructor. It allows you to use Lambda expressions to specify update fields and conditions, also avoiding the issue of hardcoding field names.
+- **LambdaUpdateWrapper**: Similar to LambdaQueryWrapper, LambdaUpdateWrapper is a Lambda expression-based update condition constructor. It allows you to use Lambda expressions to specify update fields and conditions, similarly avoiding the issue of hard-coded field names.
 
 ## Feature Details
 
-MyBatis-Plus's Wrapper class is a key tool for constructing complex query and update conditions. It allows developers to build SQL WHERE clauses in a chained invocation manner, offering great flexibility and convenience.
+MyBatis-Plus's Wrapper class is a key tool for building complex query and update conditions. It allows you to construct SQL WHERE clauses using a chainable method call approach, providing great flexibility and convenience.
 
-Below are tips and precautions regarding Wrapper functionality.
+The following are tips and considerations for using Wrapper features.
 
-:::note[Friendly Reminder]
+:::note[Tips]
 
-**Conditional Judgment**: Wrapper methods typically accept a `boolean` parameter to determine whether the condition should be included in the final SQL. For example:
+**Conditional Logic**: Wrapper methods typically accept a `boolean` parameter that determines whether the condition is added to the final SQL. For example:
 
 ```java
 queryWrapper.like(StringUtils.isNotBlank(name), Entity::getName, name)
             .eq(age != null && age >= 0, Entity::getAge, age);
 ```
 
-**Default Behavior**: If a method does not explicitly provide a `boolean` parameter, it defaults to `true`, meaning the condition will always be included in the SQL.
+**Default Behavior**: If you don't explicitly provide a `boolean` parameter to a method, it defaults to `true`, meaning the condition is always added to the SQL.
 
-**Generic Parameters**: The Wrapper class is a generic class, where `Param` usually refers to an instance of a Wrapper subclass, such as QueryWrapper, UpdateWrapper, etc.
+**Generic Parameters**: The Wrapper class is a generic class where `Param` typically refers to a Wrapper subclass instance, such as QueryWrapper, UpdateWrapper, etc.
 
-**Field References**: In LambdaWrapper, `R` represents a function that references an entity class property, such as `Entity::getId`. In regular Wrapper, `R` represents the database column name.
+**Field References**: In LambdaWrapper, `R` represents a function that references an entity class property, such as `Entity::getId`. In regular Wrapper classes, `R` represents the database column name.
 
-**Field Name Notes**: When `R` is of type `String`, it represents the database column name, not the entity class field name. If the column name is a database keyword, it should be wrapped with escape characters.
+**Field Name Considerations**: When the concrete type of `R` is `String`, it represents the database column name, not the entity class field name. If the column name is a database keyword, you need to wrap it with escape characters.
 
-**Collection Parameters**: If a method's parameter is a `Map` or `List`, the corresponding SQL condition will not be included in the final SQL when they are empty.
+**Collection Parameters**: If a method parameter is a `Map` or `List`, and it's empty, the corresponding SQL condition won't be added to the final SQL.
 
-**Learning Resources**: For unfamiliar functional programming concepts, refer to [learning resources](https://www.jianshu.com/p/613a6118e2e0).
+**Learning Resources**: If you're unfamiliar with functional programming concepts, you can refer to [learning resources](https://www.jianshu.com/p/613a6118e2e0) for study.
 
 :::
 
 :::danger[Important Notes]
 
-**Wrapper in RPC Calls**: Wrapper objects are not supported nor recommended for transmission in RPC calls. Wrapper objects often contain extensive information and are unsuitable as transfer objects. The correct approach is to define a DTO (Data Transfer Object) for transmission and then perform corresponding operations on the callee side based on the DTO.
+**Wrapper in RPC Calls**: We do not support or recommend transmitting Wrapper objects in RPC calls. Wrapper objects typically contain substantial information and are not suitable as transport objects. The correct approach is to define a DTO (Data Transfer Object) for transmission, then have the called party perform operations based on the DTO.
 
-**Maintainability**: Avoid using Map to receive values in the Controller layer. While convenient during development, this practice can create maintenance difficulties later.
+**Maintainability**: Avoid using Map to receive values in the Controller layer. While convenient during development, this practice makes subsequent maintenance difficult.
 
-**Issue Reporting**: No issues or PRs related to Wrapper transmission errors in RPC will be accepted.
+**Issue Reporting**: We do not accept any issues or pull requests related to errors when transmitting Wrappers in RPC calls.
 
-**Security**: For `QueryWrapper` and `UpdateWrapper` field sections, if `frontend SQL fragments are allowed`, this may lead to `SQL injection risks`. Validation is required. For more details, see [Preventing Security Vulnerabilities](https://baomidou.com/reference/about-cve/).
+**Security**: For the field section in `QueryWrapper` and `UpdateWrapper`, if you allow `frontend-passed SQL fragments`, this may lead to `SQL injection risks` that require validation. See more at [Preventing Security Vulnerabilities](https://baomidou.com/reference/about-cve/).
 
 :::
 
-:::caution[Wrapper Class Description]
+:::caution[Wrapper Class Explanation]
 
-Parent class of QueryWrapper (LambdaQueryWrapper) and UpdateWrapper (LambdaUpdateWrapper)  
-Used to generate SQL WHERE conditions; entity properties are also used to generate SQL WHERE conditions  
-Note: The WHERE conditions generated by the entity and those generated by various APIs **have no associative behavior**.
+QueryWrapper (LambdaQueryWrapper) and UpdateWrapper (LambdaUpdateWrapper) parent class  
+Used to generate SQL WHERE conditions, the entity property is also used to generate SQL WHERE conditions  
+Note: The WHERE conditions generated by the entity and those generated using various APIs have **no correlation behavior**
 
 :::
 
 ### allEq
 
-The `allEq` method is one of the query condition construction methods in MyBatis-Plus, allowing us to set multiple field equality conditions using a `Map`.
+The `allEq` method is one of the methods in MyBatis-Plus used to build query conditions. It allows you to set equality conditions for multiple fields using a `Map`.
 
-#### Scope of Use
+#### Usage Scope
 
 - `QueryWrapper`
 - `LambdaQueryWrapper`
 - `UpdateWrapper`
 - `LambdaUpdateWrapper`
 
-#### Method Signatures
+#### Method Signature
 
 ```java
 // Sets equality conditions for all fields. If a field value is null, the null2IsNull parameter determines whether to set it as IS NULL.
@@ -87,7 +87,7 @@ allEq(Map<String, Object> params)
 allEq(Map<String, Object> params, boolean null2IsNull)
 allEq(boolean condition, Map<String, Object> params, boolean null2IsNull)
 
-// Sets equality conditions for all fields, using a filter to decide which fields should be included. If a field value is null, the null2IsNull parameter determines whether to set it as IS NULL.
+// Sets equality conditions for all fields. The filter predicate determines which fields should be included. If a field value is null, the null2IsNull parameter determines whether to set it as IS NULL.
 allEq(BiPredicate<String, Object> filter, Map<String, Object> params)
 allEq(BiPredicate<String, Object> filter, Map<String, Object> params, boolean null2IsNull)
 allEq(boolean condition, BiPredicate<String, Object> filter, Map<String, Object> params, boolean null2IsNull)
@@ -95,10 +95,10 @@ allEq(boolean condition, BiPredicate<String, Object> filter, Map<String, Object>
 
 #### Parameter Description
 
-- `params`: A `Map` where the `key` is the database field name and the `value` is the corresponding field value.
-- `null2IsNull`: If set to `true`, when a `value` in the `Map` is `null`, the `isNull` method will be called; if set to `false`, key-value pairs with `null` values will be ignored.
-- `filter`: A `BiPredicate` used to filter which fields should be included in the query conditions.
-- `condition`: A boolean value controlling whether to apply these conditions.
+- `params`: A `Map` where the `key` is the database column name and the `value` is the corresponding field value.
+- `null2IsNull`: If set to `true`, when a `value` in the `Map` is `null`, the `isNull` method is called; if set to `false`, key-value pairs where the value is `null` are ignored.
+- `filter`: A `BiPredicate` used to filter which fields should be included in the query condition.
+- `condition`: A boolean value that controls whether to apply these conditions.
 
 #### Examples
 
@@ -140,59 +140,59 @@ SELECT * FROM user WHERE id = 1 AND name = '老王' AND age IS NULL
 SELECT * FROM user WHERE name = '老王' AND age IS NULL
 ```
 
-### eq  
+### eq
 
-The `eq` method is one of the fundamental methods in MyBatis-Plus for constructing query conditions, used to set an equality condition for a single field.  
+The `eq` method is one of the fundamental methods in MyBatis-Plus for building query conditions. You use it to set an equality condition for a single field.
 
-#### Scope of Use  
+#### Usage Scope
 
-- `QueryWrapper`  
-- `LambdaQueryWrapper`  
-- `UpdateWrapper`  
-- `LambdaUpdateWrapper`  
+- `QueryWrapper`
+- `LambdaQueryWrapper`
+- `UpdateWrapper`
+- `LambdaUpdateWrapper`
 
-#### Method Signature  
+#### Method Signature
 
-```java  
-// Sets an equality condition for the specified field  
-eq(R column, Object val)  
+```java
+// Sets an equality condition for the specified field
+eq(R column, Object val)
 
-// Sets an equality condition for the specified field based on a condition  
-eq(boolean condition, R column, Object val)  
-```  
+// Sets an equality condition for the specified field based on a condition
+eq(boolean condition, R column, Object val)
+```
 
-#### Parameter Description  
+#### Parameter Description
 
-- `column`: The database field name or the field name using a `Lambda` expression.  
-- `val`: The value corresponding to the field name.  
-- `condition`: A boolean value that controls whether to apply this equality condition.  
+- `column`: The database column name or the field name using a `Lambda` expression.
+- `val`: The value corresponding to the field name.
+- `condition`: A boolean value that controls whether to apply this equality condition.
 
-#### Examples  
+#### Examples
 
-**Regular Wrapper (`QueryWrapper`)**:  
+**Regular Wrapper (`QueryWrapper`)**:
 
-```java  
-QueryWrapper<User> queryWrapper = new QueryWrapper<>();  
-queryWrapper.eq("name", "老王");  
-```  
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.eq("name", "老王");
+```
 
-**Lambda Wrapper (`LambdaQueryWrapper`)**:  
+**Lambda Wrapper (`LambdaQueryWrapper`)**:
 
-```java  
-LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();  
-lambdaQueryWrapper.eq(User::getName, "老王");  
-```  
+```java
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+lambdaQueryWrapper.eq(User::getName, "老王");
+```
 
-**Generated SQL**  
+**Generated SQL**
 
-```sql  
--- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same  
-SELECT * FROM user WHERE name = '老王'  
+```sql
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is identical
+SELECT * FROM user WHERE name = '老王'
 ```
 
 ### ne
 
-The `ne` method is one of the fundamental methods in MyBatis-Plus for constructing query conditions, used to set a not-equal condition for a single field.
+The `ne` method is one of the fundamental methods in MyBatis-Plus for building query conditions. It is used to set a not-equal condition for a single field.
 
 #### Scope of Use
 
@@ -204,18 +204,18 @@ The `ne` method is one of the fundamental methods in MyBatis-Plus for constructi
 #### Method Signature
 
 ```java
-// Sets a not-equal condition for the specified field
+// Sets a not-equal condition for the specified column
 ne(R column, Object val)
 
-// Sets a not-equal condition for the specified field based on a condition
+// Sets a not-equal condition for the specified column based on a condition
 ne(boolean condition, R column, Object val)
 ```
 
 #### Parameter Description
 
-- `column`: The database field name or the field name using a `Lambda` expression.
-- `val`: The value corresponding to the field name.
-- `condition`: A boolean value controlling whether to apply this not-equal condition.
+- `column`: The database column name or the field name using a Lambda expression.
+- `val`: The value to compare against the column.
+- `condition`: A boolean value that controls whether to apply this not-equal condition.
 
 #### Examples
 
@@ -236,71 +236,13 @@ lambdaQueryWrapper.ne(User::getName, "老王");
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is identical
 SELECT * FROM user WHERE name <> '老王'
 ```
 
-### gt  
+### gt
 
-The `gt` method is one of the fundamental methods in MyBatis-Plus for constructing query conditions. It is used to set a "greater than" condition for a single field.  
-
-#### Scope of Use  
-
-- `QueryWrapper`  
-- `LambdaQueryWrapper`  
-- `UpdateWrapper`  
-- `LambdaUpdateWrapper`  
-
-#### Method Signature  
-
-```java  
-// Sets a "greater than" condition for the specified field  
-gt(R column, Object val)  
-
-// Sets a "greater than" condition for the specified field based on a condition  
-gt(boolean condition, R column, Object val)  
-```  
-
-#### Parameter Description  
-
-- `column`: The database field name or the field name using a `Lambda` expression.  
-- `val`: The value corresponding to the field name.  
-- `condition`: A boolean value that controls whether to apply this "greater than" condition.  
-
-#### Examples  
-
-**Regular Wrapper (`QueryWrapper`)**:  
-
-```java  
-QueryWrapper<User> queryWrapper = new QueryWrapper<>();  
-queryWrapper.gt("age", 18);  
-```  
-
-**Lambda Wrapper (`LambdaQueryWrapper`)**:  
-
-```java  
-LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();  
-lambdaQueryWrapper.gt(User::getAge, 18);  
-```  
-
-**Generated SQL**  
-
-```sql  
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same  
-SELECT * FROM user WHERE age > 18  
-```  
-
-:::note[Notes]  
-
-- The `gt` method is suitable for numeric fields. Using `gt` for non-numeric fields (e.g., strings) may lead to unexpected results or errors.  
-- When using the `gt` method, ensure the type of the `val` parameter matches the field type to avoid type conversion errors.  
-- If you need to dynamically add a "greater than" condition based on certain criteria, use the overloaded method with the `condition` parameter.  
-
-:::
-
-### ge
-
-The `ge` method is one of the fundamental methods in MyBatis-Plus for constructing query conditions, used to set a greater-than-or-equal-to condition for a single field.
+The `gt` method is one of the fundamental methods in MyBatis-Plus for building query conditions. It is used to set a "greater than" condition for a single field.
 
 #### Scope of Use
 
@@ -312,18 +254,76 @@ The `ge` method is one of the fundamental methods in MyBatis-Plus for constructi
 #### Method Signature
 
 ```java
-// Sets a greater-than-or-equal-to condition for the specified field
-ge(R column, Object val)
+// Sets the greater than condition for the specified field
+gt(R column, Object val)
 
-// Sets a greater-than-or-equal-to condition for the specified field based on a condition
-ge(boolean condition, R column, Object val)
+// Sets the greater than condition for the specified field based on a condition
+gt(boolean condition, R column, Object val)
 ```
 
 #### Parameter Description
 
-- `column`: The database field name or the field name using a `Lambda` expression.
+- `column`: The database column name or the field name using a Lambda expression.
 - `val`: The value corresponding to the field name.
-- `condition`: A boolean value controlling whether to apply this greater-than-or-equal-to condition.
+- `condition`: A boolean value that controls whether to apply this greater than condition.
+
+#### Examples
+
+**Regular Wrapper (`QueryWrapper`)**:
+
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.gt("age", 18);
+```
+
+**Lambda Wrapper (`LambdaQueryWrapper`)**:
+
+```java
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+lambdaQueryWrapper.gt(User::getAge, 18);
+```
+
+**Generated SQL**
+
+```sql
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is identical
+SELECT * FROM user WHERE age > 18
+```
+
+:::note[Notes]
+
+- The `gt` method is suitable for numeric fields. Using `gt` with non-numeric fields like strings may lead to unexpected results or errors.
+- When using the `gt` method, ensure the type of the `val` parameter matches the field type to avoid type conversion errors.
+- If you need to dynamically add a greater than condition based on certain criteria, use the overloaded method with the `condition` parameter.
+
+:::
+
+### ge
+
+The `ge` method is one of the fundamental methods in MyBatis-Plus for building query conditions. It is used to set a greater-than-or-equal-to condition for a single field.
+
+#### Usage Scope
+
+- `QueryWrapper`
+- `LambdaQueryWrapper`
+- `UpdateWrapper`
+- `LambdaUpdateWrapper`
+
+#### Method Signature
+
+```java
+// Sets the greater-than-or-equal-to condition for the specified column
+ge(R column, Object val)
+
+// Sets the greater-than-or-equal-to condition for the specified column based on a condition
+ge(boolean condition, R column, Object val)
+```
+
+#### Parameters
+
+- `column`: The database column name or the field name using a Lambda expression.
+- `val`: The value corresponding to the column.
+- `condition`: A boolean value that controls whether to apply this greater-than-or-equal-to condition.
 
 #### Examples
 
@@ -344,21 +344,21 @@ lambdaQueryWrapper.ge(User::getAge, 18);
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is identical
 SELECT * FROM user WHERE age >= 18
 ```
 
 :::note[Notes]
 
-- The `ge` method is suitable for numeric fields. For non-numeric fields like strings, using `ge` may lead to unexpected results or errors.
-- When using the `ge` method, ensure the type of the `val` parameter matches the field type to avoid type conversion errors.
-- If you need to dynamically add a greater-than-or-equal-to condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- The `ge` method is suitable for numeric fields. Using `ge` on non-numeric fields like strings may lead to unexpected results or errors.
+- When using the `ge` method, ensure the type of the `val` parameter matches the column type to avoid type conversion errors.
+- Use the overloaded method with the `condition` parameter if you need to dynamically add the greater-than-or-equal-to condition based on certain criteria.
 
 :::
 
 ### lt
 
-The `lt` method is one of the fundamental methods in MyBatis-Plus for constructing query conditions, used to set a "less than" condition for a single field.
+The `lt` method is one of the fundamental methods in MyBatis-Plus for building query conditions. It is used to set a "less than" condition for a single field.
 
 #### Scope of Use
 
@@ -370,18 +370,18 @@ The `lt` method is one of the fundamental methods in MyBatis-Plus for constructi
 #### Method Signature
 
 ```java
-// Sets a "less than" condition for the specified field
+// Sets a "less than" condition for the specified column
 lt(R column, Object val)
 
-// Sets a "less than" condition for the specified field based on a condition
+// Sets a "less than" condition for the specified column based on a condition
 lt(boolean condition, R column, Object val)
 ```
 
 #### Parameter Description
 
-- `column`: The database field name or the field name using a `Lambda` expression.
-- `val`: The value corresponding to the field name.
-- `condition`: A boolean value controlling whether to apply this "less than" condition.
+- `column`: The database column name or the field name using a Lambda expression.
+- `val`: The value to compare against the column.
+- `condition`: A boolean value that controls whether to apply this "less than" condition.
 
 #### Examples
 
@@ -402,21 +402,21 @@ lambdaQueryWrapper.lt(User::getAge, 18);
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is identical
 SELECT * FROM user WHERE age < 18
 ```
 
 :::note[Notes]
 
-- The `lt` method is suitable for numeric fields. For non-numeric fields like strings, using `lt` may lead to unexpected results or errors.
+- The `lt` method is suitable for numeric fields. Using `lt` on non-numeric fields, such as strings, may lead to unexpected results or errors.
 - When using the `lt` method, ensure the type of the `val` parameter matches the field type to avoid type conversion errors.
-- If you need to dynamically add a "less than" condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- Use the overloaded method with the `condition` parameter if you need to dynamically add the "less than" condition based on certain logic.
 
 :::
 
 ### le
 
-The `le` method is one of the fundamental methods in MyBatis-Plus for constructing query conditions. It is used to set a less-than-or-equal-to condition for a single field.
+The `le` method is one of the fundamental methods in MyBatis-Plus for building query conditions. It is used to set a less-than-or-equal-to condition for a single field.
 
 #### Scope of Use
 
@@ -437,7 +437,7 @@ le(boolean condition, R column, Object val)
 
 #### Parameter Description
 
-- `column`: The database field name or the field name using a `Lambda` expression.
+- `column`: The database column name or the field name using a `Lambda` expression.
 - `val`: The value corresponding to the field name.
 - `condition`: A boolean value that controls whether to apply this less-than-or-equal-to condition.
 
@@ -466,17 +466,17 @@ SELECT * FROM user WHERE age <= 18
 
 :::note[Notes]
 
-- The `le` method is suitable for numeric fields. For non-numeric fields like strings, using `le` may lead to unexpected results or errors.
+- The `le` method is suitable for numeric fields. Using `le` on non-numeric fields, such as strings, may lead to unexpected results or errors.
 - When using the `le` method, ensure the type of the `val` parameter matches the field type to avoid type conversion errors.
-- If you need to dynamically add a less-than-or-equal-to condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- If you need to dynamically add a less-than-or-equal-to condition based on certain criteria, use the overloaded method that includes the `condition` parameter.
 
 :::
 
 ### between
 
-The `between` method is one of the fundamental methods in MyBatis-Plus for constructing query conditions. It is used to set a BETWEEN condition for a single field.
+The `between` method is one of the fundamental methods in MyBatis-Plus for building query conditions. It is used to set a BETWEEN condition for a single field.
 
-#### Scope of Use
+#### Usage Scope
 
 - `QueryWrapper`
 - `LambdaQueryWrapper`
@@ -486,16 +486,16 @@ The `between` method is one of the fundamental methods in MyBatis-Plus for const
 #### Method Signature
 
 ```java
-// Sets a BETWEEN condition for the specified field
+// Sets the BETWEEN condition for the specified field
 between(R column, Object val1, Object val2)
 
-// Sets a BETWEEN condition for the specified field based on a condition
+// Sets the BETWEEN condition for the specified field based on a condition
 between(boolean condition, R column, Object val1, Object val2)
 ```
 
 #### Parameter Description
 
-- `column`: The database field name or the field name expressed using a `Lambda` expression.
+- `column`: The database column name or the field name using a Lambda expression.
 - `val1`: The first value corresponding to the field name, representing the start value of the BETWEEN condition.
 - `val2`: The second value corresponding to the field name, representing the end value of the BETWEEN condition.
 - `condition`: A boolean value that controls whether to apply this BETWEEN condition.
@@ -519,21 +519,21 @@ lambdaQueryWrapper.between(User::getAge, 18, 30);
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is identical
 SELECT * FROM user WHERE age BETWEEN 18 AND 30
 ```
 
-:::note[Notes]
+:::note[Important Notes]
 
-- The `between` method is suitable for numeric fields. Using it for non-numeric fields like strings may lead to unexpected results or errors.
-- When using the `between` method, ensure that the types of `val1` and `val2` parameters match the field type to avoid type conversion errors.
-- If you need to dynamically add a BETWEEN condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- The `between` method is suitable for numeric fields. Using `between` with non-numeric fields like strings may lead to unexpected results or errors.
+- When using the `between` method, ensure the `val1` and `val2` parameter types match the field type to avoid type conversion errors.
+- If you need to dynamically add a BETWEEN condition based on certain criteria, use the overloaded method with the `condition` parameter.
 
 :::
 
 ### notBetween
 
-The `notBetween` method is another fundamental method in MyBatis-Plus for constructing query conditions, used to set a NOT BETWEEN condition for a single field.
+The `notBetween` method is another fundamental method in MyBatis-Plus for building query conditions. It sets a NOT BETWEEN condition for a single field.
 
 #### Scope of Use
 
@@ -554,10 +554,10 @@ notBetween(boolean condition, R column, Object val1, Object val2)
 
 #### Parameter Description
 
-- `column`: The database field name or the field name using a `Lambda` expression.
+- `column`: The database column name or field name using a Lambda expression.
 - `val1`: The first value corresponding to the field name, representing the start value of the NOT BETWEEN condition.
 - `val2`: The second value corresponding to the field name, representing the end value of the NOT BETWEEN condition.
-- `condition`: A boolean value to control whether to apply this NOT BETWEEN condition.
+- `condition`: A boolean value that controls whether to apply this NOT BETWEEN condition.
 
 #### Examples
 
@@ -578,21 +578,21 @@ lambdaQueryWrapper.notBetween(User::getAge, 18, 30);
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- Both Regular Wrapper and Lambda Wrapper generate the same SQL
 SELECT * FROM user WHERE age NOT BETWEEN 18 AND 30
 ```
 
-:::note[Notes]
+:::note[Important Notes]
 
-- The `notBetween` method is also applicable to numeric fields. For non-numeric fields like strings, using `notBetween` may lead to unexpected results or errors.
-- When using the `notBetween` method, ensure that the types of `val1` and `val2` parameters match the field type to avoid type conversion errors.
-- If you need to dynamically add a NOT BETWEEN condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- The `notBetween` method is also suitable for numeric fields. For non-numeric fields like strings, using `notBetween` may lead to unexpected results or errors.
+- When using the `notBetween` method, ensure that the `val1` and `val2` parameter types match the field type to avoid type conversion errors.
+- If you need to dynamically add NOT BETWEEN conditions based on certain criteria, use the overloaded method with the `condition` parameter.
 
 :::
 
 ### like
 
-The `like` method is one of the fundamental methods in MyBatis-Plus for constructing fuzzy query conditions, used to set a LIKE condition for a single field.
+The `like` method is one of the fundamental methods in MyBatis-Plus for building fuzzy query conditions. You use it to set a LIKE condition for a single field.
 
 #### Scope of Use
 
@@ -604,18 +604,18 @@ The `like` method is one of the fundamental methods in MyBatis-Plus for construc
 #### Method Signature
 
 ```java
-// Sets the LIKE condition for the specified field
+// Sets the LIKE condition for the specified column
 like(R column, Object val)
 
-// Sets the LIKE condition for the specified field based on a condition
+// Sets the LIKE condition for the specified column based on a condition
 like(boolean condition, R column, Object val)
 ```
 
 #### Parameter Description
 
-- `column`: The database field name or the field name using a `Lambda` expression.
-- `val`: The value corresponding to the field name, representing the search value in the LIKE condition.
-- `condition`: A boolean value to control whether to apply this LIKE condition.
+- `column`: The database column name or the field name using a Lambda expression.
+- `val`: The value corresponding to the column name, representing the search value for the LIKE condition.
+- `condition`: A boolean value that controls whether to apply this LIKE condition.
 
 #### Examples
 
@@ -636,22 +636,22 @@ lambdaQueryWrapper.like(User::getName, "王");
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is identical
 SELECT * FROM user WHERE name LIKE '%王%'
 ```
 
 :::note[Notes]
 
 - The `like` method is suitable for string-type fields and is used for fuzzy matching.
-- By default, the `like` method adds `%` before and after the search value to achieve full fuzzy matching. For left or right fuzzy matching, you can use the `likeRight` or `likeLeft` methods.
-- When using the `like` method, ensure the `val` parameter is of string type to avoid type conversion errors.
-- To dynamically add LIKE conditions based on certain criteria, use the overloaded method with the `condition` parameter.
+- By default, the `like` method adds `%` to both the beginning and end of the search value, achieving a full fuzzy match. If you need a left or right fuzzy match, use the `likeRight` or `likeLeft` method instead.
+- When using the `like` method, ensure the `val` parameter is a string to avoid type conversion errors.
+- Use the overloaded method with the `condition` parameter to dynamically add the LIKE condition based on certain criteria.
 
 :::
 
 ### notLike
 
-The `notLike` method is another fundamental method in MyBatis-Plus for constructing fuzzy query conditions, used to set a NOT LIKE condition for a single field.
+The `notLike` method is another fundamental method in MyBatis-Plus for building fuzzy query conditions. It sets a NOT LIKE condition for a single field.
 
 #### Scope of Use
 
@@ -672,9 +672,9 @@ notLike(boolean condition, R column, Object val)
 
 #### Parameter Description
 
-- `column`: The database field name or the field name using a `Lambda` expression.
+- `column`: The database column name or field name using a Lambda expression.
 - `val`: The value corresponding to the field name, representing the search value in the NOT LIKE condition.
-- `condition`: A boolean value controlling whether to apply this NOT LIKE condition.
+- `condition`: A boolean value that controls whether to apply this NOT LIKE condition.
 
 #### Examples
 
@@ -695,83 +695,22 @@ lambdaQueryWrapper.notLike(User::getName, "王");
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- Both regular Wrapper and Lambda Wrapper generate the same SQL
 SELECT * FROM user WHERE name NOT LIKE '%王%'
 ```
 
-:::note[Notes]
+:::note[Important Notes]
 
-- The `notLike` method is suitable for string-type fields, used to exclude specific fuzzy matches.
-- By default, the `notLike` method adds `%` before and after the search value to achieve full fuzzy exclusion. If you need to exclude left or right fuzzy matches, you can use the `notLikeRight` or `notLikeLeft` methods.
-- When using the `notLike` method, ensure the `val` parameter is of string type to avoid type conversion errors.
-- If you need to dynamically add a NOT LIKE condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- The `notLike` method is suitable for string-type fields to exclude specific fuzzy matches.
+- By default, the `notLike` method adds `%` before and after the search value to achieve full fuzzy exclusion. If you need to exclude left-fuzzy or right-fuzzy matches, use the `notLikeRight` or `notLikeLeft` methods instead.
+- When using the `notLike` method, ensure the `val` parameter is a string type to avoid type conversion errors.
+- If you need to dynamically add NOT LIKE conditions based on certain criteria, use the overloaded method with the `condition` parameter.
 
 :::
 
-### likeLeft  
+### likeLeft
 
-The `likeLeft` method is one of the fundamental methods in MyBatis-Plus for constructing fuzzy query conditions. It is used to set a right-fuzzy match condition for a single field.  
-
-#### Scope of Use  
-
-- `QueryWrapper`  
-- `LambdaQueryWrapper`  
-- `UpdateWrapper`  
-- `LambdaUpdateWrapper`  
-
-#### Method Signature  
-
-```java  
-// Sets the right-fuzzy match condition for the specified field  
-likeLeft(R column, Object val)  
-
-// Sets the right-fuzzy match condition for the specified field based on a condition  
-likeLeft(boolean condition, R column, Object val)  
-```  
-
-#### Parameter Description  
-
-- `column`: The database field name or the field name expressed using a `Lambda` expression.  
-- `val`: The value corresponding to the field name, representing the search value for the right-fuzzy match condition.  
-- `condition`: A boolean value that controls whether to apply this right-fuzzy match condition.  
-
-#### Examples  
-
-**Regular Wrapper (`QueryWrapper`)**:  
-
-```java  
-QueryWrapper<User> queryWrapper = new QueryWrapper<>();  
-queryWrapper.likeLeft("name", "王");  
-```  
-
-**Lambda Wrapper (`LambdaQueryWrapper`)**:  
-
-```java  
-LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();  
-lambdaQueryWrapper.likeLeft(User::getName, "王");  
-```  
-
-**Generated SQL**  
-
-```sql  
--- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same  
-SELECT * FROM user WHERE name LIKE '%王'  
-```  
-
-:::note[Notes]  
-
-- The `likeLeft` method is suitable for string-type fields and is used for right-fuzzy matching, i.e., matching records that start with the specified string.  
-- By default, the `likeLeft` method adds a `%` before the search value to achieve right-fuzzy matching. For full-fuzzy or left-fuzzy matching, you can use the `like` or `likeRight` methods.  
-- When using the `likeLeft` method, ensure the `val` parameter is of string type to avoid type conversion errors.  
-- If you need to dynamically add a right-fuzzy match condition based on certain criteria, you can use the overloaded method with the `condition` parameter.  
-
-:::  
-
-With the above optimizations, the documentation for the `likeLeft` method more clearly demonstrates its usage, parameter descriptions, examples, and notes, making it easier for developers to understand and correctly use the method.
-
-### likeRight
-
-The `likeRight` method is one of the fundamental methods in MyBatis-Plus for constructing fuzzy query conditions. It is used to set a left fuzzy match condition for a single field.
+The `likeLeft` method is one of the fundamental methods in MyBatis-Plus for building fuzzy query conditions. It is used to set a right fuzzy match condition for a single field.
 
 #### Scope of Use
 
@@ -783,17 +722,78 @@ The `likeRight` method is one of the fundamental methods in MyBatis-Plus for con
 #### Method Signature
 
 ```java
-// Sets the left fuzzy match condition for the specified field
+// Sets the right fuzzy match condition for the specified column
+likeLeft(R column, Object val)
+
+// Sets the right fuzzy match condition for the specified column based on a condition
+likeLeft(boolean condition, R column, Object val)
+```
+
+#### Parameter Description
+
+- `column`: The database column name or the field name using a Lambda expression.
+- `val`: The value corresponding to the column name, representing the search value for the right fuzzy match condition.
+- `condition`: A boolean value that controls whether to apply this right fuzzy match condition.
+
+#### Examples
+
+**Regular Wrapper (`QueryWrapper`)**:
+
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.likeLeft("name", "王");
+```
+
+**Lambda Wrapper (`LambdaQueryWrapper`)**:
+
+```java
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+lambdaQueryWrapper.likeLeft(User::getName, "王");
+```
+
+**Generated SQL**
+
+```sql
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
+SELECT * FROM user WHERE name LIKE '%王'
+```
+
+:::note[Notes]
+
+- The `likeLeft` method is suitable for string-type fields and is used for right fuzzy matching, meaning it matches records that end with the specified string.
+- By default, the `likeLeft` method adds a `%` before the search value to achieve right fuzzy matching. If you need full fuzzy or left fuzzy matching, you can use the `like` or `likeRight` methods.
+- When using the `likeLeft` method, ensure the `val` parameter is a string type to avoid type conversion errors.
+- If you need to dynamically add a right fuzzy match condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+
+:::
+
+Through the above optimization, the documentation for the `likeLeft` method more clearly demonstrates its usage, parameter descriptions, examples, and notes, making it easier for developers to understand and correctly use this method.
+
+### likeRight
+
+The `likeRight` method is one of the fundamental methods in MyBatis-Plus for building fuzzy query conditions. It sets a left fuzzy match condition for a single field.
+
+#### Scope of Use
+
+- `QueryWrapper`
+- `LambdaQueryWrapper`
+- `UpdateWrapper`
+- `LambdaUpdateWrapper`
+
+#### Method Signature
+
+```java
+// Sets the left fuzzy match condition for the specified column
 likeRight(R column, Object val)
 
-// Sets the left fuzzy match condition for the specified field based on a condition
+// Sets the left fuzzy match condition for the specified column based on a condition
 likeRight(boolean condition, R column, Object val)
 ```
 
 #### Parameter Description
 
-- `column`: The database field name or the field name expressed using a `Lambda` expression.
-- `val`: The value corresponding to the field name, representing the search value for the left fuzzy match condition.
+- `column`: The database column name or the field name using a Lambda expression.
+- `val`: The value corresponding to the column name, representing the search value for the left fuzzy match condition.
 - `condition`: A boolean value that controls whether to apply this left fuzzy match condition.
 
 #### Examples
@@ -815,22 +815,22 @@ lambdaQueryWrapper.likeRight(User::getName, "王");
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- Both the regular Wrapper and Lambda Wrapper generate the same SQL
 SELECT * FROM user WHERE name LIKE '王%'
 ```
 
 :::note[Notes]
 
-- The `likeRight` method is suitable for string-type fields and is used for left fuzzy matching, i.e., matching records that end with the specified string.
-- By default, the `likeRight` method appends a `%` after the search value to achieve left fuzzy matching. For full fuzzy or right fuzzy matching, you can use the `like` or `likeLeft` methods.
-- When using the `likeRight` method, ensure the `val` parameter is of string type to avoid type conversion errors.
-- If you need to dynamically add a left fuzzy match condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- The `likeRight` method is suitable for string-type fields and performs a left fuzzy match, meaning it matches records that end with the specified string.
+- By default, the `likeRight` method appends a `%` after the search value to implement the left fuzzy match. If you need a full fuzzy or right fuzzy match, you can use the `like` or `likeLeft` methods instead.
+- When using the `likeRight` method, ensure the `val` parameter is a string type to avoid type conversion errors.
+- If you need to dynamically add a left fuzzy match condition based on certain criteria, use the overloaded method that includes the `condition` parameter.
 
 :::
 
 ### notLikeLeft
 
-The `notLikeLeft` method is another fundamental method in MyBatis-Plus for constructing fuzzy query conditions, used to set a non-right-fuzzy-match condition for a single field.
+The `notLikeLeft` method is another fundamental method in MyBatis-Plus for building fuzzy query conditions. It sets a non-right-fuzzy match condition for a single field.
 
 #### Scope of Use
 
@@ -842,18 +842,18 @@ The `notLikeLeft` method is another fundamental method in MyBatis-Plus for const
 #### Method Signature
 
 ```java
-// Sets a non-right-fuzzy-match condition for the specified field
+// Sets the non-right-fuzzy match condition for the specified field
 notLikeLeft(R column, Object val)
 
-// Sets a non-right-fuzzy-match condition for the specified field based on a condition
+// Sets the non-right-fuzzy match condition for the specified field based on a condition
 notLikeLeft(boolean condition, R column, Object val)
 ```
 
 #### Parameter Description
 
-- `column`: The database field name or the field name using a `Lambda` expression.
-- `val`: The value corresponding to the field name, representing the search value in the non-right-fuzzy-match condition.
-- `condition`: A boolean value controlling whether to apply this non-right-fuzzy-match condition.
+- `column`: The database column name or the field name using a Lambda expression.
+- `val`: The value corresponding to the field name, representing the search value in the non-right-fuzzy match condition.
+- `condition`: A boolean value that controls whether to apply this non-right-fuzzy match condition.
 
 #### Examples
 
@@ -874,22 +874,22 @@ lambdaQueryWrapper.notLikeLeft(User::getName, "王");
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
 SELECT * FROM user WHERE name NOT LIKE '%王'
 ```
 
 :::note[Notes]
 
-- The `notLikeLeft` method is suitable for string-type fields, used to exclude records that start with the specified string.
-- By default, the `notLikeLeft` method adds a `%` before the search value to achieve a non-right-fuzzy match. If you need to exclude full-fuzzy or left-fuzzy matches, you can use the `notLike` or `notLikeRight` methods.
-- When using the `notLikeLeft` method, ensure the `val` parameter is of string type to avoid type conversion errors.
-- If you need to dynamically add a non-right-fuzzy-match condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- The `notLikeLeft` method is suitable for string-type fields and is used to exclude records that start with the specified string.
+- By default, the `notLikeLeft` method adds a `%` before the search value to implement the non-right-fuzzy match. If you need to exclude full-fuzzy or left-fuzzy matches, you can use the `notLike` or `notLikeRight` methods.
+- When using the `notLikeLeft` method, ensure the `val` parameter is a string type to avoid type conversion errors.
+- If you need to dynamically add the non-right-fuzzy match condition based on certain criteria, use the overloaded method with the `condition` parameter.
 
 :::
 
 ### notLikeRight
 
-The `notLikeRight` method is another fundamental method in MyBatis-Plus for constructing fuzzy query conditions, used to set a non-left fuzzy match condition for a single field.
+The `notLikeRight` method is another fundamental method in MyBatis-Plus for building fuzzy query conditions. It sets a non-left fuzzy match condition for a single field.
 
 #### Scope of Use
 
@@ -910,9 +910,9 @@ notLikeRight(boolean condition, R column, Object val)
 
 #### Parameter Description
 
-- `column`: The database field name or the field name using a `Lambda` expression.
+- `column`: The database column name or the field name using a Lambda expression.
 - `val`: The value corresponding to the field name, representing the search value in the non-left fuzzy match condition.
-- `condition`: A boolean value to control whether to apply this non-left fuzzy match condition.
+- `condition`: A boolean value that controls whether to apply this non-left fuzzy match condition.
 
 #### Examples
 
@@ -933,24 +933,24 @@ lambdaQueryWrapper.notLikeRight(User::getName, "王");
 **Generated SQL**
 
 ```sql
--- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
+-- Both Regular Wrapper and Lambda Wrapper generate the same SQL
 SELECT * FROM user WHERE name NOT LIKE '王%'
 ```
 
-:::note[Notes]
+:::note[Important Notes]
 
-- The `notLikeRight` method is suitable for string-type fields, used to exclude records ending with the specified string.
-- By default, the `notLikeRight` method appends a `%` after the search value to achieve a non-left fuzzy match. If you need to exclude full fuzzy or right fuzzy matches, you can use the `notLike` or `notLikeLeft` methods.
+- The `notLikeRight` method is suitable for string-type fields and is used to exclude records that end with the specified string.
+- By default, the `notLikeRight` method appends a `%` after the search value to implement the non-left fuzzy match. If you need to exclude full fuzzy or right fuzzy matches, you can use the `notLike` or `notLikeLeft` methods.
 - When using the `notLikeRight` method, ensure the `val` parameter is of string type to avoid type conversion errors.
-- If you need to dynamically add a non-left fuzzy match condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- If you need to dynamically add non-left fuzzy match conditions based on certain criteria, use the overloaded method with the `condition` parameter.
 
 :::
 
-With the above optimizations, the documentation for the `notLikeRight` method more clearly demonstrates its usage, parameter descriptions, examples, and notes, making it easier for developers to understand and correctly use the method.
+Through the above optimization, the documentation for the `notLikeRight` method more clearly demonstrates its usage, parameter descriptions, examples, and important notes, making it easier for developers to understand and correctly use this method.
 
 ### isNull
 
-The `isNull` method is one of the fundamental methods in MyBatis-Plus for constructing query conditions. It is used to set the IS NULL condition for a single field.
+The `isNull` method is one of the fundamental methods in MyBatis-Plus for building query conditions. It sets an IS NULL condition for a single field.
 
 #### Scope of Use
 
@@ -971,7 +971,7 @@ isNull(boolean condition, R column)
 
 #### Parameter Description
 
-- `column`: The database field name or the field name using a `Lambda` expression.
+- `column`: The database column name or the field name using a Lambda expression.
 - `condition`: A boolean value that controls whether to apply this IS NULL condition.
 
 #### Examples
@@ -993,82 +993,82 @@ lambdaQueryWrapper.isNull(User::getName);
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- Both Regular Wrapper and Lambda Wrapper generate the same SQL
 SELECT * FROM user WHERE name IS NULL
+```
+
+:::note[Important Notes]
+
+- The `isNull` method works with all field types and is used to query records where the field value is NULL.
+- When using the `isNull` method, ensure the `column` parameter correctly points to the database column name or the field name using a Lambda expression.
+- If you need to dynamically add the IS NULL condition based on certain criteria, use the overloaded method with the `condition` parameter.
+
+:::
+
+### in
+
+The `in` method is one of the fundamental methods in MyBatis-Plus for building query conditions. It sets an IN condition for a single field, meaning the field's value must be within a given collection.
+
+#### Usage Scope
+
+- `QueryWrapper`
+- `LambdaQueryWrapper`
+- `UpdateWrapper`
+- `LambdaUpdateWrapper`
+
+#### Method Signature
+
+```java
+// Sets the IN condition for the specified column using a Collection
+in(R column, Collection<?> value)
+in(boolean condition, R column, Collection<?> value)
+
+// Sets the IN condition for the specified column using varargs
+in(R column, Object... values)
+in(boolean condition, R column, Object... values)
+```
+
+#### Parameter Description
+
+- `column`: The database column name or the field name using a Lambda expression.
+- `value`: A collection containing the possible values for the field in the IN condition.
+- `values`: A variable arguments list containing the possible values for the field in the IN condition.
+- `condition`: A boolean value that controls whether to apply this IN condition.
+
+#### Examples
+
+**Regular Wrapper (`QueryWrapper`)**:
+
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.in("age", Arrays.asList(1, 2, 3));
+```
+
+**Lambda Wrapper (`LambdaQueryWrapper`)**:
+
+```java
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+lambdaQueryWrapper.in(User::getAge, Arrays.asList(1, 2, 3));
+```
+
+**Generated SQL**
+
+```sql
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is identical
+SELECT * FROM user WHERE age IN (1, 2, 3)
 ```
 
 :::note[Notes]
 
-- The `isNull` method applies to all types of fields and is used to query records where the field value is NULL.
-- When using the `isNull` method, ensure the `column` parameter correctly points to the field name in the database or the field name using a `Lambda` expression.
-- If you need to dynamically add the IS NULL condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
-
-:::
-
-### in  
-
-The `in` method is one of the fundamental methods in MyBatis-Plus for constructing query conditions. It is used to set an IN condition for a single field, meaning the field's value is within the given collection.  
-
-#### Scope of Use  
-
-- `QueryWrapper`  
-- `LambdaQueryWrapper`  
-- `UpdateWrapper`  
-- `LambdaUpdateWrapper`  
-
-#### Method Signatures  
-
-```java  
-// Sets the IN condition for the specified field using a collection  
-in(R column, Collection<?> value)  
-in(boolean condition, R column, Collection<?> value)  
-
-// Sets the IN condition for the specified field using varargs  
-in(R column, Object... values)  
-in(boolean condition, R column, Object... values)  
-```  
-
-#### Parameter Descriptions  
-
-- `column`: The database field name or the field name using a `Lambda` expression.  
-- `value`: A collection containing the possible values for the IN condition.  
-- `values`: A varargs list containing the possible values for the IN condition.  
-- `condition`: A boolean value to control whether this IN condition is applied.  
-
-#### Examples  
-
-**Regular Wrapper (`QueryWrapper`)**:  
-
-```java  
-QueryWrapper<User> queryWrapper = new QueryWrapper<>();  
-queryWrapper.in("age", Arrays.asList(1, 2, 3));  
-```  
-
-**Lambda Wrapper (`LambdaQueryWrapper`)**:  
-
-```java  
-LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();  
-lambdaQueryWrapper.in(User::getAge, Arrays.asList(1, 2, 3));  
-```  
-
-**Generated SQL**  
-
-```sql  
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same  
-SELECT * FROM user WHERE age IN (1, 2, 3)  
-```  
-
-:::note[Notes]  
-
-- The `in` method applies to fields of all types and is used to query records where the field value is within the given collection.  
-- When using the `in` method, ensure the `column` parameter correctly points to the database field name or the field name using a `Lambda` expression.  
-- If you need to dynamically add an IN condition based on certain criteria, you can use the overloaded method with the `condition` parameter.  
+- The `in` method works with all field types and is used to query records where the field value is in the specified collection.
+- When using the `in` method, ensure the `column` parameter correctly points to the database column name or the field name using a Lambda expression.
+- Use the overloaded method with the `condition` parameter to dynamically add the IN condition based on certain logic.
 
 :::
 
 ### notIn
 
-The `notIn` method is one of the fundamental methods in MyBatis-Plus for constructing query conditions. It is used to set a NOT IN condition for a single field, meaning the field's value is not within the given collection.
+The `notIn` method is one of the fundamental methods in MyBatis-Plus for building query conditions. It sets a NOT IN condition for a single field, meaning the field's value is not in the given collection.
 
 #### Scope of Use
 
@@ -1080,21 +1080,21 @@ The `notIn` method is one of the fundamental methods in MyBatis-Plus for constru
 #### Method Signature
 
 ```java
-// Sets the NOT IN condition for the specified field using a collection
+// Sets a NOT IN condition for the specified field using a collection
 notIn(R column, Collection<?> value)
 notIn(boolean condition, R column, Collection<?> value)
 
-// Sets the NOT IN condition for the specified field using varargs
+// Sets a NOT IN condition for the specified field using varargs
 notIn(R column, Object... values)
 notIn(boolean condition, R column, Object... values)
 ```
 
 #### Parameter Description
 
-- `column`: The database field name or the field name using a `Lambda` expression.
-- `value`: A collection containing the possible values for the NOT IN condition.
-- `values`: A varargs list containing the possible values for the NOT IN condition.
-- `condition`: A boolean value to control whether to apply this NOT IN condition.
+- `column`: The database column name or the field name using a Lambda expression.
+- `value`: A collection containing the possible values for the field in the NOT IN condition.
+- `values`: A varargs list containing the possible values for the field in the NOT IN condition.
+- `condition`: A boolean value that controls whether to apply this NOT IN condition.
 
 #### Examples
 
@@ -1115,23 +1115,23 @@ lambdaQueryWrapper.notIn(User::getAge, Arrays.asList(1, 2, 3));
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is identical
 SELECT * FROM user WHERE age NOT IN (1, 2, 3)
 ```
 
 :::note[Notes]
 
-- The `notIn` method is applicable to fields of all types and is used to query records where the field value is not in the given collection.
-- When using the `notIn` method, ensure the `column` parameter correctly points to the database field name or the field name using a `Lambda` expression.
-- If you need to dynamically add a NOT IN condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- The `notIn` method works with all field types and is used to query records where the field value is not in the specified collection.
+- When using the `notIn` method, ensure the `column` parameter correctly points to the database column name or the field name using a Lambda expression.
+- If you need to dynamically add the NOT IN condition based on certain criteria, use the overloaded method with the `condition` parameter.
 
 :::
 
 ### inSql
 
-The `inSql` method is one of the advanced query-building methods in MyBatis-Plus, used to set an IN condition for a single field. Unlike the `in` method, `inSql` allows you to directly use an SQL statement to generate the value set for the IN clause.
+The `inSql` method is one of the advanced methods in MyBatis-Plus for building query conditions. It sets an IN condition for a single field, but unlike the `in` method, `inSql` allows you to use a SQL statement directly to generate the set of values for the IN clause.
 
-#### Scope of Use
+#### Applicable Scope
 
 - `QueryWrapper`
 - `LambdaQueryWrapper`
@@ -1141,16 +1141,16 @@ The `inSql` method is one of the advanced query-building methods in MyBatis-Plus
 #### Method Signature
 
 ```java
-// Sets the IN condition for the specified field using an SQL statement
+// Sets the IN condition for the specified column using a SQL statement
 inSql(R column, String sqlValue)
 inSql(boolean condition, R column, String sqlValue)
 ```
 
 #### Parameter Description
 
-- `column`: The database field name or the field name using a `Lambda` expression.
-- `sqlValue`: A string containing the SQL statement used to generate the value set for the IN clause.
-- `condition`: A boolean value to control whether this IN condition is applied.
+- `column`: The database column name or the field name using a Lambda expression.
+- `sqlValue`: A string containing the SQL statement used to generate the set of values for the IN clause.
+- `condition`: A boolean value that controls whether to apply this IN condition.
 
 #### Examples
 
@@ -1171,11 +1171,11 @@ lambdaQueryWrapper.inSql(User::getAge, "1,2,3,4,5,6");
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
 SELECT * FROM user WHERE age IN (1, 2, 3, 4, 5, 6)
 ```
 
-**Example with Subquery**:
+**Example Using a Subquery**:
 
 ```java
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
@@ -1188,104 +1188,104 @@ queryWrapper.inSql("id", "select id from other_table where id < 3");
 SELECT * FROM user WHERE id IN (select id from other_table where id < 3)
 ```
 
-:::note[Notes]
+:::note[Important Notes]
 
-- The `inSql` method allows you to use an SQL statement to generate the value set for the IN clause, providing flexibility for complex query conditions.
-- When using the `inSql` method, ensure the `column` parameter correctly points to the database field name or the field name using a `Lambda` expression.
-- The `sqlValue` parameter should be a valid SQL statement, which will be directly embedded into the generated SQL. Therefore, ensure its safety and correctness, and avoid dynamically passing SQL from the frontend and directly referencing it.
-- If you need to dynamically add an IN condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- The `inSql` method allows you to use a SQL statement to generate the set of values for the IN clause, providing flexibility for complex query conditions.
+- When using the `inSql` method, ensure the `column` parameter correctly points to the database column name or the field name using a Lambda expression.
+- The `sqlValue` parameter should be a valid SQL statement, which will be directly embedded into the generated SQL. Therefore, you must ensure its safety and correctness. Avoid scenarios where SQL is dynamically passed from frontend parameters and directly referenced.
+- If you need to add the IN condition dynamically based on certain criteria, use the overloaded method that includes the `condition` parameter.
 
 :::
 
-### notInSql  
+### notInSql
 
-The `notInSql` method is one of the advanced query-building methods in MyBatis-Plus, used to set a NOT IN condition for a single field. Unlike the `notIn` method, `notInSql` allows you to directly use an SQL statement to generate the value set for the NOT IN clause.  
+The `notInSql` method is one of the advanced methods in MyBatis-Plus for building query conditions. It sets a NOT IN condition for a single field. Unlike the `notIn` method, `notInSql` allows you to use a SQL statement directly to generate the set of values for the NOT IN clause.
 
-#### Scope of Use  
+#### Applicable Scope
 
-- `QueryWrapper`  
-- `LambdaQueryWrapper`  
-- `UpdateWrapper`  
-- `LambdaUpdateWrapper`  
+- `QueryWrapper`
+- `LambdaQueryWrapper`
+- `UpdateWrapper`
+- `LambdaUpdateWrapper`
 
-#### Method Signature  
+#### Method Signature
 
-```java  
-// Sets the NOT IN condition for the specified field using an SQL statement  
-notInSql(R column, String sqlValue)  
-notInSql(boolean condition, R column, String sqlValue)  
-```  
+```java
+// Sets the NOT IN condition for the specified column using a SQL statement
+notInSql(R column, String sqlValue)
+notInSql(boolean condition, R column, String sqlValue)
+```
 
-#### Parameter Description  
+#### Parameter Description
 
-- `column`: The database field name or the field name using a `Lambda` expression.  
-- `sqlValue`: A string containing the SQL statement used to generate the value set for the NOT IN clause.  
-- `condition`: A boolean value to control whether to apply this NOT IN condition.  
+- `column`: The database column name or the field name using a Lambda expression.
+- `sqlValue`: A string containing the SQL statement used to generate the set of values for the NOT IN clause.
+- `condition`: A boolean value that controls whether to apply this NOT IN condition.
 
-#### Examples  
+#### Examples
 
-**Regular Wrapper (`QueryWrapper`)**:  
+**Regular Wrapper (`QueryWrapper`)**:
 
-```java  
-QueryWrapper<User> queryWrapper = new QueryWrapper<>();  
-queryWrapper.notInSql("age", "1,2,3,4,5,6");  
-```  
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.notInSql("age", "1,2,3,4,5,6");
+```
 
-**Lambda Wrapper (`LambdaQueryWrapper`)**:  
+**Lambda Wrapper (`LambdaQueryWrapper`)**:
 
-```java  
-LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();  
-lambdaQueryWrapper.notInSql(User::getAge, "1,2,3,4,5,6");  
-```  
+```java
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+lambdaQueryWrapper.notInSql(User::getAge, "1,2,3,4,5,6");
+```
 
-**Generated SQL**  
+**Generated SQL**
 
-```sql  
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same  
-SELECT * FROM user WHERE age NOT IN (1, 2, 3, 4, 5, 6)  
-```  
+```sql
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
+SELECT * FROM user WHERE age NOT IN (1, 2, 3, 4, 5, 6)
+```
 
-**Example Using a Subquery**:  
+**Example Using a Subquery**:
 
-```java  
-QueryWrapper<User> queryWrapper = new QueryWrapper<>();  
-queryWrapper.notInSql("id", "select id from other_table where id < 3");  
-```  
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.notInSql("id", "select id from other_table where id < 3");
+```
 
-**Generated SQL**  
+**Generated SQL**
 
-```sql  
-SELECT * FROM user WHERE id NOT IN (select id from other_table where id < 3)  
-```  
+```sql
+SELECT * FROM user WHERE id NOT IN (select id from other_table where id < 3)
+```
 
-:::note[Notes]  
+:::note[Important Notes]
 
-- The `notInSql` method allows you to use an SQL statement to generate the value set for the NOT IN clause, providing flexibility for complex query conditions.  
-- When using the `notInSql` method, ensure the `column` parameter correctly points to the database field name or the field name using a `Lambda` expression.  
-- The `sqlValue` parameter should be a valid SQL statement, which will be directly embedded into the generated SQL. Therefore, ensure its security and correctness. Avoid dynamically passing SQL from the frontend and directly referencing it.  
-- If you need to dynamically add a NOT IN condition based on certain criteria, you can use the overloaded method with the `condition` parameter.  
+- The `notInSql` method allows you to use a SQL statement to generate the set of values for the NOT IN clause, providing flexibility for complex query conditions.
+- When using the `notInSql` method, ensure the `column` parameter correctly points to the database column name or the field name using a Lambda expression.
+- The `sqlValue` parameter should be a valid SQL statement. It will be directly embedded into the generated SQL, so you must ensure its safety and correctness. Avoid passing dynamic parameters directly from the frontend into this SQL.
+- If you need to add the NOT IN condition dynamically based on certain criteria, use the overloaded method that includes the `condition` parameter.
 
 :::
 
 ### eqSql <Badge text="Since 3.5.6" type="error"/>
 
-The `eqSql` method is one of the advanced query condition-building methods in MyBatis-Plus, allowing you to set a field equal to (EQ) the result of an SQL statement. This method is particularly useful for scenarios where you need to compare a field value with the result of a subquery.
+The `eqSql` method is one of the advanced methods in MyBatis-Plus for building query conditions. It allows you to set a field equal to (EQ) the result of an SQL statement. This method is particularly useful for scenarios where you need to compare a field value with the result of a subquery.
 
 #### Method Signature
 
 ```java
-// Sets the specified field equal to the result of an SQL statement
+// Sets the specified column equal to the result of an SQL statement
 eqSql(R column, String inValue)
 
-// Sets the specified field equal to the result of an SQL statement when the condition is met
+// Sets the specified column equal to the result of an SQL statement when the condition is met
 eqSql(boolean condition, R column, String inValue)
 ```
 
-#### Parameter Description
+#### Parameters
 
-- `column`: The database field name or the field name using a `Lambda` expression.
+- `column`: The database column name or field name using a `Lambda` expression.
 - `inValue`: A string containing the SQL statement used to generate the equal condition.
-- `condition`: A boolean value controlling whether to apply this equal condition.
+- `condition`: A boolean value that controls whether to apply this equal condition.
 
 #### Examples
 
@@ -1306,38 +1306,38 @@ lambdaQueryWrapper.eqSql(User::getId, "select MAX(id) from table");
 **Generated SQL**
 
 ```sql
--- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
+-- Both Regular Wrapper and Lambda Wrapper generate the same SQL
 SELECT * FROM user WHERE id = (select MAX(id) from table)
 ```
 
-:::note[Notes]
+:::note[Important Notes]
 
 - The `eqSql` method allows you to compare a field value with the result of an SQL statement, providing flexibility for complex query conditions.
-- When using the `eqSql` method, ensure the `column` parameter correctly points to the database field name or the field name using a `Lambda` expression.
-- The `inValue` parameter should be a valid SQL statement, which will be directly embedded into the generated SQL. Therefore, ensure its safety and correctness, and avoid dynamically passing SQL from frontend parameters for direct reference.
-- If you need to dynamically add the equal condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- When using the `eqSql` method, ensure the `column` parameter correctly points to the database column name or field name using a `Lambda` expression.
+- The `inValue` parameter should be a valid SQL statement that will be directly embedded into the generated SQL. Ensure its safety and correctness, and avoid passing dynamic parameters directly from the frontend.
+- If you need to dynamically add the equal condition based on certain criteria, use the overloaded method with the `condition` parameter.
 
 :::
 
 ### gtSql <Badge text="Since 3.4.3.2" type="error"/>
 
-The `gtSql` method is one of the advanced query condition-building methods in MyBatis-Plus, allowing you to set a field to be greater than (GT) the result of an SQL statement.
+The `gtSql` method is one of the advanced methods in MyBatis-Plus for building query conditions, allowing you to set a field as greater than (GT) the result of an SQL statement.
 
 #### Method Signature
 
 ```java
-// Sets the specified field to be greater than the result of an SQL statement
+// Sets the specified column to be greater than the result of an SQL statement
 gtSql(R column, String inValue)
 
-// Sets the specified field to be greater than the result of an SQL statement when the condition is met
+// Sets the specified column to be greater than the result of an SQL statement if the condition is met
 gtSql(boolean condition, R column, String inValue)
 ```
 
-#### Parameter Description
+#### Parameters
 
-- `column`: The database field name or the field name using a `Lambda` expression.
+- `column`: The database column name or the column name using a `Lambda` expression.
 - `inValue`: A string containing the SQL statement used to generate the greater-than condition.
-- `condition`: A boolean value controlling whether to apply this greater-than condition.
+- `condition`: A boolean value that controls whether to apply this greater-than condition.
 
 #### Examples
 
@@ -1358,38 +1358,38 @@ lambdaQueryWrapper.gtSql(User::getId, "select id from table where name = 'xx'");
 **Generated SQL**
 
 ```sql
--- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
+-- The SQL generated by both the Regular Wrapper and Lambda Wrapper is identical
 SELECT * FROM user WHERE id > (select id from table where name = 'xx')
 ```
 
 :::note[Notes]
 
 - The `gtSql` method allows you to compare a field value with the result of an SQL statement, providing flexibility for complex query conditions.
-- When using the `gtSql` method, ensure the `column` parameter correctly points to the database field name or the field name using a `Lambda` expression.
-- The `inValue` parameter should be a valid SQL statement, which will be directly embedded into the generated SQL. Therefore, ensure its safety and correctness, and avoid dynamically passing SQL from frontend parameters for direct reference.
-- If you need to dynamically add a greater-than condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- When using the `gtSql` method, ensure the `column` parameter correctly points to the database column name or the column name using a `Lambda` expression.
+- The `inValue` parameter should be a valid SQL statement that will be directly embedded into the generated SQL. Therefore, ensure its safety and correctness. Avoid passing dynamic parameters directly from the frontend into the SQL statement.
+- If you need to dynamically add the greater-than condition based on certain criteria, use the overloaded method with the `condition` parameter.
 
 :::
 
 ### geSql <Badge text="Since 3.4.3.2" type="error"/>
 
-The `geSql` method is one of the advanced query condition-building methods in MyBatis-Plus, allowing you to set a field to be greater than or equal to (GE) the result of an SQL statement.
+The `geSql` method is one of the advanced methods in MyBatis-Plus for building query conditions. It allows you to set a field to be greater than or equal to (GE) the result of an SQL statement.
 
 #### Method Signature
 
 ```java
-// Sets the specified field to be greater than or equal to the result of an SQL statement
+// Sets the specified column to be greater than or equal to the result of an SQL statement
 geSql(R column, String inValue)
 
-// Sets the specified field to be greater than or equal to the result of an SQL statement when the condition is met
+// Sets the specified column to be greater than or equal to the result of an SQL statement when the condition is met
 geSql(boolean condition, R column, String inValue)
 ```
 
-#### Parameter Description
+#### Parameters
 
-- `column`: The database field name or the field name using a `Lambda` expression.
+- `column`: The database column name or a field name using a `Lambda` expression.
 - `inValue`: A string containing the SQL statement used to generate the greater-than-or-equal condition.
-- `condition`: A boolean value controlling whether to apply this greater-than-or-equal condition.
+- `condition`: A boolean value that controls whether to apply this greater-than-or-equal condition.
 
 #### Examples
 
@@ -1410,38 +1410,38 @@ lambdaQueryWrapper.geSql(User::getId, "select id from table where name = 'xx'");
 **Generated SQL**
 
 ```sql
--- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is identical
 SELECT * FROM user WHERE id >= (select id from table where name = 'xx')
 ```
 
 :::note[Notes]
 
 - The `geSql` method allows you to compare a field value with the result of an SQL statement, providing flexibility for complex query conditions.
-- When using the `geSql` method, ensure the `column` parameter correctly points to the database field name or the field name using a `Lambda` expression.
-- The `inValue` parameter should be a valid SQL statement, which will be directly embedded into the generated SQL. Therefore, ensure its safety and correctness, and avoid dynamically passing SQL from frontend parameters for direct reference.
-- If you need to dynamically add a greater-than-or-equal condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- When using the `geSql` method, ensure the `column` parameter correctly points to a database column name or a field name using a `Lambda` expression.
+- The `inValue` parameter should be a valid SQL statement. It will be directly embedded into the generated SQL, so you must ensure its safety and correctness. Avoid passing dynamic parameters directly from the frontend into this SQL statement.
+- Use the overloaded method with the `condition` parameter if you need to dynamically add the greater-than-or-equal condition based on certain criteria.
 
 :::
 
 ### ltSql <Badge text="Since 3.4.3.2" type="error"/>
 
-The `ltSql` method is one of the advanced query condition-building methods in MyBatis-Plus, allowing you to set a field to be less than (LT) the result of an SQL statement.
+The `ltSql` method is one of the advanced methods in MyBatis-Plus for building query conditions. It allows you to set a field to be less than (LT) the result of an SQL statement.
 
 #### Method Signature
 
 ```java
-// Sets the specified field to be less than the result of an SQL statement
+// Sets the specified column to be less than the result of an SQL statement
 ltSql(R column, String inValue)
 
-// Sets the specified field to be less than the result of an SQL statement when the condition is met
+// Sets the specified column to be less than the result of an SQL statement when the condition is met
 ltSql(boolean condition, R column, String inValue)
 ```
 
-#### Parameter Description
+#### Parameters
 
-- `column`: The database field name or the field name using a `Lambda` expression.
+- `column`: The database column name or the field name using a `Lambda` expression.
 - `inValue`: A string containing the SQL statement used to generate the less-than condition.
-- `condition`: A boolean value controlling whether to apply this less-than condition.
+- `condition`: A boolean value that controls whether to apply this less-than condition.
 
 #### Examples
 
@@ -1462,38 +1462,38 @@ lambdaQueryWrapper.ltSql(User::getId, "select id from table where name = 'xx'");
 **Generated SQL**
 
 ```sql
--- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
+-- Both Regular Wrapper and Lambda Wrapper generate the same SQL
 SELECT * FROM user WHERE id < (select id from table where name = 'xx')
 ```
 
 :::note[Notes]
 
 - The `ltSql` method allows you to compare a field value with the result of an SQL statement, providing flexibility for complex query conditions.
-- When using the `ltSql` method, ensure the `column` parameter correctly points to the database field name or the field name using a `Lambda` expression.
-- The `inValue` parameter should be a valid SQL statement, which will be directly embedded into the generated SQL. Therefore, ensure its safety and correctness, and avoid dynamically injecting SQL from the frontend.
-- If you need to dynamically add a less-than condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- When using the `ltSql` method, ensure the `column` parameter correctly points to the database column name or the field name using a `Lambda` expression.
+- The `inValue` parameter should be a valid SQL statement. It will be directly embedded into the generated SQL, so you must ensure its safety and correctness. Avoid dynamically passing SQL directly from the frontend.
+- If you need to dynamically add the less-than condition based on certain criteria, use the overloaded method with the `condition` parameter.
 
 :::
 
 ### leSql <Badge text="Since 3.4.3.2" type="error"/>
 
-The `leSql` method is one of the advanced query condition-building methods in MyBatis-Plus, allowing you to set a field as less than or equal to (LE) the result of an SQL statement.
+The `leSql` method is one of the advanced query-building methods in MyBatis-Plus that allows you to specify that a field should be less than or equal to (LE) the result of an SQL statement.
 
 #### Method Signature
 
 ```java
-// Sets the specified field as less than or equal to the result of an SQL statement
+// Sets the specified column to be less than or equal to the result of an SQL statement
 leSql(R column, String inValue)
 
-// Sets the specified field as less than or equal to the result of an SQL statement when the condition is met
+// Sets the specified column to be less than or equal to the result of an SQL statement when the condition is met
 leSql(boolean condition, R column, String inValue)
 ```
 
-#### Parameter Description
+#### Parameters
 
-- `column`: The database field name or the field name using a `Lambda` expression.
-- `inValue`: A string containing the SQL statement used to generate the less-than-or-equal condition.
-- `condition`: A boolean value controlling whether to apply this less-than-or-equal condition.
+- `column`: The database column name or a field name using a `Lambda` expression.
+- `inValue`: A string containing the SQL statement used to generate the less-than-or-equal-to condition.
+- `condition`: A boolean value that controls whether to apply this less-than-or-equal-to condition.
 
 #### Examples
 
@@ -1514,22 +1514,22 @@ lambdaQueryWrapper.leSql(User::getId, "select id from table where name = 'xx'");
 **Generated SQL**
 
 ```sql
--- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
+-- Both Regular Wrapper and Lambda Wrapper generate the same SQL
 SELECT * FROM user WHERE id <= (select id from table where name = 'xx')
 ```
 
-:::note[Notes]
+:::note[Important Notes]
 
 - The `leSql` method allows you to compare a field value with the result of an SQL statement, providing flexibility for complex query conditions.
-- When using the `leSql` method, ensure the `column` parameter correctly points to the database field name or the field name using a `Lambda` expression.
-- The `inValue` parameter should be a valid SQL statement, which will be directly embedded into the generated SQL. Therefore, ensure its safety and correctness. Avoid dynamically passing SQL from frontend parameters and directly referencing them.
-- If you need to dynamically add a less-than-or-equal condition based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- When using the `leSql` method, ensure the `column` parameter correctly points to a database column name or a field name using a `Lambda` expression.
+- The `inValue` parameter should be a valid SQL statement that will be directly embedded into the generated SQL. Ensure its safety and correctness, and avoid passing dynamic parameters directly from the frontend.
+- If you need to dynamically add the less-than-or-equal-to condition based on certain criteria, use the overloaded method with the `condition` parameter.
 
 :::
 
 ### groupBy
 
-The `groupBy` method is one of the advanced methods in MyBatis-Plus for constructing query conditions, used to set grouping conditions for query results. By specifying one or more fields, the `groupBy` method generates the GROUP BY clause in the SQL statement.
+The `groupBy` method is one of the advanced methods in MyBatis-Plus for building query conditions. It is used to set grouping conditions for query results. By specifying one or more fields, the `groupBy` method generates the GROUP BY clause in the SQL statement.
 
 #### Scope of Use
 
@@ -1541,15 +1541,15 @@ The `groupBy` method is one of the advanced methods in MyBatis-Plus for construc
 #### Method Signature
 
 ```java
-// Set grouping conditions using field names
+// Sets grouping conditions using column names
 groupBy(R... columns)
 groupBy(boolean condition, R... columns)
 ```
 
 #### Parameter Description
 
-- `columns`: A variable parameter list containing the field names for grouping.
-- `condition`: A boolean value to control whether to apply this grouping condition.
+- `columns`: A variable argument list containing the column names used for grouping.
+- `condition`: A boolean value that controls whether to apply this grouping condition.
 
 #### Examples
 
@@ -1570,21 +1570,21 @@ lambdaQueryWrapper.groupBy(User::getId, User::getName);
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
 SELECT * FROM user GROUP BY id, name
 ```
 
 :::note[Notes]
 
-- The `groupBy` method is suitable for scenarios where query results need to be grouped.
-- When using the `groupBy` method, ensure the `columns` parameter correctly points to the field names in the database or the field names using `Lambda` expressions.
+- The `groupBy` method is suitable for scenarios where you need to group query results.
+- When using the `groupBy` method, ensure the `columns` parameter correctly points to the database column names or the field names using Lambda expressions.
 - If you need to dynamically add grouping conditions based on certain criteria, you can use the overloaded method with the `condition` parameter.
 
 :::
 
 ### orderByAsc
 
-The `orderByAsc` method is one of the advanced query-building methods in MyBatis-Plus, used to set ascending order conditions for query results. By specifying one or more fields, the `orderByAsc` method generates the ORDER BY clause in the SQL statement and specifies ascending sorting.
+The `orderByAsc` method is one of the advanced methods in MyBatis-Plus for building query conditions. It is used to set ascending order conditions for query results. By specifying one or more columns, the `orderByAsc` method generates the ORDER BY clause in the SQL statement, specifying ascending order.
 
 #### Scope of Use
 
@@ -1596,15 +1596,15 @@ The `orderByAsc` method is one of the advanced query-building methods in MyBatis
 #### Method Signature
 
 ```java
-// Sets ascending order conditions using field names
+// Sets ascending order conditions using column names
 orderByAsc(R... columns)
 orderByAsc(boolean condition, R... columns)
 ```
 
 #### Parameter Description
 
-- `columns`: A variable argument list containing the field names for sorting.
-- `condition`: A boolean value to control whether to apply this sorting condition.
+- `columns`: A variable argument list containing the column names used for sorting.
+- `condition`: A boolean value that controls whether to apply this sorting condition.
 
 #### Examples
 
@@ -1625,21 +1625,21 @@ lambdaQueryWrapper.orderByAsc(User::getId, User::getName);
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
 SELECT * FROM user ORDER BY id ASC, name ASC
 ```
 
 :::note[Notes]
 
-- The `orderByAsc` method is suitable for scenarios where query results need to be sorted in ascending order.
-- When using the `orderByAsc` method, ensure the `columns` parameter correctly points to the field names in the database or the field names using Lambda expressions.
-- If you need to dynamically add sorting conditions based on certain criteria, you can use the overloaded method with the `condition` parameter.
-  
+- Use the `orderByAsc` method when you need to sort query results in ascending order.
+- When using the `orderByAsc` method, ensure the `columns` parameter correctly points to the database column names or the field names using Lambda expressions.
+- Use the overloaded method with the `condition` parameter if you need to dynamically add sorting conditions based on certain criteria.
+
 :::
 
 ### orderByDesc
 
-The `orderByDesc` method is one of the advanced query condition-building methods in MyBatis-Plus, used to set descending order conditions for query results. By specifying one or more fields, the `orderByDesc` method generates the ORDER BY clause in SQL statements and specifies descending order.
+The `orderByDesc` method is one of the advanced methods in MyBatis-Plus for building query conditions. It is used to set descending order criteria for query results. By specifying one or more columns, the `orderByDesc` method generates the ORDER BY clause in the SQL statement, specifying descending order.
 
 #### Scope of Use
 
@@ -1651,15 +1651,15 @@ The `orderByDesc` method is one of the advanced query condition-building methods
 #### Method Signature
 
 ```java
-// Sets descending order conditions using field names
+// Sets descending order conditions using column names
 orderByDesc(R... columns)
 orderByDesc(boolean condition, R... columns)
 ```
 
 #### Parameter Description
 
-- `columns`: A variable argument list containing the field names for sorting.
-- `condition`: A boolean value to control whether the sorting condition is applied.
+- `columns`: A variable argument list containing the column names used for sorting.
+- `condition`: A boolean value that controls whether to apply this sorting condition.
 
 #### Examples
 
@@ -1680,77 +1680,21 @@ lambdaQueryWrapper.orderByDesc(User::getId, User::getName);
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
 SELECT * FROM user ORDER BY id DESC, name DESC
 ```
 
 :::note[Notes]
 
-- The `orderByDesc` method is suitable for scenarios where query results need to be sorted in descending order.
-- When using the `orderByDesc` method, ensure the `columns` parameter correctly points to the field names in the database or the field names in the `Lambda` expression.
-- If dynamic sorting conditions need to be added based on certain criteria, the overloaded method with the `condition` parameter can be used.
+- The `orderByDesc` method is suitable for scenarios where you need to sort query results in descending order.
+- When using the `orderByDesc` method, ensure the `columns` parameter correctly points to the database column names or the field names using the Lambda expression.
+- If you need to dynamically add sorting conditions based on certain criteria, you can use the overloaded method with the `condition` parameter.
 
 :::
 
-### orderBy  
+### orderBy
 
-The `orderBy` method is one of the advanced methods in MyBatis-Plus for constructing query conditions, used to set the sorting criteria for query results. By specifying one or more fields along with the sorting direction (ascending or descending), the `orderBy` method generates the ORDER BY clause in the SQL statement.  
-
-#### Scope of Use  
-
-- `QueryWrapper`  
-- `LambdaQueryWrapper`  
-- `UpdateWrapper`  
-- `LambdaUpdateWrapper`  
-
-#### Method Signature  
-
-```java  
-// Sets sorting conditions using field names and sorting direction  
-orderBy(boolean condition, boolean isAsc, R... columns)  
-```  
-
-#### Parameter Description  
-
-- `condition`: A boolean value that controls whether to apply this sorting condition.  
-- `isAsc`: A boolean value indicating the sorting direction. `true` means ascending (ASC), and `false` means descending (DESC).  
-- `columns`: A variable argument list containing the field names for sorting.  
-
-#### Examples  
-
-**Regular Wrapper (`QueryWrapper`)**  
-
-```java  
-QueryWrapper<User> queryWrapper = new QueryWrapper<>();  
-queryWrapper.orderBy(true, true, "id", "name");  
-```  
-
-**Lambda Wrapper (`LambdaQueryWrapper`)**  
-
-```java  
-LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();  
-lambdaQueryWrapper.orderBy(true, true, User::getId, User::getName);  
-```  
-
-**Generated SQL**  
-
-```sql  
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same  
-SELECT * FROM user ORDER BY id ASC, name ASC  
-```  
-
-:::note[Notes]  
-
-- The `orderBy` method provides more flexible sorting configuration, allowing developers to specify the sorting direction.  
-- When using the `orderBy` method, ensure that the `columns` parameter correctly points to the field names in the database or the field names in the `Lambda` expression.  
-- If sorting conditions need to be dynamically added based on certain criteria, you can use the overloaded method with the `condition` parameter.  
-- Sorting can be applied to the display of query results or used to optimize query performance, such as reducing the amount of data to scan through sorting.  
-
-:::
-
-### having
-
-The `having` method is one of the advanced methods in MyBatis-Plus for constructing query conditions. It is used to set the HAVING clause, typically used in conjunction with GROUP BY to filter grouped data.
+The `orderBy` method is one of the advanced methods in MyBatis-Plus for building query conditions. It is used to set the sorting criteria for query results. By specifying one or more fields along with the sort direction (ascending or descending), the `orderBy` method generates the ORDER BY clause in the SQL statement.
 
 #### Scope of Use
 
@@ -1762,16 +1706,72 @@ The `having` method is one of the advanced methods in MyBatis-Plus for construct
 #### Method Signature
 
 ```java
-// Sets the HAVING clause using SQL statements and parameters
+// Sets the sorting conditions using field names and sort direction
+orderBy(boolean condition, boolean isAsc, R... columns)
+```
+
+#### Parameter Description
+
+- `condition`: A boolean value that controls whether to apply this sorting condition.
+- `isAsc`: A boolean value indicating the sort direction. `true` means ascending (ASC), `false` means descending (DESC).
+- `columns`: A variable argument list containing the field names used for sorting.
+
+#### Examples
+
+**Regular Wrapper (`QueryWrapper`)**:
+
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.orderBy(true, true, "id", "name");
+```
+
+**Lambda Wrapper (`LambdaQueryWrapper`)**:
+
+```java
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+lambdaQueryWrapper.orderBy(true, true, User::getId, User::getName);
+```
+
+**Generated SQL**
+
+```sql
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
+SELECT * FROM user ORDER BY id ASC, name ASC
+```
+
+:::note[Notes]
+
+- The `orderBy` method provides more flexible sorting configuration, allowing developers to specify the sort direction.
+- When using the `orderBy` method, ensure the `columns` parameter correctly references the database column names or the field names using Lambda expressions.
+- If you need to dynamically add sorting conditions based on certain criteria, you can use the overloaded method with the `condition` parameter.
+- Sorting can be applied for displaying query results and can also be used to optimize query performance, for example, by reducing the amount of data that needs to be scanned.
+
+:::
+
+### having
+
+The `having` method is one of the advanced methods in MyBatis-Plus for building query conditions. It is used to set the HAVING clause, typically used with GROUP BY to filter grouped data.
+
+#### Scope of Use
+
+- `QueryWrapper`
+- `LambdaQueryWrapper`
+- `UpdateWrapper`
+- `LambdaUpdateWrapper`
+
+#### Method Signature
+
+```java
+// Sets the HAVING clause using an SQL statement and parameters
 having(String sqlHaving, Object... params)
 having(boolean condition, String sqlHaving, Object... params)
 ```
 
 #### Parameter Description
 
-- `sqlHaving`: A string containing the SQL statement for generating the HAVING clause.
+- `sqlHaving`: A string containing the SQL statement used to generate the HAVING clause.
 - `params`: A variable argument list containing replacement values for placeholders in the SQL statement.
-- `condition`: A boolean value controlling whether to apply this HAVING condition.
+- `condition`: A boolean value that controls whether to apply this HAVING condition.
 
 #### Examples
 
@@ -1792,22 +1792,22 @@ lambdaQueryWrapper.groupBy(User::getAge).having("sum(age) > {0}", 10);
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- Both the regular Wrapper and Lambda Wrapper generate the same SQL
 SELECT * FROM user GROUP BY age HAVING sum(age) > 10
 ```
 
-:::note[Notes]
+:::note[Important Notes]
 
-- The `having` method is typically used with the `groupBy` method to further filter grouped data.
-- When using the `having` method, ensure the `sqlHaving` parameter is a valid SQL statement. It will be directly embedded into the generated SQL, so its safety and correctness must be guaranteed. Avoid dynamically passing SQL from frontend parameters and directly referencing them.
+- The `having` method is typically used with the `groupBy` method to further filter data after grouping.
+- When using the `having` method, ensure the `sqlHaving` parameter is a valid SQL statement. It will be directly embedded into the generated SQL, so you must ensure its safety and correctness. Avoid passing dynamic parameters directly from the frontend into the SQL.
 - The `params` parameter is used to replace placeholders in `sqlHaving`. Ensure the provided parameter types and quantities match the placeholders.
-- To dynamically add HAVING conditions based on certain criteria, use the overloaded method with the `condition` parameter.
+- Use the overloaded method with the `condition` parameter if you need to dynamically add HAVING conditions based on certain criteria.
 
 :::
 
 ### func
 
-The `func` method is one of the advanced methods in MyBatis-Plus for constructing query conditions. It provides a mechanism to execute different query operations within a chain call based on conditions. By passing a `Consumer` functional interface, the `func` method allows you to dynamically build query logic without interrupting the chain call.
+The `func` method is one of the advanced methods in MyBatis-Plus for building query conditions. It provides a mechanism to execute different query operations within a chain call based on conditions. By passing a `Consumer` functional interface, the `func` method allows you to execute different query-building logic based on conditions without breaking the chain call.
 
 #### Scope of Use
 
@@ -1819,15 +1819,15 @@ The `func` method is one of the advanced methods in MyBatis-Plus for constructin
 #### Method Signature
 
 ```java
-// Execute different query-building logic based on conditions
+// Executes different query-building logic based on conditions
 func(Consumer<Children> consumer)
 func(boolean condition, Consumer<Children> consumer)
 ```
 
 #### Parameter Description
 
-- `consumer`: A `Consumer` functional interface that accepts a parameter of type `Children` and can call methods on the `Children` object to construct query conditions.
-- `condition`: A boolean value used to control whether the `Consumer` logic is applied.
+- `consumer`: A `Consumer` functional interface that accepts a parameter of type `Children` and can call methods on the `Children` object to build query conditions.
+- `condition`: A boolean value that controls whether to apply this `Consumer` logic.
 
 #### Examples
 
@@ -1860,7 +1860,7 @@ lambdaQueryWrapper.func(i -> {
 **Generated SQL**
 
 ```sql
--- The generated SQL varies based on conditions
+-- The generated SQL will differ based on the condition
 -- If the condition is true, the generated SQL is:
 SELECT * FROM user WHERE id = 1
 
@@ -1870,156 +1870,16 @@ SELECT * FROM user WHERE id != 1
 
 :::note[Notes]
 
-- The `func` method provides a flexible way to dynamically construct query conditions based on conditions without breaking the chain call.
-- When using the `func` method, ensure the logic within the `Consumer` functional interface correctly builds the desired query conditions.
+- The `func` method provides a flexible way to dynamically build query conditions based on logic without interrupting the chain call.
+- When using the `func` method, ensure the logic within the `Consumer` functional interface correctly builds the required query conditions.
 - The `condition` parameter controls whether the `Consumer` logic is applied, allowing you to dynamically add query conditions based on certain criteria.
-- Since the `func` method allows for complex logic, special attention should be paid to code readability and maintainability during use.
+- Because the `func` method allows for complex logic, pay special attention to code readability and maintainability when using it.
 
 :::
 
-### or  
+### or
 
-The `or` method is one of the fundamental methods in MyBatis-Plus for constructing query conditions. It is used to add OR logic to the query conditions. By calling the `or` method, you can change the connection method of subsequent query conditions from the default AND connection to OR connection.  
-
-#### Scope of Use  
-
-- `QueryWrapper`  
-- `LambdaQueryWrapper`  
-- `UpdateWrapper`  
-- `LambdaUpdateWrapper`  
-
-#### Method Signatures  
-
-```java  
-// Changes the connection method of subsequent query conditions to OR  
-or()  
-or(boolean condition)  
-
-// Adds OR nested conditions  
-or(Consumer<Param> consumer)  
-or(boolean condition, Consumer<Param> consumer)  
-```  
-
-#### Parameter Description  
-
-- `condition`: A boolean value used to control whether to apply this OR logic.  
-- `consumer`: A `Consumer` functional interface that accepts a parameter of type `Param` and can call methods on the `Param` object to construct OR nested conditions.  
-
-#### Examples  
-
-**Regular Wrapper (`QueryWrapper`)**:  
-
-```java  
-QueryWrapper<User> queryWrapper = new QueryWrapper<>();  
-queryWrapper.eq("id", 1).or().eq("name", "老王");  
-```  
-
-**Lambda Wrapper (`LambdaQueryWrapper`)**:  
-
-```java  
-LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();  
-lambdaQueryWrapper.eq(User::getId, 1).or().eq(User::getName, "老王");  
-```  
-
-**Generated SQL**  
-
-```sql  
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same  
-SELECT * FROM user WHERE id = 1 OR name = '老王'  
-```  
-
-**OR Nested Example**:  
-
-```java  
-// Regular Wrapper  
-QueryWrapper<User> queryWrapper = new QueryWrapper<>();  
-queryWrapper.or(i -> i.and(j -> j.eq("name", "李白").eq("status", "alive"))  
-                     .or(j -> j.eq("name", "杜甫").eq("status", "alive")));  
-
-// Lambda Wrapper  
-LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();  
-lambdaQueryWrapper.or(i -> i.and(j -> j.eq(User::getName, "李白").eq(User::getStatus, "alive"))  
-                          .or(j -> j.eq(User::getName, "杜甫").eq(User::getStatus, "alive")));  
-```  
-
-**Generated SQL**  
-
-```sql  
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same  
-SELECT * FROM user WHERE (name = '李白' AND status = 'alive') OR (name = '杜甫' AND status = 'alive')  
-```  
-
-:::note[Notes]  
-
-- Actively calling the `or` method indicates that the next query condition method will be connected with OR instead of the default AND.  
-- If the `or` method is not called, the query conditions will be connected with AND by default.  
-- The `or` method can be nested by passing a `Consumer` functional interface to construct complex OR nested conditions.  
-- When using the `or` method, ensure the `condition` parameter correctly controls the application of OR logic.  
-- Nested use of the `or` method can build complex query logic, but attention should be paid to code readability and maintainability.  
-
-:::
-
-### and  
-
-The `and` method is one of the fundamental methods in MyBatis-Plus for constructing query conditions. It is used to add AND logic to the query conditions. By calling the `and` method, you can create nested AND conditions, meaning multiple query conditions can be included within a single AND logic block.  
-
-#### Scope of Use  
-
-- `QueryWrapper`  
-- `LambdaQueryWrapper`  
-- `UpdateWrapper`  
-- `LambdaUpdateWrapper`  
-
-#### Method Signature  
-
-```java  
-// Add nested AND conditions  
-and(Consumer<Param> consumer)  
-and(boolean condition, Consumer<Param> consumer)  
-```  
-
-#### Parameter Description  
-
-- `consumer`: A `Consumer` functional interface that accepts a parameter of type `Param` and can call methods on the `Param` object to build nested AND conditions.  
-- `condition`: A boolean value used to control whether to apply this nested AND logic.  
-
-#### Examples  
-
-**Regular Wrapper (`QueryWrapper`)**:  
-
-```java  
-QueryWrapper<User> queryWrapper = new QueryWrapper<>();  
-queryWrapper.and(i -> i.and(j -> j.eq("name", "李白").eq("status", "alive"))  
-                         .and(j -> j.eq("name", "杜甫").eq("status", "alive")));  
-```  
-
-**Lambda Wrapper (`LambdaQueryWrapper`)**:  
-
-```java  
-LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();  
-lambdaQueryWrapper.and(i -> i.and(j -> j.eq(User::getName, "李白").eq(User::getStatus, "alive"))  
-                              .and(j -> j.eq(User::getName, "杜甫").eq(User::getStatus, "alive")));  
-```  
-
-**Generated SQL**  
-
-```sql  
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same  
-SELECT * FROM user WHERE ((name = '李白' AND status = 'alive') AND (name = '杜甫' AND status = 'alive'))  
-```  
-
-:::note[Notes]  
-
-- The nested use of the `and` method can construct complex query logic, where AND conditions can include multiple query conditions.  
-- When using the nesting feature of the `and` method, ensure that the logic within the `Consumer` functional interface correctly builds the desired query conditions.  
-- The `condition` parameter controls whether to apply the `Consumer` logic, allowing you to dynamically add query conditions based on certain criteria.  
-- Since the nested use of the `and` method can execute complex logic, special attention should be paid to code readability and maintainability during usage.  
-
-:::
-
-### nested
-
-The `nested` method is one of the advanced methods in MyBatis-Plus for constructing query conditions. It is used to create an independent query condition block without default AND or OR logic. By calling the `nested` method, you can add a nested clause to the query conditions, which may contain multiple query conditions and can be connected to the outer query conditions via AND or OR.
+The `or` method is one of the fundamental methods in MyBatis-Plus for building query conditions. It is used to add OR logic to your query conditions. By calling the `or` method, you can change the connection method for subsequent query conditions from the default AND connection to an OR connection.
 
 #### Scope of Use
 
@@ -2031,15 +1891,155 @@ The `nested` method is one of the advanced methods in MyBatis-Plus for construct
 #### Method Signature
 
 ```java
-// Add an independent query condition block
+// Changes the connection method for subsequent query conditions to OR
+or()
+or(boolean condition)
+
+// Adds OR nested conditions
+or(Consumer<Param> consumer)
+or(boolean condition, Consumer<Param> consumer)
+```
+
+#### Parameter Description
+
+- `condition`: A boolean value that controls whether to apply this OR logic.
+- `consumer`: A `Consumer` functional interface that accepts a parameter of type `Param` and can call methods on the `Param` object to build OR nested conditions.
+
+#### Examples
+
+**Regular Wrapper (`QueryWrapper`)**:
+
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.eq("id", 1).or().eq("name", "老王");
+```
+
+**Lambda Wrapper (`LambdaQueryWrapper`)**:
+
+```java
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+lambdaQueryWrapper.eq(User::getId, 1).or().eq(User::getName, "老王");
+```
+
+**Generated SQL**
+
+```sql
+-- Regular Wrapper and Lambda Wrapper generate the same SQL
+SELECT * FROM user WHERE id = 1 OR name = '老王'
+```
+
+**OR Nesting Example**:
+
+```java
+// Regular Wrapper
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.or(i -> i.and(j -> j.eq("name", "李白").eq("status", "alive"))
+                         .or(j -> j.eq("name", "杜甫").eq("status", "alive")));
+
+// Lambda Wrapper
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+lambdaQueryWrapper.or(i -> i.and(j -> j.eq(User::getName, "李白").eq(User::getStatus, "alive"))
+                              .or(j -> j.eq(User::getName, "杜甫").eq(User::getStatus, "alive")));
+```
+
+**Generated SQL**
+
+```sql
+-- Regular Wrapper and Lambda Wrapper generate the same SQL
+SELECT * FROM user WHERE (name = '李白' AND status = 'alive') OR (name = '杜甫' AND status = 'alive')
+```
+
+:::note[Important Notes]
+
+- Actively calling the `or` method indicates that the next query condition method will be connected using `or` instead of `and`.
+- If you don't call the `or` method, query conditions are connected using `and` by default.
+- The `or` method can be used in a nested fashion by passing a `Consumer` functional interface to build complex OR nested conditions.
+- When using the `or` method, ensure the `condition` parameter correctly controls the application of OR logic.
+- While nested use of the `or` method can build complex query logic, pay attention to code readability and maintainability.
+
+:::
+
+### and
+
+The `and` method is one of the fundamental methods in MyBatis-Plus for building query conditions. It adds AND logic to your query conditions. By calling the `and` method, you can create nested AND conditions, meaning you can group multiple query conditions within a single AND logic block.
+
+#### Usage Scope
+
+- `QueryWrapper`
+- `LambdaQueryWrapper`
+- `UpdateWrapper`
+- `LambdaUpdateWrapper`
+
+#### Method Signature
+
+```java
+// Add AND nested condition
+and(Consumer<Param> consumer)
+and(boolean condition, Consumer<Param> consumer)
+```
+
+#### Parameter Description
+
+- `consumer`: A `Consumer` functional interface that accepts a parameter of type `Param`. You can call methods on this `Param` object to build the nested AND conditions.
+- `condition`: A boolean value that controls whether to apply this AND nested logic.
+
+#### Examples
+
+**Regular Wrapper (`QueryWrapper`)**:
+
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.and(i -> i.and(j -> j.eq("name", "李白").eq("status", "alive"))
+                         .and(j -> j.eq("name", "杜甫").eq("status", "alive")));
+```
+
+**Lambda Wrapper (`LambdaQueryWrapper`)**:
+
+```java
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+lambdaQueryWrapper.and(i -> i.and(j -> j.eq(User::getName, "李白").eq(User::getStatus, "alive"))
+                              .and(j -> j.eq(User::getName, "杜甫").eq(User::getStatus, "alive")));
+```
+
+**Generated SQL**
+
+```sql
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
+SELECT * FROM user WHERE ((name = '李白' AND status = 'alive') AND (name = '杜甫' AND status = 'alive'))
+```
+
+:::note[Notes]
+
+- Using the `and` method for nesting allows you to build complex query logic, where an AND condition can contain multiple query conditions.
+- When using the nesting feature of the `and` method, ensure the logic within the `Consumer` functional interface correctly builds the desired query conditions.
+- The `condition` parameter controls whether the `Consumer` logic is applied, allowing you to dynamically add query conditions based on certain criteria.
+- Because nested use of the `and` method can implement complex logic, pay special attention to code readability and maintainability when using it.
+
+:::
+
+### nested
+
+The `nested` method is one of the advanced methods in MyBatis-Plus for building query conditions. It creates an independent query condition block without a default AND or OR logic. By calling the `nested` method, you can add a nested clause to your query conditions. This clause can contain multiple conditions and can be connected to the outer query conditions via AND or OR.
+
+#### Scope of Use
+
+- `QueryWrapper`
+- `LambdaQueryWrapper`
+- `UpdateWrapper`
+- `LambdaUpdateWrapper`
+
+#### Method Signature
+
+```java
+// Adds an independent query condition block
 nested(Consumer<Param> consumer)
 nested(boolean condition, Consumer<Param> consumer)
 ```
 
 #### Parameter Description
 
-- `consumer`: A `Consumer` functional interface that accepts a `Param` type parameter and can call methods on the `Param` object to build nested query conditions.
-- `condition`: A boolean value used to control whether to apply this nested logic.
+- `consumer`: A `Consumer` functional interface that accepts a parameter of type `Param`. You can call methods on this `Param` object to build the nested query conditions.
+- `condition`: A boolean value that controls whether to apply this nested logic.
 
 #### Examples
 
@@ -2060,22 +2060,22 @@ lambdaQueryWrapper.nested(i -> i.eq(User::getName, "李白").ne(User::getStatus,
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
 SELECT * FROM user WHERE (name = '李白' AND status <> '活着')
 ```
 
 :::note[Notes]
 
-- The query condition block created by the `nested` method is an independent clause that can be connected to outer query conditions via AND or OR.
+- The query condition block created by the `nested` method is an independent clause that can be connected to the outer query conditions via AND or OR.
 - When using the `nested` method, ensure the logic within the `Consumer` functional interface correctly builds the desired query conditions.
-- The `condition` parameter controls whether to apply the `Consumer` logic, allowing you to dynamically add query conditions based on certain criteria.
-- Since the `nested` method can execute complex logic, special attention should be paid to code readability and maintainability when using it.
+- The `condition` parameter controls whether the `Consumer` logic is applied, allowing you to dynamically add query conditions based on certain criteria.
+- Because the `nested` method can execute complex logic, pay special attention to code readability and maintainability when using it.
 
 :::
 
 ### apply
 
-The `apply` method is one of the advanced methods in MyBatis-Plus for constructing query conditions. It allows you to directly concatenate SQL fragments into the query conditions. This method is particularly useful for scenarios requiring database functions or other complex SQL constructs.
+The `apply` method is one of the advanced methods in MyBatis-Plus for building query conditions, allowing you to directly concatenate SQL fragments into the query. This method is particularly useful for scenarios requiring database functions or other complex SQL constructs.
 
 #### Scope of Use
 
@@ -2087,7 +2087,7 @@ The `apply` method is one of the advanced methods in MyBatis-Plus for constructi
 #### Method Signature
 
 ```java
-// Concatenate SQL fragments
+// Concatenate SQL fragment
 apply(String applySql, Object... params)
 apply(boolean condition, String applySql, Object... params)
 ```
@@ -2095,8 +2095,8 @@ apply(boolean condition, String applySql, Object... params)
 #### Parameter Description
 
 - `applySql`: A string containing the SQL fragment to be concatenated.
-- `params`: A variable argument list containing replacement values for placeholders in the SQL fragment.
-- `condition`: A boolean value to control whether the SQL fragment should be applied.
+- `params`: A variable argument list containing replacement values for the placeholders in the SQL fragment.
+- `condition`: A boolean value that controls whether to apply this SQL fragment.
 
 #### Examples
 
@@ -2114,7 +2114,7 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.apply("date_format(dateColumn, '%Y-%m-%d') = '2008-08-08'");
 ```
 
-**Example with Parameter Placeholders**:
+**Example using parameter placeholders**:
 
 ```java
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
@@ -2130,22 +2130,22 @@ SELECT * FROM user WHERE id = 1
 -- SQL generated by Lambda Wrapper
 SELECT * FROM user WHERE date_format(dateColumn, '%Y-%m-%d') = '2008-08-08'
 
--- SQL generated with parameter placeholders
+-- SQL generated using parameter placeholders
 SELECT * FROM user WHERE date_format(dateColumn, '%Y-%m-%d') = '2008-08-08'
 ```
 
-:::warning[Notes]
+:::warning[Important Notes]
 
 - The `apply` method can be used to concatenate SQL fragments containing database functions.
-- The dynamic input parameters `params` correspond to the `{index}` parts inside `applySql`, which eliminates the risk of SQL injection. If parameters are directly concatenated into the SQL, there is a risk of SQL injection, so avoid dynamically passing parameters from the frontend and directly referencing them in SQL.
-- When using the `apply` method, ensure that the `applySql` parameter is a valid SQL fragment and that the `params` parameters correctly replace the placeholders.
-- The `condition` parameter controls whether the SQL fragment is applied, allowing you to dynamically add query conditions based on certain criteria.
+- The dynamic input parameters in `params` correspond to the `{index}` parts inside the `applySql`, which eliminates SQL injection risk. If you directly concatenate parameters into the SQL, there is a risk of SQL injection. Therefore, you should avoid having SQL dynamically passed from frontend parameters and directly referenced.
+- When using the `apply` method, ensure the `applySql` parameter is a valid SQL fragment and that the `params` parameter correctly replaces the placeholders.
+- The `condition` parameter controls whether to apply this SQL fragment, allowing you to dynamically add query conditions based on certain criteria.
 
 :::
 
 ### last
 
-The `last` method is one of the advanced query-building methods in MyBatis-Plus, allowing you to directly append an SQL fragment at the end of a query without being affected by MyBatis-Plus's query optimization rules. This method should be used with caution, as it may bypass MyBatis-Plus's query optimizations.
+The `last` method is one of the advanced methods in MyBatis-Plus for building query conditions. It allows you to directly append an SQL fragment to the end of a query, bypassing MyBatis-Plus's query optimization rules. Use this method with caution, as it may circumvent MyBatis-Plus's query optimization.
 
 #### Scope of Use
 
@@ -2157,15 +2157,15 @@ The `last` method is one of the advanced query-building methods in MyBatis-Plus,
 #### Method Signature
 
 ```java
-// Appends an SQL fragment at the end of the query
+// Appends an SQL fragment to the end of the query
 last(String lastSql)
 last(boolean condition, String lastSql)
 ```
 
 #### Parameter Description
 
-- `lastSql`: A string containing the SQL fragment to be appended at the end of the query.
-- `condition`: A boolean value controlling whether the SQL fragment should be applied.
+- `lastSql`: A string containing the SQL fragment to append to the end of the query.
+- `condition`: A boolean value that controls whether to apply this SQL fragment.
 
 #### Examples
 
@@ -2186,22 +2186,22 @@ lambdaQueryWrapper.last("limit 1");
 **Generated SQL**
 
 ```sql
--- The generated SQL is the same for both regular and Lambda Wrappers
+-- The generated SQL is the same for both the regular Wrapper and Lambda Wrapper
 SELECT * FROM user LIMIT 1
 ```
 
-:::tip[Notes]
+:::tip[Important Notes]
 
-- The `last` method can only be called once; multiple calls will prioritize the last invocation.
+- The `last` method can only be called once; multiple calls will use the last one.
 - Using the `last` method bypasses MyBatis-Plus's query optimization rules, which may reduce query efficiency.
-- Since the `lastSql` parameter is directly concatenated into the SQL, ensure the input SQL fragment is secure. The `lastSql` should be controlled by the backend, not dynamically passed from the frontend.
-- When using the `last` method, ensure the `lastSql` parameter is a safe SQL fragment and the `condition` parameter correctly controls its application.
+- Since the `lastSql` parameter is directly concatenated into the SQL, you must ensure the input SQL fragment is safe. The `lastSql` should be controlled by the backend, not passed dynamically from the frontend.
+- When using the `last` method, ensure the `lastSql` parameter is a safe SQL fragment and that the `condition` parameter correctly controls its application.
 
 :::
 
 ### exists
 
-The `exists` method is one of the advanced query-building methods in MyBatis-Plus, used to add an EXISTS subquery to a query. By calling the `exists` method, you can embed a complete SQL subquery as an EXISTS condition into the main query.
+The `exists` method is one of the advanced methods in MyBatis-Plus for building query conditions. It is used to add an EXISTS subquery to your query. By calling the `exists` method, you can add a complete SQL subquery as an EXISTS condition to your main query.
 
 #### Scope of Use
 
@@ -2221,7 +2221,7 @@ exists(boolean condition, String existsSql)
 #### Parameter Description
 
 - `existsSql`: A string containing the SQL subquery to be used as the EXISTS condition.
-- `condition`: A boolean value to control whether this EXISTS condition is applied.
+- `condition`: A boolean value that controls whether to apply this EXISTS condition.
 
 #### Examples
 
@@ -2242,22 +2242,22 @@ lambdaQueryWrapper.exists("select id from table where age = 1");
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is identical
 SELECT * FROM user WHERE EXISTS (select id from table where age = 1)
 ```
 
-:::tip[Notes]
+:::tip[Important Notes]
 
-- The `exists` method is used to add an EXISTS subquery, typically for checking whether the subquery returns any rows.
-- When using the `exists` method, ensure the `existsSql` parameter is a valid SQL subquery. It will be directly embedded into the generated SQL, so its safety and correctness must be guaranteed. Avoid dynamically passing SQL from frontend parameters and directly referencing them.
+- The `exists` method is used to add an EXISTS subquery, which is typically used to check if the subquery returns any rows.
+- When using the `exists` method, ensure the `existsSql` parameter is a valid SQL subquery. It will be directly embedded into the generated SQL, so you must ensure its safety and correctness. Avoid scenarios where SQL is dynamically passed from the frontend and directly referenced.
 - The `condition` parameter controls whether the EXISTS condition is applied, allowing you to dynamically add query conditions based on certain criteria.
-- Since the `exists` method enables complex logic, special attention should be paid to code readability and maintainability when using it.
+- Since the `exists` method allows for complex logic, pay special attention to code readability and maintainability when using it.
 
 :::
 
 ### notExists
 
-The `notExists` method is one of the advanced query-building methods in MyBatis-Plus, used to add a NOT EXISTS subquery to a query. By invoking the `notExists` method, you can embed a complete SQL subquery as a NOT EXISTS condition into the main query.
+The `notExists` method is one of the advanced methods in MyBatis-Plus for building query conditions. It adds a NOT EXISTS subquery to your query. By calling the `notExists` method, you can add a complete SQL subquery as a NOT EXISTS condition to the main query.
 
 #### Scope of Use
 
@@ -2277,7 +2277,7 @@ notExists(boolean condition, String notExistsSql)
 #### Parameter Description
 
 - `notExistsSql`: A string containing the SQL subquery to be used as the NOT EXISTS condition.
-- `condition`: A boolean value to control whether the NOT EXISTS condition is applied.
+- `condition`: A boolean value that controls whether to apply this NOT EXISTS condition.
 
 #### Examples
 
@@ -2298,90 +2298,90 @@ lambdaQueryWrapper.notExists("select id from table where age = 1");
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is identical
 SELECT * FROM user WHERE NOT EXISTS (select id from table where age = 1)
 ```
 
-:::tip[Notes]
+:::tip[Important Notes]
 
-- The `notExists` method is used to add a NOT EXISTS subquery, typically to check whether the subquery returns no rows.
-- When using the `notExists` method, ensure the `notExistsSql` parameter is a valid SQL subquery. It will be directly embedded into the generated SQL, so its safety and correctness must be guaranteed. Avoid dynamically passing SQL from frontend parameters and directly referencing them.
-- The `condition` parameter controls whether the NOT EXISTS condition is applied, allowing you to dynamically add query conditions based on certain criteria.
-- Since the `notExists` method enables complex logic, special attention should be paid to code readability and maintainability when using it.
+- The `notExists` method adds a NOT EXISTS subquery, which is typically used to check if a subquery returns no rows.
+- When using the `notExists` method, ensure the `notExistsSql` parameter is a valid SQL subquery. It will be directly embedded into the generated SQL, so you must ensure its safety and correctness. Avoid passing SQL with dynamic parameters directly from the frontend.
+- The `condition` parameter controls whether the NOT EXISTS condition is applied, allowing you to dynamically add query conditions based on specific criteria.
+- Since the `notExists` method enables complex logic, pay special attention to code readability and maintainability when using it.
 
 :::
 
-### select  
+### select
 
-The `select` method is one of the advanced methods in MyBatis-Plus for constructing query conditions, used to specify the fields to be queried. By calling the `select` method, you can define which fields to include in the query results, enabling field-level customization of queries.  
+The `select` method is one of the advanced methods in MyBatis-Plus for building query conditions, used to specify which fields to include in the query results. By calling the `select` method, you can define the specific columns to be returned, enabling field-level customization of your queries.
 
-#### Scope of Use  
+#### Scope of Use
 
-- `QueryWrapper`  
-- `LambdaQueryWrapper`  
+- `QueryWrapper`
+- `LambdaQueryWrapper`
 
-#### Method Signatures  
+#### Method Signature
 
-```java  
-// Set query fields  
-select(String... sqlSelect)  
+```java
+// Sets the query columns
+select(String... sqlSelect)
 
-// Filter query fields (excluding primary keys)  
-select(Predicate<TableFieldInfo> predicate)  
-select(Class<T> entityClass, Predicate<TableFieldInfo> predicate)  
-```  
+// Filters query columns (excluding the primary key)
+select(Predicate<TableFieldInfo> predicate)
+select(Class<T> entityClass, Predicate<TableFieldInfo> predicate)
+```
 
-#### Parameter Descriptions  
+#### Parameter Description
 
-- `sqlSelect`: A string array containing the names of the fields to query.  
-- `predicate`: A `Predicate` functional interface for filtering query fields. It accepts a parameter of type `TableFieldInfo` and returns a boolean value indicating whether to include the field.  
-- `entityClass`: The type of the entity class, used to obtain field information.  
+- `sqlSelect`: A string array containing the names of the columns to query.
+- `predicate`: A `Predicate` functional interface used to filter query columns. It accepts a parameter of type `TableFieldInfo` and returns a boolean value indicating whether to select the field.
+- `entityClass`: The type of the entity class, used to obtain field information.
 
-#### Examples  
+#### Examples
 
-**Regular Wrapper (`QueryWrapper`)**  
+**Regular Wrapper (`QueryWrapper`)**:
 
-```java  
-QueryWrapper<User> queryWrapper = new QueryWrapper<>();  
-queryWrapper.select("id", "name", "age");  
-```  
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.select("id", "name", "age");
+```
 
-**Lambda Wrapper (`LambdaQueryWrapper`)**  
+**Lambda Wrapper (`LambdaQueryWrapper`)**:
 
-```java  
-LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();  
-lambdaQueryWrapper.select(User::getId, User::getName, User::getAge);  
-```  
+```java
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+lambdaQueryWrapper.select(User::getId, User::getName, User::getAge);
+```
 
-**Example Using Predicate to Filter Fields**  
+**Example using Predicate to filter fields**:
 
-```java  
-QueryWrapper<User> queryWrapper = new QueryWrapper<>();  
-queryWrapper.select(i -> i.getProperty().startsWith("test"));  
-```  
+```java
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+queryWrapper.select(i -> i.getProperty().startsWith("test"));
+```
 
-**Generated SQL**  
+**Generated SQL**
 
-```sql  
--- SQL generated by regular Wrapper and Lambda Wrapper is the same  
-SELECT id, name, age FROM user  
+```sql
+-- SQL generated by both the regular Wrapper and Lambda Wrapper is the same
+SELECT id, name, age FROM user
 
--- SQL generated using Predicate to filter fields  
-SELECT testField1, testField2 FROM user  
-```  
+-- SQL generated using Predicate to filter fields
+SELECT testField1, testField2 FROM user
+```
 
-:::tip[Note]  
+:::tip[Note]
 
-- The `select` method is divided into two categories: the first directly specifies the field names to query, while the second filters fields using `Predicate`.  
-- The second category of methods is used to filter query fields (excluding primary keys). If the input parameter does not include `entityClass`, ensure the `entity` property in the `wrapper` has a value before calling.  
-- When these methods are called repeatedly, the last call takes precedence.  
-- When using the `select` method, ensure the specified field names or filtering conditions are correct to avoid unexpected query results.  
+- The `select` method is divided into two types: the first type directly specifies the column names to query, and the second type filters columns using a `Predicate`.
+- The second type of method is used to filter query columns (excluding the primary key). If the input parameter does not include `entityClass`, you must ensure that the `entity` property within the wrapper has a value before calling it.
+- When these methods are called repeatedly, the last call takes precedence.
+- When using the `select` method, ensure that the specified column names or filter conditions are correct to avoid unexpected query results.
 
 :::
 
 ### set
 
-The `set` method is one of the advanced methods in MyBatis-Plus for constructing update operations. It is used to specify the SET fields in an update statement. By calling the `set` method, you can define the fields to be modified and their new values in an update operation.
+The `set` method is one of the advanced methods in MyBatis-Plus for building update operations. It is used to specify the SET fields in an update statement. By calling the `set` method, you can define which fields to modify and their new values during an update operation.
 
 #### Scope of Use
 
@@ -2400,10 +2400,10 @@ set(boolean condition, R column, Object val, String mapping)
 
 #### Parameter Description
 
-- `column`: The database column name or the field name using a `Lambda` expression.
-- `condition`: A boolean value to control whether this SET field is applied.
-- `val`: An object representing the new value to be updated for the field.
-- `mapping`: Additional specifications, e.g., `javaType=int,jdbcType=NUMERIC,typeHandler=xxx.xxx.MyTypeHandler`.
+- `column`: The database column name or a field name using a Lambda expression.
+- `condition`: A boolean value that controls whether to apply this SET field.
+- `val`: An object representing the new value to update the field to.
+- `mapping`: Additional specifications, for example: `javaType=int,jdbcType=NUMERIC,typeHandler=xxx.xxx.MyTypeHandler`
 
 #### Examples
 
@@ -2411,24 +2411,24 @@ set(boolean condition, R column, Object val, String mapping)
 
 ```java
 UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-updateWrapper.set("name", "Old Li");
+updateWrapper.set("name", "Old Man Li");
 ```
 
 **Lambda Wrapper (`LambdaUpdateWrapper`)**:
 
 ```java
 LambdaUpdateWrapper<User> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
-lambdaUpdateWrapper.set(User::getName, "Old Li");
+lambdaUpdateWrapper.set(User::getName, "Old Man Li");
 ```
 
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
-UPDATE user SET name = 'Old Li'
+-- The SQL generated by both the regular Wrapper and Lambda Wrapper is the same
+UPDATE user SET name = 'Old Man Li'
 ```
 
-**Example with Conditional Control**:
+**Example using conditional control**:
 
 ```java
 UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
@@ -2438,23 +2438,23 @@ updateWrapper.set(true, "name", "");
 **Generated SQL**
 
 ```sql
--- SQL with conditional control
+-- SQL using conditional control
 UPDATE user SET name = ''
 ```
 
-:::tip[Notes]
+:::tip[Important Notes]
 
-- The `set` method is used to specify the SET fields in an update statement, allowing you to define the fields to be updated and their new values.
-- When the `val` parameter is an empty string, the database field value will be set to an empty string.
-- When the `val` parameter is `null`, the database field value will be set to `null`.
-- The `condition` parameter controls whether the SET field is applied, enabling dynamic addition of update fields based on certain conditions.
+- The `set` method is used to specify the SET fields in an update statement, allowing you to define the fields to update and their new values.
+- When the `val` parameter is an empty string, the database field value will become an empty string.
+- When the `val` parameter is `null`, the database field value will become `null`.
+- The `condition` parameter controls whether to apply this SET field, enabling you to dynamically add update fields based on certain conditions.
 - When using the `set` method, ensure the `column` parameter is a valid field name and the `val` parameter is an appropriate new value.
 
 :::
 
 ### setSql
 
-The `setSql` method is one of the advanced methods in MyBatis-Plus for constructing update operations. It allows you to directly set the SET part of the SQL in an update statement. By calling the `setSql` method, you can add a custom SQL fragment as the SET clause to the update statement.
+The `setSql` method is one of the advanced methods in MyBatis-Plus for building update operations. It allows you to directly set the SQL for the SET clause in the update statement. By calling the `setSql` method, you can add a custom SQL fragment as the SET clause to the update statement.
 
 #### Scope of Use
 
@@ -2464,7 +2464,7 @@ The `setSql` method is one of the advanced methods in MyBatis-Plus for construct
 #### Method Signature
 
 ```java
-// Sets the SET part of the SQL in the update statement
+// Sets the SQL for the SET clause in the update statement
 setSql(String setSql, Object... params)
 setSql(boolean condition, String setSql, Object... params)
 ```
@@ -2472,28 +2472,28 @@ setSql(boolean condition, String setSql, Object... params)
 #### Parameter Description
 
 - `setSql`: A string containing the SQL fragment to be used as the SET clause.
-- `condition`: A boolean value to control whether this SET field is applied.
+- `condition`: A boolean value that controls whether to apply this SET field.
 - `params`: A variable argument list containing replacement values for placeholders in the SQL fragment.
 
 #### Examples
 
 ```java
-setSql("name = 'Old Li'")
+setSql("name = '老李头'")
 setSql("dateColumn={0}", LocalDate.now())
-setSql("type={0,javaType=int,jdbcType=NUMERIC,typeHandler=xxx.xxx.MyTypeHandler}", "pending string");
+setSql("type={0,javaType=int,jdbcType=NUMERIC,typeHandler=xxx.xxx.MyTypeHandler}", "待处理字符串");
 ```
 
-:::tip[Notes]
+:::tip[Important Notes]
 
-- The `setSql` method is used to set the SET part of the SQL in an update statement, typically for scenarios requiring complex SQL construction.
-- When using the `setSql` method, ensure the `sql` parameter is a valid SQL fragment, as it will be directly embedded into the generated SQL. Therefore, ensure its security and correctness, and avoid dynamically passing SQL from frontend parameters for direct reference.
-- Since the `setSql` method allows executing complex logic, special attention should be paid to code readability and maintainability during use.
+- The `setSql` method is used to set the SQL for the SET clause in the update statement. This is typically used for scenarios requiring complex SQL constructs.
+- When using the `setSql` method, ensure the `sql` parameter is a valid SQL fragment. It will be directly embedded into the generated SQL, so you must ensure its safety and correctness. Avoid passing SQL directly from front-end dynamic parameters.
+- Since the `setSql` method allows for executing complex logic, pay special attention to code readability and maintainability when using it.
 
 :::
 
 ### setIncrBy <Badge text="Since 3.5.6" type="error"/>
 
-The `setIncrBy` method is one of the advanced methods in MyBatis-Plus for update operations. It allows you to specify a field and increment its value in the database by a specified amount. This method is particularly useful for scenarios requiring incremental operations on numeric fields.
+The `setIncrBy` method is one of the advanced update operations in MyBatis-Plus that allows you to specify a field and increment its value in the database by a specified amount. This method is particularly useful for scenarios where you need to perform incremental operations on numeric fields.
 
 #### Scope of Use
 
@@ -2502,17 +2502,17 @@ The `setIncrBy` method is one of the advanced methods in MyBatis-Plus for update
 #### Method Signature
 
 ```java
-// Increment a field by a specified value
+// Increment field by specified value
 setIncrBy(SFunction<T, ?> column, Number val)
 
-// Increment a field by a specified value when the condition is met
+// Increment field by specified value when condition is met
 setIncrBy(boolean condition, SFunction<T, ?> column, Number val)
 ```
 
 #### Parameter Description
 
-- `column`: An `SFunction` object representing the field to be incremented.
-- `val`: A `Number` object representing the value to increment by.
+- `column`: An `SFunction` object representing the field to increment.
+- `val`: A `Number` object representing the value to add.
 - `condition` (optional): A boolean value indicating whether to perform the increment operation when the condition is met.
 
 #### Examples
@@ -2534,21 +2534,21 @@ lambdaUpdateWrapper.setIncrBy(Product::getNum, 1);
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- Both Regular Wrapper and Lambda Wrapper generate the same SQL
 UPDATE product SET num = num + 1
 ```
 
-:::tip[Notes]
+:::tip[Important Notes]
 
-- The `setIncrBy` method is used to increment a specified field, typically for scenarios requiring incremental updates to numeric fields.
+- The `setIncrBy` method is used to increment specified fields, which is typically useful for scenarios requiring incremental updates to numeric fields.
 - When using the `setIncrBy` method, ensure the `column` parameter is a valid field expression and the `val` parameter is a valid numeric value.
-- If the `condition` parameter is provided, the increment operation will only be performed when the condition evaluates to `true`.
+- If you provide the `condition` parameter, the increment operation will only execute when the condition evaluates to `true`.
 
 :::
 
 ### setDecrBy <Badge text="Since 3.5.6" type="error"/>
 
-The `setDecrBy` method is one of the advanced update operations in MyBatis-Plus, allowing you to specify a field and decrement its value in the database by a specified amount. This method is particularly useful for scenarios requiring decrement operations on numeric fields.
+The `setDecrBy` method is one of the advanced update operations in MyBatis-Plus that allows you to specify a field and decrease its value in the database by a specified amount. This method is particularly useful for scenarios where you need to perform decrement operations on numeric fields.
 
 #### Scope of Use
 
@@ -2557,18 +2557,18 @@ The `setDecrBy` method is one of the advanced update operations in MyBatis-Plus,
 #### Method Signature
 
 ```java
-// Decrement a field by a specified value
+// Decreases a field by the specified value
 setDecrBy(SFunction<T, ?> column, Number val)
 
-// Decrement a field by a specified value when the condition is met
+// Decreases a field by the specified value when the condition is met
 setDecrBy(boolean condition, SFunction<T, ?> column, Number val)
 ```
 
 #### Parameter Description
 
 - `column`: An `SFunction` object representing the field to decrement.
-- `val`: A `Number` object representing the value to decrement by.
-- `condition` (optional): A boolean value indicating whether to perform the decrement operation when the condition is satisfied.
+- `val`: A `Number` object representing the value to subtract.
+- `condition` (optional): A boolean value indicating whether to perform the decrement operation when the condition is met.
 
 #### Examples
 
@@ -2589,129 +2589,129 @@ lambdaUpdateWrapper.setDecrBy(Product::getNum, 1);
 **Generated SQL**
 
 ```sql
--- The SQL generated by both regular Wrapper and Lambda Wrapper is the same
+-- Both regular Wrapper and Lambda Wrapper generate the same SQL
 UPDATE product SET num = num - 1
 ```
 
-:::tip[Notes]
+:::tip[Important Notes]
 
-- The `setDecrBy` method is used to decrement a specified field, typically for scenarios requiring decrement updates on numeric fields.
+- The `setDecrBy` method is used to decrement specified fields, which is typically needed for scenarios requiring numeric field decrement updates.
 - When using the `setDecrBy` method, ensure the `column` parameter is a valid field expression and the `val` parameter is a valid numeric value.
-- If the `condition` parameter is provided, the decrement operation will only be performed when the condition evaluates to `true`.
+- If you provide the `condition` parameter, the decrement operation will only execute when the condition evaluates to `true`.
 
 :::
 
-### lambda  
+### lambda
 
-The `lambda` method is a convenient method that allows you to obtain the corresponding `LambdaQueryWrapper` or `LambdaUpdateWrapper` object from a `QueryWrapper` or `UpdateWrapper` object. This enables you to use Lambda expressions to construct query or update conditions, making the code more concise and type-safe.  
+The `lambda` method is a convenient way to get the corresponding `LambdaQueryWrapper` or `LambdaUpdateWrapper` object from a `QueryWrapper` or `UpdateWrapper` object. This allows you to use Lambda expressions to build query or update conditions, making your code more concise and type-safe.
 
-#### Scope of Use  
+#### Scope of Use
 
-- `QueryWrapper`  
-- `UpdateWrapper`  
+- `QueryWrapper`
+- `UpdateWrapper`
 
-#### Method Signature  
-
-```java  
-// Get Lambda Wrapper  
-lambda();  
-```  
-
-#### Examples  
-
-**Obtaining LambdaQueryWrapper from QueryWrapper**:  
-
-```java  
-QueryWrapper<User> queryWrapper = new QueryWrapper<>();  
-LambdaQueryWrapper<User> lambdaQueryWrapper = queryWrapper.lambda();  
-// Use Lambda expressions to construct query conditions  
-lambdaQueryWrapper.eq("name", "张三");  
-```  
-
-**Obtaining LambdaUpdateWrapper from UpdateWrapper**:  
-
-```java  
-UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();  
-LambdaUpdateWrapper<User> lambdaUpdateWrapper = updateWrapper.lambda();  
-// Use Lambda expressions to construct update conditions  
-lambdaUpdateWrapper.set(User::getName, "李四");  
-```  
-
-#### Notes  
-
-- The `lambda` method returns a `LambdaWrapper` object, with the specific type depending on the `Wrapper` type it is called on.  
-- Calling the `lambda` method on a `QueryWrapper` will return a `LambdaQueryWrapper`.  
-- Calling the `lambda` method on an `UpdateWrapper` will return a `LambdaUpdateWrapper`.  
-- Using Lambda expressions avoids directly specifying field names as strings, reducing errors and improving code readability.  
-
-:::tip[Note]  
-
-- When using the `lambda` method, ensure that you have properly initialized the `QueryWrapper` or `UpdateWrapper` object.  
-- Once you obtain the `LambdaWrapper` object, you can use Lambda expressions to construct query or update conditions, making the code more type-safe and easier to maintain.  
-
-:::
-
-## Using TypeHandler  
-
-> Special handling is required when using `typeHandler` in `wrapper` by utilizing the `formatSqlMaybeWithParam` method  
+#### Method Signature
 
 ```java
-// Query  
-queryWrapper.apply("type={0,typeHandler="+ MyTypeHandler.class.getCanonicalName()+ "}", "string_to_process");  
-
-// Update  
-updateWrapper.setSql("type={0,javaType=string,jdbcType=VARCHAR,typeHandler=xxx.xxx.MyTypeHandler}", "string_to_process");  
+// Get Lamdba Wrapper
+lambda();
 ```
 
-## Usage Tips  
+#### Examples
 
-By leveraging MyBatis-Plus's Wrapper conditional constructor, developers can more efficiently build complex database query conditions while maintaining code conciseness and security. Here are some considerations and recommended practices:  
-
-- When using Wrapper, prefer Lambda expressions to avoid hardcoding field names, which improves code readability and maintainability.  
-- Wrapper supports method chaining, allowing the combination of multiple conditions with logical operators such as `and`, `or`, etc.  
-- When performing update operations with UpdateWrapper or LambdaUpdateWrapper, you can omit the entity object and directly set the update fields in the Wrapper.  
-- Be mindful of Wrapper's thread safety—typically, create a new Wrapper instance for each use.  
-- When using MyBatis-Plus's Wrapper, avoid directly concatenating frontend dynamic parameters into SQL fragments to prevent SQL injection attacks. MyBatis-Plus provides secure parameter binding methods, such as `eq`, `apply`, etc., which automatically handle parameter binding to mitigate SQL injection risks.
-
-### Wrappers  
-
-MyBatis-Plus provides the `Wrappers` class, which is a static factory class for quickly creating instances of `QueryWrapper`, `UpdateWrapper`, `LambdaQueryWrapper`, and `LambdaUpdateWrapper`. Using `Wrappers` can reduce code volume and improve development efficiency.  
-
-**Example**:  
+**Get LambdaQueryWrapper from QueryWrapper**:
 
 ```java
-// Create QueryWrapper  
-QueryWrapper<User> queryWrapper = Wrappers.query();  
-queryWrapper.eq("name", "张三");  
+QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+LambdaQueryWrapper<User> lambdaQueryWrapper = queryWrapper.lambda();
+// Use Lambda expressions to build query conditions
+lambdaQueryWrapper.eq(User::getName, "张三");
+```
 
-// Create LambdaQueryWrapper  
-LambdaQueryWrapper<User> lambdaQueryWrapper = Wrappers.lambdaQuery();  
-lambdaQueryWrapper.eq(User::getName, "张三");  
+**Get LambdaUpdateWrapper from UpdateWrapper**:
 
-// Create UpdateWrapper  
-UpdateWrapper<User> updateWrapper = Wrappers.update();  
-updateWrapper.set("name", "李四");  
+```java
+UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+LambdaUpdateWrapper<User> lambdaUpdateWrapper = updateWrapper.lambda();
+// Use Lambda expressions to build update conditions
+lambdaUpdateWrapper.set(User::getName, "李四");
+```
 
-// Create LambdaUpdateWrapper  
-LambdaUpdateWrapper<User> lambdaUpdateWrapper = Wrappers.lambdaUpdate();  
-lambdaUpdateWrapper.set(User::getName, "李四");  
-```  
+#### Explanation
 
-:::tip[Notes]  
+- The `lambda` method returns a `LambdaWrapper` object. The specific type depends on the type of `Wrapper` that calls it.
+- Calling the `lambda` method on a `QueryWrapper` returns a `LambdaQueryWrapper`.
+- Calling the `lambda` method on an `UpdateWrapper` returns a `LambdaUpdateWrapper`.
+- Using Lambda expressions helps you avoid using strings directly to specify field names, which reduces errors and improves code readability.
 
-- When using `QueryWrapper` or `UpdateWrapper` to set query conditions, ensure the **field portion** is secure to avoid SQL injection attacks.  
-- Any **SQL fragments** passed from the **frontend** must be **strictly filtered**. For more details, see [Data Security Protection](/guides/security/) and [Preventing Security Vulnerabilities](/reference/about-cve/).  
+:::tip[Note]
+
+- When using the `lambda` method, make sure you have properly initialized the `QueryWrapper` or `UpdateWrapper` object.
+- Once you have the `LambdaWrapper` object, you can use Lambda expressions to build query or update conditions, making your code more type-safe and easier to maintain.
+
+:::
+
+## Using TypeHandler
+
+> When using `typeHandler` in `wrapper`, special handling is required using the `formatSqlMaybeWithParam` method
+
+```java
+// Query
+queryWrapper.apply("type={0,typeHandler="+ MyTypeHandler.class.getCanonicalName()+ "}", "string to process");
+
+// Update
+updateWrapper.setSql("type={0,javaType=string,jdbcType=VARCHAR,typeHandler=xxx.xxx.MyTypeHandler}", "string to process");
+```
+
+## Usage Tips
+
+By using MyBatis-Plus's Wrapper condition builder, you can build complex database query conditions more efficiently while maintaining code simplicity and security. Here are some considerations and recommended practices:
+
+- When using Wrapper, prefer Lambda expressions to avoid hard-coding field names. This improves code readability and maintainability.
+- Wrapper supports chain calls, allowing you to combine multiple conditions using logical operators like `and` and `or`.
+- When using UpdateWrapper or LambdaUpdateWrapper for update operations, you can omit the entity object and set the update fields directly in the Wrapper.
+- Be aware of Wrapper's thread safety; typically, you should create a new Wrapper instance for each use.
+- When using MyBatis-Plus's Wrapper, avoid directly concatenating front-end dynamic parameters into SQL fragments to prevent SQL injection attacks. MyBatis-Plus provides safe parameter binding methods, such as `eq` and `apply`, which automatically handle parameter binding to mitigate SQL injection risks.
+
+### Wrappers
+
+MyBatis-Plus provides the `Wrappers` class, which is a static factory class for quickly creating instances of `QueryWrapper`, `UpdateWrapper`, `LambdaQueryWrapper`, and `LambdaUpdateWrapper`. Using `Wrappers` can reduce code volume and improve development efficiency.
+
+**Example**:
+
+```java
+// Create QueryWrapper
+QueryWrapper<User> queryWrapper = Wrappers.query();
+queryWrapper.eq("name", "张三");
+
+// Create LambdaQueryWrapper
+LambdaQueryWrapper<User> lambdaQueryWrapper = Wrappers.lambdaQuery();
+lambdaQueryWrapper.eq(User::getName, "张三");
+
+// Create UpdateWrapper
+UpdateWrapper<User> updateWrapper = Wrappers.update();
+updateWrapper.set("name", "李四");
+
+// Create LambdaUpdateWrapper
+LambdaUpdateWrapper<User> lambdaUpdateWrapper = Wrappers.lambdaUpdate();
+lambdaUpdateWrapper.set(User::getName, "李四");
+```
+
+:::tip[Important Notes]
+
+- When using `QueryWrapper` or `UpdateWrapper` for queries or setting `condition field parts`, you must ensure security to avoid SQL injection attacks.
+- You must `strictly filter` any `SQL fragments` passed from the `frontend`. For more information, see [Data Security Protection](/guides/security/) and [Preventing Security Vulnerabilities](/reference/about-cve/)
 
 :::
 
 ### Thread Safety
 
-Wrapper instances are not thread-safe, so it is recommended to create new Wrapper instances for each use. This helps avoid data races and potential errors in multi-threaded environments.
+Wrapper instances are not thread-safe, so we recommend creating new Wrapper instances each time you use them. This helps avoid data races and potential errors in multi-threaded environments.
 
 **Example**:
 
 ```java
-// Create a new Wrapper instance in each method or request
+// Create new Wrapper instances in each method or request
 public List<User> getUsersByName(String name) {
     QueryWrapper<User> queryWrapper = Wrappers.query();
     queryWrapper.eq("name", name);
@@ -2719,18 +2719,18 @@ public List<User> getUsersByName(String name) {
 }
 ```
 
-By following these best practices, developers can use MyBatis-Plus's Wrapper condition constructor more safely and efficiently, building database operation code that is both secure and easy to maintain.
+By following these best practices, you can use MyBatis-Plus's Wrapper condition constructor more safely and efficiently, building database operation code that is both secure and easy to maintain.
 
 ### Using Wrapper for Custom SQL
 
-MyBatis-Plus provides a powerful Wrapper conditional constructor, allowing developers to customize SQL statements to meet more complex database query requirements. To use this feature, ensure your `mybatis-plus` version is at least `3.0.7`.
+MyBatis-Plus provides a powerful Wrapper conditional constructor that allows developers to customize SQL statements to meet more complex database query requirements. To use this feature, ensure your `mybatis-plus` version is `3.0.7` or higher.
 
 #### Notes
 
-- **Version Requirement**: Ensure the `mybatis-plus` version in your project is at least `3.0.7` to support custom SQL functionality.
-- **Parameter Naming**: When passing a Wrapper object as a parameter in custom SQL, the parameter name must be `ew`, or use the annotation `@Param(Constants.WRAPPER)` to explicitly specify the parameter as a Wrapper object.
-- **Using `${ew.customSqlSegment}`**: In the SQL statement, use `${ew.customSqlSegment}` to reference the SQL fragment generated by the Wrapper object.
-- **No Entity-Based WHERE Clause**: When using custom SQL, the Wrapper object does not automatically generate a WHERE clause based on the entity class. You need to manually write the complete SQL statement.
+- **Version Requirement**: Ensure the `mybatis-plus` version used in your project is at least `3.0.7` to support custom SQL functionality.
+- **Parameter Naming**: When passing a Wrapper object as a parameter in custom SQL, the parameter name must be `ew`, or you must explicitly specify the parameter as a Wrapper object using the `@Param(Constants.WRAPPER)` annotation.
+- **Using `${ew.customSqlSegment}`**: In your SQL statement, use `${ew.customSqlSegment}` to reference the SQL fragment generated by the Wrapper object.
+- **Entity-based WHERE Clauses Not Supported**: When using custom SQL, the Wrapper object does not automatically generate WHERE clauses based on the entity class. You need to manually write the complete SQL statement.
 
 #### Example
 
@@ -2747,11 +2747,11 @@ public interface UserMapper extends BaseMapper<User> {
 }
 ```
 
-In the above example, we define a `selectByCustomSql` method that uses a custom SQL statement and references the SQL fragment generated by the Wrapper object via `${ew.customSqlSegment}`.
+In the example above, we defined a `selectByCustomSql` method that uses a custom SQL statement and incorporates the SQL fragment generated by the Wrapper object via `${ew.customSqlSegment}`.
 
 #### Usage
 
-To use custom SQL, simply call the above method and pass in a Wrapper object:
+To use custom SQL, simply call the method above and pass in a Wrapper object:
 
 ```java
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
@@ -2764,9 +2764,9 @@ In this example, the `selectByCustomSql` method executes a query with a WHERE co
 
 This approach allows you to flexibly combine MyBatis-Plus's Wrapper functionality with custom SQL to meet various complex database operation requirements.
 
-## Best Practices for Defining Persistent Objects in Kotlin
+## Kotlin Persistence Object Definition Best Practices
 
-When defining persistent objects in Kotlin, we should follow some best practices to ensure code clarity and maintainability. Below is an example using MyBatis-Plus, demonstrating how to define a persistent object:
+When defining persistence objects in Kotlin, you should follow some best practices to ensure code clarity and maintainability. Here's an example using MyBatis-Plus that demonstrates how to define a persistence object:
 
 ```kotlin
 @TableName("sys_user")
@@ -2781,18 +2781,18 @@ class User {
 }
 ```
 
-**Note**: The `@TableId` and `@TableField` annotations in the above code are used to demonstrate MyBatis-Plus usage and are not mandatory. All member variables should be defined as nullable types and initialized with `null` to accommodate scenarios like `updateSelective` in Java.
+**Note**: The `@TableId` and `@TableField` annotations in the code above are used to demonstrate MyBatis-Plus usage and are not mandatory. All member variables should be defined as nullable types with initial values of `null` to support scenarios like Java's `updateSelective` operations.
 
-Using `data class` or full-parameter constructors is not recommended, as this may require providing unnecessary `null` values when creating empty objects.
+Avoid using `data class` or full-parameter constructors, as they may require you to provide unnecessary `null` values when creating empty objects.
 
-### Query Using Annotations
+### Using Annotations for Queries
 
 ```java
 @Select("select * from mysql_data ${ew.customSqlSegment}")
 List<MysqlData> getAll(@Param(Constants.WRAPPER) Wrapper wrapper);
 ```
 
-### Using XML Configuration for Queries
+### Using XML to Configure Queries
 
 ```java
 List<MysqlData> getAll(Wrapper ew);
@@ -2804,11 +2804,11 @@ List<MysqlData> getAll(Wrapper ew);
 </select>
 ```
 
-### Using Wrapper in Kotlin  
+### Using Wrapper in Kotlin
 
-Kotlin supports `QueryWrapper` and `UpdateWrapper` but does not support `LambdaQueryWrapper` and `LambdaUpdateWrapper`. If you need to use Lambda-style Wrappers, you can use `KtQueryWrapper` and `KtUpdateWrapper`.  
+Kotlin supports `QueryWrapper` and `UpdateWrapper`, but does not support `LambdaQueryWrapper` and `LambdaUpdateWrapper`. If you need to use Lambda-style Wrappers, you can use `KtQueryWrapper` and `KtUpdateWrapper`.
 
-Reference example:  
+Reference example:
 
 ```kotlin
 val queryWrapper = KtQueryWrapper(User()).eq(User::name, "sss").eq(User::roleId, "sss2")
@@ -2825,23 +2825,23 @@ updateRecord.name = "haha"
 userMapper.updateById(updateRecord)
 ```
 
-### Chained Invocation and Lambda-style Invocation  
+### Chained Calls and Lambda Calls
 
-MyBatis-Plus provides two styles of chained invocation: regular chained invocation and Lambda-style chained invocation. Note that Lambda-style chained invocation is not supported in Kotlin.  
+MyBatis-Plus provides two styles of chained calls: regular chained calls and lambda chained calls. Note that lambda chained calls do not support Kotlin.
 
-```java  
-// Regular chained invocation  
-UpdateChainWrapper<T> update();  
-// Lambda-style chained invocation (not supported in Kotlin)  
-LambdaUpdateChainWrapper<T> lambdaUpdate();  
+```java
+// Regular chained call
+UpdateChainWrapper<T> update();
+// Lambda chained call (does not support Kotlin)
+LambdaUpdateChainWrapper<T> lambdaUpdate();
 
-// Equivalent examples:  
-query().eq("id", value).one();  
-lambdaQuery().eq(Entity::getId, value).one();  
+// Equivalent examples:
+query().eq("id", value).one();
+lambdaQuery().eq(Entity::getId, value).one();
 
-// Equivalent examples:  
-update().eq("id", value).remove();  
-lambdaUpdate().eq(Entity::getId, value).remove();  
-```  
+// Equivalent examples:
+update().eq("id", value).remove();
+lambdaUpdate().eq(Entity::getId, value).remove();
+```
 
-By following these best practices, we can ensure that the definition of persistent objects in Kotlin remains clear and maintainable while fully leveraging the features provided by MyBatis-Plus.
+By following these best practices, you can ensure that your persistence object definitions in Kotlin are both clear and maintainable, while fully leveraging the capabilities provided by MyBatis-Plus.

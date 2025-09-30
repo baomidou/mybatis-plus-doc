@@ -4,15 +4,15 @@ sidebar:
   order: 3
 ---
 
-MyBatis-Plus は簡単に組み込むことができ、わずかな設定だけでその強力な機能をすぐに利用できます！
+MyBatis-Plus の統合は非常に簡単で、いくつかの簡単な設定だけで MyBatis-Plus の強力な機能を使用できます！
 
 :::tip
-設定について説明する前に、MyBatis-Plus がインストールされていることを確認してください。まだインストールされていない場合は、[インストール](/ja/getting-started/install) の章をご覧ください。
+設定の説明の前に、MyBatis-Plus が既にインストールされていることを確認してください。まだインストールしていない場合は、[インストール](/getting-started/install)の章を参照してください。
 :::
 
 ## Spring Boot プロジェクト
 
-- MapperScan アノテーションを設定します
+- MapperScan アノテーションの設定
 
   ```java {2}
   @SpringBootApplication
@@ -28,7 +28,7 @@ MyBatis-Plus は簡単に組み込むことができ、わずかな設定だけ�
 
 ## Spring プロジェクト
 
-- MapperScan を設定します
+- MapperScan の設定
 
   ```xml {2}
   <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
@@ -36,7 +36,7 @@ MyBatis-Plus は簡単に組み込むことができ、わずかな設定だけ�
   </bean>
   ```
 
-- SqlSessionFactory を MyBatis-Plus の SqlSessionFactory に切り替える
+- SqlSessionFactory を MyBatis-Plus の SqlSessionFactory に変更
 
   ```xml {1}
   <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
@@ -44,8 +44,8 @@ MyBatis-Plus は簡単に組み込むことができ、わずかな設定だけ�
   </bean>
   ```
 
-通常、一般的でシンプルなプロジェクトであれば、上記の設定だけで MyBatis-Plus を問題なく利用できます。具体的には、以下のプロジェクトを参考にしてください：[Spring Boot 快速启动示例](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart)、[Spring MVC 快速启动示例](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart-springmvc)。
+通常、一般的なシンプルなプロジェクトでは、上記の設定で MyBatis-Plus を正常に使用できます。詳細は以下のプロジェクトを参照してください：[Spring Boot クイックスタートサンプル](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart)、[Spring MVC クイックスタートサンプル](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart-springmvc)。
 
-また、MyBatis-Plus では、さまざまな複雑さのプロジェクトに対応できるよう、豊富なカスタマイズ設定を提供しています。プロジェクトの要件に応じて、必要な設定を柔軟に利用できます。詳しい設定内容については、[リファレンス](/ja/reference/)をご参照ください。
+また、MyBatis-Plus はさまざまな複雑さのプロジェクトに対応するために、多数のカスタマイズ設定を提供しています。プロジェクトに応じて必要に応じて設定してください。詳細な設定については、[設定の使用](/reference/)を参照してください。
 
-複雑なテーブル構造に対応するため、特別な要件に応じた豊富なフィールドアノテーションも提供しています。詳細については、[アノテーション](/ja/reference/annotation/)をご参照ください。
+複雑なテーブル構造に対しては、特殊なニーズを満たすための豊富なフィールドアノテーションも提供しています。詳細については、[アノテーション](/reference/annotation/)を参照してください。

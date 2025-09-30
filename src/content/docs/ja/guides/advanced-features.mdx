@@ -3,80 +3,79 @@ title: 高度な機能
 sidebar:
   order: 19
 ---
-
 import { LinkCard } from '@astrojs/starlight/components';
 
-Mybatis-Mate は、MyBatis-Plus 対して提供されるエンタープライズ向けモジュールであり、データをより迅速かつ優雅に処理することを目的としています。
+Mybatis-Mate は MyBatis-Plus 向けのエンタープライズ級モジュールであり、データ処理をより迅速かつエレガントに行うことを目的としています。
 
-- 使用例 ：[ポータル](https://gitee.com/baomidou/mybatis-mate-examples)
-- 作者に連絡して確認を取ったうえで、WeChat公式アカウントで Mybatis-Mate を紹介する記事を投稿すれば、永久個人ライセンス証明書を無料で取得できます。
-- このモジュールは MyBatis-Plus の拡張ライブラリに属しており、有料版の MyBatis-Plus ではありません。すべての問題は `青苗` 個人の責任となります。
+- 使用例 ：[サンプルコード](https://gitee.com/baomidou/mybatis-mate-examples)
+- 作者に連絡確認後、公式 WeChat アカウントで Mybatis-Mate を紹介する記事を掲載すると、無料で永久個人ライセンス証明書を取得できます。
+- このモジュールは MyBatis-Plus の拡張ライブラリであり、MyBatis-Plus の有料版ではありません。問題が発生した場合は `青苗` が個人として責任を負います。
 
 <LinkCard
-  title="無料動画チュートリアル"
-  description="青苗による制作、品質保証付き"
+  title="無料ビデオチュートリアル"
+  description="青苗制作、品質保証"
   href="https://space.bilibili.com/212983666/channel/collectiondetail?sid=606288"
 />
 
 ## データ監査（照合）
 
 - 使用例：👉 [mybatis-mate-audit](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-audit)
-- 2つのオブジェクトのプロパティの差異を比較します。例：銀行の取引明細の照合作業。
+- 2つのオブジェクトのプロパティ差異を比較します。例：銀行取引明細の照合。
   ```java
-  // 1，异步回调，注意 @EnableAsync 开启异步
+  // 1，非同期コールバック。@EnableAsync で非同期を有効にする必要があります
   applicationEventPublisher.publishEvent(new DataAuditEvent((t) -> {
       List<Change> changes = t.apply(newVersion, oldVersion);
       for (Change valueChange : changes) {
           ValueChange change = (ValueChange) valueChange;
-          System.err.println(String.format("%s一致しません。正しい値 %s 実際の値 %s", change.getPropertyName(), change.getLeft(), change.getRight()));
+          System.err.println(String.format("%s不匹配，期望值 %s 实际值 %s", change.getPropertyName(), change.getLeft(), change.getRight()));
       }
   }));
 
-  // 2，手动调用对比
+  // 2，手動での比較呼び出し
   DataAuditor.compare(obj1, obj2);
   ```
 
-## データのセンシティブワードフィルタリング
+## データ機密語フィルタリング
 
 - 使用例👉 [mybatis-mate-sensitive-words](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sensitive-words)
-- データのセンシティブワードフィルタリング（AC アルゴリズム）：ハンドラーを設定するだけで、フレームワークがすべてのリクエスト内の文字列に対して自動でセンシティブワードのフィルタリングを行います。ネストされたキーワードもサポートし、センシティブワードを完全に検出します。
-- データベースによるセルフメンテナンス型センシティブワード辞書（無料・制御可能）：デフォルトでキャッシュされた語根を読み込み、指定した辞書での再読み込みもサポートします。
+- データ機密語フィルタリング（ACアルゴリズム）は、ハンドラの設定が完了すると、フレームワークが自動的にすべてのリクエスト文字列の機密語フィルタリングを処理します。ネストされたキーワードをサポートし、機密語を見逃しません。
+- データベース自体で機密語辞書をメンテナンス（無料、管理可能）します。デフォルトでキャッシュされた語根をロードし、辞書の再ロードを指定することができます。
 
 ## データ範囲（データ権限）
 
 - 使用例：[mybatis-mate-datascope](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-datascope)
-- @DataScope アノテーション
-  |  属性  |     型     | 必須指定 | デフォルト値 | 説明                                   |
-  | :----: | :----------: | :------: | :----: | -------------------------------------- |
-  |  type  |    String    |    否    |   ""   | 範囲タイプ。ビジネス分類を区別するために使用。デフォルトは空 |
-  | value  | DataColumn[] |    否    |   {}   | データ権限フィールド。複数フィールドの組み合わせをサポート |
-  | ignore |   boolean    |    否    | false  | 権限処理ロジックを無視するかどうか。true は無視 false は無視しない |
-- @DataColumn アノテーション
-  |  属性  |     型     | 必須指定 | デフォルト値 | 説明                                   |
-  | :---: | :----: | :------: | :----: | ---------- |
-  | alias | String |    否    |   ""   | 関連テーブルエイリアス |
-  | name  | String |    是    |        | フィールド名     |
-- 行レベルの粒度の権限制御です。例：上位部門は子部門の情報を確認できます。
+- アノテーション @DataScope
+  |   属性   |     型     | 必須指定 | デフォルト値 | 説明                                     |
+  | :------: | :--------: | :------: | :----------: | ---------------------------------------- |
+  |   type   |   String   |    否    |      ""      | 範囲タイプ、業務分類を区別するために使用、デフォルトは空 |
+  |  value   | DataColumn[] |    否    |      {}      | データ権限フィールド、複数フィールドの組み合わせをサポート |
+  |  ignore  |  boolean   |    否    |     false    | 権限処理ロジックを無視する true は無効化 false は有効化 |
+- アノテーション @DataColumn
+  |  属性  |   型   | 必須指定 | デフォルト値 | 説明         |
+  | :----: | :----: | :------: | :----------: | ------------ |
+  | alias  | String |    否    |      ""      | 関連テーブルのエイリアス |
+  |  name  | String |    是    |              | フィールド名   |
+- 行レベル粒度の権限制御。例：上位部門は子部門の情報を閲覧可能。
   ```java
-  // テスト test タイプのデータ権限範囲、混合ページングモード
+  // test タイプのデータ権限範囲をテスト、混合ページネーションモード
   @DataScope(type = "test", value = {
-          // 関連テーブル user にエイリアス u を付け、部門フィールドの権限を指定します。
+          // 関連テーブル user エイリアス u で部門フィールド権限を指定
           @DataColumn(alias = "u", name = "department_id"),
-          // 関連テーブル user にエイリアス u を付け、携帯電話番号フィールドを指定します（自動で判断して処理）。
+          // 関連テーブル user エイリアス u で電話番号フィールドを指定（自ら判断処理）
           @DataColumn(alias = "u", name = "mobile")
   })
   @Select("select u.* from user u")
   List<User> selectTestList(IPage<User> page, Long id, @Param("name") String username);
 
-  // データ権限をテストし、最終的に実行される SQL 文を確認します。
+  // データ権限をテスト、最終実行 SQL 文
   SELECT u.* FROM user u WHERE (u.department_id IN ('1', '2', '3', '5')) AND u.mobile LIKE '%1533%' LIMIT 1,10
   ```
 
-:::note[`IDataScopeProvider` についての説明]
+:::note[`IDataScopeProvider`についての説明]
 
-データ権限を処理するには、必ず IDataScopeProvider の実装クラスを注入する必要があります。データの引数渡しについては、次の2つの方法がサポートされています。
-1．カスタムの mapper メソッドでメソッド引数として渡し、setWhere メソッド内の `Object[] args` パラメーターから取得する。
-2．ThreadLocal を利用してパラメーターを渡す。Controller 層や Service 層をインターセプトしてデータ権限処理用のパラメーターを設定することができます。さらに詳しくは… 👉[参考](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-dynamic-tablename)
+IDataScopeProvider 実装クラスを注入してデータ権限を処理する必要があることに注意してください。データパラメータの受け渡しについては 2 つの方法をサポートしています：
+1. カスタム mapper メソッドでメソッドパラメータを通じて渡す、setWhere メソッドの `Object[] args` パラメータで取得
+2. ThreadLocal を利用してパラメータを渡す、controller 層または service 層をインターセプトしてデータ権限処理パラメータを設定できます。詳細は 👉[参照](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-dynamic-tablename)
 
 :::
 
@@ -85,8 +84,8 @@ Mybatis-Mate は、MyBatis-Plus 対して提供されるエンタープライズ
 - 使用例：
   - 👉 [mybatis-mate-ddl-mysql](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-ddl-mysql)
   - 👉 [mybatis-mate-ddl-postgres](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-ddl-postgres)
-- データベースの `Schema` 初期化およびアップグレード用の SQL を自動でメンテナンスします。`flyway` とは異なり、分割テーブルデータベースをサポートし、コードによる SQL スクリプトの実行を制御できます。
-- 初回実行時にデータベース内に `ddl_history` テーブルが生成され、以降 SQL スクリプトを実行するたびにバージョン情報が自動的に管理されます。
+- データベース `Schema` の初期化、アップグレード `SQL` の自動メンテナンスを提供します。`flyway` とは異なり、シャーディングされたテーブルやデータベースをサポートし、コードによる SQL スクリプトの実行を制御できます。
+- 初回実行時にデータベースに `ddl_history` テーブルが生成され、以降は SQL スクリプトを実行するたびにバージョン情報が自動的にメンテナンスされます。
   ```java
   @Component
   public class MysqlDdl implements IDdl {
@@ -103,32 +102,32 @@ Mybatis-Mate は、MyBatis-Plus 対して提供されるエンタープライズ
       }
   }
 
-  // MySQL のスレーブデータベースに切り替えて、SQL スクリプトを実行します
+  // mysql スレーブデータベースに切り替えて、SQL スクリプトを実行
   ShardingKey.change("mysqlt2");
   ddlScript.run(new StringReader("DELETE FROM user;\n" +
           "INSERT INTO user (id, username, password, sex, email) VALUES\n" +
           "(20, 'Duo', '123456', 0, 'Duo@baomidou.com');"));
   ```
 
-## フィールドデータのバインディング（辞書による値の書き戻し）
+## フィールドデータバインディング（辞書書き戻し）
 
 - 使用例：👉 [mybatis-mate-dict](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-dict)
-- 注解 @FieldBind
-  |   属性   |  型  | 必須指定 | デフォルト値 | 説明                                               |
-  | :------: | :----: | :------: | :----: | -------------------------------------------------- |
-  | sharding | String |    否    |   ""   | 分割データベース・分割テーブルのデータソース指定                                 |
-  |   type   | String |    是    |        | タイプ（異なるビジネスを区別するために使用）                           |
-  |  target  | String |    是    |        | ターゲット表示属性（バインディングする属性。データベースフィールド以外は除外してください） |
-- データベースの `sex` 値が `0`、`1` の場合、自動的に `男`、`女` にマッピングされます。
-- オブジェクトへのマッピングも可能です。例：注文 ID に基づいて注文オブジェクトまたは注文番号をマッピングすることができます。
+- アノテーション @FieldBind
+  |   属性   |   型   | 必須指定 | デフォルト値 | 説明                                               |
+  | :------: | :----: | :------: | :----------: | -------------------------------------------------- |
+  | sharding | String |    否    |      ""      | シャーディングデータソース指定                     |
+  |   type   | String |    是    |              | タイプ（異なる業務を区別するために使用）           |
+  |  target  | String |    是    |              | ターゲット表示属性（バインド対象属性、データベースフィールドでない場合は除外してください） |
+- データベース `sex` の値 `0`、`1` を自動的に `男`、`女` にマッピングします
+- オブジェクトへのマッピングとしてバインドできます。例：注文 ID に基づいて注文オブジェクトまたは番号にマッピング
   ```java
   @FieldBind(type = "user_sex", target = "sexText")
   private Integer sex;
-  // 表示用プロパティをバインディングし、テーブルに存在しない辞書項目を除外します。
+  // バインド表示属性、テーブル辞書ではありません（除外）
   @TableField(exist = false)
   private String sexText;
   ```
-- 業務処理クラスをバインディングするには、IDataBind インターフェースを実装し、Spring コンテナに注入する必要があります。
+- バインド業務処理クラスは IDataBind インターフェースを実装し、spring コンテナに注入する必要があります
   ```java
   @Component
   public class DataBind implements IDataBind {
@@ -136,17 +135,17 @@ Mybatis-Mate は、MyBatis-Plus 対して提供されるエンタープライズ
   }
   ```
 
-## 仮想プロパティのバインディング
+## 仮想属性バインディング
 
 - 使用例：👉 [mybatis-mate-jsonbind](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-jsonbind)
-- @JsonBind アノテーション
+- アノテーション @JsonBind
   ```java
   @JsonBind("バインディングタイプ")
   public class User {
       ...
   }
   ```
-- 返却される Json に対する仮想プロパティのバインディング戦略
+- Json 仮想属性バインディング戦略を返す
   ```java
   @Component
   public class JsonBindStrategy implements IJsonBindStrategy {
@@ -155,12 +154,12 @@ Mybatis-Mate は、MyBatis-Plus 対して提供されるエンタープライズ
       public Map<String, Function<Object, Map<String, Object>>> getStrategyFunctionMap() {
           return new HashMap<String, Function<Object, Map<String, Object>>>(16) {
               {
-                  // 仮想ノードを注入する
+                  // 仮想ノードを注入
                   put(Type.departmentRole, (obj) -> new HashMap(2) {{
                       User user = (User) obj;
-                      // 列挙型の変換
+                      // 列挙型変換
                       put("statusText", StatusEnum.get(user.getStatus()).getDesc());
-                      // データベースを呼び出してロール情報を取得可能
+                      // データベースクエリを呼び出して役割情報を取得可能
                       put("roleName", "マネージャー");
                   }});
               }
@@ -169,51 +168,51 @@ Mybatis-Mate は、MyBatis-Plus 対して提供されるエンタープライズ
   }
   ```
 
-## フィールドの暗号化と復号化
+## フィールド暗号化・復号
 
 - 使用例：👉 [mybatis-mate-encrypt](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-encrypt)
-- @FieldEncrypt アノテーション
-  |   属性    |    型    | 必須指定 |      デフォルト値      | 説明                 |
-  | :-------: | :-------: | :------: | :--------------: | -------------------- |
-  | password  |  String   |    否    |        ""        | 暗号化パスワード             |
+- アノテーション @FieldEncrypt
+  |    属性     |    型     | 必須指定 |       既定値       | 説明                   |
+  | :---------: | :-------: | :------: | :----------------: | ---------------------- |
+  |  password   |  String   |    否    |         ""         | 暗号化パスワード         |
   | algorithm | Algorithm |    否    | PBEWithMD5AndDES | PBE MD5 DES 混合アルゴリズム |
   | encryptor |   Class   |    否    |    IEncryptor    | 暗号化プロセッサ           |
-- アルゴリズム
-  |            アルゴリズム             |              説明              |
-  | :-------------------------: |:----------------------------:|
-  |           MD5_32            |     32ビット MD5 アルゴリズム              |
-  |           MD5_16            |         16ビット MD5 アルゴリズム          |
-  |           BASE64            |      64文字で任意のバイナリデータを表現するアルゴリズム      |
-  |             AES             |  AES 対称アルゴリズム 【あいまい検索が必要な場合は必ずこのアルゴリズムを使用してください】  |
-  |             RSA             |           非対称暗号化アルゴリズム            |
-  |             SM2             |    国密 SM2 非対称暗号化アルゴリズム、ECC ベース     |
-  |             SM3             | 国密 SM3 メッセージダイジェストアルゴリズム、MD5 と比較して理解できます | 
-  |             SM4             | 国密 SM4 対称暗号化アルゴリズム、無線LAN標準のパケットデータアルゴリズム |
-  |      PBEWithMD5AndDES       |             混合アルゴリズム             |
-  |   PBEWithMD5AndTripleDES    |             混合アルゴリズム             |
-  | PBEWithHMACSHA512AndAES_256 |             混合アルゴリズム             |
-  |    PBEWithSHA1AndDESede     |             混合アルゴリズム             |
-  |    PBEWithSHA1AndRC2_40     |             混合アルゴリズム             |
-- 👉 [国密 SM2.3.4 アルゴリズム使用規約](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/%E5%9B%BD%E5%AF%86SM2.3.4%E7%AE%97%E6%B3%95%E4%BD%BF%E7%94%A8%E8%A7%84%E8%8C%83)
+- アルゴリズム Algorithm
+  |             アルゴリズム             |                    説明                    |
+  | :---------------------------------: |:----------------------------------------:|
+  |              MD5_32               |       32 ビット MD5 アルゴリズム             |
+  |              MD5_16               |           16 ビット MD5 アルゴリズム           |
+  |              BASE64              |      任意のバイナリデータを表す64文字のアルゴリズム      |
+  |                AES                |   AES 対称アルゴリズム 【あいまい検索が必要な場合は必ずこのアルゴリズムを使用してください】  |
+  |                RSA                |             非対称暗号アルゴリズム              |
+  |                SM2                |   国密 SM2 非対称暗号アルゴリズム、ECC ベース      |
+  |                SM3                | 国密 SM3 メッセージダイジェストアルゴリズム、MD5 と比較して理解できます |
+  |                SM4                | 国密 SM4 対称暗号アルゴリズム、無線 LAN 標準のブロックデータアルゴリズム |
+  |       PBEWithMD5AndDES        |                混合アルゴリズム                |
+  |    PBEWithMD5AndTripleDES     |                混合アルゴリズム                |
+  | PBEWithHMACSHA512AndAES_256 |                混合アルゴリズム                |
+  |     PBEWithSHA1AndDESede      |                混合アルゴリズム                |
+  |     PBEWithSHA1AndRC2_40      |                混合アルゴリズム                |
+- 👉 [国密 SM2.3.4 アルゴリズム使用規範](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/%E5%9B%BD%E5%AF%86SM2.3.4%E7%AE%97%E6%B3%95%E4%BD%BF%E7%94%A8%E8%A7%84%E8%8C%83)
   :::note
 
-  - MD5 アルゴリズムは不可逆アルゴリズムで、データベースに保存される値とクエリ結果はすべて暗号文です。
-  - SM4 アルゴリズムは bouncycastle 暗号化ライブラリに依存する必要があります。
-  - 混合アルゴリズムは jasypt 暗号化ライブラリに依存する必要があります。
-  - 【注意】暗号化されたオブジェクトをクエリで返す場合は、必ず`暗号化アノテーション`情報を含める必要があります。単純に String や List などの集合を返すだけでは復号化できません。
+  - MD5 アルゴリズムは不可逆アルゴリズムであり、データベースに保存される値もクエリ結果も暗号文です。
+  - SM4 アルゴリズムを使用するには、bouncycastle 暗号化ライブラリに依存する必要があります。
+  - 混合アルゴリズムを使用するには、jasypt 暗号化ライブラリに依存する必要があります。
+  - 【注意】クエリで暗号化されたオブジェクトを返す場合、そのオブジェクトには`暗号化アノテーション`情報が含まれている必要があります。単純に String や List などの特定のコレクションを返すだけでは復号できません。
 
   :::
-- アノテーション `FieldEncrypt` でデータの暗号化と復号化を実装し、複数の暗号化アルゴリズムをサポートします
+- アノテーション `FieldEncrypt` はデータの暗号化と復号を実装し、様々な暗号化アルゴリズムをサポートします
   ```java
   @FieldEncrypt
   private String email;
   ```
 
-## フィールドのマスキング
+## フィールドマスキング
 
 - 使用例：👉 [mybatis-mate-sensitive-jackson](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sensitive-jackson)
 - アノテーション @FieldSensitive
-- アノテーション `FieldSensitive` でデータのマスキングを実装し、`携帯電話番号`、`メールアドレス`、`銀行口座番号` など9種類の一般的なマスキングルールが組み込まれています
+- アノテーション `FieldSensitive` はデータマスキングを実装し、組み込みで `電話番号`、`メールアドレス`、`銀行口座番号` など 9 種類の常用マスキングルールを提供します
   ```java
   @FieldSensitive("testStrategy")
   private String username;
@@ -231,36 +230,36 @@ Mybatis-Mate は、MyBatis-Plus 対して提供されるエンタープライズ
       }
   }
 
-  // マスキング処理をスキップし、編集シナリオで使用
+  // マスキング処理をスキップ（編集シナリオ用）
   RequestDataTransfer.skipSensitive();
   ```
 
-## 複数データソースの分割データベース・分割テーブル（読み書き分離）
+## 多データソース・シャーディング（読み書き分離）
 
 - 使用例：👉 [mybatis-mate-sharding](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding)
 - アノテーション @Sharding
-  |   属性   |  型  | 必須指定 |         デフォルト値         | 説明                         |
-  | :------: | :----: | :------: | :--------------------: | ---------------------------- |
-  |  value   | String |    是    |           ""           | 分割データベースグループ名、空の場合はデフォルトのプライマリデータソースを使用 |
-  | strategy | Class  |    否    | RandomShardingStrategy | 分割データベース＆分割テーブル戦略                |
+  |    属性    |   型   | 必須指定 |          デフォルト値          | 説明                              |
+  | :--------: | :----: | :------: | :----------------------------: | --------------------------------- |
+  |   value    | String |    は    |              ""               | シャーディンググループ名、空の場合はデフォルトのプライマリデータソースを使用 |
+  | strategy  | Class  |    否    |   RandomShardingStrategy      | シャーディング（データベース＆テーブル）戦略               |
 - 設定
   ```xml
   mybatis-mate:
     sharding:
       health: true # ヘルスチェック
-      primary: mysql # デフォルトのデータソース選択
+      primary: mysql # デフォルト選択データソース
       datasource:
         mysql: # データベースグループ
           - key: node1
             ...
           - key: node2
-            cluster: slave # 読み書き分離時にスレーブが SQL のクエリ操作を担当。プライマリのmasterはデフォルトで記述不要
+            cluster: slave # 読み書き分離時にSQLクエリ操作を担当するスレーブデータベース、マスターデータベースはデフォルトで記述不要
             ...
         postgres:
           - key: node1 # データノード
             ...
   ```
-- アノテーション `Sharding` でデータソースを切り替え、グループ内のノードはデフォルトでランダムに選択されます（読み取りはスレーブ、書き込みはプライマリ）
+- アノテーション `Sharding` によるデータソース切り替え、グループ内ノードはデフォルトでランダム選択（読み取りはスレーブ、書き込みはマスター）
   ```java
   @Mapper
   @Sharding("mysql")
@@ -271,16 +270,16 @@ Mybatis-Mate は、MyBatis-Plus 対して提供されるエンタープライズ
 
   }
   ```
-- 指定したデータベースノードに切り替える
+- 指定したデータベースノードへの切り替え
   ```java
-  // MySQL のスレーブ node2 ノードに切り替えます
+  // mysql スレーブデータベース node2 ノードに切り替え
   ShardingKey.change("mysqlnode2");
   ```
 
-## 複数データソースの動的なロードおよびアンロード
+## 複数データソースの動的ロード/アンロード
 
 - 使用例：👉 [mybatis-mate-sharding-dynamic](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding-dynamic)
 
-## 複数データソースのトランザクション（JTA Atomikos）
+## 多データソーストランザクション（JTA Atomikos）
 
 - 使用例：👉 [mybatis-mate-sharding-jta-atomikos](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding-jta-atomikos)

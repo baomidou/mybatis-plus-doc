@@ -4,19 +4,19 @@ sidebar:
   order: 3
 ---
 
-`TenantLineInnerInterceptor` は、MyBatis-Plus が提供するプラグインで、マルチテナントのデータ分離を実現するために使用されます。このプラグインを使用することで、各テナントが自身のデータにのみアクセスできるようにし、データの安全な分離を実現します。
+`TenantLineInnerInterceptor` は、MyBatis-Plus が提供するプラグインで、マルチテナントのデータ分離を実現するために使用されます。このプラグインを通じて、各テナントが自身のデータにのみアクセスできることを保証し、データの安全な分離を実現します。
 
 ## サンプルプロジェクト
 
 `TenantLineInnerInterceptor` の使用方法をよりよく理解するために、公式が提供するサンプルプロジェクトを参照できます：👉 [mybatis-plus-sample-tenant](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-tenant)
 
-## プロパティ紹介
+## 属性の紹介
 
-`TenantLineInnerInterceptor` の重要なプロパティは `tenantLineHandler` で、これは `TenantLineHandler` インターフェースのインスタンスであり、テナント関連のロジックを処理するために使用されます。
+`TenantLineInnerInterceptor` の重要な属性は `tenantLineHandler` です。これは `TenantLineHandler` インターフェースのインスタンスであり、テナント関連のロジックを処理するために使用されます。
 
-| プロパティ名      | タイプ              | デフォルト値 | 説明                               |
-| :---------------- | :---------------- | :--------- | :--------------------------------- |
-| tenantLineHandler | TenantLineHandler |            | テナントハンドラー（TenantId 行レベル） |
+| 属性名 | 型 | デフォルト値 | 説明 |
+| :-: | :-: | :-: | :-: |
+| tenantLineHandler | TenantLineHandler |  | テナントハンドラ ( TenantId 行レベル ) |
 
 `TenantLineHandler` インターフェースは以下のメソッドを定義しています：
 
@@ -24,14 +24,14 @@ sidebar:
 public interface TenantLineHandler {
 
     /**
-     * テナントID値の式を取得します。単一のID値のみをサポートします。
+     * テナント ID 値の式を取得します。単一の ID 値のみをサポートします
      *
-     * @return テナントID値の式
+     * @return テナント ID 値の式
      */
     Expression getTenantId();
 
     /**
-     * テナントフィールド名を取得します。
+     * テナントフィールド名を取得します
      * デフォルトのフィールド名は: tenant_id
      *
      * @return テナントフィールド名
@@ -41,18 +41,18 @@ public interface TenantLineHandler {
     }
 
     /**
-     * テーブル名に基づいてマルチテナント条件の結合を無視するかどうかを判断します。
-     * デフォルトでは、すべてのテーブルを解析し、マルチテナント条件を結合する必要があります。
+     * テーブル名に基づいて、マルチテナント条件の追加をスキップするかどうかを判断します
+     * デフォルトではすべて解析し、マルチテナント条件を追加します
      *
      * @param tableName テーブル名
-     * @return 無視するかどうか, true: 無視する, false: 解析してマルチテナント条件を結合する必要がある
+     * @return スキップするかどうか, true: スキップする, false: 解析してマルチテナント条件を追加する必要がある
      */
     default boolean ignoreTable(String tableName) {
         return false;
     }
 
     /**
-     * テナントフィールドの挿入ロジックを無視します。
+     * テナントフィールドの挿入ロジックをスキップします
      *
      * @param columns        挿入フィールド
      * @param tenantIdColumn テナント ID フィールド
@@ -66,9 +66,9 @@ public interface TenantLineHandler {
 
 ## 使用方法
 
-### ステップ 1：テナントハンドラーの実装
+### ステップ 1: テナントハンドラを実装する
 
-`TenantLineHandler` インターフェースを実装し、テナントハンドラーを作成します。この例では、各テナントが一意の `tenantId` を持ち、リクエストヘッダーから現在のテナントの `tenantId` を取得すると仮定します。
+`TenantLineHandler` インターフェースを実装し、テナントハンドラを作成します。この例では、各テナントが一意の `tenantId` を持ち、リクエストヘッダーを通じて現在のテナントの `tenantId` を取得すると仮定します。
 
 ```java
 @Component
@@ -76,9 +76,9 @@ public class CustomTenantHandler implements TenantLineHandler {
 
     @Override
     public Expression getTenantId() {
-        // テナントコンテキストがあり、そこから現在のユーザーのテナントを取得できると仮定します
+        // テナントコンテキストがあり、現在のユーザーのテナントを取得できると仮定します
          Long tenantId = TenantContextHolder.getCurrentTenantId();
-        // テナント ID の式を返します。LongValue は JSQLParser で bigint 型を表すクラスです
+        // テナントIDの式を返します。LongValue は JSQLParser の bigint 型を表すクラスです
         return new LongValue(tenantId);;
     }
 
@@ -96,9 +96,9 @@ public class CustomTenantHandler implements TenantLineHandler {
 }
 ```
 
-### ステップ 2：テナントハンドラーをプラグインに注入
+### ステップ 2: テナントハンドラをプラグインに注入する
 
-カスタムテナントハンドラーを `TenantLineInnerInterceptor` に注入します：
+カスタムテナントハンドラを `TenantLineInnerInterceptor` に注入します：
 
 ```java
 @Configuration
@@ -119,9 +119,9 @@ public class MybatisPlusConfig {
 }
 ```
 
-上記の手順により、Spring Boot プロジェクトでマルチテナントプラグインを正常に設定し、簡単なテナントハンドラーを実装しました。これで、アプリケーションは現在のリクエストのテナント ID に基づいて、マルチテナントのデータ分離を自動的に処理できるようになります。
+以上の手順により、Spring Boot プロジェクトでマルチテナントプラグインの設定が正常に行われ、シンプルなテナントハンドラが実装されました。これで、アプリケーションは現在のリクエストのテナントIDに基づいてマルチテナントデータ分離を自動的に処理できるようになります。
 
-実際のアプリケーションでは、テナント ID の取得方法が異なる場合があることに注意してください。これは、アプリケーションのアーキテクチャとビジネス要件によって異なります。また、テナント ID を処理する際には、セキュリティを考慮し、潜在的なセキュリティリスクを回避するようにしてください。
+実際のアプリケーションでは、テナントIDの取得方法は、アプリケーションのアーキテクチャとビジネス要件によって異なる場合があることに注意してください。また、テナントIDを処理する際には、潜在的なセキュリティリスクを回避するために、セキュリティを考慮するようにしてください。
 
 ## ローカルキャッシュ SQL 解析
 
@@ -129,7 +129,7 @@ public class MybatisPlusConfig {
 
 ```java
 static {
-    // デフォルトではシリアライズ FstSerialCaffeineJsqlParseCache、JdkSerialCaffeineJsqlParseCache をサポート
+    // デフォルトでシリアライズをサポート FstSerialCaffeineJsqlParseCache, JdkSerialCaffeineJsqlParseCache
     JsqlParserGlobal.setJsqlParseCache(new JdkSerialCaffeineJsqlParseCache(
       (cache) -> cache.maximumSize(1024)
       .expireAfterWrite(5, TimeUnit.SECONDS))
@@ -139,16 +139,16 @@ static {
 
 ## 挿入時にテナントフィールドを自動追加
 
-> デフォルトでは、挿入 SQL はテナント条件を判断する必要があるため、[自動フィールド補完](https://baomidou.com/guides/auto-fill-field/)機能と連携してテナントフィールドを補完する必要があります。そうしないと、テナントフィールドはデータベースに自動的に保存されません。
+> デフォルトでは、挿入 SQL はテナント条件の判断を必要とするため、[自動フィールド埋め込み](https://baomidou.com/guides/auto-fill-field/)機能と連携してテナントフィールドを埋め込む必要があります。そうしないと、テナントフィールドは自動的にデータベースに保存されません。
 
 ## 注意事項
 
 :::note[説明]
 
-- マルチテナントは権限フィルタリングと同じではありません。テナント間は完全に分離されています。
-- マルチテナントを有効にすると、実行されるすべてのメソッドの SQL が処理されます。
-- カスタム SQL は仕様に従って記述してください。特に複数のテーブルが関与する場合は、各テーブルにエイリアスを付け、特に `inner join` は標準の `inner join` を記述してください。
+- マルチテナントは権限フィルタリングと同等ではありません。テナント間は完全に分離されています。
+- マルチテナントを有効にすると、実行されるすべての method の SQL が処理されます。
+- カスタム SQL は規範に従って記述してください。特に複数のテーブルが関与する場合、各テーブルにエイリアスを付ける必要があります。特に `inner join` の場合は標準的な `inner join` を記述してください。
 
 :::
 
-上記の設定と使用方法により、MyBatis-Plus アプリケーションでマルチテナントのデータ分離を実現し、各テナントのデータの安全性を確保できます。
+以上の設定と使用方法を通じて、MyBatis-Plus アプリケーションでマルチテナントのデータ分離を実現し、各テナントのデータセキュリティを確保できます。

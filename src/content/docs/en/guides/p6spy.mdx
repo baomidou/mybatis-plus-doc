@@ -6,35 +6,35 @@ sidebar:
 
 import LastedDependency from '@/components/LastedDependency.astro';
 
-MyBatis-Plus provides SQL analysis and printing functionality through the integration of the `p6spy` component, which conveniently outputs SQL statements and their execution time. This feature is available for MyBatis-Plus version 3.1.0 and above.
+MyBatis-Plus provides SQL analysis and printing functionality by integrating the `p6spy` component, which conveniently outputs SQL statements and their execution time. This feature is available for MyBatis-Plus version 3.1.0 and above.
 
 ## Introduction to p6spy
 
-[`p6spy`](https://github.com/p6spy/p6spy) is a tool for intercepting and logging database access. It works by proxying the JDBC driver, allowing your application to use JDBC as usual while `p6spy` records all SQL statements and their execution times behind the scenes. This is particularly useful for SQL optimization during development and debugging.
+[`p6spy`](https://github.com/p6spy/p6spy) is a tool that intercepts and logs database access operations by proxying JDBC drivers. This means your application can use JDBC as usual while `p6spy` records all SQL statements and their execution times behind the scenes. This is particularly useful for SQL optimization during development and debugging.
 
-`p6spy` offers more than just SQL logging. It also provides advanced features such as:
+`p6spy` offers more than just SQL logging; it also provides advanced features such as:
 
 - **Slow SQL Detection**: By configuring `outagedetection` and `outagedetectioninterval`, `p6spy` can log SQL statements that exceed a specified execution time threshold.
-- **Custom Log Formatting**: The `logMessageFormat` option allows you to customize the output format of SQL logs, including timestamps, execution time, SQL statements, and more.
-- **Log Output Control**: The `appender` configuration lets you choose where logs are output—to the console, files, or a logging system.
+- **Custom Log Formatting**: The `logMessageFormat` allows you to customize the output format of SQL logs, including timestamps, execution time, SQL statements, and more.
+- **Log Output Control**: The `appender` configuration option lets you choose where logs are output—to the console, files, or logging systems.
 
-`p6spy` is a powerful tool that provides MyBatis-Plus users with convenient SQL analysis and printing capabilities. With proper configuration, you can effectively monitor and optimize SQL statements during development and testing. However, due to performance overhead, it is recommended to use it cautiously in production environments.
+`p6spy` is a powerful tool that provides MyBatis-Plus users with convenient SQL analysis and printing capabilities. With proper configuration, you can effectively monitor and optimize SQL statements during development and testing phases. However, due to performance overhead, it's recommended to use it cautiously in production environments.
 
 ## Example Project
 
-To better understand how to use this feature, refer to the official example project:
+To better understand how to use this feature, you can refer to the official example project:
 
 - [mybatis-plus-sample-crud](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-crud)
 
 ## Dependency Installation
 
-First, you need to add the `p6spy` dependency to your project. Below are the installation methods for Maven and Gradle build tools:
+First, you need to add the `p6spy` dependency to your project. Here are the installation methods for both Maven and Gradle build tools:
 
 <LastedDependency groupId="p6spy" artifactId="p6spy" />
 
 ## Configuration
 
-Next, configure the settings in either `application.yml` or `application.properties`.
+Next, you need to make the appropriate configurations in either `application.yml` or `application.properties`.
 
 ### application.yml
 
@@ -48,10 +48,10 @@ spring:
 
 ### spy.properties
 
-The `spy.properties` configuration file for `p6spy` includes multiple options. Below are some key configuration examples:
+The `spy.properties` configuration file for `p6spy` contains multiple configuration options. Here are examples of some key configurations:
 
 ```properties
-# Module list—choose the appropriate configuration based on the version
+# Module list, choose appropriate configuration based on version
 modulelist=com.baomidou.mybatisplus.extension.p6spy.MybatisPlusLogFactory,com.p6spy.engine.outage.P6OutageFactory
 
 # Custom log format
@@ -75,13 +75,13 @@ dateformat=yyyy-MM-dd HH:mm:ss
 # Actual driver list
 # driverlist=org.h2.Driver
 
-# Enable slow SQL logging
+# Enable slow SQL recording
 outagedetection=true
 
 # Slow SQL threshold (in seconds)
 outagedetectioninterval=2
 
-# Filter SQL prints for tables starting with flw_
+# Filter SQL printing for tables starting with flw_
 filter=true
 exclude=flw_*
 ```
@@ -115,15 +115,15 @@ public class StdoutLogger extends com.p6spy.engine.spy.appender.StdoutLogger {
 }
 ```
 
-For more details about `p6spy-spring-boot-starter` configurations, refer to [GitHub](https://github.com/gavlyukovskiy/spring-boot-data-source-decorator).
+For more configuration information about `p6spy-spring-boot-starter`, please refer to [GitHub](https://github.com/gavlyukovskiy/spring-boot-data-source-decorator).
 
-## Notes
+## Important Notes
 
 - The `driver-class-name` should be configured to the driver class provided by `p6spy`.
-- The `url` prefix should be `jdbc:p6spy`, followed by the actual database connection address.
-- If the printed SQL is `null`, add `commit` to `excludecategories`.
-- If batch operations do not print SQL, remove `batch` from `excludecategories`.
-- For duplicate SQL prints in batch operations, use `MybatisPlusLogFactory` (added in version 3.2.1).
-- Note that this plugin may introduce performance overhead and is not recommended for production environments.
+- The `url` prefix should be `jdbc:p6spy` followed by the actual database connection address.
+- If the printed SQL shows as `null`, add `commit` to the `excludecategories`.
+- If batch operations don't print SQL, remove `batch` from `excludecategories`.
+- For duplicate printing issues with batch operations, use `MybatisPlusLogFactory` (added in version 3.2.1).
+- Please note that this plugin may introduce performance overhead and is not recommended for use in production environments.
 
-By following these steps, you can easily analyze and print SQL statements during development. Adjust the configurations as needed for optimal results.
+By following these steps, you can conveniently analyze and print SQL statements during development. Remember to adjust configurations according to your specific needs for optimal usage.

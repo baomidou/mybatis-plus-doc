@@ -6,10 +6,10 @@ sidebar:
 
 import SupportDb from '@/components/SupportDb.astro';
 
-The `PaginationInnerInterceptor` plugin in MyBatis-Plus provides powerful pagination capabilities, supporting multiple databases and making paginated queries simple and efficient.
+The MyBatis-Plus pagination plugin `PaginationInnerInterceptor` provides powerful pagination capabilities, supports multiple databases, and makes paginated queries simple and efficient.
 
 :::tip
-Starting from `v3.5.9`, `PaginationInnerInterceptor` has been separated. To use it, you need to manually include the `mybatis-plus-jsqlparser` dependency. For details, refer to the [Installation](/getting-started/install) chapter.
+Starting from `v3.5.9`, `PaginationInnerInterceptor` has been separated out. If you need to use it, you must separately introduce the `mybatis-plus-jsqlparser` dependency. Please refer to the [Installation](/getting-started/install) chapter for details.
 :::
 
 ## Supported Databases
@@ -18,11 +18,11 @@ Starting from `v3.5.9`, `PaginationInnerInterceptor` has been separated. To use 
 
 <SupportDb />
 
-If your required database is not listed, you can request its addition via a [Pull Request](https://github.com/baomidou/mybatis-plus/pull/1550/files).
+If the database you need to use is not on the list, you can request its addition via a [Pull Request](https://github.com/baomidou/mybatis-plus/pull/1550/files).
 
 ## Configuration
 
-In a Spring Boot project, you can add the pagination plugin through Java configuration:
+In a Spring Boot project, you can add the pagination plugin via Java configuration:
 
 ```java
 @Configuration
@@ -35,8 +35,8 @@ public class MybatisPlusConfig {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL)); // If configuring multiple plugins, ensure pagination is added last
-        // For multi-data sources, you can omit the specific DbType. Otherwise, it's recommended to specify it.
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL)); // If configuring multiple plugins, remember to add pagination last
+        // If you have multiple data sources, you can omit the specific type; otherwise, it's recommended to specify the concrete DbType
         return interceptor;
     }
 }
@@ -44,24 +44,24 @@ public class MybatisPlusConfig {
 
 ## Properties
 
-`PaginationInnerInterceptor` offers the following properties to customize pagination behavior:
+`PaginationInnerInterceptor` provides the following properties to customize pagination behavior:
 
-| Property | Type | Default | Description |
+| Property Name | Type | Default Value | Description |
 | :-: | :-: | :-: | :-: |
-| overflow | boolean | false | Whether to handle overflow beyond total pages |
-| maxLimit | Long |  | Maximum number of items per page |
+| overflow | boolean | false | Whether to handle overflow beyond the total page count |
+| maxLimit | Long |  | Limit for the number of records per page |
 | dbType | DbType |  | Database type |
 | dialect | IDialect |  | Dialect implementation class |
 
-> It is recommended to set `dbType` for single-database scenarios.
+> It is recommended to set `dbType` for single database type configurations.
 
 ## Using Pagination in Custom Mapper Methods
 
-You can use pagination in Mapper methods as follows:
+You can use pagination in your Mapper methods in the following ways:
 
 ```java
 IPage<UserVo> selectPageVo(IPage<?> page, Integer state);
-// Or use a custom pagination class
+// Or use a custom page class
 MyPage selectPageVo(MyPage page);
 // Or return List
 List<UserVo> selectPageVo(IPage<UserVo> page, Integer state);
@@ -75,30 +75,30 @@ Corresponding XML configuration:
 </select>
 ```
 
-> If the return type is `IPage`, the input `IPage` cannot be `null`. To temporarily disable pagination, set the `size` parameter to a value less than 0 when initializing `IPage`.
-> If the return type is `List`, the input `IPage` can be `null`, but you need to manually set `IPage.setRecords(returned List)`.
-> If XML needs to retrieve values from `page`, use `page.property` syntax.
+> If the return type is `IPage`, the input `IPage` parameter cannot be `null`. To temporarily disable pagination, initialize the `IPage` with a `size` parameter less than 0.
+> If the return type is `List`, the input `IPage` parameter can be `null`, but you need to manually set `IPage.setRecords(returned List)`.
+> If the XML needs to retrieve values from the `page` object, use `page.property` syntax.
 
-## Additional Notes
+## Other Considerations
 
-- When generating `countSql`, tables in `left join` that do not participate in `where` conditions will be optimized out. It is recommended to always use aliases for tables and fields in SQL with `left join`.
-- When using multiple plugins, place the pagination plugin last in the execution chain to avoid inaccurate `COUNT SQL` execution.
+- When generating the `countSql`, if a table in a `left join` does not participate in the `where` condition, it will be optimized (removed). It is recommended to always use aliases for tables and fields in any SQL involving `left join`.
+- When using multiple plugins, place the pagination plugin last in the plugin execution chain to avoid inaccurate COUNT SQL execution.
 
 ## Page Class
 
-The `Page` class extends `IPage` and implements a simple pagination model. If you need a custom pagination model, you can extend `Page` or implement `IPage`.
+The `Page` class extends the `IPage` class, implementing a simple pagination model. If you need to implement your own pagination model, you can extend the `Page` class or implement the `IPage` interface.
 
-| Property | Type | Default | Description |
+| Property Name | Type | Default Value | Description |
 | :-: | :-: | :-: | :-: |
-| records | List&#60;T&#62; | emptyList | Query result list |
-| total | Long | 0 | Total number of records |
-| size | Long | 10 | Items per page (default: 10) |
-| current | Long | 1 | Current page |
+| records | List&#60;T&#62; | emptyList | List of query data records |
+| total | Long | 0 | Total number of records for the query list |
+| size | Long | 10 | Number of records displayed per page, defaults to 10 |
+| current | Long | 1 | Current page number |
 | orders | List&#60;OrderItem&#62; | emptyList | Sorting field information |
-| optimizeCountSql | boolean | true | Automatically optimize `COUNT SQL` |
-| optimizeJoinOfCountSql | boolean | true | Whether to remove `join` queries in `COUNT SQL` optimization |
-| searchCount | boolean | true | Whether to perform count query |
-| maxLimit | Long |  | Maximum number of items per page |
-| countId | String | | Custom `count` query `statementId` in XML |
+| optimizeCountSql | boolean | true | Automatically optimize COUNT SQL |
+| optimizeJoinOfCountSql | boolean | true | Whether to automatically remove the join part when optimizing COUNT SQL |
+| searchCount | boolean | true | Whether to perform a count query |
+| maxLimit | Long |  | Limit for the number of records per page |
+| countId | String | | XML custom count query statementId |
 
-With these configurations and usage methods, you can easily implement paginated queries in MyBatis-Plus, improving application performance and user experience.
+With these configurations and usage methods, you can easily implement paginated queries in MyBatis-Plus, improving your application's performance and user experience.

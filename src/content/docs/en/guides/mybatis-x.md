@@ -1,23 +1,23 @@
 ---
-title: Mybatis X Plugin
+title: MyBatis X Plugin
 sidebar:
   order: 20
 ---
 
-MybatisX is a rapid development plugin designed specifically for IntelliJ IDEA, aimed at enhancing development efficiency for MyBatis and MyBatis-Plus frameworks.
+MyBatisX is a rapid development plugin designed specifically for IntelliJ IDEA, aimed at enhancing development efficiency with the MyBatis and MyBatis-Plus frameworks.
 
 ### Installation Guide
 
 1. Open IntelliJ IDEA.
-2. Navigate to `File -> Settings -> Plugins -> Browse Repositories`.
+2. Go to `File -> Settings -> Plugins -> Browse Repositories`.
 3. Enter `mybatisx` in the search box.
-4. Locate the MybatisX plugin and click Install.
+4. Find the MyBatisX plugin and click Install.
 
 :::note[Support the Developers]
 
-If you find the MybatisX plugin helpful, please give it a [five-star rating](https://plugins.jetbrains.com/plugin/10119-mybatisx) on the plugin page to support continuous improvements by the developers.
+If you find the MyBatisX plugin helpful, please give it a [five-star rating](https://plugins.jetbrains.com/plugin/10119-mybatisx) on the plugin page to support the developers' continuous improvement efforts.
 
-Contributions to the MybatisX plugin are also welcome. Source code repository: [MybatisX Source Code](https://gitee.com/baomidou/MybatisX)
+Contributions to the MyBatisX plugin are also welcome. Source code repository: [MyBatisX Source Code](https://gitee.com/baomidou/MybatisX)
 
 :::
 
@@ -25,34 +25,34 @@ Contributions to the MybatisX plugin are also welcome. Source code repository: [
 
 ### XML Mapping Navigation
 
-MybatisX provides convenient navigation between XML mapping files and Java interfaces, allowing developers to quickly switch between the two, thereby improving development efficiency.
+MyBatisX provides convenient navigation between XML mapping files and Java interfaces, allowing developers to quickly switch between them and improve development efficiency.
 
 ![XML Navigation Demo](/images/content/mybatisx-jump.gif)
 
 ### Code Generation
 
-With MybatisX, you can effortlessly generate corresponding Java entity classes, Mapper interfaces, and XML mapping files based on database table structures.
+With MyBatisX, you can easily generate corresponding Java entity classes, Mapper interfaces, and XML mapping files based on your database table structure.
 
 ![Code Generation Demo](/images/content/mybatisx-generate.gif)
 
 ### Template Reset
 
-MybatisX allows you to reset code generation templates to restore default settings or customize template content.
+MyBatisX allows you to reset code generation templates to restore default settings or customize template content.
 
-![Template Reset Demo](/images/content/mybatisx-reset-template.gif)
+![Reset Template Demo](/images/content/mybatisx-reset-template.gif)
 
 ### JPA-Style Hints
 
-MybatisX supports JPA-style code hints, including automatic code generation for CRUD operations (Create, Read, Update, Delete).
+MyBatisX supports JPA-style code hints, including automatic code generation for insert, select, update, and delete operations.
 
 - Generate Insert Operation
-  ![Insert Operation Demo](/images/content/mybatisx-tip-insert.gif)
+  ![Generate Insert Demo](/images/content/mybatisx-tip-insert.gif)
 - Generate Select Operation
-  ![Select Operation Demo](/images/content/mybatisx-tip-select.gif)
+  ![Generate Select Demo](/images/content/mybatisx-tip-select.gif)
 - Generate Update Operation
-  ![Update Operation Demo](/images/content/mybatisx-tip-update.gif)
+  ![Generate Update Demo](/images/content/mybatisx-tip-update.gif)
 - Generate Delete Operation
-  ![Delete Operation Demo](/images/content/mybatisx-tip-delete.gif)
+  ![Generate Delete Demo](/images/content/mybatisx-tip-delete.gif)
 
 ## Frequently Asked Questions
 
@@ -66,30 +66,30 @@ The JPA hint feature relies on the association between Mapper interfaces and ent
 
 ### Generated Table Name Doesn't Match Expectations?
 
-MybatisX determines table names based on the following rules:
+MyBatisX determines the table name based on the following rules:
 
-1. JPA annotations on the entity class, e.g., `@Table(name="t_user")`.
-2. mybatis-plus annotations on the entity class, e.g., `@TableName("t_user")`.
-3. Comments on the entity class, e.g., `@TableName com.xx.xx.UserModel`.
-4. If none of the above apply, the camel-case class name is converted to underscore notation, e.g., `UserModel` corresponds to table name `user_model`.
+1. JPA annotation on the entity class, e.g., `@Table(name="t_user")`.
+2. mybatis-plus annotation on the entity class, e.g., `@TableName("t_user")`.
+3. Comment on the entity class, e.g., `@TableName com.xx.xx.UserModel`.
+4. If none of the above rules apply, the camel-case class name is converted to snake case, e.g., `UserModel` corresponds to table name `user_model`.
 
 ## Code Generation Template Configuration
 
-MybatisX offers flexible template configuration options, allowing developers to customize code generation templates as needed.
+MyBatisX provides flexible template configuration options, allowing developers to customize code generation templates according to their needs.
 
 ### Default Templates
 
-Under `Scratches and Consoles -> Extensions -> MybatisX`, you can find default templates such as `default-all`, `default`, `mybatis-plus2`, `mybatis-plus3`, etc.
+You can find the default provided templates in the `Scratches and Consoles -> Extensions -> MyBatisX` directory, such as `default-all`, `default`, `mybatis-plus2`, `mybatis-plus3`, etc.
 
-### Restore Default Templates
+### Reset Default Templates
 
-To reset templates to default settings, right-click the MybatisX directory and select `Restore Default Extensions`.
+To reset templates to default settings, right-click the MyBatisX directory and select `Restore Default Extensions`.
 
-![Template Configuration Demo](/images/content/mybatisx-template-setting.jpg)
+![Code Generation Template Configuration Demo](/images/content/mybatisx-template-setting.jpg)
 
-### Customize Template Content
+### Custom Template Content
 
-MybatisX allows you to customize template content according to project requirements, including entity classes, table names, field information, etc.
+MyBatisX allows you to customize template content according to project requirements, including entity classes, table names, field information, etc.
 
 #### Entity Class Information
 
@@ -100,7 +100,7 @@ MybatisX allows you to customize template content according to project requireme
 - `tableClass.allFields`: All fields of the table.
 - `tableClass.baseFields`: All fields excluding primary keys and blobs.
 - `tableClass.baseBlobFields`: All fields excluding primary keys.
-- `tableClass.remark`: Table comments.
+- `tableClass.remark`: Table comment.
 
 #### Field Information
 
@@ -108,13 +108,13 @@ MybatisX allows you to customize template content according to project requireme
 - `field.columnName`: Column name.
 - `field.jdbcType`: JDBC type.
 - `field.columnLength`: Column length.
-- `field.columnScale`: Column precision.
+- `field.columnScale`: Column scale.
 - `field.columnIsArray`: Whether the field type is an array.
 - `field.shortTypeName`: Short Java type name.
 - `field.fullTypeName`: Fully qualified Java type name.
-- `field.remark`: Field comments.
-- `field.autoIncrement`: Whether it is auto-incremented.
-- `field.nullable`: Whether it allows null values.
+- `field.remark`: Field comment.
+- `field.autoIncrement`: Whether it's auto-increment.
+- `field.nullable`: Whether it's nullable.
 
 #### Configuration Information
 
@@ -126,4 +126,4 @@ MybatisX allows you to customize template content according to project requireme
 - `baseInfo.baseBlobFields`: Template content.
 - `baseInfo.remark`: Relative module resource file path.
 
-With the MybatisX plugin, you can significantly improve development efficiency for MyBatis and MyBatis-Plus frameworks while enjoying convenient code generation and template customization features.
+With the MyBatisX plugin, you can significantly improve development efficiency with MyBatis and MyBatis-Plus frameworks, while enjoying convenient code generation and template customization features.

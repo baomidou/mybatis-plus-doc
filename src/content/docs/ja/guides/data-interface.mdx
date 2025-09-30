@@ -1,60 +1,58 @@
 ---
-title: データアクセスインターフェース
+title: 永続化レイヤーインターフェース
 sidebar:
   order: 3
 ---
-
-この章では、MyBatis-Plus を使用したデータアクセス操作の各種メソッドについて、挿入、更新、削除、検索、ページネーションなどを詳細に解説します。本章を通じて、MyBatis-Plus が提供する各種メソッドがどのようにデータ操作を行うか、およびそれらに対応する SQL ステートメントを理解することができます。
+本文では、MyBatis-Plus を使用した永続化操作の各種メソッドについて詳しく説明します。挿入、更新、削除、検索、ページネーションなどを含みます。本稿を通じて、MyBatis-Plus が提供する各種メソッドがどのようにデータ操作を行うか、およびそれらに対応する SQL 文について理解することができます。
 
 ## Service インターフェース
 
-[IService](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/service/IService.java) は、MyBatis-Plus が提供する汎用 Service 層インターフェースであり、挿入、削除、検索、ページネーションなどの一般的な CRUD 操作をカプセル化しています。IService インターフェースを継承することで、データベースの基本操作を迅速に実装し、コードの簡潔性と保守性を維持することができます。
+[IService](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/service/IService.java) は MyBatis-Plus が提供する汎用 Service 層インターフェースであり、挿入、削除、クエリ、ページングなどの一般的な CRUD 操作をカプセル化しています。IService インターフェースを継承することで、データベースに対する基本的な操作を迅速に実装でき、コードの簡潔さと保守性を維持できます。
 
-IService インターフェースのメソッド名は一定の規約に従っており、例えば `get` は単一行の検索、`remove` は削除、`list` はコレクションの検索、`page` はページネーション検索に使用され、これにより Mapper 層のメソッドとの混同を避けることができます。
+IService インターフェース内のメソッド名は一定の規約に従って命名されています。例えば、`get` は単一行のクエリに、`remove` は削除に、`list` はコレクションのクエリに、`page` はページングクエリに使用され、これにより Mapper 層のメソッドとの混同を避けることができます。
 
 :::tip
 
 - ジェネリック型 `T` は任意のエンティティオブジェクトです
-- カスタム汎用 Service メソッドを作成する可能性がある場合は、独自の `IBaseService` を作成し、Mybatis-Plus が提供する `IService` 基底クラスを継承することをお勧めします
-- オブジェクト `Wrapper` は [条件ビルダー](/ja/guides/wrapper) です
+- カスタム汎用 Service メソッドが存在する可能性がある場合は、独自の `IBaseService` を作成し、`Mybatis-Plus` が提供する `IService` 基底クラスを継承することを推奨します
+- オブジェクト `Wrapper` は [条件コンストラクター](/guides/wrapper) を参照してください
 
 :::
 
 ### save
 
 ```java
-// レコードを1件挿入（フィールドを選択、戦略的に挿入）
+// 插入一条记录（选择字段，策略插入）
 boolean save(T entity);
-// 挿入（バッチ）
+// 插入（批量）
 boolean saveBatch(Collection<T> entityList);
-// 挿入（バッチ）
+// 插入（批量）
 boolean saveBatch(Collection<T> entityList, int batchSize);
 ```
 
 <p>
-    **機能説明：** レコードを挿入します。エンティティオブジェクトのフィールドに基づいて戦略的に挿入します。<br/>
+    **機能説明：** レコードを挿入します。エンティティオブジェクトのフィールドに基づいて戦略的な挿入を行います。<br/>
     **戻り値：** boolean、挿入操作が成功したかどうかを示します。<br/>
     **パラメータ説明：** <br/>
     |         型          |   パラメータ名   |     説明     |
-    | :-------------------: | :--------: | :----------: |
-    |           T           |   entity   | エンティティオブジェクト |
-    | Collection&#60;T&#62; | entityList | エンティティオブジェクトのコレクション |
-    |          int          | batchSize  | 挿入バッチサイズ |
+    | :-----------------: | :-------------: | :----------: |
+    |           T           |      entity     |   エンティティオブジェクト   |
+    | Collection&#60;T&#62; |   entityList    | エンティティオブジェクトのコレクション |
+    |          int          |    batchSize    | 挿入バッチサイズ |
 </p>
-
 
 **例（save）：**
 
 ```java
-// User エンティティオブジェクトがあると仮定します
+// User エンティティオブジェクトがあると仮定
 User user = new User();
 user.setName("John Doe");
 user.setEmail("john.doe@example.com");
-boolean result = userService.save(user); // save メソッドを呼び出します
+boolean result = userService.save(user); // save メソッドを呼び出し
 if (result) {
-    System.out.println("ユーザーは正常に保存されました。");
+    System.out.println("User saved successfully.");
 } else {
-    System.out.println("ユーザーの保存に失敗しました。");
+    System.out.println("Failed to save user.");
 }
 ```
 
@@ -67,25 +65,25 @@ INSERT INTO user (name, email) VALUES ('John Doe', 'john.doe@example.com')
 **例（saveBatch）：**
 
 ```java
-// User エンティティオブジェクトのグループがあると仮定します
+// 一連の User エンティティオブジェクトがあると仮定
 List<User> users = Arrays.asList(
     new User("Alice", "alice@example.com"),
     new User("Bob", "bob@example.com"),
     new User("Charlie", "charlie@example.com")
 );
-// デフォルトのバッチサイズを使用してバッチ挿入を行います
-boolean result = userService.saveBatch(users); // saveBatch メソッドを呼び出します（デフォルトのバッチサイズ）
+// デフォルトのバッチサイズで一括挿入を実行
+boolean result = userService.saveBatch(users); // saveBatch メソッドを呼び出し、デフォルトのバッチサイズを使用
 if (result) {
-    System.out.println("ユーザーは正常に保存されました。");
+    System.out.println("Users saved successfully.");
 } else {
-    System.out.println("ユーザーの保存に失敗しました。");
+    System.out.println("Failed to save users.");
 }
 ```
 
-生成される SQL（デフォルトのバッチサイズが 3 であると仮定）:
+生成される SQL（デフォルトのバッチサイズが 3 と仮定）:
 
 ```sql
-INSERT INTO user (name, email) VALUES
+INSERT INTO user (name, email) VALUES 
 ('Alice', 'alice@example.com'),
 ('Bob', 'bob@example.com'),
 ('Charlie', 'charlie@example.com')
@@ -94,19 +92,19 @@ INSERT INTO user (name, email) VALUES
 **例（saveBatch でバッチサイズを指定）：**
 
 ```java
-// User エンティティオブジェクトのグループがあると仮定します
+// 一連の User エンティティオブジェクトがあると仮定
 List<User> users = Arrays.asList(
     new User("David", "david@example.com"),
     new User("Eve", "eve@example.com"),
     new User("Frank", "frank@example.com"),
     new User("Grace", "grace@example.com")
 );
-// バッチサイズを 2 に指定してバッチ挿入を行います
-boolean result = userService.saveBatch(users, 2); // saveBatch メソッドを呼び出します（バッチサイズを指定）
+// バッチサイズを 2 に指定して一括挿入を実行
+boolean result = userService.saveBatch(users, 2); // saveBatch メソッドを呼び出し、バッチサイズを指定
 if (result) {
-    System.out.println("ユーザーは正常に保存されました。");
+    System.out.println("Users saved successfully.");
 } else {
-    System.out.println("ユーザーの保存に失敗しました。");
+    System.out.println("Failed to save users.");
 }
 ```
 
@@ -114,39 +112,37 @@ if (result) {
 
 ```sql
 -- 第1バッチ
-INSERT INTO user (name, email) VALUES
+INSERT INTO user (name, email) VALUES 
 ('David', 'david@example.com'),
 ('Eve', 'eve@example.com')
 
 -- 第2バッチ
-INSERT INTO user (name, email) VALUES
+INSERT INTO user (name, email) VALUES 
 ('Frank', 'frank@example.com'),
 ('Grace', 'grace@example.com')
 ```
 
-上記の例から、`save` シリーズのメソッドが Service 層でどのようにバッチ挿入操作を行うか、およびそれらに対応する SQL ステートメントがわかります。これらのメソッドは挿入操作のコード記述を大幅に簡略化し、開発効率を向上させます。
+上記の例から、save シリーズのメソッドが Service 層でどのように一括挿入操作を行うか、およびそれらに対応する SQL 文を確認できます。これらのメソッドは挿入操作のコード記述を大幅に簡素化し、開発効率を向上させます。
 
 ### saveOrUpdate
 
 ```java
-// TableId アノテーションプロパティが存在する場合はレコードを更新し、存在しない場合はレコードを挿入します
+// TableId 注解属性值存在则更新记录，否插入一条记录
 boolean saveOrUpdate(T entity);
-// updateWrapper に基づいて更新を試み、失敗した場合は saveOrUpdate(T) メソッドを実行し続けます
-boolean saveOrUpdate(T entity, Wrapper<T> updateWrapper);
-// バッチで変更または挿入します
+// 批量修改插入
 boolean saveOrUpdateBatch(Collection<T> entityList);
-// バッチで変更または挿入します
+// 批量修改插入
 boolean saveOrUpdateBatch(Collection<T> entityList, int batchSize);
 ```
 
 <p>
-    **機能説明：** エンティティオブジェクトの主キー ID に基づいて判断し、存在する場合はレコードを更新し、存在しない場合はレコードを挿入します。<br/>
+    **機能説明：** エンティティオブジェクトの主キーIDに基づいて判断し、存在する場合はレコードを更新、存在しない場合はレコードを挿入します。<br/>
     **戻り値：** boolean、挿入または更新操作が成功したかどうかを示します。<br/>
     **パラメータ説明：** <br/>
     |         型          |   パラメータ名   |     説明     |
     | :-------------------: | :--------: | :----------: |
-    |           T           |   entity   | エンティティオブジェクト |
-    |  Wrapper&#60;T&#62;   | updateWrapper | エンティティオブジェクトのカプセル化操作クラス UpdateWrapper |
+    |           T           |   entity   |   エンティティオブジェクト   |
+    |  Wrapper&#60;T&#62;   | updateWrapper | エンティティオブジェクトをカプセル化する操作クラス UpdateWrapper |
     | Collection&#60;T&#62; | entityList | エンティティオブジェクトのコレクション |
     |          int          | batchSize  | 挿入バッチサイズ |
 </p>
@@ -154,26 +150,26 @@ boolean saveOrUpdateBatch(Collection<T> entityList, int batchSize);
 **例（saveOrUpdate）：**
 
 ```java
-// User エンティティオブジェクトがあり、id が TableId アノテーションのプロパティであると仮定します
+// Userエンティティオブジェクトがあり、idがTableIdアノテーションの属性であると仮定
 User user = new User();
 user.setId(1);
 user.setName("John Doe");
 user.setEmail("john.doe@example.com");
-boolean result = userService.saveOrUpdate(user); // saveOrUpdate メソッドを呼び出します
+boolean result = userService.saveOrUpdate(user); // saveOrUpdateメソッドを呼び出し
 if (result) {
-    System.out.println("ユーザーは正常に更新または保存されました。");
+    System.out.println("ユーザーの更新または保存が成功しました。");
 } else {
     System.out.println("ユーザーの更新または保存に失敗しました。");
 }
 ```
 
-生成される SQL（ID が 1 のレコードが既に存在すると仮定）:
+生成されるSQL（idが1のレコードが存在すると仮定）:
 
 ```sql
 UPDATE user SET name = 'John Doe', email = 'john.doe@example.com' WHERE id = 1
 ```
 
-生成される SQL（ID が 1 のレコードが存在しないと仮定）:
+生成されるSQL（idが1のレコードが存在しないと仮定）:
 
 ```sql
 INSERT INTO user (id, name, email) VALUES (1, 'John Doe', 'john.doe@example.com')
@@ -182,22 +178,22 @@ INSERT INTO user (id, name, email) VALUES (1, 'John Doe', 'john.doe@example.com'
 **例（saveOrUpdateBatch）：**
 
 ```java
-// 各オブジェクトに id プロパティを持つ User エンティティオブジェクトのグループがあると仮定します
+// 各オブジェクトにid属性を持つUserエンティティオブジェクトのグループがあると仮定
 List<User> users = Arrays.asList(
     new User(1, "Alice", "alice@example.com"),
     new User(2, "Bob", "bob@example.com"),
     new User(3, "Charlie", "charlie@example.com")
 );
-// デフォルトのバッチサイズを使用してバッチ変更・挿入を行います
-boolean result = userService.saveOrUpdateBatch(users); // saveOrUpdateBatch メソッドを呼び出します（デフォルトのバッチサイズ）
+// デフォルトのバッチサイズで一括更新挿入を実行
+boolean result = userService.saveOrUpdateBatch(users); // saveOrUpdateBatchメソッドを呼び出し、デフォルトのバッチサイズ
 if (result) {
-    System.out.println("ユーザーは正常に更新または保存されました。");
+    System.out.println("ユーザーの一括更新または保存が成功しました。");
 } else {
-    System.out.println("ユーザーの更新または保存に失敗しました。");
+    System.out.println("ユーザーの一括更新または保存に失敗しました。");
 }
 ```
 
-生成される SQL（ID が 1 と 2 のレコードは既に存在し、ID が 3 のレコードは存在しないと仮定）:
+生成されるSQL（idが1と2のレコードが存在し、idが3のレコードが存在しないと仮定）:
 
 ```sql
 UPDATE user SET name = 'Alice', email = 'alice@example.com' WHERE id = 1
@@ -205,25 +201,25 @@ UPDATE user SET name = 'Bob', email = 'bob@example.com' WHERE id = 2
 INSERT INTO user (id, name, email) VALUES (3, 'Charlie', 'charlie@example.com')
 ```
 
-**例（saveOrUpdateBatch でバッチサイズを指定）：**
+**例（saveOrUpdateBatch バッチサイズ指定）：**
 
 ```java
-// User エンティティオブジェクトのグループがあると仮定します
+// Userエンティティオブジェクトのグループがあると仮定
 List<User> users = Arrays.asList(
     new User(4, "David", "david@example.com"),
     new User(5, "Eve", "eve@example.com"),
     new User(6, "Frank", "frank@example.com")
 );
-// バッチサイズを 2 に指定してバッチ変更・挿入を行います
-boolean result = userService.saveOrUpdateBatch(users, 2); // saveOrUpdateBatch メソッドを呼び出します（バッチサイズを指定）
+// バッチサイズを2に指定して一括更新挿入を実行
+boolean result = userService.saveOrUpdateBatch(users, 2); // saveOrUpdateBatchメソッドを呼び出し、バッチサイズを指定
 if (result) {
-    System.out.println("ユーザーは正常に更新または保存されました。");
+    System.out.println("ユーザーの一括更新または保存が成功しました。");
 } else {
-    System.out.println("ユーザーの更新または保存に失敗しました。");
+    System.out.println("ユーザーの一括更新または保存に失敗しました。");
 }
 ```
 
-生成される SQL（バッチサイズを 2 に指定したと仮定）:
+生成されるSQL（バッチサイズが2に指定されていると仮定）:
 
 ```sql
 -- 第1バッチ
@@ -234,44 +230,44 @@ UPDATE user SET name = 'Eve', email = 'eve@example.com' WHERE id = 5
 INSERT INTO user (id, name, email) VALUES (6, 'Frank', 'frank@example.com')
 ```
 
-上記の例から、`saveOrUpdate` シリーズのメソッドが Service 層でどのようにバッチ変更・挿入操作を行うか、およびそれらに対応する SQL ステートメントがわかります。これらのメソッドは効率的なデータ操作方法を提供し、異なる条件に基づいて更新または挿入操作を行うことができます。
+上記の例から、saveOrUpdateシリーズのメソッドがService層でどのように一括更新挿入操作を実行するか、およびそれらに対応するSQL文を確認できます。これらのメソッドは、異なる条件に基づいて更新または挿入操作を実行する効率的なデータ操作方法を提供します。
 
 ### remove
 
 ```java
-// queryWrapper で設定された条件に基づいてレコードを削除します
+// 根据 queryWrapper 设置的条件，删除记录
 boolean remove(Wrapper<T> queryWrapper);
-// ID に基づいて削除します
+// 根据 ID 删除
 boolean removeById(Serializable id);
-// columnMap 条件に基づいてレコードを削除します
+// 根据 columnMap 条件，删除记录
 boolean removeByMap(Map<String, Object> columnMap);
-// 削除（ID に基づいてバッチ削除）
+// 删除（根据ID 批量删除）
 boolean removeByIds(Collection<? extends Serializable> idList);
 ```
 
 <p>
-    **機能説明：** 指定された条件に合致するレコードを削除します。<br/>
+    **機能説明：** 指定された条件に一致するレコードを削除します。<br/>
     **戻り値：** boolean、削除操作が成功したかどうかを示します。<br/>
     **パラメータ説明：** <br/>
-    |                    型                    |    パラメータ名    |          説明           |
-    | :----------------------------------------: | :----------: | :---------------------: |
-    |             Wrapper&#60;T&#62;             | queryWrapper | エンティティラッパークラス QueryWrapper |
-    |                Serializable                |      id      |         主キー ID         |
-    |        Map&#60;String, Object&#62;         |  columnMap   |     テーブルフィールド map オブジェクト     |
-    | Collection&#60;? extends Serializable&#62; |    idList    |      主キー ID リスト       |
+    |                    型                    |    パラメータ名    |          説明          |
+    | :--------------------------------------: | :--------------: | :--------------------: |
+    |             Wrapper&#60;T&#62;             |   queryWrapper   | エンティティラッパークラス QueryWrapper |
+    |                Serializable                |        id        |         主キー ID         |
+    |        Map&#60;String, Object&#62;         |     columnMap    |     テーブルカラム map オブジェクト     |
+    | Collection&#60;? extends Serializable&#62; |      idList      |       主キー ID リスト       |
 </p>
 
 **例（remove）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、削除条件を name = 'John Doe' に設定すると仮定します
+// QueryWrapper オブジェクトがあり、削除条件を name = 'John Doe' に設定していると仮定
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.eq("name", "John Doe");
-boolean result = userService.remove(queryWrapper); // remove メソッドを呼び出します
+boolean result = userService.remove(queryWrapper); // remove メソッドを呼び出し
 if (result) {
-    System.out.println("レコードは正常に削除されました。");
+    System.out.println("Record deleted successfully.");
 } else {
-    System.out.println("レコードの削除に失敗しました。");
+    System.out.println("Failed to delete record.");
 }
 ```
 
@@ -284,12 +280,12 @@ DELETE FROM user WHERE name = 'John Doe'
 **例（removeById）：**
 
 ```java
-// ID が 1 のユーザーを削除すると仮定します
-boolean result = userService.removeById(1); // removeById メソッドを呼び出します
+// ID が 1 のユーザーを削除すると仮定
+boolean result = userService.removeById(1); // removeById メソッドを呼び出し
 if (result) {
-    System.out.println("ユーザーは正常に削除されました。");
+    System.out.println("User deleted successfully.");
 } else {
-    System.out.println("ユーザーの削除に失敗しました。");
+    System.out.println("Failed to delete user.");
 }
 ```
 
@@ -302,14 +298,14 @@ DELETE FROM user WHERE id = 1
 **例（removeByMap）：**
 
 ```java
-// columnMap があり、削除条件を age = 30 に設定すると仮定します
+// columnMap があり、削除条件を age = 30 に設定していると仮定
 Map<String, Object> columnMap = new HashMap<>();
 columnMap.put("age", 30);
-boolean result = userService.removeByMap(columnMap); // removeByMap メソッドを呼び出します
+boolean result = userService.removeByMap(columnMap); // removeByMap メソッドを呼び出し
 if (result) {
-    System.out.println("レコードは正常に削除されました。");
+    System.out.println("Records deleted successfully.");
 } else {
-    System.out.println("レコードの削除に失敗しました。");
+    System.out.println("Failed to delete records.");
 }
 ```
 
@@ -322,13 +318,13 @@ DELETE FROM user WHERE age = 30
 **例（removeByIds）：**
 
 ```java
-// ID のリストがあり、ユーザーをバッチ削除すると仮定します
+// ID リストのグループがあり、ユーザーを一括削除すると仮定
 List<Integer> ids = Arrays.asList(1, 2, 3);
-boolean result = userService.removeByIds(ids); // removeByIds メソッドを呼び出します
+boolean result = userService.removeByIds(ids); // removeByIds メソッドを呼び出し
 if (result) {
-    System.out.println("ユーザーは正常に削除されました。");
+    System.out.println("Users deleted successfully.");
 } else {
-    System.out.println("ユーザーの削除に失敗しました。");
+    System.out.println("Failed to delete users.");
 }
 ```
 
@@ -338,47 +334,46 @@ if (result) {
 DELETE FROM user WHERE id IN (1, 2, 3)
 ```
 
-上記の例から、`remove` シリーズのメソッドが Service 層でどのように削除操作を行うか、およびそれらに対応する SQL ステートメントがわかります。これらのメソッドは柔軟なデータ操作方法を提供し、異なる条件に基づいて削除操作を行うことができます。
-
+上記の例から、remove シリーズのメソッドが Service 層でどのように削除操作を行うか、およびそれらに対応する SQL 文を確認できます。これらのメソッドは柔軟なデータ操作方法を提供し、さまざまな条件に基づいて削除操作を行うことができます。
 
 ### update
 
 ```java
-// UpdateWrapper 条件に基づいてレコードを更新します（sqlset の設定が必要）
+// 根据 UpdateWrapper 条件，更新记录 需要设置sqlset
 boolean update(Wrapper<T> updateWrapper);
-// whereWrapper 条件に基づいてレコードを更新します
+// 根据 whereWrapper 条件，更新记录
 boolean update(T updateEntity, Wrapper<T> whereWrapper);
-// ID に基づいて選択的に変更します
+// 根据 ID 选择修改
 boolean updateById(T entity);
-// ID に基づいてバッチ更新します
+// 根据ID 批量更新
 boolean updateBatchById(Collection<T> entityList);
-// ID に基づいてバッチ更新します
+// 根据ID 批量更新
 boolean updateBatchById(Collection<T> entityList, int batchSize);
 ```
 
 <p>
-    **機能説明：** 指定された条件に合致するレコードを更新します。<br/>
+    **機能説明：** 指定された条件に基づいて、条件に一致するレコードを更新します。<br/>
     **戻り値：** boolean、更新操作が成功したかどうかを示します。<br/>
     **パラメータ説明：** <br/>
-    |         型          |    パラメータ名     |               説明               |
-    | :-------------------: | :-----------: | :------------------------------: |
-    |  Wrapper&#60;T&#62;   | updateWrapper | エンティティオブジェクトのカプセル化操作クラス UpdateWrapper |
-    |           T           |    entity     |             エンティティオブジェクト             |
-    | Collection&#60;T&#62; |  entityList   |           エンティティオブジェクトのコレクション           |
-    |          int          |   batchSize   |           更新バッチサイズ           |
+    |         型          |    パラメータ名    |               説明               |
+    | :-----------------: | :--------------: | :------------------------------: |
+    |  Wrapper&#60;T&#62;   |  updateWrapper   | エンティティオブジェクトをカプセル化する操作クラス UpdateWrapper |
+    |           T           |      entity      |            エンティティオブジェクト            |
+    | Collection&#60;T&#62; |    entityList    |           エンティティオブジェクトコレクション           |
+    |          int          |     batchSize    |           更新バッチ数           |
 </p>
 
 **例（update UpdateWrapper 形式）：**
 
 ```java
-// UpdateWrapper オブジェクトがあり、更新条件を name = 'John Doe' に設定し、更新フィールドを email に設定すると仮定します
+// UpdateWrapper オブジェクトがあり、更新条件を name = 'John Doe' に設定し、更新フィールドを email に設定していると仮定
 UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
 updateWrapper.eq("name", "John Doe").set("email", "john.doe@newdomain.com");
-boolean result = userService.update(updateWrapper); // update メソッドを呼び出します
+boolean result = userService.update(updateWrapper); // update メソッドを呼び出し
 if (result) {
-    System.out.println("レコードは正常に更新されました。");
+    System.out.println("Record updated successfully.");
 } else {
-    System.out.println("レコードの更新に失敗しました。");
+    System.out.println("Failed to update record.");
 }
 ```
 
@@ -391,16 +386,16 @@ UPDATE user SET email = 'john.doe@newdomain.com' WHERE name = 'John Doe'
 **例（update WhereWrapper 形式）：**
 
 ```java
-// User エンティティオブジェクトがあり、更新フィールドを name に設定し、whereWrapper で更新条件を id = 1 に設定すると仮定します
+// User エンティティオブジェクトがあり、更新フィールドを name に設定し、whereWrapper で更新条件を id = 1 に設定していると仮定
 User updateEntity = new User();
 updateEntity.setName("Updated Name");
 QueryWrapper<User> whereWrapper = new QueryWrapper<>();
 whereWrapper.eq("id", 1);
-boolean result = userService.update(updateEntity, whereWrapper); // update メソッドを呼び出します
+boolean result = userService.update(updateEntity, whereWrapper); // update メソッドを呼び出し
 if (result) {
-    System.out.println("レコードは正常に更新されました。");
+    System.out.println("Record updated successfully.");
 } else {
-    System.out.println("レコードの更新に失敗しました。");
+    System.out.println("Failed to update record.");
 }
 ```
 
@@ -413,15 +408,15 @@ UPDATE user SET name = 'Updated Name' WHERE id = 1
 **例（updateById）：**
 
 ```java
-// User エンティティオブジェクトがあり、更新フィールドを email に設定し、ID に基づいて更新すると仮定します
+// User エンティティオブジェクトがあり、更新フィールドを email に設定し、ID に基づいて更新していると仮定
 User updateEntity = new User();
 updateEntity.setId(1);
 updateEntity.setEmail("updated.email@example.com");
-boolean result = userService.updateById(updateEntity); // updateById メソッドを呼び出します
+boolean result = userService.updateById(updateEntity); // updateById メソッドを呼び出し
 if (result) {
-    System.out.println("レコードは正常に更新されました。");
+    System.out.println("Record updated successfully.");
 } else {
-    System.out.println("レコードの更新に失敗しました。");
+    System.out.println("Failed to update record.");
 }
 ```
 
@@ -434,43 +429,43 @@ UPDATE user SET email = 'updated.email@example.com' WHERE id = 1
 **例（updateBatchById）：**
 
 ```java
-// User エンティティオブジェクトのグループがあり、バッチ更新すると仮定します
+// 一連の User エンティティオブジェクトがあり、バッチ更新を実行していると仮定
 List<User> users = Arrays.asList(
     new User(1, null, "new.email1@example.com"),
     new User(2, null, "new.email2@example.com")
 );
-boolean result = userService.updateBatchById(users); // updateBatchById メソッドを呼び出します（デフォルトのバッチサイズ）
+boolean result = userService.updateBatchById(users); // updateBatchById メソッドを呼び出し、デフォルトのバッチサイズを使用
 if (result) {
-    System.out.println("レコードは正常に更新されました。");
+    System.out.println("Records updated successfully.");
 } else {
-    System.out.println("レコードの更新に失敗しました。");
+    System.out.println("Failed to update records.");
 }
 ```
 
-生成される SQL（デフォルトのバッチサイズが 2 であると仮定）:
+生成される SQL（デフォルトのバッチサイズが 2 と仮定）:
 
 ```sql
 UPDATE user SET email = 'new.email1@example.com' WHERE id = 1
 UPDATE user SET email = 'new.email2@example.com' WHERE id = 2
 ```
 
-**例（updateBatchById でバッチサイズを指定）：**
+**例（updateBatchById バッチサイズ指定）：**
 
 ```java
-// User エンティティオブジェクトのグループがあり、バッチ更新し、バッチサイズを 1 に指定すると仮定します
+// 一連の User エンティティオブジェクトがあり、バッチ更新を実行し、バッチサイズを 1 に指定していると仮定
 List<User> users = Arrays.asList(
     new User(1, null, "new.email1@example.com"),
     new User(2, null, "new.email2@example.com")
 );
-boolean result = userService.updateBatchById(users, 1); // updateBatchById メソッドを呼び出します（バッチサイズを指定）
+boolean result = userService.updateBatchById(users, 1); // updateBatchById メソッドを呼び出し、バッチサイズを指定
 if (result) {
-    System.out.println("レコードは正常に更新されました。");
+    System.out.println("Records updated successfully.");
 } else {
-    System.out.println("レコードの更新に失敗しました。");
+    System.out.println("Failed to update records.");
 }
 ```
 
-生成される SQL（バッチサイズを 1 に指定したと仮定）:
+生成される SQL（バッチサイズが 1 と指定されていると仮定）:
 
 ```sql
 -- 第1バッチ
@@ -479,31 +474,31 @@ UPDATE user SET email = 'new.email1@example.com' WHERE id = 1
 UPDATE user SET email = 'new.email2@example.com' WHERE id = 2
 ```
 
-上記の例から、`update` シリーズのメソッドが Service 層でどのように更新操作を行うか、およびそれらに対応する SQL ステートメントがわかります。これらのメソッドは柔軟なデータ操作方法を提供し、異なる条件に基づいて更新操作を行うことができます。
+上記の例を通じて、`update` シリーズのメソッドが Service 層でどのように更新操作を実行するか、およびそれらに対応する SQL 文を確認できます。これらのメソッドは、さまざまな条件に基づいて更新操作を実行するための柔軟なデータ操作方法を提供します。
 
 ### get
 
 ```java
-// ID に基づいて検索します
+// 根据 ID 查询
 T getById(Serializable id);
-// Wrapper に基づいてレコードを1件検索します。結果セットが複数ある場合は例外がスローされ、条件 wrapper.last("LIMIT 1") を追加してランダムに1件取得します
+// 根据 Wrapper，查询一条记录。结果集，如果是多个会抛出异常，随机取一条加上限制条件 wrapper.last("LIMIT 1")
 T getOne(Wrapper<T> queryWrapper);
-// Wrapper に基づいてレコードを1件検索します
+// 根据 Wrapper，查询一条记录
 T getOne(Wrapper<T> queryWrapper, boolean throwEx);
-// Wrapper に基づいてレコードを1件検索します
+// 根据 Wrapper，查询一条记录
 Map<String, Object> getMap(Wrapper<T> queryWrapper);
-// Wrapper に基づいてレコードを1件検索します
+// 根据 Wrapper，查询一条记录
 <V> V getObj(Wrapper<T> queryWrapper, Function<? super Object, V> mapper);
 ```
 
 <p>
-    **機能説明：** 指定された条件に合致するレコードを検索します。<br/>
-    **戻り値：** 検索結果。エンティティオブジェクト、Map オブジェクト、またはその他の型である可能性があります。<br/>
+    **機能説明：** 指定された条件に基づいて一致するレコードを検索します。<br/>
+    **戻り値：** 検索結果。エンティティオブジェクト、Mapオブジェクト、またはその他の型である可能性があります。<br/>
     **パラメータ説明：** <br/>
     |                型                 |    パラメータ名    |              説明               |
     | :---------------------------------: | :----------: | :-----------------------------: |
     |            Serializable             |      id      |             主キー ID             |
-    |         Wrapper&#60;T&#62;          | queryWrapper | エンティティオブジェクトのカプセル化操作クラス QueryWrapper |
+    |         Wrapper&#60;T&#62;          | queryWrapper | エンティティオブジェクトをカプセル化する操作クラス QueryWrapper |
     |               boolean               |   throwEx    |   複数の結果がある場合に例外をスローするかどうか    |
     |                  T                  |    entity    |            エンティティオブジェクト             |
     | Function&#60;? super Object, V&#62; |    mapper    |            変換関数             |
@@ -512,8 +507,8 @@ Map<String, Object> getMap(Wrapper<T> queryWrapper);
 **例（getById）：**
 
 ```java
-// ID が 1 のユーザーを検索すると仮定します
-User user = userService.getById(1); // getById メソッドを呼び出します
+// ID が 1 のユーザーを検索する場合
+User user = userService.getById(1); // getById メソッドを呼び出す
 if (user != null) {
     System.out.println("User found: " + user);
 } else {
@@ -530,10 +525,10 @@ SELECT * FROM user WHERE id = 1
 **例（getOne）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、検索条件を name = 'John Doe' に設定すると仮定します
+// QueryWrapper オブジェクトがあり、検索条件を name = 'John Doe' に設定する場合
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.eq("name", "John Doe");
-User user = userService.getOne(queryWrapper); // getOne メソッドを呼び出します
+User user = userService.getOne(queryWrapper); // getOne メソッドを呼び出す
 if (user != null) {
     System.out.println("User found: " + user);
 } else {
@@ -547,13 +542,13 @@ if (user != null) {
 SELECT * FROM user WHERE name = 'John Doe'
 ```
 
-**例（getOne 例外をスローしない場合）：**
+**例（getOne 例外をスローしない）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、検索条件を name = 'John Doe' に設定し、かつ例外をスローしないと仮定します
+// QueryWrapper オブジェクトがあり、検索条件を name = 'John Doe' に設定し、例外をスローしない場合
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.eq("name", "John Doe");
-User user = userService.getOne(queryWrapper, false); // getOne メソッドを呼び出します
+User user = userService.getOne(queryWrapper, false); // getOne メソッドを呼び出す
 if (user != null) {
     System.out.println("User found: " + user);
 } else {
@@ -570,10 +565,10 @@ SELECT * FROM user WHERE name = 'John Doe'
 **例（getMap）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、検索条件を name = 'John Doe' に設定し、結果を Map にマッピングします
+// QueryWrapper オブジェクトがあり、検索条件を name = 'John Doe' に設定し、結果を Map にマッピングする場合
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.eq("name", "John Doe");
-Map<String, Object> userMap = userService.getMap(queryWrapper); // getMap メソッドを呼び出します
+Map<String, Object> userMap = userService.getMap(queryWrapper); // getMap メソッドを呼び出す
 if (userMap != null) {
     System.out.println("User found: " + userMap);
 } else {
@@ -590,10 +585,10 @@ SELECT * FROM user WHERE name = 'John Doe'
 **例（getObj）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、検索条件を name = 'John Doe' に設定し、結果を String に変換します
+// QueryWrapper オブジェクトがあり、検索条件を name = 'John Doe' に設定し、結果を String に変換する場合
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.eq("name", "John Doe");
-String userName = userService.getObj(queryWrapper, obj -> ((User) obj).getName()); // getObj メソッドを呼び出します
+String userName = userService.getObj(queryWrapper, obj -> ((User) obj).getName()); // getObj メソッドを呼び出す
 if (userName != null) {
     System.out.println("User name found: " + userName);
 } else {
@@ -607,51 +602,50 @@ if (userName != null) {
 SELECT * FROM user WHERE name = 'John Doe'
 ```
 
-上記の例から、`get` シリーズのメソッドが Service 層でどのように検索操作を行うか、およびそれらに対応する SQL ステートメントがわかります。これらのメソッドは柔軟なデータ検索方法を提供し、異なる条件に基づいて検索操作を行うことができます。
-
+上記の例から、`get` シリーズのメソッドが Service 層でどのように検索操作を行うか、およびそれらに対応する SQL 文を確認できます。これらのメソッドは、さまざまな条件に基づいて検索操作を実行できる柔軟なデータ検索方法を提供します。
 
 ### list
 
 ```java
-// すべてを検索します
+// 查询所有
 List<T> list();
-// リストを検索します
+// 查询列表
 List<T> list(Wrapper<T> queryWrapper);
-// ID に基づいてバッチで検索します
+// 查询（根据ID 批量查询）
 Collection<T> listByIds(Collection<? extends Serializable> idList);
-// columnMap 条件に基づいて検索します
+// 查询（根据 columnMap 条件）
 Collection<T> listByMap(Map<String, Object> columnMap);
-// すべてのリストを検索します
+// 查询所有列表
 List<Map<String, Object>> listMaps();
-// リストを検索します
+// 查询列表
 List<Map<String, Object>> listMaps(Wrapper<T> queryWrapper);
-// すべてのレコードを検索します
+// 查询全部记录
 List<Object> listObjs();
-// すべてのレコードを検索します
+// 查询全部记录
 <V> List<V> listObjs(Function<? super Object, V> mapper);
-// Wrapper 条件に基づいてすべてのレコードを検索します
+// 根据 Wrapper 条件，查询全部记录
 List<Object> listObjs(Wrapper<T> queryWrapper);
-// Wrapper 条件に基づいてすべてのレコードを検索します
+// 根据 Wrapper 条件，查询全部记录
 <V> List<V> listObjs(Wrapper<T> queryWrapper, Function<? super Object, V> mapper);
 ```
 
 <p>
-    **機能説明：** 指定された条件に合致するレコードを検索します。<br/>
-    **戻り値：** 検索結果。エンティティオブジェクト、Map オブジェクト、またはその他の型である可能性があります。<br/>
+    **機能説明：** 条件に一致するレコードを検索します。<br/>
+    **戻り値：** 検索結果。エンティティオブジェクト、Map オブジェクト、またはその他の型が返される可能性があります。<br/>
     **パラメータ説明：** <br/>
-    |                    型                    |    パラメータ名    |              説明               |
-    | :----------------------------------------: | :----------: | :-----------------------------: |
-    |             Wrapper&#60;T&#62;             | queryWrapper | エンティティオブジェクトのカプセル化操作クラス QueryWrapper |
-    | Collection&#60;? extends Serializable&#62; |    idList    |          主キー ID リスト           |
-    |         Map&#60;String, Object&#62;        |  columnMap   |         テーブルフィールド map オブジェクト         |
-    |    Function&#60;? super Object, V&#62;     |    mapper    |            変換関数             |
+    |                    型                    |    パラメータ名    |              説明              |
+    | :--------------------------------------: | :--------------: | :----------------------------: |
+    |             Wrapper&#60;T&#62;             |   queryWrapper   | エンティティオブジェクトをカプセル化する操作クラス QueryWrapper |
+    | Collection&#60;? extends Serializable&#62; |      idList      |           主キー ID リスト           |
+    |         Map&#60;String, Object&#62;        |     columnMap    |          テーブルフィールド map オブジェクト          |
+    |    Function&#60;? super Object, V&#62;     |      mapper      |            変換関数            |
 </p>
 
 **例（list）：**
 
 ```java
-// すべてのユーザーを検索します
-List<User> users = userService.list(); // list メソッドを呼び出します
+// すべてのユーザーを検索
+List<User> users = userService.list(); // list メソッドを呼び出す
 for (User user : users) {
     System.out.println("User: " + user);
 }
@@ -666,10 +660,10 @@ SELECT * FROM user
 **例（list QueryWrapper 形式）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、検索条件を age > 25 に設定すると仮定します
+// QueryWrapper オブジェクトがあり、検索条件を age > 25 に設定していると仮定
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.gt("age", 25);
-List<User> users = userService.list(queryWrapper); // list メソッドを呼び出します
+List<User> users = userService.list(queryWrapper); // list メソッドを呼び出す
 for (User user : users) {
     System.out.println("User: " + user);
 }
@@ -684,9 +678,9 @@ SELECT * FROM user WHERE age > 25
 **例（listByIds）：**
 
 ```java
-// ID のリストがあり、ユーザーをバッチ検索すると仮定します
+// ID リストのグループがあり、ユーザーを一括検索すると仮定
 List<Integer> ids = Arrays.asList(1, 2, 3);
-Collection<User> users = userService.listByIds(ids); // listByIds メソッドを呼び出します
+Collection<User> users = userService.listByIds(ids); // listByIds メソッドを呼び出す
 for (User user : users) {
     System.out.println("User: " + user);
 }
@@ -701,10 +695,10 @@ SELECT * FROM user WHERE id IN (1, 2, 3)
 **例（listByMap）：**
 
 ```java
-// columnMap があり、検索条件を age = 30 に設定すると仮定します
+// columnMap があり、検索条件を age = 30 に設定していると仮定
 Map<String, Object> columnMap = new HashMap<>();
 columnMap.put("age", 30);
-Collection<User> users = userService.listByMap(columnMap); // listByMap メソッドを呼び出します
+Collection<User> users = userService.listByMap(columnMap); // listByMap メソッドを呼び出す
 for (User user : users) {
     System.out.println("User: " + user);
 }
@@ -719,8 +713,8 @@ SELECT * FROM user WHERE age = 30
 **例（listMaps）：**
 
 ```java
-// すべてのユーザーを検索し、結果を Map にマッピングします
-List<Map<String, Object>> userMaps = userService.listMaps(); // listMaps メソッドを呼び出します
+// すべてのユーザーを検索し、結果を Map にマッピング
+List<Map<String, Object>> userMaps = userService.listMaps(); // listMaps メソッドを呼び出す
 for (Map<String, Object> userMap : userMaps) {
     System.out.println("User Map: " + userMap);
 }
@@ -735,10 +729,10 @@ SELECT * FROM user
 **例（listMaps QueryWrapper 形式）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、検索条件を age > 25 に設定し、結果を Map にマッピングします
+// QueryWrapper オブジェクトがあり、検索条件を age > 25 に設定し、結果を Map にマッピングすると仮定
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.gt("age", 25);
-List<Map<String, Object>> userMaps = userService.listMaps(queryWrapper); // listMaps メソッドを呼び出します
+List<Map<String, Object>> userMaps = userService.listMaps(queryWrapper); // listMaps メソッドを呼び出す
 for (Map<String, Object> userMap : userMaps) {
     System.out.println("User Map: " + userMap);
 }
@@ -753,8 +747,8 @@ SELECT * FROM user WHERE age > 25
 **例（listObjs）：**
 
 ```java
-// すべてのユーザーを検索し、結果を String リストに変換します
-List<String> userNames = userService.listObjs(obj -> ((User) obj).getName()); // listObjs メソッドを呼び出します
+// すべてのユーザーを検索し、結果を String リストに変換
+List<String> userNames = userService.listObjs(obj -> ((User) obj).getName()); // listObjs メソッドを呼び出す
 for (String userName : userNames) {
     System.out.println("User Name: " + userName);
 }
@@ -769,10 +763,10 @@ SELECT * FROM user
 **例（listObjs QueryWrapper 形式）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、検索条件を age > 25 に設定し、結果を String リストに変換します
+// QueryWrapper オブジェクトがあり、検索条件を age > 25 に設定し、結果を String リストに変換すると仮定
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.gt("age", 25);
-List<String> userNames = userService.listObjs(queryWrapper, obj -> ((User) obj).getName()); // listObjs メソッドを呼び出します
+List<String> userNames = userService.listObjs(queryWrapper, obj -> ((User) obj).getName()); // listObjs メソッドを呼び出す
 for (String userName : userNames) {
     System.out.println("User Name: " + userName);
 }
@@ -784,38 +778,37 @@ for (String userName : userNames) {
 SELECT * FROM user WHERE age > 25
 ```
 
-上記の例から、`list` シリーズのメソッドが Service 層でどのように検索操作を行うか、およびそれらに対応する SQL ステートメントがわかります。これらのメソッドは柔軟なデータ検索方法を提供し、異なる条件に基づいて検索操作を行うことができます。
-
+上記の例を通じて、`list` シリーズのメソッドが Service 層でどのようにデータ検索操作を行うか、およびそれらに対応する SQL 文を確認できます。これらのメソッドは柔軟なデータ検索方法を提供し、さまざまな条件に基づいて検索操作を行うことができます。
 
 ### page
 
 ```java
-// 条件なしのページネーション検索
+// 无条件分页查询
 IPage<T> page(IPage<T> page);
-// 条件付きのページネーション検索
+// 条件分页查询
 IPage<T> page(IPage<T> page, Wrapper<T> queryWrapper);
-// 条件なしのページネーション検索
+// 无条件分页查询
 IPage<Map<String, Object>> pageMaps(IPage<T> page);
-// 条件付きのページネーション検索
+// 条件分页查询
 IPage<Map<String, Object>> pageMaps(IPage<T> page, Wrapper<T> queryWrapper);
 ```
 
 <p>
-    **機能説明：** 条件に合致するレコードをページネーションで検索します。<br/>
-    **戻り値：** ページネーション検索結果。レコードリストと総レコード数が含まれます。<br/>
+    **機能説明：** 条件に一致するレコードをページング検索します。<br/>
+    **戻り値：** ページング検索結果。レコードリストと総レコード数を含みます。<br/>
     **パラメータ説明：** <br/>
     |                    型                    |    パラメータ名    |              説明               |
     | :----------------------------------------: | :----------: | :-----------------------------: |
-    |              IPage&#60;T&#62;               |     page     |            ページネーションオブジェクト             |
-    |             Wrapper&#60;T&#62;             | queryWrapper | エンティティオブジェクトのカプセル化操作クラス QueryWrapper |
+    |              IPage&#60;T&#62;               |     page     |            ページングオブジェクト             |
+    |             Wrapper&#60;T&#62;             | queryWrapper | エンティティオブジェクトをカプセル化する操作クラス QueryWrapper |
 </p>
 
 **例（page）：**
 
 ```java
-// 条件なしのページネーション検索を行い、1ページに10件のレコードを表示し、1ページ目を検索します
+// 假设要进行无条件的分页查询，每页显示10条记录，查询第1页
 IPage<User> page = new Page<>(1, 10);
-IPage<User> userPage = userService.page(page); // page メソッドを呼び出します
+IPage<User> userPage = userService.page(page); // 调用 page 方法
 List<User> userList = userPage.getRecords();
 long total = userPage.getTotal();
 System.out.println("Total users: " + total);
@@ -833,11 +826,11 @@ SELECT * FROM user LIMIT 10 OFFSET 0
 **例（page QueryWrapper 形式）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、検索条件を age > 25 に設定し、条件付きのページネーション検索を行います
+// 假设有一个 QueryWrapper 对象，设置查询条件为 age > 25，进行有条件的分页查询
 IPage<User> page = new Page<>(1, 10);
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.gt("age", 25);
-IPage<User> userPage = userService.page(page, queryWrapper); // page メソッドを呼び出します
+IPage<User> userPage = userService.page(page, queryWrapper); // 调用 page 方法
 List<User> userList = userPage.getRecords();
 long total = userPage.getTotal();
 System.out.println("Total users (age > 25): " + total);
@@ -855,9 +848,9 @@ SELECT * FROM user WHERE age > 25 LIMIT 10 OFFSET 0
 **例（pageMaps）：**
 
 ```java
-// 条件なしのページネーション検索を行い、結果を Map にマッピングし、1ページに10件のレコードを表示し、1ページ目を検索すると仮定します
+// 假设要进行无条件的分页查询，并将结果映射为 Map，每页显示10条记录，查询第1页
 IPage<Map<String, Object>> page = new Page<>(1, 10);
-IPage<Map<String, Object>> userPageMaps = userService.pageMaps(page); // pageMaps メソッドを呼び出します
+IPage<Map<String, Object>> userPageMaps = userService.pageMaps(page); // 调用 pageMaps 方法
 List<Map<String, Object>> userMapList = userPageMaps.getRecords();
 long total = userPageMaps.getTotal();
 System.out.println("Total users: " + total);
@@ -875,11 +868,11 @@ SELECT * FROM user LIMIT 10 OFFSET 0
 **例（pageMaps QueryWrapper 形式）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、検索条件を age > 25 に設定し、条件付きのページネーション検索を行い、結果を Map にマッピングします
+// 假设有一个 QueryWrapper 对象，设置查询条件为 age > 25，进行有条件的分页查询，并将结果映射为 Map
 IPage<Map<String, Object>> page = new Page<>(1, 10);
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.gt("age", 25);
-IPage<Map<String, Object>> userPageMaps = userService.pageMaps(page, queryWrapper); // pageMaps メソッドを呼び出します
+IPage<Map<String, Object>> userPageMaps = userService.pageMaps(page, queryWrapper); // 调用 pageMaps 方法
 List<Map<String, Object>> userMapList = userPageMaps.getRecords();
 long total = userPageMaps.getTotal();
 System.out.println("Total users (age > 25): " + total);
@@ -894,38 +887,37 @@ for (Map<String, Object> userMap : userMapList) {
 SELECT * FROM user WHERE age > 25 LIMIT 10 OFFSET 0
 ```
 
-上記の例から、`page` シリーズのメソッドが Service 層でどのようにページネーション検索操作を行うか、およびそれらに対応する SQL ステートメントがわかります。これらのメソッドは柔軟なデータ検索方法を提供し、異なる条件に基づいてページネーション検索操作を行うことができます。
-
+上記の例から、`page` シリーズのメソッドが Service 層でどのようにページング検索操作を行うか、およびそれらに対応する SQL 文を確認できます。これらのメソッドは柔軟なデータ検索方法を提供し、さまざまな条件に基づいてページング検索操作を行うことができます。
 
 ### count
 
 ```java
-// 総レコード数を検索します
+// 查询总记录数
 int count();
-// Wrapper 条件に基づいて総レコード数を検索します
+// 根据 Wrapper 条件，查询总记录数
 int count(Wrapper<T> queryWrapper);
 
-// 3.4.3.2から、戻り値が long に変更されました
-// 総レコード数を検索します
+//自3.4.3.2开始,返回值修改为long
+// 查询总记录数
 long count();
-// Wrapper 条件に基づいて総レコード数を検索します
+// 根据 Wrapper 条件，查询总记录数
 long count(Wrapper<T> queryWrapper);
 ```
 
 <p>
-    **機能説明：** 条件に合致するレコードの総数を検索します。<br/>
-    **戻り値：** 条件に合致するレコードの総数。<br/>
+    **機能説明：** 条件に一致するレコードの総数を取得します。<br/>
+    **戻り値：** 条件に一致するレコードの総数。<br/>
     **パラメータ説明：** <br/>
     |             型             |    パラメータ名    |              説明               |
     | :--------------------------: | :----------: | :-----------------------------: |
-    | Wrapper&#60;T&#62; | queryWrapper | エンティティオブジェクトのカプセル化操作クラス QueryWrapper |
+    | Wrapper&#60;T&#62; | queryWrapper | エンティティオブジェクトをカプセル化する操作クラス QueryWrapper |
 </p>
 
 **例（count）：**
 
 ```java
-// ユーザーテーブルの総レコード数を検索します
-int totalUsers = userService.count(); // count メソッドを呼び出します
+// ユーザーテーブルの総レコード数を取得
+int totalUsers = userService.count(); // count メソッドを呼び出し
 System.out.println("Total users: " + totalUsers);
 ```
 
@@ -938,10 +930,10 @@ SELECT COUNT(*) FROM user
 **例（count QueryWrapper 形式）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、検索条件を age > 25 に設定し、条件に合致するユーザーの総数を検索します
+// QueryWrapper オブジェクトを作成し、age > 25 という条件を設定して、条件に一致するユーザーの総数を取得
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.gt("age", 25);
-int totalUsers = userService.count(queryWrapper); // count メソッドを呼び出します
+int totalUsers = userService.count(queryWrapper); // count メソッドを呼び出し
 System.out.println("Total users (age > 25): " + totalUsers);
 ```
 
@@ -951,44 +943,43 @@ System.out.println("Total users (age > 25): " + totalUsers);
 SELECT COUNT(*) FROM user WHERE age > 25
 ```
 
-上記の例から、`count` メソッドが Service 層でどのようにレコード数統計操作を行うか、およびそれらに対応する SQL ステートメントがわかります。これらのメソッドは柔軟なデータ統計方法を提供し、異なる条件に基づいてレコード数統計操作を行うことができます。
+上記の例から、`count` メソッドが Service 層でどのようにレコード数の統計操作を行うか、およびそれらに対応する SQL 文を確認できます。これらのメソッドは、さまざまな条件に基づいてレコード数を統計する柔軟なデータ統計方法を提供します。
 
+## Mapper インターフェース
 
-## Mapper Interface
-
-BaseMapper は Mybatis-Plus が提供する汎用 Mapper インターフェースであり、挿入、削除、更新、検索などの一般的なデータベース操作をカプセル化しています。BaseMapper を継承することで、開発者はデータベースの操作を迅速に実装し、煩雑な SQL ステートメントを記述する必要がなくなります。
+BaseMapper は MyBatis-Plus が提供する汎用 Mapper インターフェースであり、一連のよく使用されるデータベース操作メソッド（追加、削除、更新、検索など）をカプセル化しています。BaseMapper を継承することで、開発者は煩雑な SQL 文を記述することなく、迅速にデータベース操作を行うことができます。
 
 :::tip
 
 - ジェネリック型 `T` は任意のエンティティオブジェクトです
-- パラメータ `Serializable` は任意の型主キーです。Mybatis-Plus は複合主キーを使用することを推奨していません。各テーブルに固有の唯一の `id` 主キーが必要です。
-- オブジェクト `Wrapper` は [条件ビルダー](/ja/guides/wrapper) です
+- パラメータ `Serializable` は任意の型の主キーです `MyBatis-Plus` は複合主キーの使用を推奨しておらず、すべてのテーブルが独自の一意の `id` 主キーを持つことを規定しています
+- オブジェクト `Wrapper` は [条件コンストラクタ](/guides/wrapper) です
 
 :::
 
 ### insert
 
 ```java
-// レコードを1件挿入します
+// 插入一条记录
 int insert(T entity);
 ```
 
 <p>
-    **機能説明：** レコードを挿入します。<br/>
-    **戻り値：** int、挿入操作が成功したかどうかを示します。通常は 1 が挿入成功を示します。<br/>
+    **機能説明：** 1件のレコードを挿入します。<br/>
+    **戻り値：** int、挿入操作によって影響を受けた行数を表します。通常は 1 で、挿入成功を示します。<br/>
     **パラメータ説明：** <br/>
-    |  型  | パラメータ名 |   説明   |
-    | :----: | :----: | :------: |
+    |   型   | パラメータ名 |     説明     |
+    | :----: | :----: | :----------: |
     |   T    | entity | エンティティオブジェクト |
 </p>
 
-**例（insert）：**
+**使用例（insert）：**
 
 ```java
 User user = new User();
 user.setName("John Doe");
 user.setEmail("john.doe@example.com");
-int rows = userMapper.insert(user); // insert メソッドを呼び出します
+int rows = userMapper.insert(user); // insert メソッドを呼び出し
 if (rows > 0) {
     System.out.println("User inserted successfully.");
 } else {
@@ -1002,45 +993,44 @@ if (rows > 0) {
 INSERT INTO user (name, email) VALUES (?, ?)
 ```
 
-上記の例から、`insert` メソッドが Mapper 層でどのように挿入操作を行うか、およびそれに対応する SQL ステートメントがわかります。このメソッドは挿入操作の実装を簡略化し、開発者が手動で SQL ステートメントを記述する必要がなくなります。
-
+上記の例から、`insert` メソッドが Mapper 層でどのように挿入操作を行うか、およびそれに対応する SQL 文を確認できます。このメソッドは挿入操作の実装を簡素化し、開発者が手動で SQL 文を記述する必要をなくします。
 
 ### delete
 
 ```java
-// entity 条件に基づいてレコードを削除します
+// 根据 entity 条件，删除记录
 int delete(@Param(Constants.WRAPPER) Wrapper<T> wrapper);
-// ID に基づいてバッチ削除します
+// 删除（根据ID 批量删除）
 int deleteBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
-// ID に基づいて削除します
+// 根据 ID 删除
 int deleteById(Serializable id);
-// columnMap 条件に基づいてレコードを削除します
+// 根据 columnMap 条件，删除记录
 int deleteByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
 ```
 
 <p>
-    **機能説明：** 条件に合致するレコードを削除します。<br/>
-    **戻り値：** int、削除操作が成功したかどうかを示します。通常は 1 が削除成功を示します。<br/>
+    **機能説明：** 条件に一致するレコードを削除します。<br/>
+    **戻り値：** int、削除操作によって影響を受けた行数を示します。通常は 1 で、削除成功を表します。<br/>
     **パラメータ説明：** <br/>
-    |                    型                    |  パラメータ名   |                 説明                 |
+    |                    型                    |  パラメータ名  |                 説明                 |
     | :----------------------------------------: | :-------: | :----------------------------------: |
-    |             Wrapper&#60;T&#62;             |  wrapper  |  エンティティラッパークラス（null を許可）   |
-    | Collection&#60;? extends Serializable&#62; |  idList   | 主キー ID リスト(null および empty は不可) |
-    |                Serializable                |    id     |               主キー ID                |
-    |        Map&#60;String, Object&#62;         | columnMap |           テーブルフィールド map オブジェクト            |
+    |             Wrapper&#60;T&#62;             |  wrapper  |  エンティティオブジェクト操作ラッパークラス（null 可）  |
+    | Collection&#60;? extends Serializable&#62; |  idList   | 主キー ID リスト（null および empty 不可） |
+    |                Serializable                |    id     |               主キー ID               |
+    |        Map&#60;String, Object&#62;         | columnMap |           テーブルカラム map オブジェクト           |
 </p>
 
 **例（delete）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、削除条件を age > 25 に設定し、条件を満たすユーザーを削除すると仮定します
+// QueryWrapper オブジェクトがあり、検索条件を age > 25 に設定し、条件を満たすユーザーを削除する場合
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.gt("age", 25);
-int rows = userMapper.delete(queryWrapper); // delete メソッドを呼び出します
+int rows = userMapper.delete(queryWrapper); // delete メソッドを呼び出す
 if (rows > 0) {
-    System.out.println("Users deleted successfully.");
+    System.out.println("ユーザーの削除に成功しました。");
 } else {
-    System.out.println("No users deleted.");
+    System.out.println("削除されたユーザーはありません。");
 }
 ```
 
@@ -1053,13 +1043,13 @@ DELETE FROM user WHERE age > 25
 **例（deleteBatchIds）：**
 
 ```java
-// ID のリストがあり、ユーザーをバッチ削除すると仮定します
+// ID リストのグループがあり、ユーザーを一括削除する場合
 List<Integer> ids = Arrays.asList(1, 2, 3);
-int rows = userMapper.deleteBatchIds(ids); // deleteBatchIds メソッドを呼び出します
+int rows = userMapper.deleteBatchIds(ids); // deleteBatchIds メソッドを呼び出す
 if (rows > 0) {
-    System.out.println("Users deleted successfully.");
+    System.out.println("ユーザーの削除に成功しました。");
 } else {
-    System.out.println("No users deleted.");
+    System.out.println("削除されたユーザーはありません。");
 }
 ```
 
@@ -1072,13 +1062,13 @@ DELETE FROM user WHERE id IN (1, 2, 3)
 **例（deleteById）：**
 
 ```java
-// ID に基づいて単一のユーザーを削除すると仮定します
+// ID に基づいて単一のユーザーを削除する場合
 int userId = 1;
-int rows = userMapper.deleteById(userId); // deleteById メソッドを呼び出します
+int rows = userMapper.deleteById(userId); // deleteById メソッドを呼び出す
 if (rows > 0) {
-    System.out.println("User deleted successfully.");
+    System.out.println("ユーザーの削除に成功しました。");
 } else {
-    System.out.println("No user deleted.");
+    System.out.println("削除されたユーザーはありません。");
 }
 ```
 
@@ -1091,14 +1081,14 @@ DELETE FROM user WHERE id = 1
 **例（deleteByMap）：**
 
 ```java
-// columnMap があり、削除条件を age = 30 に設定し、条件を満たすユーザーを削除すると仮定します
+// columnMap があり、検索条件を age = 30 に設定し、条件を満たすユーザーを削除する場合
 Map<String, Object> columnMap = new HashMap<>();
 columnMap.put("age", 30);
-int rows = userMapper.deleteByMap(columnMap); // deleteByMap メソッドを呼び出します
+int rows = userMapper.deleteByMap(columnMap); // deleteByMap メソッドを呼び出す
 if (rows > 0) {
-    System.out.println("Users deleted successfully.");
+    System.out.println("ユーザーの削除に成功しました。");
 } else {
-    System.out.println("No users deleted.");
+    System.out.println("削除されたユーザーはありません。");
 }
 ```
 
@@ -1108,36 +1098,36 @@ if (rows > 0) {
 DELETE FROM user WHERE age = 30
 ```
 
-上記の例から、`delete` シリーズのメソッドが Mapper 層でどのように削除操作を行うか、およびそれらに対応する SQL ステートメントがわかります。これらのメソッドは柔軟なデータ削除方法を提供し、異なる条件に基づいて削除操作を行うことができます。
+上記の例を通して、`delete` シリーズのメソッドが Mapper 層でどのように削除操作を行うか、およびそれらに対応する SQL 文を確認できます。これらのメソッドは、さまざまな条件に基づいた柔軟なデータ削除方法を提供します。
 
 ### update
 
 ```java
-// whereWrapper 条件に基づいてレコードを更新します
+// 根据 whereWrapper 条件，更新记录
 int update(@Param(Constants.ENTITY) T updateEntity, @Param(Constants.WRAPPER) Wrapper<T> whereWrapper);
-// ID に基づいて更新します
+// 根据 ID 修改
 int updateById(@Param(Constants.ENTITY) T entity);
 ```
 
 <p>
-    **機能説明：** 条件に合致するレコードを更新します。<br/>
-    **戻り値：** int、更新操作によって影響が生じた行数を示します。通常は 1 が更新成功を示します。<br/>
+    **機能説明：** 条件に一致するレコードを更新します。<br/>
+    **戻り値：** int、更新操作によって影響を受けた行数を表し、通常は 1（更新成功）です。<br/>
     **パラメータ説明：** <br/>
-    |        型        |    パラメータ名     |                                説明                                 |
-    | :----------------: | :-----------: | :-----------------------------------------------------------------: |
-    |         T          |    entity     |                   エンティティオブジェクト (set 条件値, null を許可)                   |
-    | Wrapper&#60;T&#62; | updateWrapper | エンティティオブジェクトのカプセル化操作クラス（null を許可, 内部の entity は where 句を生成するために使用されます） |
+    |        型         |    パラメータ名    |                                  説明                                  |
+    | :---------------: | :----------------: | :--------------------------------------------------------------------: |
+    |         T         |       entity       |                   エンティティオブジェクト (set 条件値、null 可)                   |
+    | Wrapper&#60;T&#62; |   updateWrapper    | エンティティオブジェクトをカプセル化する操作クラス（null 可、内部の entity は where 句の生成に使用） |
 </p>
 
-**例（update）：**
+**使用例（update）：**
 
 ```java
-// UpdateWrapper オブジェクトがあり、更新条件を age > 25 に設定し、条件を満たすユーザーのメールアドレスを更新すると仮定します
+// UpdateWrapper オブジェクトを作成し、検索条件を age > 25 に設定し、条件を満たすユーザーのメールアドレスを更新する場合
 UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
 updateWrapper.gt("age", 25);
 User updateUser = new User();
 updateUser.setEmail("new.email@example.com");
-int rows = userMapper.update(updateUser, updateWrapper); // update メソッドを呼び出します
+int rows = userMapper.update(updateUser, updateWrapper); // update メソッドを呼び出し
 if (rows > 0) {
     System.out.println("Users updated successfully.");
 } else {
@@ -1151,14 +1141,14 @@ if (rows > 0) {
 UPDATE user SET email = ? WHERE age > 25
 ```
 
-**例（updateById）：**
+**使用例（updateById）：**
 
 ```java
-// ID が 1 のユーザーのメールアドレスを更新すると仮定します
+// ID が 1 のユーザーのメールアドレスを更新する場合
 User updateUser = new User();
 updateUser.setId(1);
 updateUser.setEmail("new.email@example.com");
-int rows = userMapper.updateById(updateUser); // updateById メソッドを呼び出します
+int rows = userMapper.updateById(updateUser); // updateById メソッドを呼び出し
 if (rows > 0) {
     System.out.println("User updated successfully.");
 } else {
@@ -1172,54 +1162,54 @@ if (rows > 0) {
 UPDATE user SET email = ? WHERE id = 1
 ```
 
-上記の例から、`update` シリーズのメソッドが Mapper 層でどのように更新操作を行うか、およびそれらに対応する SQL ステートメントがわかります。これらのメソッドは柔軟なデータ更新方法を提供し、異なる条件に基づいて更新操作を行うことができます。
+上記の例から、`update` 系メソッドが Mapper 層でどのように更新操作を行うか、およびそれらに対応する SQL 文を確認できます。これらのメソッドは、さまざまな条件に基づいた柔軟なデータ更新方法を提供します。
 
 ### select
 
 ```java
-// ID に基づいて検索します
+// 根据 ID 查询
 T selectById(Serializable id);
-// entity 条件に基づいてレコードを1件検索します
+// 根据 entity 条件，查询一条记录
 T selectOne(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
-// ID に基づいてバッチで検索します
+// 查询（根据ID 批量查询）
 List<T> selectBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
-// entity 条件に基づいてすべてのレコードを検索します
+// 根据 entity 条件，查询全部记录
 List<T> selectList(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
-// columnMap 条件に基づいて検索します
+// 查询（根据 columnMap 条件）
 List<T> selectByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
-// Wrapper 条件に基づいてすべてのレコードを検索します
+// 根据 Wrapper 条件，查询全部记录
 List<Map<String, Object>> selectMaps(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
-// Wrapper 条件に基づいてすべてのレコードを検索します。注意： 最初のフィールドの値のみを返します
+// 根据 Wrapper 条件，查询全部记录。注意： 只返回第一个字段的值
 List<Object> selectObjs(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
-// entity 条件に基づいてすべてのレコードを検索します（ページングあり）
+// 根据 entity 条件，查询全部记录（并翻页）
 IPage<T> selectPage(IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
-// Wrapper 条件に基づいてすべてのレコードを検索します（ページングあり）
+// 根据 Wrapper 条件，查询全部记录（并翻页）
 IPage<Map<String, Object>> selectMapsPage(IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
-// Wrapper 条件に基づいて総レコード数を検索します
+// 根据 Wrapper 条件，查询总记录数
 Integer selectCount(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 ```
 
 <p>
-    **機能説明：** 指定された条件に合致するレコードを検索します。<br/>
-    **戻り値：** 検索結果。エンティティオブジェクト、Map オブジェクト、またはその他の型である可能性があります。<br/>
+    **機能説明：** 条件に一致するレコードを検索します。<br/>
+    **戻り値：** 検索結果。エンティティオブジェクト、Mapオブジェクト、またはその他の型である可能性があります。<br/>
     **パラメータ説明：** <br/>
     |                    型                    |    パラメータ名    |                   説明                   |
     | :----------------------------------------: | :----------: | :--------------------------------------: |
     |                Serializable                |      id      |                 主キー ID                  |
-    |             Wrapper&#60;T&#62;             | queryWrapper |    エンティティオブジェクトのカプセル化操作クラス(null を許可)  |
-    | Collection&#60;? extends Serializable&#62; |    idList    |   主キー ID リスト(null および empty は不許可)   |
-    |        Map&#60;String, Object&#62;         |  columnMap   |             テーブルフィールド map オブジェクト              |
-    |              IPage&#60;T&#62;              |     page     | ページング条件（RowBounds.DEFAULT を使用できます） |
+    |             Wrapper&#60;T&#62;             | queryWrapper |    エンティティオブジェクト封装操作クラス（null可）     |
+    | Collection&#60;? extends Serializable&#62; |    idList    |   主キー ID リスト（null および empty 不可）   |
+    |        Map&#60;String, Object&#62;         |  columnMap   |             テーブルカラム map オブジェクト              |
+    |              IPage&#60;T&#62;              |     page     | ページネーション検索条件（RowBounds.DEFAULT 可） |
 </p>
 
 **例（selectById）：**
 
 ```java
-// ID が 1 のユーザーを検索します
+// ID による単一ユーザー検索
 int userId = 1;
-User user = userMapper.selectById(userId); // selectById メソッドを呼び出します
+User user = userMapper.selectById(userId); // selectById メソッドを呼び出す
 System.out.println("User: " + user);
 ```
 
@@ -1232,10 +1222,10 @@ SELECT * FROM user WHERE id = 1
 **例（selectOne）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、検索条件を age > 25 に設定し、条件に合致するユーザーを 1 件検索します
+// QueryWrapper オブジェクトを作成し、検索条件を age > 25 に設定して、条件に一致する1件のユーザーを検索
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.gt("age", 25);
-User user = userMapper.selectOne(queryWrapper); // selectOne メソッドを呼び出します
+User user = userMapper.selectOne(queryWrapper); // selectOne メソッドを呼び出す
 System.out.println("User: " + user);
 ```
 
@@ -1248,9 +1238,9 @@ SELECT * FROM user WHERE age > 25
 **例（selectBatchIds）：**
 
 ```java
-// ID のリストがあり、ユーザーをバッチ検索すると仮定します
+// ID リストを使用してユーザーを一括検索
 List<Integer> ids = Arrays.asList(1, 2, 3);
-List<User> users = userMapper.selectBatchIds(ids); // selectBatchIds メソッドを呼び出します
+List<User> users = userMapper.selectBatchIds(ids); // selectBatchIds メソッドを呼び出す
 for (User u : users) {
     System.out.println("User: " + u);
 }
@@ -1265,10 +1255,10 @@ SELECT * FROM user WHERE id IN (1, 2, 3)
 **例（selectList）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、検索条件を age > 25 に設定し、条件に合致するすべてのユーザーを検索します
+// QueryWrapper オブジェクトを作成し、検索条件を age > 25 に設定して、条件に一致するすべてのユーザーを検索
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.gt("age", 25);
-List<User> users = userMapper.selectList(queryWrapper); // selectList メソッドを呼び出します
+List<User> users = userMapper.selectList(queryWrapper); // selectList メソッドを呼び出す
 for (User u : users) {
     System.out.println("User: " + u);
 }
@@ -1283,10 +1273,10 @@ SELECT * FROM user WHERE age > 25
 **例（selectByMap）：**
 
 ```java
-// columnMap があり、検索条件を age > 30 に設定し、条件に合致するユーザーを検索します
+// columnMap を使用して、検索条件を age > 30 に設定し、条件に一致するユーザーを検索
 Map<String, Object> columnMap = new HashMap<>();
 columnMap.put("age", 30);
-List<User> users = userMapper.selectByMap(columnMap); // selectByMap メソッドを呼び出します
+List<User> users = userMapper.selectByMap(columnMap); // selectByMap メソッドを呼び出す
 for (User u : users) {
     System.out.println("User: " + u);
 }
@@ -1301,10 +1291,10 @@ SELECT * FROM user WHERE age > 30
 **例（selectMaps）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、検索条件を age > 25 に設定し、条件に合致するすべてのユーザーを検索し、結果を Map にマッピングします
+// QueryWrapper オブジェクトを作成し、検索条件を age > 25 に設定して、条件に一致するすべてのユーザーを検索し、結果を Map にマッピング
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.gt("age", 25);
-List<Map<String, Object>> userMaps = userMapper.selectMaps(queryWrapper); // selectMaps メソッドを呼び出します
+List<Map<String, Object>> userMaps = userMapper.selectMaps(queryWrapper); // selectMaps メソッドを呼び出す
 for (Map<String, Object> userMap : userMaps) {
     System.out.println("User Map: " + userMap);
 }
@@ -1319,10 +1309,10 @@ SELECT * FROM user WHERE age > 25
 **例（selectObjs）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、検索条件を age > 25 に設定し、条件に合致するすべてのユーザーを検索しますが、各レコードの最初のフィールドの値のみを返すと仮定します
+// QueryWrapper オブジェクトを作成し、検索条件を age > 25 に設定して、条件に一致するすべてのユーザーを検索し、各レコードの最初のフィールドの値のみを返す
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.gt("age", 25);
-List<Object> userIds = userMapper.selectObjs(queryWrapper); // selectObjs メソッドを呼び出します
+List<Object> userIds = userMapper.selectObjs(queryWrapper); // selectObjs メソッドを呼び出す
 for (Object userId : userIds) {
     System.out.println("User ID: " + userId);
 }
@@ -1337,11 +1327,11 @@ SELECT id FROM user WHERE age > 25
 **例（selectPage）：**
 
 ```java
-// ページネーション検索を行い、1ページに10件のレコードを表示し、1ページ目を検索し、検索条件を age > 25 と仮定します
+// ページネーション検索を実行。1ページあたり10件、1ページ目を表示。検索条件は age > 25
 IPage<User> page = new Page<>(1, 10);
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.gt("age", 25);
-IPage<User> userPage = userMapper.selectPage(page, queryWrapper); // selectPage メソッドを呼び出します
+IPage<User> userPage = userMapper.selectPage(page, queryWrapper); // selectPage メソッドを呼び出す
 List<User> userList = userPage.getRecords();
 long total = userPage.getTotal();
 System.out.println("Total users (age > 25): " + total);
@@ -1359,11 +1349,11 @@ SELECT * FROM user WHERE age > 25 LIMIT 10 OFFSET 0
 **例（selectMapsPage）：**
 
 ```java
-// ページネーション検索を行い、1ページに10件のレコードを表示し、1ページ目を検索し、検索条件を age > 25 とし、結果を Map にマッピングすると仮定します
-IPage<Map<String, Object>> = new Page<>(1, 10);
+// ページネーション検索を実行。1ページあたり10件、1ページ目を表示。検索条件は age > 25。結果を Map にマッピング
+IPage<Map<String, Object>> page = new Page<>(1, 10);
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.gt("age", 25);
-IPage<Map<String, Object>> userPageMaps = userMapper.selectMapsPage(page, queryWrapper); // selectMapsPage メソッドを呼び出します
+IPage<Map<String, Object>> userPageMaps = userMapper.selectMapsPage(page, queryWrapper); // selectMapsPage メソッドを呼び出す
 List<Map<String, Object>> userMapList = userPageMaps.getRecords();
 long total = userPageMaps.getTotal();
 System.out.println("Total users (age > 25): " + total);
@@ -1381,10 +1371,10 @@ SELECT * FROM user WHERE age > 25 LIMIT 10 OFFSET 0
 **例（selectCount）：**
 
 ```java
-// QueryWrapper オブジェクトがあり、検索条件を age > 25 に設定し、総レコード数を検索すると仮定します
+// QueryWrapper オブジェクトを作成し、検索条件を age > 25 に設定して、総レコード数を検索
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.gt("age", 25);
-Integer totalUsers = userMapper.selectCount(queryWrapper); // selectCount メソッドを呼び出します
+Integer totalUsers = userMapper.selectCount(queryWrapper); // selectCount メソッドを呼び出す
 System.out.println("Total users (age > 25): " + totalUsers);
 ```
 
@@ -1394,16 +1384,15 @@ System.out.println("Total users (age > 25): " + totalUsers);
 SELECT COUNT(*) FROM user WHERE age > 25
 ```
 
-上記の例から、`select` シリーズのメソッドが Mapper 層でどのように検索操作を行うか、およびそれらに対応する SQL ステートメントがわかります。これらのメソッドは柔軟なデータ検索方法を提供し、異なる条件に基づいて検索操作（単一行検索、バッチ検索、条件検索、ページネーション検索など）を行うことができます。
+上記の例を通して、`select` シリーズのメソッドが Mapper 層でどのように検索操作を実行するか、およびそれらに対応する SQL 文を確認できます。これらのメソッドは、単一レコード検索、一括検索、条件検索、ページネーション検索など、さまざまな条件に応じた柔軟なデータ検索方法を提供します。
 
 ## Mapper 層オプションコンポーネント
 
-オプションコンポーネントは Mybatis-Plus が提供するいくつかの拡張メソッドであり、`com.baomidou.mybatisplus.extension.injector.methods` パッケージ下にあります。これらのメソッドは [Sql インジェクタ](/ja/guides/sql-injector) と組み合わせて使用し、Mapper インターフェースの機能を拡張します。
+オプションコンポーネントは、Mybatis-Plus が提供する拡張メソッドであり、`com.baomidou.mybatisplus.extension.injector.methods` パッケージに配置されています。これらのメソッドは、[SQL インジェクター](/guides/sql-injector)と組み合わせて使用することで、Mapper インターフェースの機能を拡張します。
 
-これらのオプションコンポーネントを使用する前に、Sql インジェクタが正しく設定されていることを確認してください。より多くの使用例や詳細については、[公式サンプル](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-sql-injector)および[ソースコードコメント](https://github.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods)を参照してください。。
+これらのオプションコンポーネントを使用する前に、SQL インジェクターが正しく設定されていることを確認してください。より詳細な使用例と情報については、[公式サンプル](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-sql-injector)および[ソースコードコメント](https://github.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods)を参照してください。
 
-
-### オプションコンポーネントの説明
+### オプション機能の説明
 
 #### alwaysUpdateSomeColumnById
 
@@ -1412,9 +1401,9 @@ int alwaysUpdateSomeColumnById(T entity);
 ```
 
 <p>
-**ソースコード**：[alwaysUpdateSomeColumnById](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/AlwaysUpdateSomeColumnById.java) <br/>
-**機能**：このメソッドは、更新操作時に、エンティティオブジェクトの特定のフィールドが変更されているかどうかに関わらず、これらのフィールドを強制的に更新するために使用されます。これは、タイムスタンプフィールドの更新など、特定のビジネスシナリオで非常に役立ちます。これにより、各更新操作でそのフィールドが更新されることが保証されます。 <br/>
-**使用シナリオ**：レコードを更新するたびに、特定のフィールド（更新日時、バージョン番号など）を更新する必要がある場合（これらのフィールドがエンティティオブジェクトで変更されていない場合であっても）。
+**ソースコード**：[alwaysUpdateSomeColumnById](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatis-plus/extension/injector/methods/AlwaysUpdateSomeColumnById.java) <br/>
+**機能**：このメソッドは、更新操作時にエンティティオブジェクトの特定のフィールドに変更があるかどうかに関わらず、それらのフィールドを強制的に更新します。これは、タイムスタンプフィールドの更新など、特定のビジネスシナリオで非常に有用であり、毎回の更新操作でそのフィールドが確実に更新されるようにします。<br/>
+**使用シナリオ**：レコードを更新するたびに、特定のフィールド（更新日時、バージョン番号など）を更新する必要がある場合に使用します。たとえそれらのフィールドがエンティティオブジェクトで変更されていなくても更新されます。
 </p>
 
 #### insertBatchSomeColumn
@@ -1424,9 +1413,9 @@ int insertBatchSomeColumn(List<T> entityList);
 ```
 
 <p>
-**ソースコード**：[insertBatchSomeColumn](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/InsertBatchSomeColumn.java) <br/>
-**機能**：このメソッドは、エンティティオブジェクトをバッチ挿入するために使用されますが、エンティティオブジェクトで指定された特定のフィールドのみを挿入します。これは、データをバッチ挿入する必要があるが、すべてのフィールドを挿入したくない場合に非常に役立ちます。  <br/>
-**使用シナリオ**：データをバッチ挿入する必要があり、エンティティオブジェクトの一部のフィールドのみを挿入して、挿入効率を向上させたり、機密データを保護したりする場合。
+**ソースコード**：[insertBatchSomeColumn](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatis-plus/extension/injector/methods/InsertBatchSomeColumn.java) <br/>
+**機能**：このメソッドは、エンティティオブジェクトのバッチ挿入に使用されますが、エンティティオブジェクト内で指定された特定のフィールドのみを挿入します。これは、データをバッチ挿入する必要があるが、すべてのフィールドを挿入したくない場合に非常に有用です。<br/>
+**使用シナリオ**：データをバッチ挿入する必要があり、エンティティオブジェクト内の一部のフィールドのみを挿入して、挿入効率を向上させたり、機密データを保護したりしたい場合に使用します。
 </p>
 
 #### logicDeleteByIdWithFill
@@ -1436,65 +1425,65 @@ int logicDeleteByIdWithFill(T entity);
 ```
 
 <p>
-**ソースコード**：[logicDeleteByIdWithFill](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/injector/methods/LogicDeleteByIdWithFill.java) <br/>
-**機能**：このメソッドは、レコードを論理的に削除し、エンティティオブジェクトの特定のフィールドを補完するために使用されます。論理削除とは、データベースからレコードを実際に削除するのではなく、特定のフィールド（`deleted` フィールドなど）を更新してレコードが削除されたことをマークすることを意味します。  <br/>
-**使用シナリオ**：論理削除機能を実装する必要があり、削除操作時にエンティティオブジェクトの特定のフィールド（削除日時、削除者など）を自動的に補完したい場合。
+**ソースコード**：[logicDeleteByIdWithFill](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatis-plus/extension/injector/methods/LogicDeleteByIdWithFill.java) <br/>
+**機能**：このメソッドは、レコードの論理削除とエンティティオブジェクト内の特定のフィールドの埋め込みに使用されます。論理削除とは、データベースから実際にレコードを削除するのではなく、特定のフィールド（`deleted` フィールドなど）を更新して、レコードが削除済みであることをマークすることを意味します。<br/>
+**使用シナリオ**：論理削除機能を実装する必要があり、削除操作時にエンティティオブジェクト内の特定のフィールド（削除日時、削除者など）を自動的に埋め込みたい場合に使用します。
 </p>
 
 ### 使用上のヒント
 
-- これらのオプションコンポーネントを使用する前に、プロジェクトに Sql インジェクタが正しく設定されていることを確認してください。
-- これらのメソッドは通常、Mapper インターフェースで明示的に宣言する必要があります。これにより、Mybatis-Plus が対応する SQL ステートメントを認識して生成できます。
-- 各オプションコンポーネントには特定のユースケースがあります。ビジネス要件に応じて適切なメソッドを選択してください。
+- これらのオプションコンポーネントを使用する前に、プロジェクトで SQL インジェクターが正しく設定されていることを確認してください。
+- これらのメソッドは通常、MyBatis-Plus が対応する SQL 文を認識して生成できるように、Mapper インターフェースで明示的に宣言する必要があります。
+- 各オプションコンポーネントには特定の使用シナリオがあり、業務要件に基づいて適切なメソッドを選択してください。
 - 実際の使用では、より複雑な機能を実現するために、エンティティオブジェクトのアノテーション（`@TableField`、`@TableLogic` など）と組み合わせる必要がある場合があります。
 
-これらのオプションコンポーネントを使用することで、Mybatis-Plus の機能をさらに拡張し、より多様なビジネスニーズを満たすことができます。
+これらのオプションコンポーネントを使用することで、MyBatis-Plus の機能をさらに拡張し、より多様な業務要件に対応することができます。
 
 ## Chain
 
-Chain は Mybatis-Plus が提供するチェーンプログラミングスタイルであり、開発者はより簡潔で直感的な方法でデータベース操作コードを作成できます。Chain は `query` と `update` の2つの主要なカテゴリに分かれており、それぞれ問い合わせ操作と更新操作に使用されます。各クラスは、通常のチェーンスタイルとラムダチェーンスタイルの2つのスタイルにさらに分かれています。ラムダチェーンスタイルはタイプセーフなクエリ条件構築を提供しますが、Kotlin をサポートしていません。
+Chain は MyBatis-Plus が提供するチェーンプログラミングスタイルであり、開発者がより簡潔で直感的な方法でデータベース操作コードを記述できるようにします。Chain は `query` と `update` の 2 つのカテゴリに分かれており、それぞれ検索操作と更新操作に使用されます。各カテゴリはさらに、通常のチェーンスタイルとラムダチェーンスタイルの 2 つのスタイルに分かれており、ラムダチェーンスタイルは型安全な検索条件構築を提供しますが、Kotlin には対応していません。
 
 ### 使用手順
 
 #### query
 
-チェーンクエリ操作を提供し、メソッドを連続して呼び出すことでクエリ条件を構築できます。
+チェーン式のクエリ操作を提供し、メソッドを連続して呼び出すことでクエリ条件を構築できます。
 
 ```java
-// チェーンクエリ 通常
+// 链式查询 普通
 QueryChainWrapper<T> query();
-// チェーンクエリ ラムダ式。注意：Kotlin はサポートしていません
+// 链式查询 lambda 式。注意：不支持 Kotlin
 LambdaQueryChainWrapper<T> lambdaQuery();
 ```
 
-**示例**:
+**使用例**:
 
 ```java
-// 通常のチェーンクエリ例
-query().eq("name", "John").list(); // name が "John" のすべてのレコードを検索
+// 通常のチェーン式クエリの例
+query().eq("name", "John").list(); // name が "John" であるすべてのレコードを検索
 
-// ラムダチェーンクエリ例
+// lambda チェーン式クエリの例
 lambdaQuery().eq(User::getAge, 30).one(); // 年齢が 30 の単一レコードを検索
 ```
 
 #### update
 
-チェーン更新操作を提供し、メソッドを連続して呼び出すことで更新条件を構築できます。
+チェーン式の更新操作を提供し、メソッドを連続して呼び出すことで更新条件を構築できます。
 
 ```java
-// チェーン更新 通常
+// 链式更改 普通
 UpdateChainWrapper<T> update();
-// チェーン更新 ラムダ式。注意：Kotlin はサポートしていません
+// 链式更改 lambda 式。注意：不支持 Kotlin
 LambdaUpdateChainWrapper<T> lambdaUpdate();
 ```
 
-**示例**:
+**使用例**:
 
 ```java
-// 通常のチェーン更新例
+// 通常のチェーン式更新の例
 update().set("status", "inactive").eq("name", "John").update(); // name が "John" のレコードの status を "inactive" に更新
 
-// ラムダチェーン更新例
+// lambda チェーン式更新の例
 User updateUser = new User();
 updateUser.setEmail("new.email@example.com");
 lambdaUpdate().set(User::getEmail, updateUser.getEmail()).eq(User::getId, 1).update(); // ID が 1 のユーザーのメールアドレスを更新
@@ -1502,20 +1491,20 @@ lambdaUpdate().set(User::getEmail, updateUser.getEmail()).eq(User::getId, 1).upd
 
 ### 使用上のヒント
 
-- チェーン操作は `QueryChainWrapper` または `UpdateChainWrapper` のインスタンスを返すことで、開発者がメソッドを連続して呼び出して検索・更新条件を構築できるようにします。
-- ラムダチェーン操作はタイプセーフなクエリ条件構築を提供し、メソッド参照 `Entity::getId` などの方法を使用して、文字列のハードコーディングを回避し、コードの可読性と安全性を向上させます。
-- チェーン操作を使用する場合、チェーンメソッドの呼び出し順序に注意してください。通常は、最初に条件を設定し、次に検索・更新操作を実行します。
-- チェーン操作は、 `eq`、`ne`、`gt`、`lt`、`like` など、さまざまな条件構築メソッドをサポートしています。実際のニーズに応じて適切なメソッドを選択できます。
-- チェーン操作が返す結果は、単一レコード、複数レコード、総レコード数など、最後に呼び出されたメソッドによって異なります。
+- チェーン操作は `QueryChainWrapper` または `UpdateChainWrapper` のインスタンスを返すことで、開発者がメソッドを連続して呼び出してクエリまたは更新条件を構築することを可能にします。
+- ラムダ式を使用したチェーン操作は、型安全なクエリ条件の構築を提供します。メソッド参照 `Entity::getId` などを使用することで、文字列のハードコーディングを回避し、コードの可読性と安全性を向上させます。
+- チェーン操作を使用する際は、チェーンメソッドの呼び出し順序に注意してください。通常は条件を設定してから、クエリまたは更新操作を実行します。
+- チェーン操作は `eq`、`ne`、`gt`、`lt`、`like` など、さまざまな条件構築メソッドをサポートしており、実際の要件に応じて適切なメソッドを選択できます。
+- チェーン操作によって返される結果は、単一のレコード、複数のレコード、総レコード数など、最後に呼び出されたメソッドによって異なります。
 
-Chain を使用することで、開発者はデータベース操作コードをより効率的に作成し、同時にコードの明瞭さと保守性を維持できます。
+Chain を使用することで、開発者はデータベース操作コードをより効率的に記述でき、同時にコードの明確さと保守性を維持できます。
 
 ## ActiveRecord
 
-ActiveRecord パターンは、エンティティクラスがデータベースと直接対話できるようにするデザインパターンです。エンティティクラスはドメインモデルでありデータアクセスオブジェクトでもあります。Mybatis-Plus では、エンティティクラスは `Model` クラスを継承するだけで、強力な CRUD 操作機能を取得できます。
+ActiveRecord パターンは、エンティティクラスが直接データベースと対話できるようにするデザインパターンであり、エンティティクラスはドメインモデルであると同時にデータアクセスオブジェクトとして機能します。Mybatis-Plus では、エンティティクラスが `Model` クラスを継承するだけで、強力な CRUD 操作機能を獲得できます。
 
 :::note
-ActiveRecord パターンを使用する前に、プロジェクトに対応するエンティティの `BaseMapper` が注入されていることを確認する必要があります。
+ActiveRecord パターンを使用する前に、プロジェクトに対応するエンティティの `BaseMapper` が注入されていることを確認してください。
 :::
 
 ### 使用手順
@@ -1530,57 +1519,57 @@ public class User extends Model<User> {
     private Long id;
     private String name;
     private Integer age;
-    // ... 他のフィールドと getter/setter メソッド
+    // ... その他のフィールドと getter/setter メソッド
 }
 ```
 
 **CRUD メソッドを呼び出す**
 
 ```java
-// 新しいユーザーを作成してデータベースに挿入します
+// 新しいユーザーを作成してデータベースに挿入
 User user = new User();
 user.setName("John Doe");
 user.setAge(30);
-boolean isInserted = user.insert(); // 戻り値は操作が成功したかどうかを示します
+boolean isInserted = user.insert(); // 戻り値は操作の成功可否を示します
 
-// すべてのユーザーを検索します
+// すべてのユーザーを検索
 List<User> allUsers = user.selectAll();
 
-// ID に基づいてユーザー情報を更新します
+// ID に基づいてユーザー情報を更新
 user.setId(1L);
 user.setName("Updated Name");
-boolean isUpdated = user.updateById(); // 戻り値は操作が成功したかどうかを示します
+boolean isUpdated = user.updateById(); // 戻り値は操作の成功可否を示します
 
-// ID に基づいてユーザーを削除します
-boolean isDeleted = user.deleteById(); // 戻り値は操作が成功したかどうかを示します
+// ID に基づいてユーザーを削除
+boolean isDeleted = user.deleteById(); // 戻り値は操作の成功可否を示します
 ```
 
 ### 使用上のヒント
 
-- ActiveRecord モードでは、エンティティクラスは `insert`、`selectAll`、`updateById`、`deleteById` などのメソッドを直接呼び出してデータベース操作を実行できます。
-- エンティティクラスが `Model` クラスを継承すると、一連のデータベース操作メソッドが自動的に取得され、手動で SQL ステートメントを作成する必要はありません。
-- エンティティクラスのフィールドは、データベーステーブルの列に対応する必要があります。通常、アノテーション（`@TableField`、`@TableId` など）を使用してフィールドと列のマッピングを指定します。
-- 更新または削除操作を実行する場合、通常は最初にエンティティオブジェクトを検索し、そのプロパティを変更してから、更新または削除メソッドを呼び出す必要があります。
+- ActiveRecord モードでは、エンティティクラスは直接 `insert`、`selectAll`、`updateById`、`deleteById` などのメソッドを呼び出してデータベース操作を行うことができます。
+- エンティティクラスが `Model` クラスを継承すると、手動で SQL 文を記述することなく、一連のデータベース操作メソッドを自動的に利用できるようになります。
+- エンティティクラス内のフィールドは、データベーステーブルの列に対応させる必要があります。通常、アノテーション（`@TableField`、`@TableId` など）を使用して、フィールドと列のマッピング関係を指定します。
+- 更新または削除操作を行う場合、通常はまずエンティティオブジェクトを検索し、その属性を変更した後、更新または削除メソッドを呼び出します。
 - 挿入および更新操作は通常、操作が成功したかどうかを示すブール値を返します。
-- クエリ操作は、単一のエンティティオブジェクトやエンティティオブジェクトのリストなど、対応するクエリ結果を返します。
+- 検索操作は、単一のエンティティオブジェクトやエンティティオブジェクトのリストなど、対応する検索結果を返します。
 
-ActiveRecord パターンを使用することで、開発者はデータベース操作コードをより簡潔に作成し、同時にコードの明瞭さと保守性を維持できます。このパターンは、特に単純な CRUD 操作に適しており、反復的なコードの記述を大幅に削減できます。
+ActiveRecord パターンを使用することで、開発者はデータベース操作コードをより簡潔に記述でき、コードの明確さと保守性を維持できます。このパターンは、特に単純な CRUD 操作に適しており、重複コードの記述を大幅に削減することができます。
 
 ## SimpleQuery
 
-SimpleQuery は Mybatis-Plus が提供するユーティリティクラスであり、`selectList` クエリ後の結果をカプセル化し、`Stream` ストリームを使用して処理できるようにすることで、API の呼び出しを簡素化します。
+SimpleQuery は MyBatis-Plus が提供するユーティリティクラスであり、`selectList` クエリ後の結果をラップし、`Stream` ストリームとして処理できるようにすることで、API の呼び出しを簡素化します。
 
-SimpleQuery の特徴の 1 つは、`peeks` パラメータです。これは可変引数であり、型は `Consumer...` です。つまり、複数の操作を連続して追加でき、これらの操作はクエリ結果が処理されるときに順番に実行されます。
+SimpleQuery の特徴の一つは `peeks` パラメータです。これは可変引数で、型は `Consumer...` であり、複数の操作を連続して追加できることを意味します。これらの操作は、クエリ結果が処理される際に順次実行されます。
 
-SimpleQuery の使用方法については、[公式テストケース](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus/src/test/java/com/baomidou/mybatisplus/test/toolkit/SimpleQueryTest.java)を参照してください。
+SimpleQuery の使用方法は[公式テストケース](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus/src/test/java/com/baomidou/mybatisplus/test/toolkit/SimpleQueryTest.java)を参照してください。
 
 :::note
-使用 SimpleQuery 前，需要确保项目中已注入对应实体的 `BaseMapper`。
+SimpleQuery を使用する前に、プロジェクトに対応するエンティティの `BaseMapper` が注入されていることを確認してください。
 :::
 
 ### 使用手順
 
-**SimpleQuery ユーティリティクラスをインポートする**
+**SimpleQuery ツールクラスの導入**
 
 ```java
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
@@ -1588,70 +1577,70 @@ import com.baomidou.mybatisplus.core.toolkit.support.SerializedLambda;
 import com.baomidou.mybatisplus.core.toolkit.support.SimpleQuery;
 ```
 
-**SimpleQuery を使用してクエリを実行する**
+**SimpleQuery を使用したクエリ**
 
 ```java
-// User エンティティクラスと、対応する BaseMapper があると仮定します
+// User エンティティクラスと対応する BaseMapper があると仮定
 List<Long> ids = SimpleQuery.list(
-    Wrappers.lambdaQuery(User.class), // ラムダクエリビルダーを使用します
-    User::getId, // 抽出するフィールド。ここでは User の id
-    System.out::println, // 最初の peek 操作。各ユーザーをプリントします
-    user -> userNames.add(user.getName()) // 2番目の peek 操作。各ユーザーの名前を userNames リストに追加します
+    Wrappers.lambdaQuery(User.class), // lambda クエリビルダーの使用
+    User::getId, // 抽出するフィールド、ここでは User の id
+    System.out::println, // 最初の peek 操作、各ユーザーを出力
+    user -> userNames.add(user.getName()) // 2番目の peek 操作、各ユーザーの名前を userNames リストに追加
 );
 ```
 
 ### 使用上のヒント
 
-- SimpleQuery ユーティリティクラスは、クエリ結果を処理するための簡潔な方法を提供します。クエリ結果に対して複数の操作を適用でき、これらの操作は追加された順序で実行されます。
-- SimpleQuery を使用する場合、クエリビルダー（`Wrappers.lambdaQuery()` など）、結果を抽出するためのフィールド（`User::getId` など）、および 1 つ以上の `Consumer` 型の `peek` 操作を提供する必要があります。
-- `peek` 操作は、ログのプリント、キャッシュの更新、通知の送信など、任意の副作用操作を実行するために使用できますが、クエリ結果自体には影響しません。
-- SimpleQuery が返す結果は、すべての `peek` 操作が適用された、問い合わせされたすべてのエンティティオブジェクトを含むリストです。
-- SimpleQuery を使用することで、クエリと結果処理ロジックを分離し、コードをより明確で保守しやすくすることができます。
+- SimpleQuery ツールクラスは、クエリ結果を処理するための簡潔な方法を提供します。クエリ結果に対して複数の操作を適用することができ、これらの操作は追加された順序で順次実行されます。
+- SimpleQuery を使用する際には、クエリビルダー（例: `Wrappers.lambdaQuery()`）、結果を抽出するためのフィールド（例: `User::getId`）、および1つ以上の `Consumer` 型の `peek` 操作を指定する必要があります。
+- `peek` 操作は、ログの出力、キャッシュの更新、通知の送信など、任意の副作用を持つ操作を実行するために使用できます。これらの操作はクエリ結果自体には影響しません。
+- SimpleQuery が返す結果は、すべてのクエリされたエンティティオブジェクトを含むリストであり、これらのオブジェクトにはすべての `peek` 操作が適用されています。
+- SimpleQuery を使用することで、クエリと結果処理のロジックを分離し、コードをより明確で保守しやすくすることができます。
 
-SimpleQuery ユーティリティクラスを使用することで、開発者はクエリ結果をより効率的に処理し、同時にコードの簡潔さと可読性を維持できます。このユーティリティクラスは、クエリ結果に対して複雑な処理が必要なシナリオに特に適しています。
+SimpleQuery ツールクラスを使用することで、開発者はクエリ結果をより効率的に処理しながら、コードの簡潔さと可読性を維持できます。このツールクラスは、特にクエリ結果に対して複雑な処理が必要なシナリオに適しています。
 
-### 機能の詳細
+### 機能詳細
 
 #### keyMap
 
-SimpleQuery の `keyMap` メソッドは、データベースを問い合わせ、クエリ結果を `Map` にカプセル化する便利な方法を提供します。この Map では、エンティティの特定のプロパティがキー（key）として、エンティティ自体が値（value）として使用されます。このメソッドは、クエリ結果を処理する際に、ログのプリントやキャッシュの更新などの追加の副作用操作を実行することもサポートしています。
+SimpleQuery の `keyMap` メソッドは、データベースをクエリし、その結果を `Map` としてカプセル化する便利な方法を提供します。この Map では、エンティティの特定のプロパティがキーとして、エンティティ自体が値として使用されます。このメソッドは、クエリ結果を処理する際に、ログの出力やキャッシュの更新などの追加の副作用操作を実行することもサポートしています。
 
 ##### メソッドシグネチャ
 
 ```java
-// テーブル内のレコードを問い合わせ、Map<プロパティ,エンティティ> としてカプセル化して返します
+// テーブル内のレコードをクエリし、Map<プロパティ, エンティティ>としてカプセル化して返す
 Map<A, E> keyMap(LambdaQueryWrapper<E> wrapper, SFunction<E, A> sFunction, Consumer<E>... peeks);
 
-// テーブル内のレコードを問い合わせ、Map<プロパティ,エンティティ> としてカプセル化して返します。並列ストリームの場合を考慮します
+// テーブル内のレコードをクエリし、Map<プロパティ, エンティティ>としてカプセル化して返す（並列ストリームを考慮）
 Map<A, E> keyMap(LambdaQueryWrapper<E> wrapper, SFunction<E, A> sFunction, boolean isParallel, Consumer<E>... peeks);
 ```
 
-##### パラメータの説明
+##### パラメータ説明
 
-| タイプ | パラメータ名 | 説明 |
+| 型 | パラメータ名 | 説明 |
 | :-: | :-: | :-: |
-| E | entity | エンティティオブジェクトタイプ。つまりクエリ結果のエンティティタイプ。 |
-| A | attribute | エンティティプロパティタイプ。返される `Map` のキー（key）のタイプでもあります。 |
-| LambdaQueryWrapper&#60;E&#62; | wrapper | ラムダ式をサポートする条件ビルダー。クエリ条件を構築するために使用されます。 |
-| SFunction&#60;E, A&#62; | sFunction | エンティティ内のプロパティの getter メソッド参照。`Map` のキー（key）の値を決定するために使用されます。 |
-| boolean | isParallel | `true` に設定されている場合、基盤となるクエリは並列ストリームを使用して実行され、大量のデータを処理する際の効率を向上させることができます。 |
-| Consumer&#60;E&#62;... | peeks | 可変引数。クエリ結果を処理する際に実行される追加の操作（ログのプリント、キャッシュの更新など）を指定するために使用されます。 |
+| E | entity | エンティティオブジェクトの型。クエリ結果のエンティティ型です。 |
+| A | attribute | エンティティのプロパティ型。返される `Map` のキーの型でもあります。 |
+| LambdaQueryWrapper&#60;E&#62; | wrapper | ラムダ式をサポートする条件構築器。クエリ条件を構築するために使用します。 |
+| SFunction&#60;E, A&#62; | sFunction | エンティティ内のプロパティの getter メソッド参照。`Map` のキーの値を決定するために使用します。 |
+| boolean | isParallel | `true` に設定すると、基盤で並列ストリームを使用してクエリを実行し、大量のデータを処理する際の効率を向上させることができます。 |
+| Consumer&#60;E&#62;... | peeks | 可変長引数。クエリ結果を処理する際に実行する追加の操作（ログの出力、キャッシュの更新など）を指定するために使用します。 |
 
 ##### 使用例
 
 ```java
-// User エンティティクラスと、対応する BaseMapper があると仮定します
+// User エンティティクラスと対応する BaseMapper があると仮定
 LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-queryWrapper.eq(User::getStatus, "active"); // status が "active" のユーザーを問い合わせます
+queryWrapper.eq(User::getStatus, "active"); // ステータスが "active" のユーザーをクエリ
 
-// keyMap メソッドを使用して結果を問い合わせ、カプセル化します
+// keyMap メソッドを使用して結果をクエリし、カプセル化
 Map<String, User> userMap = SimpleQuery.keyMap(
-    queryWrapper, // クエリ条件ビルダー
-    User::getUsername, // ユーザー名をキーとして使用します
-    user -> System.out.println("Processing user: " + user.getUsername()) // 処理中のユーザー名をプリントします
+    queryWrapper, // クエリ条件構築器
+    User::getUsername, // ユーザー名をキーとして使用
+    user -> System.out.println("Processing user: " + user.getUsername()) // 処理中のユーザー名を出力
 );
 
-// 結果を反復処理します
+// 結果を走査
 for (Map.Entry<String, User> entry : userMap.entrySet()) {
     System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
 }
@@ -1659,56 +1648,56 @@ for (Map.Entry<String, User> entry : userMap.entrySet()) {
 
 ##### 使用上のヒント
 
-- `keyMap` メソッドは、エンティティの特定のプロパティに基づいてエンティティをすばやく検索する必要があるシナリオに適しています。
-- `sFunction` パラメータを使用すると、任意のエンティティプロパティを `Map` のキーとして指定でき、クエリ結果へのアクセスがより直感的かつ効率的になります。
-- `peeks` パラメータを使用すると、クエリ結果を処理する際に追加の副作用操作を実行できます。これらの操作は最終的な `Map` 結果には影響しません。
+- `keyMap` メソッドは、エンティティの特定のプロパティに基づいてエンティティを迅速に検索する必要があるシナリオに適しています。
+- `sFunction` パラメータを通じて、任意のエンティティプロパティを `Map` のキーとして指定できます。これにより、クエリ結果へのアクセスがより直感的かつ効率的になります。
+- `peeks` パラメータを使用すると、クエリ結果を処理する際に追加の副作用操作を実行できます。これらの操作は最終的な `Map` の結果に影響しません。
 - 大量のデータを処理する場合、`isParallel` パラメータを `true` に設定して並列ストリームを有効にし、クエリ効率を向上させることを検討できます。
 
-SimpleQuery の `keyMap` メソッドを使用することで、開発者はクエリ結果をより効率的に処理し、使いやすいデータ構造にカプセル化し、さらに追加の副作用操作を実行して、コードをより簡潔かつ柔軟にすることができます。
+SimpleQuery の `keyMap` メソッドを使用することで、開発者はクエリ結果をより効率的に処理し、使いやすいデータ構造にカプセル化できるとともに、追加の副作用操作を実行してコードをより簡潔かつ柔軟にすることができます。
 
 #### map
 
-SimpleQuery の `map` メソッドは、データベースをクエリし、クエリ結果を `Map` にカプセル化する便利な方法を提供します。この Map では、エンティティの特定のプロパティがキー（key）として、別のプロパティが値（value）として使用されます。このメソッドは、クエリ結果を処理する際に、ログのプリントやキャッシュの更新などの追加の副作用操作を実行することもサポートしています。
+SimpleQuery の `map` メソッドは、データベースをクエリし、その結果を `Map` としてカプセル化する便利な方法を提供します。この Map では、エンティティの特定のプロパティがキーとして、別のプロパティが値として使用されます。このメソッドは、クエリ結果を処理する際に、ログの出力やキャッシュの更新などの追加の副作用操作を実行することもサポートしています。
 
 ##### メソッドシグネチャ
 
 ```java
-// テーブル内のレコードを問い合わせ、Map<プロパティ,プロパティ> としてカプセル化して返します
+// テーブル内のレコードをクエリし、Map<プロパティ, プロパティ>としてカプセル化して返す
 Map<A, P> map(LambdaQueryWrapper<E> wrapper, SFunction<E, A> keyFunc, SFunction<E, P> valueFunc, Consumer<E>... peeks);
 
-// テーブル内のレコードを問い合わせ、Map<プロパティ,プロパティ> としてカプセル化して返します。並列ストリームの場合を考慮します
+// テーブル内のレコードをクエリし、Map<プロパティ, プロパティ>としてカプセル化して返す（並列ストリームを考慮）
 Map<A, P> map(LambdaQueryWrapper<E> wrapper, SFunction<E, A> keyFunc, SFunction<E, P> valueFunc, boolean isParallel, Consumer<E>... peeks);
 ```
 
-##### パラメータの説明
+##### パラメータ説明
 
-| タイプ | パラメータ名 | 説明 |
+| 型 | パラメータ名 | 説明 |
 | :-: | :-: | :-: |
-| E | entity | エンティティオブジェクトタイプ、つまりクエリ結果のエンティティタイプ。 |
-| A | attribute | エンティティプロパティタイプ。返される `Map` のキー（key）のタイプとして使用されます。 |
-| P | attribute | エンティティプロパティタイプ。返される `Map` の値（value）のタイプとして使用されます。 |
-| LambdaQueryWrapper&#60;E&#62; | wrapper | ラムダ式をサポートする条件ビルダー。クエリ条件を構築するために使用されます。 |
-| SFunction&#60;E, A&#62; | keyFunc | エンティティ内のプロパティの getter メソッド参照。`Map` のキー（key）の値を決定するために使用されます。 |
-| SFunction&#60;E, P&#62; | valueFunc | エンティティ内のプロパティの getter メソッド参照。`Map` の値（value）の値を決定するために使用されます。 |
-| boolean | isParallel | `true` に設定されている場合、基盤となるクエリは並列ストリームを使用して実行され、大量のデータを処理する際の効率を向上させることができます。 |
-| Consumer&#60;E&#62;... | peeks | 可変引数。クエリ結果を処理する際に実行される追加の操作（ログのプリント、キャッシュの更新など）を指定するために使用されます。 |
+| E | entity | エンティティオブジェクトの型。クエリ結果のエンティティ型です。 |
+| A | attribute | エンティティのプロパティ型。返される `Map` のキーの型として使用されます。 |
+| P | attribute | エンティティのプロパティ型。返される `Map` の値の型として使用されます。 |
+| LambdaQueryWrapper&#60;E&#62; | wrapper | ラムダ式をサポートする条件構築器。クエリ条件を構築するために使用します。 |
+| SFunction&#60;E, A&#62; | keyFunc | エンティティ内のプロパティの getter メソッド参照。`Map` のキーの値を決定するために使用します。 |
+| SFunction&#60;E, P&#62; | valueFunc | エンティティ内のプロパティの getter メソッド参照。`Map` の値の値を決定するために使用します。 |
+| boolean | isParallel | `true` に設定すると、基盤で並列ストリームを使用してクエリを実行し、大量のデータを処理する際の効率を向上させることができます。 |
+| Consumer&#60;E&#62;... | peeks | 可変長引数。クエリ結果を処理する際に実行する追加の操作（ログの出力、キャッシュの更新など）を指定するために使用します。 |
 
 ##### 使用例
 
 ```java
-// User エンティティクラスと、対応する BaseMapper があると仮定します
+// User エンティティクラスと対応する BaseMapper があると仮定
 LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-queryWrapper.eq(User::getStatus, "active"); // status が "active" のユーザーを問い合わせます
+queryWrapper.eq(User::getStatus, "active"); // ステータスが "active" のユーザーをクエリ
 
-// map メソッドを使用して結果を問い合わせ、カプセル化します
+// map メソッドを使用して結果をクエリし、カプセル化
 Map<String, Integer> userMap = SimpleQuery.map(
-    queryWrapper, // クエリ条件ビルダー
-    User::getUsername, // ユーザー名をキーとして使用します
-    User::getAge, // 年齢を値として使用します
-    user -> System.out.println("Processing user: " + user.getUsername()) // 処理中のユーザー名をプリントします
+    queryWrapper, // クエリ条件構築器
+    User::getUsername, // ユーザー名をキーとして使用
+    User::getAge, // 年齢を値として使用
+    user -> System.out.println("Processing user: " + user.getUsername()) // 処理中のユーザー名を出力
 );
 
-// 結果を反復処理します
+// 結果を走査
 for (Map.Entry<String, Integer> entry : userMap.entrySet()) {
     System.out.println("Username: " + entry.getKey() + ", Age: " + entry.getValue());
 }
@@ -1716,63 +1705,63 @@ for (Map.Entry<String, Integer> entry : userMap.entrySet()) {
 
 ##### 使用上のヒント
 
-- `map` メソッドは、エンティティの特定のプロパティに基づいて別のプロパティをすばやく検索する必要があるシナリオに適しています。
-- `keyFunc` および `valueFunc` パラメータを使用すると、任意のエンティティプロパティを `Map` のキーおよび値として指定でき、クエリ結果へのアクセスがより直感的かつ効率的になります。
-- `peeks` パラメータを使用すると、クエリ結果を処理する際に追加の副作用操作を実行できます。これらの操作は最終的な `Map` 結果には影響しません。
+- `map` メソッドは、エンティティの特定のプロパティに基づいて別のプロパティを迅速に検索する必要があるシナリオに適しています。
+- `keyFunc` および `valueFunc` パラメータを通じて、任意のエンティティプロパティを `Map` のキーと値として指定できます。これにより、クエリ結果へのアクセスがより直感的かつ効率的になります。
+- `peeks` パラメータを使用すると、クエリ結果を処理する際に追加の副作用操作を実行できます。これらの操作は最終的な `Map` の結果に影響しません。
 - 大量のデータを処理する場合、`isParallel` パラメータを `true` に設定して並列ストリームを有効にし、クエリ効率を向上させることを検討できます。
 
-SimpleQuery の `map` メソッドを使用することで、開発者はクエリ結果をより効率的に処理し、使いやすいデータ構造にカプセル化し、さらに追加の副作用操作を実行して、コードをより簡潔かつ柔軟にすることができます。
+SimpleQuery の `map` メソッドを使用することで、開発者はクエリ結果をより効率的に処理し、使いやすいデータ構造にカプセル化できるとともに、追加の副作用操作を実行してコードをより簡潔かつ柔軟にすることができます。
 
 #### group
 
-SimpleQuery の `group` メソッドは、データベースに問い合わせ、エンティティの特定のプロパティに従ってクエリ結果をグループ化し、`Map` にカプセル化する便利な方法を提供します。このメソッドは、クエリ結果を処理する際に、ログのプリントやキャッシュの更新などの追加の副作用操作を実行することもサポートしています。さらに、`Collector` を使用してグループ化されたコレクションをさらに処理することもできます。
+SimpleQuery の `group` メソッドは、データベースをクエリし、その結果をエンティティの特定のプロパティでグループ化して `Map` にカプセル化する便利な方法を提供します。このメソッドは、クエリ結果を処理する際に、ログの出力やキャッシュの更新などの追加の副作用操作を実行することもサポートしています。さらに、`Collector` を使用してグループ化されたコレクションをさらに処理することもできます。
 
 ##### メソッドシグネチャ
 
 ```java
-// テーブル内のレコードをクエリし、Map<プロパティ,List<エンティティ>> としてカプセル化して返します
+// テーブル内のレコードをクエリし、Map<プロパティ, List<エンティティ>>としてカプセル化して返す
 Map<K, List<T>> group(LambdaQueryWrapper<T> wrapper, SFunction<T, K> sFunction, Consumer<T>... peeks);
 
-// テーブル内のレコードをクエリし、Map<プロパティ,List<エンティティ>> としてカプセル化して返します。並列ストリームの場合を考慮します
+// テーブル内のレコードをクエリし、Map<プロパティ, List<エンティティ>>としてカプセル化して返す（並列ストリームを考慮）
 Map<K, List<T>> group(LambdaQueryWrapper<T> wrapper, SFunction<T, K> sFunction, boolean isParallel, Consumer<T>... peeks);
 
-// テーブル内のレコードをクエリし、Map<プロパティ,グループ化後にコレクションに対して実行されるダウンストリームコレクタ> としてカプセル化して返します
+// テーブル内のレコードをクエリし、Map<プロパティ, グループ化後のコレクションに対する下流コレクタ>としてカプセル化して返す
 M group(LambdaQueryWrapper<T> wrapper, SFunction<T, K> sFunction, Collector<? super T, A, D> downstream, Consumer<T>... peeks);
 
-// テーブル内のレコードをクエリし、Map<プロパティ,グループ化後にコレクションに対して実行されるダウンストリームコレクタ> としてカプセル化して返します。並列ストリームの場合を考慮します
+// テーブル内のレコードをクエリし、Map<プロパティ, グループ化後のコレクションに対する下流コレクタ>としてカプセル化して返す（並列ストリームを考慮）
 M group(LambdaQueryWrapper<T> wrapper, SFunction<T, K> sFunction, Collector<? super T, A, D> downstream, boolean isParallel, Consumer<T>... peeks);
 ```
 
-##### パラメータの説明
+##### パラメータ説明
 
-| タイプ | パラメータ名 | 説明 |
+| 型 | パラメータ名 | 説明 |
 | :-: | :-: | :-: |
-| T | entity | エンティティオブジェクトタイプ。つまりクエリ結果のエンティティタイプ。 |
-| K | attribute | エンティティプロパティタイプ。返される `Map` のキー（key）のタイプとして使用されます。 |
-| D | - | ダウンストリームコレクタの戻り値タイプ。`Map` の値（value）のタイプとして使用されます。 |
-| A | - | ダウンストリーム操作の中間タイプ。`Collector` の中間結果に使用されます。 |
-| M | - | 最終的に返される `Map<K, D>` タイプ。 |
-| LambdaQueryWrapper&#60;T&#62; | wrapper | ラムダ式をサポートする条件ビルダー。クエリ条件を構築するために使用されます。 |
-| SFunction&#60;T, K&#62; | sFunction | グループ化の基準。エンティティ内のプロパティの getter メソッド参照。`Map` のキー（key）の値を決定するために使用されます。 |
-| Collector&#60;T, A, D&#62; | downstream | ダウンストリームコレクタ。グループ化されたコレクションをさらに処理するために使用されます。 |
-| boolean | isParallel | `true` に設定されている場合、基盤となるクエリは並列ストリームを使用して実行され、大量のデータを処理する際の効率を向上させることができます。 |
-| Consumer&#60;T&#62;... | peeks | 可変引数。クエリ結果を処理する際に実行される追加の操作（ログのプリント、キャッシュの更新など）を指定するために使用されます。 |
+| T | entity | エンティティオブジェクトの型。クエリ結果のエンティティ型です。 |
+| K | attribute | エンティティのプロパティ型。返される `Map` のキーの型として使用されます。 |
+| D | - | 下流コレクタの戻り値の型。`Map` の値の型として使用されます。 |
+| A | - | 下流操作の中間型。`Collector` の中間結果に使用されます。 |
+| M | - | 最終的に返される `Map<K, D>` の型。 |
+| LambdaQueryWrapper&#60;T&#62; | wrapper | ラムダ式をサポートする条件構築器。クエリ条件を構築するために使用します。 |
+| SFunction&#60;T, K&#62; | sFunction | グループ化の基準。エンティティ内のプロパティの getter メソッド参照。`Map` のキーの値を決定するために使用します。 |
+| Collector&#60;T, A, D&#62; | downstream | 下流コレクタ。グループ化されたコレクションをさらに処理するために使用します。 |
+| boolean | isParallel | `true` に設定すると、基盤で並列ストリームを使用してクエリを実行し、大量のデータを処理する際の効率を向上させることができます。 |
+| Consumer&#60;T&#62;... | peeks | 可変長引数。クエリ結果を処理する際に実行する追加の操作（ログの出力、キャッシュの更新など）を指定するために使用します。 |
 
 ##### 使用例
 
 ```java
-// User エンティティクラスと、対応する BaseMapper があると仮定します
+// User エンティティクラスと対応する BaseMapper があると仮定
 LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-queryWrapper.eq(User::getStatus, "active"); // status が "active" のユーザーをクエリします
+queryWrapper.eq(User::getStatus, "active"); // ステータスが "active" のユーザーをクエリ
 
-// group メソッドを使用して結果をクエリし、ユーザー名でグループ化してカプセル化します
+// group メソッドを使用して結果をクエリし、カプセル化（ユーザー名でグループ化）
 Map<String, List<User>> userGroup = SimpleQuery.group(
-    queryWrapper, // クエリ条件ビルダー
-    User::getUsername, // ユーザー名をグループ化キーとして使用します
-    user -> System.out.println("Processing user: " + user.getUsername()) // 処理中のユーザー名をプリントします
+    queryWrapper, // クエリ条件構築器
+    User::getUsername, // ユーザー名をグループ化キーとして使用
+    user -> System.out.println("Processing user: " + user.getUsername()) // 処理中のユーザー名を出力
 );
 
-// 結果を反復処理します
+// 結果を走査
 for (Map.Entry<String, List<User>> entry : userGroup.entrySet()) {
     System.out.println("Username: " + entry.getKey());
     for (User user : entry.getValue()) {
@@ -1784,53 +1773,53 @@ for (Map.Entry<String, List<User>> entry : userGroup.entrySet()) {
 ##### 使用上のヒント
 
 - `group` メソッドは、エンティティの特定のプロパティに基づいてクエリ結果をグループ化する必要があるシナリオに適しています。
-- `sFunction` パラメータを使用すると、任意のエンティティプロパティをグループ化の基準として指定でき、クエリ結果の編成がより柔軟になります。
-- `downstream` パラメータを使用すると、`Collector` を使用してグループ化されたコレクションをさらに処理できます（カウント、合計、平均など）。
-- `peeks` パラメータを使用すると、クエリ結果を処理する際に追加の副作用操作を実行できます。これらの操作は最終的な Map 結果には影響しません。
+- `sFunction` パラメータを通じて、任意のエンティティプロパティをグループ化の基準として指定できます。これにより、クエリ結果の編成がより柔軟になります。
+- `downstream` パラメータを使用すると、`Collector` を使用してグループ化されたコレクションをさらに処理（カウント、合計、平均値の計算など）できます。
+- `peeks` パラメータを使用すると、クエリ結果を処理する際に追加の副作用操作を実行できます。これらの操作は最終的な `Map` の結果に影響しません。
 - 大量のデータを処理する場合、`isParallel` パラメータを `true` に設定して並列ストリームを有効にし、クエリ効率を向上させることを検討できます。
 
-SimpleQuery の `group` メソッドを使用することで、開発者はクエリ結果をより効率的に処理し、特定のプロパティに従ってグループ化し、さらに追加の副作用操作を実行して、コードをより簡潔かつ柔軟にすることができます。
+SimpleQuery の `group` メソッドを使用することで、開発者はクエリ結果をより効率的に処理し、特定のプロパティでグループ化できるとともに、追加の副作用操作を実行してコードをより簡潔かつ柔軟にすることができます。
 
 #### list
 
-SimpleQuery の `list` メソッドは、データベースに問い合わせ、クエリ結果を `List` にカプセル化する便利な方法を提供します。この List の要素はエンティティの特定のプロパティです。このメソッドは、クエリ結果を処理する際に、ログのプリントやキャッシュの更新などの追加の副作用操作を実行することもサポートしています。
+SimpleQuery の `list` メソッドは、データベースをクエリし、その結果を `List` としてカプセル化する便利な方法を提供します。このリストの要素は、エンティティの特定のプロパティです。このメソッドは、クエリ結果を処理する際に、ログの出力やキャッシュの更新などの追加の副作用操作を実行することもサポートしています。
 
 ##### メソッドシグネチャ
 
 ```java
-// テーブル内のレコードを問い合わせ、List<プロパティ> としてカプセル化して返します
+// テーブル内のレコードをクエリし、List<プロパティ>としてカプセル化して返す
 List<A> list(LambdaQueryWrapper<E> wrapper, SFunction<E, A> sFunction, Consumer<E>... peeks);
 
-// テーブル内のレコードを問い合わせ、List<プロパティ> としてカプセル化して返します。並列ストリームの場合を考慮します
+// テーブル内のレコードをクエリし、List<プロパティ>としてカプセル化して返す（並列ストリームを考慮）
 List<A> list(LambdaQueryWrapper<E> wrapper, SFunction<E, A> sFunction, boolean isParallel, Consumer<E>... peeks);
 ```
 
-##### パラメータの説明
+##### パラメータ説明
 
-| タイプ | パラメータ名 | 説明 |
+| 型 | パラメータ名 | 説明 |
 | :-: | :-: | :-: |
-| E | entity | エンティティオブジェクトタイプ、つまりクエリ結果のエンティティタイプ。 |
-| A | attribute | エンティティプロパティタイプ。返される `List` の要素のタイプとして使用されます。 |
-| LambdaQueryWrapper&#60;E&#62; | wrapper | ラムダ式をサポートする条件ビルダー。クエリ条件を構築するために使用されます。 |
-| SFunction&#60;E, A&#62; | sFunction | エンティティ内のプロパティの getter メソッド参照。`List` の要素の値を決定するために使用されます。 |
-| boolean | isParallel | `true` に設定されている場合、基盤となるクエリは並列ストリームを使用して実行され、大量のデータを処理する際の効率を向上させることができます。 |
-| Consumer&#60;E&#62;... | peeks | 可変引数。クエリ結果を処理する際に実行される追加の操作（ログのプリント、キャッシュの更新など）を指定するために使用されます。 |
+| E | entity | エンティティオブジェクトの型。クエリ結果のエンティティ型です。 |
+| A | attribute | エンティティのプロパティ型。返される `List` の要素の型として使用されます。 |
+| LambdaQueryWrapper&#60;E&#62; | wrapper | ラムダ式をサポートする条件構築器。クエリ条件を構築するために使用します。 |
+| SFunction&#60;E, A&#62; | sFunction | エンティティ内のプロパティの getter メソッド参照。`List` の要素の値を決定するために使用します。 |
+| boolean | isParallel | `true` に設定すると、基盤で並列ストリームを使用してクエリを実行し、大量のデータを処理する際の効率を向上させることができます。 |
+| Consumer&#60;E&#62;... | peeks | 可変長引数。クエリ結果を処理する際に実行する追加の操作（ログの出力、キャッシュの更新など）を指定するために使用します。 |
 
 ##### 使用例
 
 ```java
-// User エンティティクラスと、対応する BaseMapper があると仮定します
+// User エンティティクラスと対応する BaseMapper があると仮定
 LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-queryWrapper.eq(User::getStatus, "active"); // status が "active" のユーザーをクエリします
+queryWrapper.eq(User::getStatus, "active"); // ステータスが "active" のユーザーをクエリ
 
-// list メソッドを使用して結果を問い合わせ、すべてのユーザーのユーザー名を抽出してカプセル化します
+// list メソッドを使用して結果をクエリし、カプセル化（すべてのユーザーのユーザー名を抽出）
 List<String> userNames = SimpleQuery.list(
-    queryWrapper, // クエリ条件ビルダー
-    User::getUsername, // ユーザー名をリスト要素として抽出します
-    user -> System.out.println("Processing user: " + user.getUsername()) // 処理中のユーザー名をプリントします
+    queryWrapper, // クエリ条件構築器
+    User::getUsername, // ユーザー名をリスト要素として抽出
+    user -> System.out.println("Processing user: " + user.getUsername()) // 処理中のユーザー名を出力
 );
 
-// 結果を反復処理します
+// 結果を走査
 for (String username : userNames) {
     System.out.println("Username: " + username);
 }
@@ -1838,68 +1827,68 @@ for (String username : userNames) {
 
 ##### 使用上のヒント
 
-- `list` メソッドは、エンティティの特定のプロパティに基づいてリストをすばやく取得する必要があるシナリオに適しています。
-- `sFunction` パラメータを使用すると、任意のエンティティプロパティを `List` の要素として指定でき、クエリ結果へのアクセスがより直感的かつ効率的になります。
-- `peeks` パラメータを使用すると、クエリ結果を処理する際に追加の副作用操作を実行できます。これらの操作は最終的な `List` 結果には影響しません。
+- `list` メソッドは、エンティティの特定のプロパティに基づいてリストを迅速に取得する必要があるシナリオに適しています。
+- `sFunction` パラメータを通じて、任意のエンティティプロパティを `List` の要素として指定できます。これにより、クエリ結果へのアクセスがより直感的かつ効率的になります。
+- `peeks` パラメータを使用すると、クエリ結果を処理する際に追加の副作用操作を実行できます。これらの操作は最終的な `List` の結果に影響しません。
 - 大量のデータを処理する場合、`isParallel` パラメータを `true` に設定して並列ストリームを有効にし、クエリ効率を向上させることを検討できます。
 
-SimpleQuery の `list` メソッドを使用することで、開発者はクエリ結果をより効率的に処理し、使いやすいデータ構造にカプセル化し、さらに追加の副作用操作を実行して、コードをより簡潔かつ柔軟にすることができます。
+SimpleQuery の `list` メソッドを使用することで、開発者はクエリ結果をより効率的に処理し、使いやすいデータ構造にカプセル化できるとともに、追加の副作用操作を実行してコードをより簡潔かつ柔軟にすることができます。
 
 ## Db Kit
 
-Db Kit は Mybatis-Plus が提供するユーティリティクラスであり、開発者は静的呼び出しを使用して CRUD 操作を実行できます。これにより、Spring 環境で発生する可能性のある Service の循環注入の問題を回避し、コードを簡素化し、開発効率を向上させます。
+Db Kit は MyBatis-Plus が提供するツールクラスであり、開発者が静的な呼び出し方式で CRUD 操作を実行できるようにします。これにより、Spring 環境下で発生する可能性のある Service の循環注入問題を回避し、コードを簡素化し、開発効率を向上させます。
 
-Db Kit の完全な使用方法については、[公式テストケース](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus/src/test/java/com/baomidou/mybatisplus/test/toolkit/DbTest.java) を参照してください。
+Db Kit の完全な使用方法については、[公式テストケース](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus/src/test/java/com/baomidou/mybatisplus/test/toolkit/DbTest.java)を参照してください。
 
 :::note
-- Db Kit を使用する前に、プロジェクトに対応するエンティティの BaseMapper が注入されていることを確認する必要があります。
-- パラメータが Wrapper の場合、対応する Mapper を見つけるために、Wrapper に Entity または EntityClass を渡す必要があります。
-- ループ内で Db Kit のメソッドを頻繁に呼び出すことは推奨されません。バッチ操作の場合は、まずデータを構築してから `Db.saveBatch(データ)` などのバッチメソッドを使用して保存することをお勧めします。
+- Db Kit を使用する前に、プロジェクトに対応するエンティティの BaseMapper が注入されていることを確認してください。
+- パラメータが Wrapper の場合、対応する Mapper を検索できるように、Wrapper に Entity または EntityClass を渡す必要があります。
+- ループ内で Db Kit のメソッドを頻繁に呼び出すことは推奨されません。バッチ操作の場合は、まずデータを構築し、`Db.saveBatch(データ)` などのバッチメソッドを使用して保存することをお勧めします。
 :::
 
 ### 使用例
 
 ```java
-// User エンティティクラスと対応する BaseMapper があると仮定します
+// 假设有一个 User 实体类和对应的 BaseMapper
 
-// id に基づいて単一のエンティティを問い合わせます
+// 根据 id 查询单个实体
 User user = Db.getById(1L, User.class);
 
-// id に基づいて複数のエンティティを問い合わせます
+// 根据 id 查询多个实体
 List<User> userList = Db.listByIds(Arrays.asList(1L, 2L, 3L), User.class);
 
-// 条件ビルダーに基づいて問い合わせます
+// 根据条件构造器查询
 LambdaQueryWrapper<User> queryWrapper = Wrappers.lambdaQuery(User.class)
     .eq(User::getStatus, "active");
 List<User> activeUsers = Db.list(queryWrapper);
 
-// 新しいエンティティを挿入します
+// 插入新实体
 User newUser = new User();
 newUser.setUsername("newUser");
 newUser.setAge(25);
 boolean isInserted = Db.insert(newUser);
 
-// id に基づいてエンティティを更新します
+// 根据 id 更新实体
 User updateUser = new User();
 updateUser.setId(1L);
 updateUser.setUsername("updatedUser");
 boolean isUpdated = Db.updateById(updateUser);
 
-// 条件ビルダーに基づいて更新します
+// 根据条件构造器更新
 LambdaUpdateWrapper<User> updateWrapper = Wrappers.lambdaUpdate(User.class)
     .set(User::getAge, 30)
     .eq(User::getUsername, "updatedUser");
 boolean isUpdatedByWrapper = Db.update(null, updateWrapper);
 
-// id に基づいてエンティティを削除します
+// 根据 id 删除实体
 boolean isDeleted = Db.removeById(1L);
 
-// 条件ビルダーに基づいて削除します
+// 根据条件构造器删除
 LambdaDeleteWrapper<User> deleteWrapper = Wrappers.lambdaDelete(User.class)
     .eq(User::getStatus, "inactive");
 boolean isDeletedByWrapper = Db.remove(deleteWrapper);
 
-// バッチ挿入
+// 批量插入
 List<User> batchUsers = Arrays.asList(
     new User("user1", 20),
     new User("user2", 22),
@@ -1907,7 +1896,7 @@ List<User> batchUsers = Arrays.asList(
 );
 boolean isBatchInserted = Db.saveBatch(batchUsers);
 
-// バッチ更新
+// 批量更新
 List<User> batchUpdateUsers = Arrays.asList(
     new User(1L, "user1", 21),
     new User(2L, "user2", 23),
@@ -1918,9 +1907,9 @@ boolean isBatchUpdated = Db.updateBatchById(batchUpdateUsers);
 
 ### 使用上のヒント
 
-- Db Kit は一連の静的メソッドを提供しており、Service 層を経由せずにデータベース操作を直接呼び出すことができるため、コード構造が簡素化されます。
-- Db Kit を使用する際は、渡されるパラメータが正しいことを確認してください。特に Wrapper を使用する場合は、エンティティクラスまたはエンティティオブジェクトを指定する必要があります。
-- バッチ挿入や更新などのバッチ操作の場合は、効率を向上させるために Db Kit が提供するバッチメソッドを使用することをお勧めします。
-- ループ内で Db Kit のメソッドを頻繁に呼び出すと、パフォーマンスの問題が発生する可能性があるため避けてください。
+- Db Kit は一連の静的メソッドを提供しており、Service 層を経由せずに直接呼び出してデータベース操作を行うことができ、コード構造を簡素化します。
+- Db Kit を使用する際は、特に Wrapper を使用する場合に、エンティティクラスまたはエンティティオブジェクトを指定する必要があるなど、渡されるパラメータが正しいことを確認してください。
+- バッチ挿入や更新などのバッチ操作では、効率を向上させるために、Db Kit が提供するバッチメソッドを使用することを推奨します。
+- ループ内で Db Kit のメソッドを頻繁に呼び出すことは避けてください。これはパフォーマンスの問題を引き起こす可能性があります。
 
-Db Kit を使用することで、開発者はデータベース操作をより効率的に実行し、同時にコードの簡潔さと可読性を維持できます。このユーティリティクラスは、特に単純な CRUD 操作に適しており、反復的なコードの記述を大幅に削減できます。
+Db Kit を使用することで、開発者はコードの簡潔さと可読性を維持しながら、より効率的にデータベース操作を実行できます。このようなユーティリティクラスは、特に単純な CRUD 操作に適しており、重複コードの記述を大幅に削減できます。

@@ -1,77 +1,76 @@
 ---
-title: 条件ビルダー
+title: 条件構築ツール
 sidebar:
   order: 4
 ---
-
 import Badge from "@/components/Badge.astro";
 
-MyBatis-Plus は、複雑なデータベースクエリ条件を構築するための強力な条件ビルダー（Wrapper）を提供しています。Wrapper クラスを使用することで、開発者はメソッドチェーンの形式でクエリ条件を構築でき、煩雑なSQL文を書く必要がなく、開発効率を向上させ、SQLインジェクションのリスクを軽減できます。
+MyBatis-Plusは、複雑なデータベースクエリ条件を構築するための強力な条件構築器（Wrapper）を提供しています。Wrapperクラスを使用することで、開発者はチェーン呼び出し方式でクエリ条件を構築でき、煩雑なSQL文を記述する必要がなくなり、開発効率が向上し、SQLインジェクションのリスクを低減できます。
 
-MyBatis-Plus では、Wrapper クラスはクエリと更新条件を構築するためのコアツールです。以下が主要な Wrapper クラスとその機能です：
+MyBatis-Plusにおいて、Wrapperクラスはクエリと更新条件を構築するための核心的なツールです。以下に主要なWrapperクラスとその機能を示します：
 
-- **AbstractWrapper**：これは抽象基底クラスで、すべての Wrapper クラスに共通するメソッドとプロパティを提供します。フィールド（column）、値（value）、演算子（condition）などの条件構築の基本ロジックを定義しています。すべての QueryWrapper、UpdateWrapper、LambdaQueryWrapper、LambdaUpdateWrapper は AbstractWrapper を継承しています。
+- **AbstractWrapper**：これは抽象基底クラスであり、すべてのWrapperクラスに共通するメソッドとプロパティを提供します。フィールド（column）、値（value）、演算子（condition）など、条件構築の基本ロジックを定義しています。すべてのQueryWrapper、UpdateWrapper、LambdaQueryWrapper、LambdaUpdateWrapperはAbstractWrapperを継承しています。
 
-- **QueryWrapper**：クエリ条件の構築に特化しており、基本的な等価、不等価、大なり、小なりなどの一般的な操作をサポートしています。メソッドチェーンの形式で複数のクエリ条件を追加でき、`and` と `or` ロジックを組み合わせて使用できます。
+- **QueryWrapper**：クエリ条件の構築に特化しており、基本的な等号、不等号、大なり、小なりなどの各種一般的な操作をサポートします。チェーン呼び出し方式で複数のクエリ条件を追加でき、`and`と`or`ロジックを組み合わせて使用できます。
 
-- **UpdateWrapper**：更新条件の構築に使用され、データ更新時に条件を指定できます。QueryWrapper と同様に、メソッドチェーンとロジックの組み合わせをサポートしています。UpdateWrapper を使用すると、エンティティオブジェクトを作成せずに、直接更新フィールドと条件を設定できます。
+- **UpdateWrapper**：更新条件を構築するために使用され、データ更新時に条件を指定できます。QueryWrapperと同様に、チェーン呼び出しと論理組み合わせをサポートします。UpdateWrapperを使用すると、エンティティオブジェクトを作成せずに、直接更新フィールドと条件を設定できます。
 
-- **LambdaQueryWrapper**：これはラムダ式に基づくクエリ条件ビルダーで、ラムダ式を使用してエンティティクラスのプロパティを参照することで、フィールド名のハードコーディングを避けることができます。この方法は、特にフィールド名が変更される可能性がある場合に、コードの可読性と保守性を向上させます。
+- **LambdaQueryWrapper**：これはLambda式に基づくクエリ条件構築器であり、Lambda式を使用してエンティティクラスのプロパティを参照することで、フィールド名のハードコーディングを回避します。この方式により、コードの可読性と保守性が向上し、特にフィールド名が変更される可能性がある場合に有効です。
 
-- **LambdaUpdateWrapper**：LambdaQueryWrapper と同様に、LambdaUpdateWrapper はラムダ式に基づく更新条件ビルダーです。ラムダ式を使用して更新フィールドと条件を指定でき、同様にフィールド名のハードコーディング問題を回避できます。
+- **LambdaUpdateWrapper**：LambdaQueryWrapperと類似しており、LambdaUpdateWrapperはLambda式に基づく更新条件構築器です。Lambda式を使用して更新フィールドと条件を指定でき、同様にフィールド名のハードコーディング問題を回避できます。
 
-## 機能の詳細
+## 機能詳細
 
-MyBatis-Plus の Wrapper クラスは、複雑なクエリと更新条件を構築するための重要なツールです。メソッドチェーンの形式でSQLの WHERE 句を構築でき、非常に高い柔軟性と利便性を提供します。
+MyBatis-Plus の Wrapper クラスは、複雑なクエリおよび更新条件を構築するための重要なツールです。開発者がチェーン呼び出しの方式で SQL の WHERE 句を構築することを可能にし、非常に大きな柔軟性と利便性を提供します。
 
-以下は Wrapper 機能に関するヒントと注意事項です。
+以下は、Wrapper 機能に関するヒントと注意事項です。
 
 :::note[ヒント]
 
-**条件判定**：Wrapper メソッドは通常、`boolean` 型のパラメータを受け取り、その条件を最終的なSQLに含めるかどうかを決定します。例：
+**条件判断**: Wrapper メソッドは通常、`boolean` 型のパラメータを受け取り、その条件を最終的な SQL に追加するかどうかを決定するために使用されます。例:
 
 ```java
 queryWrapper.like(StringUtils.isNotBlank(name), Entity::getName, name)
             .eq(age != null && age >= 0, Entity::getAge, age);
 ```
 
-**デフォルトの動作**：メソッドに明示的に `boolean` 型のパラメータが提供されていない場合、デフォルトで `true` となり、条件は常にSQLに含まれます。
+**デフォルト動作**: あるメソッドが明示的に `boolean` 型のパラメータを提供していない場合、デフォルトは `true` となり、条件は常に SQL に追加されます。
 
-**ジェネリックパラメータ**：Wrapper クラスはジェネリッククラスで、`Param` は通常、QueryWrapper、UpdateWrapper などの Wrapper のサブクラスインスタンスを指します。
+**ジェネリックパラメータ**: Wrapper クラスはジェネリッククラスであり、`Param` は通常、QueryWrapper、UpdateWrapper などの Wrapper のサブクラスインスタンスを指します。
 
-**フィールド参照**：LambdaWrapper では、`R` はエンティティクラスのプロパティを参照するための関数を表し、例として`Entity::getId`があります。一方、通常の Wrapper では、`R` はデータベースのフィールド名を表します。
+**フィールド参照**: LambdaWrapper では、`R` はエンティティクラスの属性を参照するための関数を表します。例えば `Entity::getId` です。一方、通常の Wrapper では、`R` はデータベースのフィールド名を表します。
 
-**フィールド名に関する注意**： `R` の具体的な型が `String` の場合、これはエンティティクラスのデータフィールド名ではなく、データベースのフィールド名を表します。フィールド名がデータベースのキーワードである場合、エスケープ文字で囲む必要があります。
+**フィールド名に関する注意事項**: `R` の具体的な型が `String` の場合、それはエンティティクラスのデータフィールド名ではなく、データベースのフィールド名を表します。フィールド名がデータベースのキーワードである場合は、エスケープ文字で囲む必要があります。
 
-**コレクションパラメータ**：メソッドのパラメータが `Map` または `List` で、それらが空の場合、対応するSQL条件は最終的なSQLに含まれません。
+**コレクションパラメータ**: メソッドのパラメータが `Map` または `List` であり、それらが空の場合、対応する SQL 条件は最終的な SQL に追加されません。
 
-**学習リソース**：関数型プログラミングの概念に不慣れな場合は、[学習リソース](https://www.jianshu.com/p/613a6118e2e0)を参照して学習することができます。
+**学習リソース**: 慣れていない関数型プログラミングの概念については、[学習リソース](https://www.jianshu.com/p/613a6118e2e0)を参照して学習できます。
 
 :::
 
 :::danger[注意事項]
 
-**RPC 呼び出しでの Wrapper**：RPC呼び出しで Wrapper オブジェクトを転送することはサポートされておらず、推奨されていません。Wrapper オブジェクトは通常、大量の情報を含んでおり、転送オブジェクトとして適していません。正しい方法は、DTO（データ転送オブジェクト）を定義して転送し、呼び出し先で DTO に基づいて適切な操作を実行することです。
+**RPC 呼び出しにおける Wrapper**: RPC 呼び出しで Wrapper オブジェクトを転送することはサポートされておらず、推奨もされません。Wrapper オブジェクトは通常、大量の情報を含んでおり、転送オブジェクトとして適していません。正しい方法は、DTO（データ転送オブジェクト）を定義して転送し、呼び出された側で DTO に基づいて対応する操作を実行することです。
 
-**保守性**：コントローラー層で Map を使用して値を受け取ることは避けてください。この方法は開発時には便利ですが、その後の保守に困難をもたらします。
+**保守性**: Controller 層で Map を使用して値を受け取ることは避けてください。この方法は開発時には便利ですが、後続の保守に困難をもたらします。
 
-**問題報告**：RPC 転送 Wrapper に関するエラーに関連するイシューやプルリクエストは受け付けていません。
+**問題報告**: RPC 転送 Wrapper に関連するエラーに関する issue や pr は一切受け付けません。
 
-**セキュリティ**：`QueryWrapper` と `UpdateWrapper`のフィールド部分で、`フロントエンドからSQLフラグメントを許可する`場合、`SQLインジェクションのリスク`が発生する可能性があります。詳細は[セキュリティ脆弱性の防止](https://baomidou.com/reference/about-cve/)を参照してください。
+**セキュリティ**: `QueryWrapper` および `UpdateWrapper` のフィールド部分で、`フロントエンドからの SQL フラグメントの受け入れ` が許可されている場合、`SQL インジェクションリスク` が発生する可能性があります。検証が必要です。詳細は [セキュリティ脆弱性の予防](https://baomidou.com/reference/about-cve/) をご覧ください。
 
 :::
 
-:::caution[Wrapper クラスの説明]
+:::caution[Wrapper クラス説明]
 
 QueryWrapper(LambdaQueryWrapper) と UpdateWrapper(LambdaUpdateWrapper) の親クラス  
-SQL の where 条件を生成するために使用され、entity プロパティも SQL の where 条件を生成するために使用されます  
-注意：entity によって生成される where 条件と、各 API を使用して生成される where 条件には**何の関連性もありません**
+sql の where 条件を生成するために使用され、entity 属性も sql の where 条件を生成するために使用されます  
+注意: entity によって生成される where 条件と、各 api を使用して生成される where 条件の間には、**一切の関連性はありません**
 
 :::
 
 ### allEq
 
-`allEq` メソッドは、MyBatis-Plus でクエリ条件を構築するためのメソッドの1つで、`Map` を使用して複数のフィールドの等価条件を設定することができます。
+`allEq` メソッドは、MyBatis-Plus においてクエリ条件を構築するためのメソッドの一つです。このメソッドを使用すると、`Map` を通じて複数のフィールドに対する等値条件を設定することができます。
 
 #### 使用範囲
 
@@ -83,25 +82,25 @@ SQL の where 条件を生成するために使用され、entity プロパテ�
 #### メソッドシグネチャ
 
 ```java
-// すべてのフィールドの等価条件を設定し、フィールド値がnullの場合、null2IsNullパラメータに基づいてIS NULLを設定するかどうかを決定します
+// すべてのフィールドの等値条件を設定します。フィールド値が null の場合、null2IsNull パラメータに基づいて IS NULL を設定するかどうかを決定します
 allEq(Map<String, Object> params)
 allEq(Map<String, Object> params, boolean null2IsNull)
 allEq(boolean condition, Map<String, Object> params, boolean null2IsNull)
 
-// すべてのフィールドの等価条件を設定し、filterフィルターを通じてどのフィールドを含めるべきかを決定し、フィールド値がnullの場合、null2IsNullパラメータに基づいてIS NULLを設定するかどうかを決定します
+// すべてのフィールドの等値条件を設定します。filter フィルターを通じて、どのフィールドを含めるべきかを決定します。フィールド値が null の場合、null2IsNull パラメータに基づいて IS NULL を設定するかどうかを決定します
 allEq(BiPredicate<String, Object> filter, Map<String, Object> params)
 allEq(BiPredicate<String, Object> filter, Map<String, Object> params, boolean null2IsNull)
 allEq(boolean condition, BiPredicate<String, Object> filter, Map<String, Object> params, boolean null2IsNull)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `params`：`Map`で、`key` はデータベースのフィールド名、`value` は対応するフィールド値です。
-- `null2IsNull`：`true` に設定すると、`Map` の `value` が `null` の場合、`isNull` メソッドが呼び出されます；`false` に設定すると、`value` が `null` のキーと値のペアは無視されます。
-- `filter`：`BiPredicate` で、どのフィールドをクエリ条件に含めるべきかをフィルタリングするために使用されます。
-- `condition`：これらの条件を適用するかどうかを制御するためのブール値です。
+- `params`：`Map` オブジェクトです。`key` はデータベースのフィールド名、`value` は対応するフィールド値です。
+- `null2IsNull`：`true` に設定すると、`Map` 内の `value` が `null` の場合、`isNull` メソッドが呼び出されます。`false` に設定すると、`value` が `null` のキーと値のペアは無視されます。
+- `filter`：`BiPredicate` オブジェクトです。クエリ条件にどのフィールドを含めるべきかをフィルタリングするために使用します。
+- `condition`：ブール値です。これらの条件を適用するかどうかを制御します。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -131,19 +130,19 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.allEq((field, value) -> field.contains("a"), Map.of("id", 1, "name", "老王", "age", null));
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE id = 1 AND name = '老王' AND age IS NULL
 
--- フィルター付きの通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- フィルター付きの通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE name = '老王' AND age IS NULL
 ```
 
 ### eq
 
-`eq` メソッドは、MyBatis-Plus でクエリ条件を構築するための基本的なメソッドの1つで、単一のフィールドの等価条件を設定するために使用されます。
+`eq` メソッドは、MyBatis-Plus においてクエリ条件を構築するための基本的なメソッドの一つであり、単一フィールドに対する等価条件を設定するために使用されます。
 
 #### 使用範囲
 
@@ -158,17 +157,17 @@ SELECT * FROM user WHERE name = '老王' AND age IS NULL
 // 指定されたフィールドの等価条件を設定します
 eq(R column, Object val)
 
-// 条件に基づいて指定されたフィールドの等価条件を設定します
+// 条件に基づいて、指定されたフィールドの等価条件を設定します
 eq(boolean condition, R column, Object val)
 ```
 
-#### **パラメータの説明**
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
 - `val`：フィールド名に対応する値。
-- `condition`：この等価条件を適用するかどうかを制御するためのブール値。
+- `condition`：この等価条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -187,13 +186,13 @@ lambdaQueryWrapper.eq(User::getName, "老王");
 **生成される SQL**
 
 ```sql
--- 通常の Wrapper とLambda Wrapper が生成する SQL は同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE name = '老王'
 ```
 
 ### ne
 
-`ne` メソッドは、MyBatis-Plus でクエリ条件を構築するための基本的なメソッドの1つで、単一のフィールドの不等価条件を設定するために使用されます。
+`ne` メソッドは、MyBatis-Plus においてクエリ条件を構築するための基本的なメソッドの一つであり、単一フィールドの不一致条件を設定するために使用されます。
 
 #### 使用範囲
 
@@ -205,20 +204,20 @@ SELECT * FROM user WHERE name = '老王'
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの不等価条件を設定します
+// 指定されたフィールドの不一致条件を設定します
 ne(R column, Object val)
 
-// 条件に基づいて指定されたフィールドの不等価条件を設定します
+// 条件に基づいて指定されたフィールドの不一致条件を設定します
 ne(boolean condition, R column, Object val)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
 - `val`：フィールド名に対応する値。
-- `condition`：この不等価条件を適用するかどうかを制御するためのブール値。
+- `condition`：この不一致条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -237,13 +236,13 @@ lambdaQueryWrapper.ne(User::getName, "老王");
 **生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE name <> '老王'
 ```
 
 ### gt
 
-`gt` メソッドは、MyBatis-Plus でクエリ条件を構築するための基本的なメソッドの1つで、単一のフィールドの大なり条件を設定するために使用されます。
+`gt` メソッドは、MyBatis-Plus においてクエリ条件を構築するための基本メソッドの一つであり、単一フィールドに対する「より大きい」条件を設定するために使用されます。
 
 #### 使用範囲
 
@@ -255,20 +254,20 @@ SELECT * FROM user WHERE name <> '老王'
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの大なり条件を設定します
+// 指定されたフィールドの「より大きい」条件を設定します
 gt(R column, Object val)
 
-// 条件に基づいて指定されたフィールドの大なり条件を設定します
+// 条件に基づいて、指定されたフィールドの「より大きい」条件を設定します
 gt(boolean condition, R column, Object val)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
 - `val`：フィールド名に対応する値。
-- `condition`：この大なり条件を適用するかどうかを制御するためのブール値。
+- `condition`：この「より大きい」条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -287,21 +286,21 @@ lambdaQueryWrapper.gt(User::getAge, 18);
 **生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE age > 18
 ```
 
 :::note[注意事項]
 
-- `gt` メソッドは数値型フィールドに適用でき、文字列等の非数値型フィールドに使用すると、予期せぬ結果やエラーが発生する可能性があります。
-- `gt` メソッドを使用する場合、型変換エラーを避けるため、`val` パラメータの型がフィールドの型と一致していることを確認してください。
-- 特定の条件に基づいて大なり条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `gt` メソッドは数値型フィールドに適しています。文字列などの非数値型フィールドに対して `gt` を使用すると、予期しない結果やエラーが発生する可能性があります。
+- `gt` メソッドを使用する際は、`val` パラメータの型がフィールドの型と一致していることを確認し、型変換エラーを回避してください。
+- 特定の条件に基づいて動的に「より大きい」条件を追加する必要がある場合は、`condition` パラメータを持つオーバーロードメソッドを使用できます。
 
 :::
 
 ### ge
 
-`ge` メソッドは、MyBatis-Plus でクエリ条件を構築するための基本的なメソッドの1つで、単一のフィールドの大なりイコール条件を設定するために使用されます。
+`ge` メソッドは、MyBatis-Plus においてクエリ条件を構築するための基本メソッドの一つであり、単一フィールドに対する「以上」条件を設定するために使用されます。
 
 #### 使用範囲
 
@@ -313,20 +312,20 @@ SELECT * FROM user WHERE age > 18
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの大なりイコール条件を設定します
+// 指定されたフィールドに対して「以上」条件を設定します
 ge(R column, Object val)
 
-// 条件に基づいて指定されたフィールドの大なりイコール条件を設定します
+// 条件に基づいて、指定されたフィールドに対して「以上」条件を設定します
 ge(boolean condition, R column, Object val)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
 - `val`：フィールド名に対応する値。
-- `condition`：この大なりイコール条件を適用するかどうかを制御するためのブール値。
+- `condition`：この「以上」条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -345,21 +344,21 @@ lambdaQueryWrapper.ge(User::getAge, 18);
 **生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE age >= 18
 ```
 
 :::note[注意事項]
 
-- `ge` メソッドは数値型フィールドに適用でき、文字列等の非数値型フィールドに使用すると、予期せぬ結果やエラーが発生する可能性があります。
-- `ge` メソッドを使用する場合、型変換エラーを避けるため、`val` パラメータの型がフィールドの型と一致していることを確認してください。
-- 特定の条件に基づいて大なりイコール条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `ge` メソッドは数値型フィールドに適しています。文字列などの非数値型フィールドに対して `ge` を使用すると、予期しない結果やエラーが発生する可能性があります。
+- `ge` メソッドを使用する際は、`val` パラメータの型がフィールドの型と一致していることを確認し、型変換エラーを回避してください。
+- 特定の条件に基づいて動的に「以上」条件を追加する必要がある場合は、`condition` パラメータを持つオーバーロードされたメソッドを使用できます。
 
 :::
 
 ### lt
 
-`lt` メソッドは、MyBatis-Plus でクエリ条件を構築するための基本的なメソッドの1つで、単一のフィールドの小なり条件を設定するために使用されます。
+`lt` メソッドは、MyBatis-Plus においてクエリ条件を構築するための基本メソッドの一つであり、単一フィールドに対する「小なり」条件を設定するために使用されます。
 
 #### 使用範囲
 
@@ -371,20 +370,20 @@ SELECT * FROM user WHERE age >= 18
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの小なり条件を設定します
+// 指定されたフィールドの「小なり」条件を設定します
 lt(R column, Object val)
 
-// 条件に基づいて指定されたフィールドの小なり条件を設定します
+// 条件に基づいて、指定されたフィールドの「小なり」条件を設定します
 lt(boolean condition, R column, Object val)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
 - `val`：フィールド名に対応する値。
-- `condition`：この小なり条件を適用するかどうかを制御するためのブール値。
+- `condition`：この「小なり」条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -400,24 +399,24 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.lt(User::getAge, 18);
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE age < 18
 ```
 
 :::note[注意事項]
 
-- `lt` メソッドは数値型フィールドに適用でき、文字列等の非数値型フィールドに使用すると、予期せぬ結果やエラーが発生する可能性があります。
-- `lt` メソッドを使用する場合、型変換エラーを避けるため、`val` パラメータの型がフィールドの型と一致していることを確認してください。
-- 特定の条件に基づいて小なり条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `lt` メソッドは数値型フィールドに適しています。文字列などの非数値型フィールドに対して `lt` を使用すると、予期しない結果やエラーが発生する可能性があります。
+- `lt` メソッドを使用する際は、`val` パラメータの型がフィールドの型と一致していることを確認し、型変換エラーを回避してください。
+- 特定の条件に基づいて動的に「小なり」条件を追加する必要がある場合は、`condition` パラメータを持つオーバーロードされたメソッドを使用できます。
 
 :::
 
 ### le
 
-`le` メソッドは、MyBatis-Plus でクエリ条件を構築するための基本的なメソッドの1つで、単一のフィールドの小なりイコール条件を設定するために使用されます。
+`le` メソッドは、MyBatis-Plus においてクエリ条件を構築するための基本メソッドの一つであり、単一フィールドに対する「以下」条件を設定するために使用されます。
 
 #### 使用範囲
 
@@ -429,20 +428,20 @@ SELECT * FROM user WHERE age < 18
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの小なりイコール条件を設定します
+// 指定されたフィールドに対する「以下」条件を設定します
 le(R column, Object val)
 
-// 条件に基づいて指定されたフィールドの小なりイコール条件を設定します
+// 条件に基づいて、指定されたフィールドに対する「以下」条件を設定します
 le(boolean condition, R column, Object val)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
 - `val`：フィールド名に対応する値。
-- `condition`：この小なりイコール条件を適用するかどうかを制御するためのブール値。
+- `condition`：この「以下」条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -461,21 +460,21 @@ lambdaQueryWrapper.le(User::getAge, 18);
 **生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE age <= 18
 ```
 
 :::note[注意事項]
 
-- `le` メソッドは数値型フィールドに適用でき、文字列等の非数値型フィールドに使用すると、予期せぬ結果やエラーが発生する可能性があります。
-- `le` メソッドを使用する場合、型変換エラーを避けるため、`val` パラメータの型がフィールドの型と一致していることを確認してください。
-- 特定の条件に基づいて小なりイコール条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `le` メソッドは数値型フィールドに適しています。文字列などの非数値型フィールドに対して `le` を使用すると、予期しない結果やエラーが発生する可能性があります。
+- `le` メソッドを使用する際は、`val` パラメータの型がフィールドの型と一致していることを確認し、型変換エラーを回避してください。
+- 特定の条件に基づいて動的に「以下」条件を追加する必要がある場合は、`condition` パラメータを持つオーバーロードメソッドを使用できます。
 
 :::
 
 ### between
 
-`between` メソッドは、MyBatis-Plus でクエリ条件を構築するための基本的なメソッドの1つで、単一のフィールドの BETWEEN 条件を設定するために使用されます。
+`between` メソッドは、MyBatis-Plus においてクエリ条件を構築するための基本的なメソッドの一つであり、単一フィールドに対する BETWEEN 条件を設定するために使用されます。
 
 #### 使用範囲
 
@@ -494,14 +493,14 @@ between(R column, Object val1, Object val2)
 between(boolean condition, R column, Object val1, Object val2)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `val1`：フィールド名に対応する最初の値で、BETWEEN 条件の開始値を表します。
-- `val2`：フィールド名に対応する2番目の値で、BETWEEN 条件の終了値を表します。
-- `condition`：この BETWEEN 条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `val1`：フィールド名に対応する最初の値。BETWEEN 条件の開始値を表します。
+- `val2`：フィールド名に対応する2番目の値。BETWEEN 条件の終了値を表します。
+- `condition`：この BETWEEN 条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -520,21 +519,21 @@ lambdaQueryWrapper.between(User::getAge, 18, 30);
 **生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE age BETWEEN 18 AND 30
 ```
 
 :::note[注意事項]
 
-- `between` メソッドは数値型フィールドに適用でき、文字列等の非数値型フィールドに使用すると、予期せぬ結果やエラーが発生する可能性があります。
-- `between` メソッドを使用する場合、型変換エラーを避けるため、`val1` と `val2` パラメータの型がフィールドの型と一致していることを確認してください。
-- 特定の条件に基づいて BETWEEN 条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `between` メソッドは数値型フィールドに適しています。文字列などの非数値型フィールドに対して `between` を使用すると、予期しない結果やエラーが発生する可能性があります。
+- `between` メソッドを使用する際は、`val1` および `val2` パラメータの型がフィールドの型と一致していることを確認し、型変換エラーを回避してください。
+- 特定の条件に基づいて動的に BETWEEN 条件を追加する必要がある場合は、`condition` パラメータを持つオーバーロードメソッドを使用できます。
 
 :::
 
 ### notBetween
 
-`notBetween` メソッドは、MyBatis-Plus でクエリ条件を構築するためのもう1つの基本的なメソッドで、単一のフィールドの NOT BETWEEN 条件を設定するために使用されます。
+`notBetween` メソッドは、MyBatis-Plus においてクエリ条件を構築するためのもう一つの基本メソッドであり、単一フィールドの NOT BETWEEN 条件を設定するために使用されます。
 
 #### 使用範囲
 
@@ -553,14 +552,14 @@ notBetween(R column, Object val1, Object val2)
 notBetween(boolean condition, R column, Object val1, Object val2)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `val1`：フィールド名に対応する最初の値で、NOT BETWEEN 条件の開始値を表します。
-- `val2`：フィールド名に対応する2番目の値で、NOT BETWEEN 条件の終了値を表します。
-- `condition`：この NOT BETWEEN 条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `val1`：フィールド名に対応する最初の値。NOT BETWEEN 条件の開始値を表します。
+- `val2`：フィールド名に対応する2番目の値。NOT BETWEEN 条件の終了値を表します。
+- `condition`：この NOT BETWEEN 条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -576,24 +575,24 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.notBetween(User::getAge, 18, 30);
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE age NOT BETWEEN 18 AND 30
 ```
 
 :::note[注意事項]
 
-- `notBetween` メソッドは同様に数値型フィールドに適用でき、文字列等の非数値型フィールドに使用すると、予期せぬ結果やエラーが発生する可能性があります。
-- `notBetween` メソッドを使用する場合、型変換エラーを避けるため、`val1` と `val2` パラメータの型がフィールドの型と一致していることを確認してください。
-- 特定の条件に基づいて NOT BETWEEN 条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `notBetween` メソッドは数値型フィールドに同様に適用できます。文字列などの非数値型フィールドに対して `notBetween` を使用すると、予期しない結果やエラーが発生する可能性があります。
+- `notBetween` メソッドを使用する際は、`val1` および `val2` パラメータの型がフィールドの型と一致していることを確認し、型変換エラーを回避してください。
+- 特定の条件に基づいて NOT BETWEEN 条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードメソッドを使用できます。
 
 :::
 
 ### like
 
-`like` メソッドは、MyBatis-Plus であいまい検索を構築するための基本的なメソッドの1つで、単一のフィールドの LIKE 条件を設定するために使用されます。
+`like` メソッドは、MyBatis-Plus においてあいまい検索条件を構築するための基本的なメソッドの一つであり、単一フィールドに対する LIKE 条件を設定するために使用されます。
 
 #### 使用範囲
 
@@ -605,20 +604,20 @@ SELECT * FROM user WHERE age NOT BETWEEN 18 AND 30
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドのLIKE条件を設定します
+// 指定されたフィールドの LIKE 条件を設定します
 like(R column, Object val)
 
-// 条件に基づいて指定されたフィールドのLIKE条件を設定します
+// 条件に基づいて指定されたフィールドの LIKE 条件を設定します
 like(boolean condition, R column, Object val)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `val`：フィールド名に対応する値で、LIKE 条件の検索値を表します。
-- `condition`：この LIKE 条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `val`：フィールド名に対応する値。LIKE 条件における検索値を表します。
+- `condition`：この LIKE 条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -637,22 +636,22 @@ lambdaQueryWrapper.like(User::getName, "王");
 **生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE name LIKE '%王%'
 ```
 
 :::note[注意事項]
 
-- `like` メソッドは文字列型のフィールドに適用でき、部分一致のワイルドカードマッチングを実現します。
-- デフォルトでは、`like` メソッドは検索値の前後に `%` を追加して全ワイルドカードマッチングを実現します。左ワイルドカードマッチングや右ワイルドカードマッチングが必要な場合は、`likeRight` または `likeLeft` メソッドを使用してください。
-- `like` メソッドを使用する場合、型変換エラーを避けるため、`val` パラメータの型が文字列型であることを確認してください。
-- 特定の条件に基づいて LIKE 条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `like` メソッドは文字列型のフィールドに適用され、あいまい一致を実現します。
+- デフォルトでは、`like` メソッドは検索値の前後に `%` を追加し、完全なあいまい一致を実現します。左方一致または右方一致が必要な場合は、`likeRight` または `likeLeft` メソッドを使用してください。
+- `like` メソッドを使用する際は、型変換エラーを避けるために、`val` パラメータの型が文字列であることを確認してください。
+- 特定の条件に基づいて LIKE 条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードされたメソッドを使用できます。
 
 :::
 
 ### notLike
 
-`notLike` メソッドは、MyBatis-Plus であいまい検索を構築するためのもう1つの基本的なメソッドで、単一のフィールドの NOT LIKE 条件を設定するために使用されます。
+`notLike` メソッドは、MyBatis-Plus において曖昧検索条件を構築するためのもう一つの基本メソッドであり、単一フィールドの NOT LIKE 条件を設定するために使用されます。
 
 #### 使用範囲
 
@@ -671,13 +670,13 @@ notLike(R column, Object val)
 notLike(boolean condition, R column, Object val)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `val`：フィールド名に対応する値、NOT LIKE 条件の検索値を表します。
-- `condition`：この NOT LIKE 条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `val`：フィールド名に対応する値。NOT LIKE 条件における検索値を表します。
+- `condition`：この NOT LIKE 条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -696,22 +695,22 @@ lambdaQueryWrapper.notLike(User::getName, "王");
 **生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE name NOT LIKE '%王%'
 ```
 
 :::note[注意事項]
 
-- `notLike` メソッドは文字列型のフィールドに適用でき、特定の部分一致のワイルドカードマッチングを除外することができます。
-- デフォルトでは、`notLike` メソッドは検索値の前後に `%` を追加して全ワイルドカードマッチングを除外します。左ワイルドカードマッチングや右ワイルドカードマッチングが必要な場合は、`notLikeRight` または `notLikeLeft` メソッドを使用してください。
-- `notLike` メソッドを使用する場合、型変換エラーを避けるため、`val` パラメータの型が文字列型であることを確認してください。
-- 特定の条件に基づいて NOT LIKE 条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `notLike` メソッドは文字列型のフィールドに適用され、特定の曖昧一致を除外するために使用されます。
+- デフォルトでは、`notLike` メソッドは検索値の前後に `%` を追加し、完全な曖昧一致の除外を実現します。左側の曖昧一致を除外する、または右側の曖昧一致を除外する必要がある場合は、`notLikeRight` または `notLikeLeft` メソッドを使用してください。
+- `notLike` メソッドを使用する際は、型変換エラーを避けるために、`val` パラメータの型が文字列であることを確認してください。
+- 特定の条件に基づいて NOT LIKE 条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードされたメソッドを使用できます。
 
 :::
 
 ### likeLeft
 
-`likeLeft` メソッドは、MyBatis-Plus であいまい検索を構築するための基本的なメソッドの1つで、単一のフィールドの右ワイルドカードマッチング条件を設定するために使用されます。
+`likeLeft` メソッドは、MyBatis-Plus においてあいまい検索条件を構築するための基本的なメソッドの一つであり、単一フィールドに対する右方一致検索条件を設定するために使用されます。
 
 #### 使用範囲
 
@@ -723,20 +722,20 @@ SELECT * FROM user WHERE name NOT LIKE '%王%'
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの右ワイルドカードマッチング条件を設定します
+// 指定されたフィールドの右方一致検索条件を設定します
 likeLeft(R column, Object val)
 
-// 条件に基づいて指定されたフィールドの右ワイルドカードマッチング条件を設定します
+// 条件に基づいて指定されたフィールドの右方一致検索条件を設定します
 likeLeft(boolean condition, R column, Object val)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `val`：フィールド名に対応する値で、右ワイルドカードマッチング条件の検索値を表します。
-- `condition`：この右ワイルドカードマッチング条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `val`：フィールド名に対応する値であり、右方一致検索条件における検索値を表します。
+- `condition`：この右方一致検索条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -755,24 +754,24 @@ lambdaQueryWrapper.likeLeft(User::getName, "王");
 **生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE name LIKE '%王'
 ```
 
 :::note[注意事項]
 
-- `likeLeft` メソッドは文字列型のフィールドに適用でき、右ワイルドカードマッチングを実現します。
-- デフォルトでは、`likeLeft` メソッドは検索値の前に `%` を追加して右ワイルドカードマッチングを実現します。全ワイルドカードマッチングや左ワイルドカードマッチングが必要な場合は、`like` または `likeRight` メソッドを使用してください。
-- `likeLeft` メソッドを使用する場合、型変換エラーを避けるため、`val` パラメータの型が文字列型であることを確認してください。
-- 特定の条件に基づいて右ワイルドカードマッチング条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `likeLeft` メソッドは文字列型のフィールドに適用され、右方一致検索、つまり指定された文字列で終わるレコードを検索するために使用されます。
+- デフォルトでは、`likeLeft` メソッドは検索値の前に `%` を追加し、右方一致検索を実現します。全前方一致または左方一致検索が必要な場合は、`like` または `likeRight` メソッドを使用してください。
+- `likeLeft` メソッドを使用する際は、型変換エラーを避けるために、`val` パラメータの型が文字列であることを確認してください。
+- 特定の条件に基づいて動的に右方一致検索条件を追加する必要がある場合は、`condition` パラメータを持つオーバーロードされたメソッドを使用できます。
 
 :::
 
-上記の最適化により、`likeLeft` メソッドのドキュメントは、その使用方法、パラメータの説明、使用例、および注意点をより明確に示すようになり、開発者がこのメソッドを理解し、正しく活用しやすくなりました。
+上記の最適化により、`likeLeft` メソッドのドキュメントは、その使用方法、パラメータの説明、使用例、および注意事項をより明確に示しており、開発者がこのメソッドをより容易に理解し、正しく使用できるようになっています。
 
 ### likeRight
 
-`likeRight` メソッドは、MyBatis-Plus であいまい検索を構築するための基本的なメソッドの1つで、単一のフィールドの左ワイルドカードマッチング条件を設定するために使用されます。
+`likeRight` メソッドは、MyBatis-Plus においてあいまい検索条件を構築するための基本メソッドの一つであり、単一フィールドに対する左方一致検索条件を設定するために使用されます。
 
 #### 使用範囲
 
@@ -784,20 +783,20 @@ SELECT * FROM user WHERE name LIKE '%王'
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの左ワイルドカードマッチング条件を設定します
+// 指定されたフィールドの左方一致検索条件を設定します
 likeRight(R column, Object val)
 
-// 条件に基づいて指定されたフィールドの左ワイルドカードマッチング条件を設定します
+// 条件に基づいて指定されたフィールドの左方一致検索条件を設定します
 likeRight(boolean condition, R column, Object val)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `val`：フィールド名に対応する値、左ワイルドカードマッチング条件の検索値を表します。
-- `condition`：この左ワイルドカードマッチング条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `val`：フィールド名に対応する値。左方一致検索条件における検索値を表します。
+- `condition`：この左方一致検索条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -813,25 +812,25 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.likeRight(User::getName, "王");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE name LIKE '王%'
 ```
 
 :::note[注意事項]
 
-- `likeRight` メソッドは文字列型のフィールドに適用でき、左ワイルドカードマッチングを実現します。
-- デフォルトでは、`likeRight` メソッドは検索値の後に `%` を追加して左ワイルドカードマッチングを実現します。全ワイルドカードマッチングや右ワイルドカードマッチングが必要な場合は、`like`または`likeLeft`メソッドを使用してください。
-- `likeRight` メソッドを使用する場合、型変換エラーを避けるため、`val` パラメータの型が文字列型であることを確認してください。
-- 特定の条件に基づいて左ワイルドカードマッチング条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `likeRight` メソッドは文字列型のフィールドに適用され、左方一致検索、つまり指定された文字列で始まるレコードを検索するために使用されます。
+- デフォルトでは、`likeRight` メソッドは検索値の後に `%` を追加し、左方一致検索を実現します。全前方一致または右方一致検索が必要な場合は、`like` または `likeLeft` メソッドを使用してください。
+- `likeRight` メソッドを使用する際は、型変換エラーを避けるために、`val` パラメータの型が文字列であることを確認してください。
+- 特定の条件に基づいて左方一致検索条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードメソッドを使用できます。
 
 :::
 
 ### notLikeLeft
 
-`notLikeLeft` メソッドは、MyBatis-Plus でクエリ条件を構築するためのもう1つの基本的なメソッドで、単一のフィールドの非右ワイルドカードマッチング条件を設定するために使用されます。
+`notLikeLeft` メソッドは、MyBatis-Plus において曖昧検索条件を構築するためのもう一つの基本メソッドであり、単一フィールドの右側不一致の曖昧一致条件を設定するために使用されます。
 
 #### 使用範囲
 
@@ -843,20 +842,20 @@ SELECT * FROM user WHERE name LIKE '王%'
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの非右ワイルドカードマッチング条件を設定します
+// 指定されたフィールドの右側不一致の曖昧一致条件を設定します
 notLikeLeft(R column, Object val)
 
-// 条件に基づいて指定されたフィールドの非右ワイルドカードマッチング条件を設定します
+// 条件に基づいて指定されたフィールドの右側不一致の曖昧一致条件を設定します
 notLikeLeft(boolean condition, R column, Object val)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `val`：フィールド名に対応する値で、非右ワイルドカードマッチング条件の検索値を表します。
-- `condition`：この非右ワイルドカードマッチング条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `val`：フィールド名に対応する値。右側不一致の曖昧一致条件における検索値を表します。
+- `condition`：この右側不一致の曖昧一致条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -872,25 +871,25 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.notLikeLeft(User::getName, "王");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE name NOT LIKE '%王'
 ```
 
 :::note[注意事項]
 
-- `notLikeLeft`メソッドは文字列型のフィールドに適用でき、指定文字列で始まるレコードを除外することができます。
-- デフォルトでは、`notLikeLeft` メソッドは検索値の前に `%` を追加して非右ワイルドカードマッチングを実現します。全ワイルドカードマッチングや左ワイルドカードマッチングが必要な場合は、`notLike` または `notLikeRight` メソッドを使用してください。
-- `notLikeLeft` メソッドを使用する場合、型変換エラーを避けるため、`val` パラメータの型が文字列型であることを確認してください。
-- 特定の条件に基づいて非右ワイルドカードマッチング条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `notLikeLeft` メソッドは文字列型のフィールドに適用され、指定された文字列で始まるレコードを除外するために使用されます。
+- デフォルトでは、`notLikeLeft` メソッドは検索値の前に `%` を追加し、右側不一致の曖昧一致を実現します。完全な曖昧一致または左側不一致の曖昧一致を除外する必要がある場合は、`notLike` または `notLikeRight` メソッドを使用してください。
+- `notLikeLeft` メソッドを使用する際は、`val` パラメータの型が文字列であることを確認し、型変換エラーを回避してください。
+- 特定の条件に基づいて右側不一致の曖昧一致条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードされたメソッドを使用できます。
 
 :::
 
 ### notLikeRight
 
-`notLikeRight` メソッドは、MyBatis-Plus でクエリ条件を構築するためのもう1つの基本的なメソッドで、単一のフィールドの非左ワイルドカードマッチング条件を設定するために使用されます。
+`notLikeRight` メソッドは、MyBatis-Plus において曖昧検索条件を構築するためのもう一つの基本メソッドであり、単一フィールドに対する左方一致否定の条件を設定するために使用されます。
 
 #### 使用範囲
 
@@ -902,20 +901,20 @@ SELECT * FROM user WHERE name NOT LIKE '%王'
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの非左ワイルドカードマッチング条件を設定します
+// 指定されたフィールドの左方一致否定条件を設定します
 notLikeRight(R column, Object val)
 
-// 条件に基づいて指定されたフィールドの非左ワイルドカードマッチング条件を設定します
+// 条件に基づいて指定されたフィールドの左方一致否定条件を設定します
 notLikeRight(boolean condition, R column, Object val)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `val`：フィールド名に対応する値で、非左ワイルドカードマッチング条件の検索値を表します。
-- `condition`：この非左ワイルドカードマッチング条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `val`：フィールド名に対応する値。左方一致否定条件における検索値を表します。
+- `condition`：この左方一致否定条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -931,27 +930,27 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.notLikeRight(User::getName, "王");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE name NOT LIKE '王%'
 ```
 
 :::note[注意事項]
 
-- `notLikeRight` メソッドは文字列型のフィールドに適用でき、指定文字列で終わるレコードを除外することができます。
-- デフォルトでは、`notLikeRight` メソッドは検索値の後に `%` を追加して非左ワイルドカードマッチングを実現します。全ワイルドカードマッチングや右ワイルドカードマッチングが必要な場合は、`notLike` または `notLikeLeft` メソッドを使用してください。
-- `notLikeRight` メソッドを使用する場合、型変換エラーを避けるため、`val` パラメータの型が文字列型であることを確認してください。
-- 特定の条件に基づいて非左ワイルドカードマッチング条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `notLikeRight` メソッドは文字列型のフィールドに適用され、指定された文字列で始まるレコードを除外するために使用されます。
+- デフォルトでは、`notLikeRight` メソッドは検索値の後に `%` を追加し、左方一致否定を実現します。全称否定または右方一致否定が必要な場合は、`notLike` または `notLikeLeft` メソッドを使用してください。
+- `notLikeRight` メソッドを使用する際は、型変換エラーを避けるために、`val` パラメータの型が文字列であることを確認してください。
+- 特定の条件に基づいて左方一致否定条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードメソッドを使用できます。
 
 :::
 
-上記の最適化により、`notLikeRight` メソッドのドキュメントは、その使用方法、パラメータの説明、使用例、および注意点をより明確に示すようになり、開発者がこのメソッドを理解し、正しく活用しやすくなりました。
+上記の最適化により、`notLikeRight` メソッドのドキュメントは、その使用方法、パラメータの説明、例、および注意事項をより明確に示しており、開発者がこのメソッドをより簡単に理解し、正しく使用できるようになっています。
 
 ### isNull
 
-`isNull` メソッドは、MyBatis-Plus でクエリ条件を構築するための基本的なメソッドの1つで、単一のフィールドの IS NULL 条件を設定するために使用されます。
+`isNull` メソッドは、MyBatis-Plus においてクエリ条件を構築するための基本的なメソッドの一つであり、単一フィールドに対する IS NULL 条件を設定するために使用されます。
 
 #### 使用範囲
 
@@ -963,19 +962,19 @@ SELECT * FROM user WHERE name NOT LIKE '王%'
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドのIS NULL条件を設定します
+// 指定されたフィールドの IS NULL 条件を設定します
 isNull(R column)
 
-// 条件に基づいて指定されたフィールドのIS NULL条件を設定します
+// 条件に基づいて指定されたフィールドの IS NULL 条件を設定します
 isNull(boolean condition, R column)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `condition`：この IS NULL 条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `condition`：この IS NULL 条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -991,24 +990,24 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.isNull(User::getName);
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE name IS NULL
 ```
 
 :::note[注意事項]
 
-- `isNull` メソッドはすべての型のフィールドに適用でき、フィールド値が NULL のレコードを検索するために使用されます。
-- `isNull` メソッドを使用する場合、`column` パラメータがデータベースのフィールド名または `Lambda` 式を使用したフィールド名を正確に指していることを確認してください。
-- 特定の条件に基づいて IS NULL 条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `isNull` メソッドは、すべての型のフィールドに適用でき、フィールド値が NULL であるレコードを検索するために使用されます。
+- `isNull` メソッドを使用する際は、`column` パラメータがデータベース内のフィールド名、または `Lambda` 式を使用したフィールド名を正しく指していることを確認してください。
+- 特定の条件に基づいて IS NULL 条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードされたメソッドを使用できます。
 
 :::
 
 ### in
 
-`in` メソッドは、MyBatis-Plus でクエリ条件を構築するための基本的なメソッドの1つで、単一のフィールドのIN条件（指定されたコレクション内の値に一致）を設定するために使用されます。
+`in` メソッドは、MyBatis-Plus においてクエリ条件を構築するための基本的なメソッドの一つです。単一フィールドに対する IN 条件、つまりフィールドの値が指定されたコレクション内に存在するレコードを検索するために使用されます。
 
 #### 使用範囲
 
@@ -1020,23 +1019,23 @@ SELECT * FROM user WHERE name IS NULL
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの IN 条件を設定し、コレクションを使用します
+// 指定されたフィールドの IN 条件を設定します（コレクションを使用）
 in(R column, Collection<?> value)
 in(boolean condition, R column, Collection<?> value)
 
-// 指定されたフィールド のIN 条件を設定し、可変引数を使用します
+// 指定されたフィールドの IN 条件を設定します（可変長引数を使用）
 in(R column, Object... values)
 in(boolean condition, R column, Object... values)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `value`：IN条件に含める可能な値を含む集合。
-- `values`：IN条件に含める可能な値を含む可変引数リスト。
-- `condition`：この IN 条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `value`：IN 条件でフィールドが取り得る値を含むコレクション。
+- `values`：IN 条件でフィールドが取り得る値を含む可変長引数リスト。
+- `condition`：この IN 条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -1052,24 +1051,24 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.in(User::getAge, Arrays.asList(1, 2, 3));
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE age IN (1, 2, 3)
 ```
 
 :::note[注意事項]
 
-- `in` メソッドはすべての型のフィールドに適用でき、フィールド値が指定された集合に含まれるレコードを検索するために使用されます。
-- `in` メソッドを使用する場合、`column` パラメータがデータベースのフィールド名または `Lambda` 式を使用したフィールド名を正確に指していることを確認してください。
-- 特定の条件に基づいて IN 条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `in` メソッドは、フィールド値が指定されたコレクション内に存在するレコードを検索するために、すべてのタイプのフィールドに適用できます。
+- `in` メソッドを使用する際は、`column` パラメータがデータベース内の正しいフィールド名、または `Lambda` 式を使用したフィールド名を指していることを確認してください。
+- 特定の条件に基づいて IN 条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードされたメソッドを使用できます。
 
 :::
 
 ### notIn
 
-`notIn` メソッドは、MyBatis-Plus でクエリ条件を構築するための基本的なメソッドの1つで、単一のフィールドの NOT IN 条件を設定するために使用されます。
+`notIn` メソッドは、MyBatis-Plus においてクエリ条件を構築するための基本的なメソッドの一つです。単一フィールドの NOT IN 条件、つまりフィールドの値が指定されたコレクション内に含まれないことを設定するために使用されます。
 
 #### 使用範囲
 
@@ -1081,23 +1080,23 @@ SELECT * FROM user WHERE age IN (1, 2, 3)
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの NOT IN 条件を設定し、コレクションを使用します
+// 指定されたフィールドの NOT IN 条件を設定します（コレクションを使用）
 notIn(R column, Collection<?> value)
 notIn(boolean condition, R column, Collection<?> value)
 
-// 指定されたフィールドのNOT IN条件を設定し、可変引数を使用します
+// 指定されたフィールドの NOT IN 条件を設定します（可変長引数を使用）
 notIn(R column, Object... values)
 notIn(boolean condition, R column, Object... values)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `value`：NOT IN 条件に含める可能な値を含む集合。
-- `values`：NOT IN 条件に含める可能な値を含む可変引数リスト。
-- `condition`：この NOT IN 条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `value`：NOT IN 条件におけるフィールドの可能性のある値を含むコレクション。
+- `values`：NOT IN 条件におけるフィールドの可能性のある値を含む可変長引数リスト。
+- `condition`：この NOT IN 条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -1113,24 +1112,24 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.notIn(User::getAge, Arrays.asList(1, 2, 3));
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE age NOT IN (1, 2, 3)
 ```
 
 :::note[注意事項]
 
-- `notIn` メソッドはすべての型のフィールドに適用でき、フィールド値が指定された集合に含まれないレコードを検索するために使用されます。
-- `notIn` メソッドを使用する場合、`column` パラメータがデータベースのフィールド名または `Lambda` 式を使用したフィールド名を正確に指していることを確認してください。
-- 特定の条件に基づいて NOT IN 条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `notIn` メソッドは、フィールド値が指定されたコレクション内に存在しないレコードをクエリするために、すべてのタイプのフィールドに適用できます。
+- `notIn` メソッドを使用する際は、`column` パラメータがデータベース内のフィールド名、または `Lambda` 式を使用したフィールド名を正しく指していることを確認してください。
+- 特定の条件に基づいて NOT IN 条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードされたメソッドを使用できます。
 
 :::
 
 ### inSql
 
-`inSql` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、単一のフィールドの IN 条件を設定するために使用されますが、`in` メソッドとは異なり、`inSql` はSQL文を直接使用して IN 句の値集合 を生成できます。
+`inSql` メソッドは MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つであり、単一フィールドの IN 条件を設定するために使用されます。ただし、`in` メソッドとは異なり、`inSql` は IN 句内の値の集合を生成するために SQL 文を直接使用することを可能にします。
 
 #### 使用範囲
 
@@ -1142,16 +1141,16 @@ SELECT * FROM user WHERE age NOT IN (1, 2, 3)
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの IN 条件を設定し、SQL文を使用します
+// 指定されたフィールドの IN 条件を、SQL 文を使用して設定します
 inSql(R column, String sqlValue)
 inSql(boolean condition, R column, String sqlValue)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `sqlValue`：IN 句の値集合を生成するために使用されるSQL文を含む文字列。
-- `condition`：この IN 条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `sqlValue`：IN 句内の値の集合を生成するために使用される SQL 文を含む文字列。
+- `condition`：この IN 条件を適用するかどうかを制御するブール値。
 
 #### 例
 
@@ -1169,21 +1168,21 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.inSql(User::getAge, "1,2,3,4,5,6");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE age IN (1, 2, 3, 4, 5, 6)
 ```
 
-**サブクエリを使用する例**：
+**サブクエリを使用した例**：
 
 ```java
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.inSql("id", "select id from other_table where id < 3");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
 SELECT * FROM user WHERE id IN (select id from other_table where id < 3)
@@ -1191,16 +1190,16 @@ SELECT * FROM user WHERE id IN (select id from other_table where id < 3)
 
 :::note[注意事項]
 
-- `inSql` メソッドは、SQL文を使用してIN句の値集合を生成できるため、複雑なクエリ条件に対して柔軟性を提供します。
-- `inSql` メソッドを使用する場合、`column` パラメータがデータベースのフィールド名または `Lambda` 式を使用したフィールド名を正確に指していることを確認してください。
-- `sqlValue` パラメータは有効な SQL 文である必要があり、生成される SQL にそのまま埋め込まれるため、安全性と正確性を確保する必要があります。フロントエンドからの動的なパラメータを直接参照することは避けてください。
-- 特定の条件に基づいてIN条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `inSql` メソッドは、IN 句内の値の集合を生成するために SQL 文を使用することを可能にし、複雑なクエリ条件に対して柔軟性を提供します。
+- `inSql` メソッドを使用する際は、`column` パラメータがデータベース内のフィールド名、または `Lambda` 式を使用したフィールド名を正しく指していることを確認してください。
+- `sqlValue` パラメータは有効な SQL 文である必要があり、生成される SQL に直接埋め込まれるため、その安全性と正確性を保証する必要があります。フロントエンドからの動的パラメータを SQL に直接参照して渡すことは避けるべきです。
+- 特定の条件に基づいて IN 条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードされたメソッドを使用できます。
 
 :::
 
 ### notInSql
 
-`notInSql` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、単一のフィールドの NOT IN 条件を設定するために使用されますが、`notIn` メソッドとは異なり、`notInSql` はSQL文を直接使用して NOT IN 句の値集合を生成できます。
+`notInSql` メソッドは、MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つです。このメソッドは単一フィールドに対する NOT IN 条件を設定するために使用されますが、`notIn` メソッドとは異なり、`notInSql` は NOT IN 句内の値の集合を生成するために SQL 文を直接使用することができます。
 
 #### 使用範囲
 
@@ -1212,16 +1211,16 @@ SELECT * FROM user WHERE id IN (select id from other_table where id < 3)
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの NOT IN 条件を設定し、SQL文を使用します
+// 指定されたフィールドの NOT IN 条件を設定します。SQL 文を使用します。
 notInSql(R column, String sqlValue)
 notInSql(boolean condition, R column, String sqlValue)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `sqlValue`：NOT IN 句の値集合を生成するために使用されるSQL文を含む文字列。
-- `condition`：この NOT IN 条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `sqlValue`：NOT IN 句内の値の集合を生成するために使用される SQL 文を含む文字列。
+- `condition`：この NOT IN 条件を適用するかどうかを制御するブール値。
 
 #### 例
 
@@ -1239,21 +1238,21 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.notInSql(User::getAge, "1,2,3,4,5,6");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE age NOT IN (1, 2, 3, 4, 5, 6)
 ```
 
-**サブクエリを使用する例**：
+**サブクエリを使用した例**：
 
 ```java
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.notInSql("id", "select id from other_table where id < 3");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
 SELECT * FROM user WHERE id NOT IN (select id from other_table where id < 3)
@@ -1261,34 +1260,34 @@ SELECT * FROM user WHERE id NOT IN (select id from other_table where id < 3)
 
 :::note[注意事項]
 
-- `notInSql` メソッドは、SQL文を使用して NOT IN 句の値集合を生成できるため、複雑なクエリ条件に対して柔軟性を提供します。
-- `notInSql` メソッドを使用する場合、`column` パラメータがデータベースのフィールド名または `Lambda` 式を使用したフィールド名を正確に指していることを確認してください。
-- `sqlValue` パラメータは有効な SQL 文である必要があり、生成される SQL にそのまま埋め込まれるため、安全性と正確性を確保する必要があります。フロントエンドからの動的なパラメータを直接参照することは避けてください。
-- 特定の条件に基づいて NOT IN 条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `notInSql` メソッドを使用すると、NOT IN 句内の値の集合を生成するために SQL 文を使用できます。これにより、複雑なクエリ条件に対して柔軟性が提供されます。
+- `notInSql` メソッドを使用する際は、`column` パラメータがデータベース内の正しいフィールド名、または `Lambda` 式を使用したフィールド名を指していることを確認してください。
+- `sqlValue` パラメータは有効な SQL 文である必要があります。これは生成される SQL に直接埋め込まれるため、その安全性と正確性を確保する必要があります。フロントエンドからの動的パラメータを SQL 内で直接参照することは避けるべきです。
+- 特定の条件に基づいて NOT IN 条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードされたメソッドを使用できます。
 
 :::
 
 ### eqSql <Badge text="Since 3.5.6" type="error"/>
 
-`eqSql` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、指定されたフィールドの値とSQL文の結果が等しいか比較するために使用されます。このメソッドは、特定の条件に基づいてフィールド値をサブクエリの結果と比較する必要がある場合に特に便利です。
+`eqSql` メソッドは、MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つで、フィールドが SQL 文の結果と等しい（EQ）ことを設定することができます。このメソッドは、フィールドの値とサブクエリの結果を比較する必要があるシナリオに特に適しています。
 
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの値をSQL文の結果と等価比較します
+// 指定されたフィールドが SQL 文の結果と等しいことを設定します
 eqSql(R column, String inValue)
 
-// 条件が満たされる場合、指定されたフィールドの値をSQL文の結果と比較します
+// 条件が満たされた場合に、指定されたフィールドが SQL 文の結果と等しいことを設定します
 eqSql(boolean condition, R column, String inValue)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `inValue`：等価条件を生成するために使用されるSQL文を含む文字列。
-- `condition`：この等価条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `inValue`：等価条件を生成するための SQL 文を含む文字列。
+- `condition`：この等価条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -1304,45 +1303,45 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.eqSql(User::getId, "select MAX(id) from table");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE id = (select MAX(id) from table)
 ```
 
 :::note[注意事項]
 
-- `eqSql` メソッドは、フィールド値をSQL文の結果と比較するので、複雑なクエリ条件に対して柔軟性を提供します。
-- `eqSql` メソッドを使用する場合、`column` パラメータがデータベースのフィールド名または `Lambda` 式を使用したフィールド名を正確に指していることを確認してください。
-- `inValue` パラメータは有効な SQL 文である必要があり、生成される SQL にそのまま埋め込まれるため、安全性と正確性を確保する必要があります。フロントエンドからの動的なパラメータを直接参照することは避けてください。
-- 特定の条件に基づいて等価条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `eqSql` メソッドを使用すると、フィールドの値と SQL 文の結果を比較することができます。これにより、複雑なクエリ条件に対して柔軟性が提供されます。
+- `eqSql` メソッドを使用する際は、`column` パラメータがデータベース内のフィールド名、または `Lambda` 式を使用したフィールド名を正しく指していることを確認してください。
+- `inValue` パラメータは有効な SQL 文である必要があります。これは生成される SQL に直接埋め込まれるため、その安全性と正確性を確保する必要があります。SQL がフロントエンドから動的なパラメータとして渡され、直接参照されることは避けるべきです。
+- 特定の条件に基づいて動的に等価条件を追加する必要がある場合は、`condition` パラメータを持つオーバーロードされたメソッドを使用できます。
 
 :::
 
 ### gtSql <Badge text="Since 3.4.3.2" type="error"/>
 
-`gtSql` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、指定されたフィールドの値をSQL文の結果と大なり比較するために使用されます。
+`gtSql` メソッドは、MyBatis-Plus において、フィールドが特定の SQL 文の結果より大きい（GT）条件を設定するための高度なメソッドの一つです。
 
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの値をSQL文の結果と大なり比較します
+// 指定されたフィールドが SQL 文の結果より大きいことを設定します
 gtSql(R column, String inValue)
 
-// 条件が満たされる場合、指定されたフィールドの値をSQL文の結果と大なり比較します
+// 条件が満たされた場合に、指定されたフィールドが SQL 文の結果より大きいことを設定します
 gtSql(boolean condition, R column, String inValue)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `inValue`：大なり条件を生成するために使用されるSQL文を含む文字列。
-- `condition`：この大なり条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `inValue`：大なり条件を生成するための SQL 文を含む文字列。
+- `condition`：この大なり条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
-**通常のWrapper (`QueryWrapper`)**：
+**通常の Wrapper (`QueryWrapper`)**：
 
 ```java
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
@@ -1356,43 +1355,43 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.gtSql(User::getId, "select id from table where name = 'xx'");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE id > (select id from table where name = 'xx')
 ```
 
 :::note[注意事項]
 
-- `gtSql` メソッドは、フィールド値をSQL文の結果と比較するので、複雑なクエリ条件に対して柔軟性を提供します。
-- `gtSql` メソッドを使用する場合、`column` パラメータがデータベースのフィールド名または `Lambda` 式を使用したフィールド名を正確に指していることを確認してください。
-- `inValue` パラメータは有効な SQL 文である必要があり、生成される SQL にそのまま埋め込まれるため、安全性と正確性を確保する必要があります。フロントエンドからの動的なパラメータを直接参照することは避けてください。
-- 特定の条件に基づいて大なり条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `gtSql` メソッドを使用すると、フィールド値を SQL 文の結果と比較することができ、複雑なクエリ条件に対して柔軟性を提供します。
+- `gtSql` メソッドを使用する際は、`column` パラメータがデータベース内のフィールド名、または `Lambda` 式を使用したフィールド名を正しく指していることを確認してください。
+- `inValue` パラメータは有効な SQL 文である必要があり、生成される SQL に直接埋め込まれるため、その安全性と正確性を確保する必要があります。フロントエンドからの動的パラメータを直接参照して SQL を生成することは避けるべきです。
+- 特定の条件に基づいて大なり条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードメソッドを使用できます。
 
 :::
 
 ### geSql <Badge text="Since 3.4.3.2" type="error"/>
 
-`geSql` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、指定されたフィールドの値をSQL文の結果と大なりイコール比較するために使用されます。
+`geSql` メソッドは、MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つで、フィールドが特定の SQL 文の結果以上（以上: Greater than or Equal）である条件を設定することができます。
 
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの値をSQL文の結果と大なりイコール比較します
+// 指定されたフィールドが SQL 文の結果以上であることを設定します
 geSql(R column, String inValue)
 
-// 条件が満たされる場合、指定されたフィールドの値をSQL文の結果と大なりイコール比較します
+// 条件が満たされた場合に、指定されたフィールドが SQL 文の結果以上であることを設定します
 geSql(boolean condition, R column, String inValue)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `inValue`：大なりイコール条件を生成するために使用されるSQL文を含む文字列。
-- `condition`：この大なりイコール条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `inValue`：以上条件を生成するために使用される SQL 文を含む文字列。
+- `condition`：この以上条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -1408,43 +1407,43 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.geSql(User::getId, "select id from table where name = 'xx'");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE id >= (select id from table where name = 'xx')
 ```
 
 :::note[注意事項]
 
-- `geSql` メソッドは、フィールド値をSQL文の結果と比較するので、複雑なクエリ条件に対して柔軟性を提供します。
-- `geSql` メソッドを使用する場合、`column` パラメータがデータベースのフィールド名または `Lambda` 式を使用したフィールド名を正確に指していることを確認してください。
-- `inValue` パラメータは有効な SQL 文である必要があり、生成される SQL にそのまま埋め込まれるため、安全性と正確性を確保する必要があります。フロントエンドからの動的なパラメータを直接参照することは避けてください。
-- 特定の条件に基づいて大なりイコール条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `geSql` メソッドを使用すると、フィールドの値を SQL 文の結果と比較することができ、複雑なクエリ条件に対して柔軟性を提供します。
+- `geSql` メソッドを使用する際は、`column` パラメータがデータベース内のフィールド名、または `Lambda` 式を使用したフィールド名を正しく指していることを確認してください。
+- `inValue` パラメータは有効な SQL 文である必要があり、生成される SQL に直接埋め込まれるため、その安全性と正確性を確保する必要があります。SQL がフロントエンドから動的なパラメータとして渡され、直接参照されることは避けるべきです。
+- 特定の条件に基づいて動的に以上条件を追加する必要がある場合は、`condition` パラメータを持つオーバーロードされたメソッドを使用できます。
 
 :::
 
 ### ltSql <Badge text="Since 3.4.3.2" type="error"/>
 
-`ltSql` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、指定されたフィールドの値をSQL文の結果と小なり比較するために使用されます。
+`ltSql` メソッドは、MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つで、フィールドが特定の SQL 文の結果より小さい（LT）条件を設定することができます。
 
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの値をSQL文の結果と比較します
+// 指定されたフィールドが SQL 文の結果より小さいことを設定します
 ltSql(R column, String inValue)
 
-// 条件が満たされる場合、指定されたフィールドの値をSQL文の結果と小なり比較します
+// 条件が満たされた場合に、指定されたフィールドが SQL 文の結果より小さいことを設定します
 ltSql(boolean condition, R column, String inValue)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `inValue`：小なり条件を生成するために使用されるSQL文を含む文字列。
-- `condition`：この小なり条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `inValue`：小なり条件を生成するための SQL 文を含む文字列。
+- `condition`：この小なり条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -1460,43 +1459,43 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.ltSql(User::getId, "select id from table where name = 'xx'");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE id < (select id from table where name = 'xx')
 ```
 
 :::note[注意事項]
 
-- `ltSql` メソッドは、フィールド値をSQL文の結果と比較するので、複雑なクエリ条件に対して柔軟性を提供します。
-- `ltSql` メソッドを使用する場合、`column` パラメータがデータベースのフィールド名または `Lambda` 式を使用したフィールド名を正確に指していることを確認してください。
-- `inValue` パラメータは有効な SQL 文である必要があり、生成される SQL にそのまま埋め込まれるため、安全性と正確性を確保する必要があります。フロントエンドからの動的なパラメータを直接参照することは避けてください。
-- 特定の条件に基づいて小なり条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `ltSql` メソッドを使用すると、フィールド値を SQL 文の結果と比較することができ、複雑なクエリ条件に対して柔軟性を提供します。
+- `ltSql` メソッドを使用する際は、`column` パラメータがデータベースのフィールド名、または `Lambda` 式を使用したフィールド名を正しく指していることを確認してください。
+- `inValue` パラメータは有効な SQL 文である必要があり、生成される SQL に直接埋め込まれるため、その安全性と正確性を確保する必要があります。フロントエンドから動的に入力された SQL を直接参照することは避けるべきです。
+- 特定の条件に基づいて小なり条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードメソッドを使用できます。
 
 :::
 
 ### leSql <Badge text="Since 3.4.3.2" type="error"/>
 
-`leSql` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、指定されたフィールドの値をSQL文の結果と小なりイコール比較するために使用されます。
+`leSql` メソッドは、MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つで、指定したフィールドが SQL 文の結果以下（LE）となる条件を設定することができます。
 
 #### メソッドシグネチャ
 
 ```java
-// 指定されたフィールドの値をSQL文の結果と小なりイコール比較します
+// 指定したフィールドが SQL 文の結果以下となる条件を設定
 leSql(R column, String inValue)
 
-// 条件が満たされる場合、指定されたフィールドの値をSQL文の結果と小なりイコール比較します
+// 条件が満たされた場合に、指定したフィールドが SQL 文の結果以下となる条件を設定
 leSql(boolean condition, R column, String inValue)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `inValue`：小なりイコール条件を生成するために使用されるSQL文を含む文字列。
-- `condition`：この小なりイコール条件を適用するかどうかを制御するためのブール値です。
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `inValue`：以下条件を生成するための SQL 文を含む文字列。
+- `condition`：この以下条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -1512,25 +1511,25 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.leSql(User::getId, "select id from table where name = 'xx'");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE id <= (select id from table where name = 'xx')
 ```
 
 :::note[注意事項]
 
-- `leSql` メソッドは、フィールド値をSQL文の結果と比較するので、複雑なクエリ条件に対して柔軟性を提供します。
-- `leSql` メソッドを使用する場合、`column` パラメータがデータベースのフィールド名または `Lambda` 式を使用したフィールド名を正確に指していることを確認してください。
-- `inValue` パラメータは有効な SQL 文である必要があり、生成される SQL にそのまま埋め込まれるため、安全性と正確性を確保する必要があります。フロントエンドからの動的なパラメータを直接参照することは避けてください。
-- 特定の条件に基づいて小なりイコール条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `leSql` メソッドを使用すると、フィールド値を SQL 文の結果と比較することができ、複雑なクエリ条件に対して柔軟性を提供します。
+- `leSql` メソッドを使用する際は、`column` パラメータがデータベースのフィールド名または `Lambda` 式を使用したフィールド名を正しく指していることを確認してください。
+- `inValue` パラメータは有効な SQL 文である必要があり、生成される SQL に直接埋め込まれるため、その安全性と正確性を確保する必要があります。フロントエンドからの動的パラメータを直接参照して SQL を生成することは避けてください。
+- 特定の条件に基づいて以下条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードメソッドを使用できます。
 
 :::
 
 ### groupBy
 
-`groupBy` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、クエリ結果のグループ化条件を設定するために使用されます。指定された1つ以上のフィールドを使用して、`groupBy` メソッドはSQL文の GROUP BY 句を生成できます。
+`groupBy` メソッドは、MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つであり、クエリ結果のグループ化条件を設定するために使用されます。1つまたは複数のフィールドを指定することで、`groupBy` メソッドは SQL 文の GROUP BY 句を生成します。
 
 #### 使用範囲
 
@@ -1542,15 +1541,15 @@ SELECT * FROM user WHERE id <= (select id from table where name = 'xx')
 #### メソッドシグネチャ
 
 ```java
-// グループ化条件を設定し、フィールド名を使用します
+// グループ化条件を設定し、フィールド名を使用
 groupBy(R... columns)
 groupBy(boolean condition, R... columns)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `columns`：グループ化に使用するフィールド名を含む可変引数リスト。
-- `condition`：このグループ化条件を適用するかどうかを制御するためのブール値です。
+- `columns`：グループ化に使用するフィールド名を含む可変長パラメータリストです。
+- `condition`：このグループ化条件を適用するかどうかを制御するブール値です。
 
 #### 例
 
@@ -1568,24 +1567,24 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.groupBy(User::getId, User::getName);
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user GROUP BY id, name
 ```
 
 :::note[注意事項]
 
-- `groupBy` メソッドは、クエリ結果をグループ化する必要があるシナリオに適しています。
-- `groupBy` メソッドを使用する場合、`columns` パラメータがデータベースのフィールド名または `Lambda` 式を使用したフィールド名を正確に指していることを確認してください。
-- 特定の条件に基づいてグループ化条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `groupBy` メソッドは、クエリ結果をグループ化する必要があるシナリオに適用されます。
+- `groupBy` メソッドを使用する際は、`columns` パラメータがデータベース内のフィールド名、または `Lambda` 式を使用したフィールド名を正しく指していることを確認してください。
+- 特定の条件に基づいてグループ化条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードされたメソッドを使用できます。
 
 :::
 
 ### orderByAsc
 
-`orderByAsc` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、クエリ結果の昇順ソート条件を設定するために使用されます。指定された1つ以上のフィールドを使用して、`orderByAsc` メソッドはSQL文の ORDER BY 句を生成でき、昇順ソートを指定できます。
+`orderByAsc` メソッドは、MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つであり、クエリ結果の昇順ソート条件を設定するために使用されます。1つまたは複数のフィールドを指定することで、`orderByAsc` メソッドは SQL 文の ORDER BY 句を生成し、昇順ソートを指定します。
 
 #### 使用範囲
 
@@ -1597,17 +1596,17 @@ SELECT * FROM user GROUP BY id, name
 #### メソッドシグネチャ
 
 ```java
-// 昇順ソート条件を設定し、フィールド名を使用します
+// 昇順ソート条件を設定、フィールド名を使用
 orderByAsc(R... columns)
 orderByAsc(boolean condition, R... columns)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `columns`：ソートに使用するフィールド名を含む可変引数リスト。
-- `condition`：このソート条件を適用するかどうかを制御するためのブール値です。
+- `columns`：ソートに使用するフィールド名を含む可変長パラメータリストです。
+- `condition`：このソート条件を適用するかどうかを制御するブール値です。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -1623,24 +1622,24 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.orderByAsc(User::getId, User::getName);
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user ORDER BY id ASC, name ASC
 ```
 
 :::note[注意事項]
 
-- `orderByAsc` メソッドは、クエリ結果を昇順でソートする必要があるシナリオに適しています。
-- `orderByAsc` メソッドを使用する場合、`columns` パラメータがデータベースのフィールド名または `Lambda` 式を使用したフィールド名を正確に指していることを確認してください。
-- 特定の条件に基づいてソート条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
-  
+- `orderByAsc` メソッドは、クエリ結果を昇順でソートする必要があるシナリオに適用されます。
+- `orderByAsc` メソッドを使用する際は、`columns` パラメータがデータベースのフィールド名、または `Lambda` 式のフィールド名を正しく指していることを確認してください。
+- 特定の条件に基づいてソート条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードメソッドを使用できます。
+
 :::
 
 ### orderByDesc
 
-`orderByDesc` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、クエリ結果の降順ソート条件を設定するために使用されます。指定された1つ以上のフィールドを使用して、`orderByDesc` メソッドはSQL文の ORDER BY 句を生成でき、降順ソートを指定できます。
+`orderByDesc` メソッドは、MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つであり、クエリ結果の降順ソート条件を設定するために使用されます。1つまたは複数のフィールドを指定することで、`orderByDesc` メソッドは SQL 文の ORDER BY 句を生成し、降順ソートを指定します。
 
 #### 使用範囲
 
@@ -1652,15 +1651,15 @@ SELECT * FROM user ORDER BY id ASC, name ASC
 #### メソッドシグネチャ
 
 ```java
-// 降順ソート条件を設定し、フィールド名を使用します
+// 降順ソート条件を設定、フィールド名を使用
 orderByDesc(R... columns)
 orderByDesc(boolean condition, R... columns)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `columns`：ソートに使用するフィールド名を含む可変引数リスト。
-- `condition`：このソート条件を適用するかどうかを制御するためのブール値です。
+- `columns`：ソートに使用するフィールド名を含む可変長パラメータリストです。
+- `condition`：このソート条件を適用するかどうかを制御するブール値です。
 
 #### 例
 
@@ -1678,24 +1677,24 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.orderByDesc(User::getId, User::getName);
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user ORDER BY id DESC, name DESC
 ```
 
 :::note[注意事項]
 
-- `orderByDesc` メソッドは、クエリ結果を降順でソートする必要があるシナリオに適しています。
-- `orderByDesc` メソッドを使用する場合、`columns` パラメータがデータベースのフィールド名または `Lambda` 式を使用したフィールド名を正確に指していることを確認してください。
-- 特定の条件に基づいてソート条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `orderByDesc` メソッドは、クエリ結果を降順でソートする必要があるシナリオに適用されます。
+- `orderByDesc` メソッドを使用する際は、`columns` パラメータがデータベース内のフィールド名、または `Lambda` 式のフィールド名を正しく指していることを確認してください。
+- 特定の条件に基づいてソート条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードメソッドを使用できます。
 
 :::
 
 ### orderBy
 
-`orderBy` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、クエリ結果のソート条件を設定するために使用されます。指定された1つ以上のフィールドとソート方向（昇順または降順）を使用して、`orderBy` メソッドはSQL文の ORDER BY 句を生成できます。
+`orderBy` メソッドは、MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つであり、クエリ結果のソート条件を設定するために使用されます。1つまたは複数のフィールドおよびソート方向（昇順または降順）を指定することで、`orderBy` メソッドは SQL 文の ORDER BY 句を生成します。
 
 #### 使用範囲
 
@@ -1707,15 +1706,15 @@ SELECT * FROM user ORDER BY id DESC, name DESC
 #### メソッドシグネチャ
 
 ```java
-// ソート条件を設定し、フィールド名とソート方向を使用します
+// ソート条件を設定します。フィールド名とソート方向を使用します
 orderBy(boolean condition, boolean isAsc, R... columns)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `condition`：このソート条件を適用するかどうかを制御するためのブール値です。
-- `isAsc`：ブール値、昇順（ASC）を表します。`false` は降順（DESC）を表します。
-- `columns`：ソートに使用するフィールド名を含む可変引数リスト。
+- `condition`：このソート条件を適用するかどうかを制御するブール値です。
+- `isAsc`：ソート方向を表すブール値です。`true` は昇順（ASC）、`false` は降順（DESC）を表します。
+- `columns`：ソートに使用するフィールド名を含む可変長パラメータリストです。
 
 #### 例
 
@@ -1733,25 +1732,25 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.orderBy(true, true, User::getId, User::getName);
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user ORDER BY id ASC, name ASC
 ```
 
 :::note[注意事項]
 
-- `orderBy` メソッドは、より柔軟なソート設定を提供します。開発者はソート方向を指定できます。
-- `orderBy` メソッドを使用する場合、`columns` パラメータがデータベースのフィールド名または `Lambda` 式を使用したフィールド名を正確に指していることを確認してください。
-- 特定の条件に基づいてソート条件を動的に追加する必要がある場合、`condition`パラメータを使用したオーバーロードメソッドを使用できます。
-- ソートは、クエリ結果の表示にも使用できますが、クエリのパフォーマンスを最適化するためにも使用できます。例えば、ソートを使用してスキャンする必要があるデータ量を減らすことができます。
+- `orderBy` メソッドは、より柔軟なソート設定を提供し、開発者がソート方向を指定することを可能にします。
+- `orderBy` メソッドを使用する際は、`columns` パラメータがデータベース内のフィールド名、または `Lambda` 式のフィールド名を正しく指していることを確認してください。
+- 特定の条件に基づいてソート条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードされたメソッドを使用できます。
+- ソートは、クエリ結果の表示に適用できるだけでなく、例えばソートを使用してスキャンする必要があるデータ量を減らすことで、クエリのパフォーマンスを最適化するためにも使用できます。
 
 :::
 
 ### having
 
-`having` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、HAVING 句を設定するために使用されます。通常、GROUP BY 句と一緒に使用され、グループ化されたデータに条件を適用します。
+`having` メソッドは MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つであり、HAVING 句を設定するために使用されます。通常は GROUP BY と組み合わせて使用され、グループ化後のデータに対する条件フィルタリングを行います。
 
 #### 使用範囲
 
@@ -1763,52 +1762,52 @@ SELECT * FROM user ORDER BY id ASC, name ASC
 #### メソッドシグネチャ
 
 ```java
-// HAVING 句を設定し、SQL文とパラメータを使用します
+// HAVING 句を設定します。SQL 文とパラメータを使用します
 having(String sqlHaving, Object... params)
 having(boolean condition, String sqlHaving, Object... params)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `sqlHaving`：HAVING 句を生成するために使用されるSQL文を含む文字列。
-- `params`：SQL文中のプレースホルダーを置き換えるために使用される可変引数リスト。
-- `condition`：この HAVING 条件を適用するかどうかを制御するためのブール値です。
+- `sqlHaving`: HAVING 句を生成するための SQL 文を含む文字列です。
+- `params`: SQL 文内のプレースホルダを置換するための値を含む可変引数リストです。
+- `condition`: この HAVING 条件を適用するかどうかを制御するブール値です。
 
-#### 例
+#### 使用例
 
-**通常の Wrapper (`QueryWrapper`)**：
+**通常の Wrapper (`QueryWrapper`)**:
 
 ```java
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.groupBy("age").having("sum(age) > 10");
 ```
 
-**Lambda Wrapper (`LambdaQueryWrapper`)**：
+**Lambda Wrapper (`LambdaQueryWrapper`)**:
 
 ```java
 LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.groupBy(User::getAge).having("sum(age) > {0}", 10);
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user GROUP BY age HAVING sum(age) > 10
 ```
 
 :::note[注意事項]
 
-- `having` メソッドは通常、`groupBy` メソッドと一緒に使用され、グループ化されたデータにさらに条件を適用するために使用されます。
-- `having` メソッドを使用する場合、`sqlHaving` パラメータは有効な SQL 文である必要があり、生成される SQL にそのまま埋め込まれるため、安全性と正確性を確保する必要があります。フロントエンドからの動的なパラメータを直接参照することは避けてください。
-- `params` パラメータは、`sqlHaving` 中のプレースホルダーを置き換えるために使用され、提供されたパラメータの型と数がプレースホルダーに一致することを確認する必要があります。
-- 特定の条件に基づいて HAVING 条件を動的に追加する必要がある場合、`condition` パラメータを使用したオーバーロードメソッドを使用できます。
+- `having` メソッドは通常 `groupBy` メソッドと組み合わせて使用され、グループ化後のデータに対してさらにフィルタリングを行うために使用されます。
+- `having` メソッドを使用する際は、`sqlHaving` パラメータが有効な SQL 文であることを確認してください。これは生成される SQL に直接埋め込まれるため、その安全性と正確性を保証する必要があります。SQL がフロントエンドから動的なパラメータとして渡され、直接参照されることは避けるべきです。
+- `params` パラメータは `sqlHaving` 内のプレースホルダを置換するために使用されます。提供されるパラメータの型と数がプレースホルダと一致していることを確認してください。
+- 特定の条件に基づいて HAVING 条件を動的に追加する必要がある場合は、`condition` パラメータを持つオーバーロードメソッドを使用できます。
 
 :::
 
 ### func
 
-`func` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、条件に基づいて異なるクエリ操作を実行するためのメカニズムを提供します。`Consumer` 関数型インターフェースを使用して、メソッドチェーンを中断せずに、条件に基づいて異なるクエリ構築ロジックを実行できます。
+`func` メソッドは、MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つであり、条件に応じて異なるクエリ操作を実行するメカニズムを提供します。`Consumer` 関数型インターフェースを渡すことで、`func` メソッドは、チェーン呼び出しを中断することなく、条件に基づいて異なるクエリ構築ロジックを実行することを可能にします。
 
 #### 使用範囲
 
@@ -1820,15 +1819,15 @@ SELECT * FROM user GROUP BY age HAVING sum(age) > 10
 #### メソッドシグネチャ
 
 ```java
-// 条件に基づいて異なるクエリ構築ロジックを実行します
+// 条件に応じて異なるクエリ構築ロジックを実行
 func(Consumer<Children> consumer)
 func(boolean condition, Consumer<Children> consumer)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `consumer`：`Consumer` 関数型インターフェース。`Children` 型のパラメータを受け取り、`Children` オブジェクト上のメソッドを呼び出すことができます。
-- `condition`：この `Consumer` ロジックを適用するかどうかを制御するためのブール値です。
+- `consumer`：`Consumer` 関数型インターフェース。`Children` 型のパラメータを受け取り、`Children` オブジェクトのメソッドを呼び出してクエリ条件を構築できます。
+- `condition`：この `Consumer` ロジックを適用するかどうかを制御するためのブール値。
 
 #### 例
 
@@ -1858,29 +1857,29 @@ lambdaQueryWrapper.func(i -> {
 });
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 条件に基づいて生成されるSQLは異なります
--- 条件が true の場合、生成されるSQLは：
+-- 条件によって生成される SQL は異なります
+-- 条件が true の場合、生成される SQL は：
 SELECT * FROM user WHERE id = 1
 
--- 条件が false の場合、生成されるSQLは：
+-- 条件が false の場合、生成される SQL は：
 SELECT * FROM user WHERE id != 1
 ```
 
 :::note[注意事項]
 
-- `func` メソッドは、条件に応じて動的にクエリ条件を構築するための柔軟な方法を提供し、メソッドチェーン呼び出しを中断することなく記述できます。
-- `func` メソッドを使用する場合、`Consumer` 関数型インターフェース内のロジックが正確に必要なクエリ条件を構築していることを確認してください。
-- `condition` パラメータは、`Consumer` ロジックを適用するかどうかを制御します。これにより、特定の条件に基づいてクエリ条件を動的に追加できます。
-- `func` メソッドは複雑なロジックの実行を可能にするため、使用する際はコードの可読性と保守性に特に注意する必要があります。
+- `func` メソッドは、チェーン呼び出しを中断することなく、条件に応じて動的にクエリ条件を構築するための柔軟な方法を提供します。
+- `func` メソッドを使用する際は、`Consumer` 関数型インターフェース内のロジックが、必要なクエリ条件を正しく構築していることを確認してください。
+- `condition` パラメータは、`Consumer` ロジックを適用するかどうかを制御するために使用され、特定の条件に基づいて動的にクエリ条件を追加することができます。
+- `func` メソッドは複雑なロジックの実行を可能にするため、使用時にはコードの可読性と保守性に特に注意する必要があります。
 
 :::
 
 ### or
 
-`or` メソッドは、MyBatis-Plus でクエリ条件を構築するための基本的なメソッドの1つで、クエリ条件に OR 論理を追加するために使用されます。`or` メソッドを呼び出すことで、後続のクエリ条件の接続方法を変更できます。デフォルトの AND 接続から OR 接続に変更されます。
+`or` メソッドは MyBatis-Plus においてクエリ条件を構築するための基本メソッドの一つであり、クエリ条件に OR 論理を追加するために使用されます。`or` メソッドを呼び出すことで、後続のクエリ条件の結合方法を、デフォルトの AND 結合から OR 結合に変更することができます。
 
 #### 使用範囲
 
@@ -1892,19 +1891,19 @@ SELECT * FROM user WHERE id != 1
 #### メソッドシグネチャ
 
 ```java
-// 後続のクエリ条件の接続方法を OR に変更します
+// 後続のクエリ条件の結合方法を OR に変更
 or()
 or(boolean condition)
 
-// OR 埋め込み条件を追加します
+// OR ネスト条件を追加
 or(Consumer<Param> consumer)
 or(boolean condition, Consumer<Param> consumer)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `condition`：この OR 論理を適用するかどうかを制御するためのブール値です。
-- `consumer`：`Consumer` 関数型インターフェース。`Param` 型のパラメータを受け取り、OR 埋め込み条件を構築するために使用されます。
+- `condition`：OR 論理を適用するかどうかを制御するためのブール値。
+- `consumer`：`Param` 型のパラメータを受け取り、`Param` オブジェクトのメソッドを呼び出して OR ネスト条件を構築するための `Consumer` 関数型インターフェース。
 
 #### 例
 
@@ -1922,14 +1921,14 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.eq(User::getId, 1).or().eq(User::getName, "老王");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じ
 SELECT * FROM user WHERE id = 1 OR name = '老王'
 ```
 
-**OR 埋め込み例**：
+**OR ネストの例**：
 
 ```java
 // 通常の Wrapper
@@ -1943,26 +1942,26 @@ lambdaQueryWrapper.or(i -> i.and(j -> j.eq(User::getName, "李白").eq(User::get
                               .or(j -> j.eq(User::getName, "杜甫").eq(User::getStatus, "alive")));
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じ
 SELECT * FROM user WHERE (name = '李白' AND status = 'alive') OR (name = '杜甫' AND status = 'alive')
 ```
 
 :::note[注意事項]
 
-- `or` メソッドを呼び出すことは、次のクエリ条件メソッドが `and` で接続されず、 `or` で接続されることを意味します。
-- `or` メソッドを呼び出さない場合、デフォルトでは `and` でクエリ条件が接続されます。
-- `or` メソッドは、`Consumer` 関数型インターフェースを使用して複雑な OR 埋め込み条件を構築できます。
-- `or` メソッドを使用する場合、`condition`パラメータが正確に OR 論理を適用することを確認してください。
-- `or` メソッドをネストして使用することで、複雑なクエリロジックを構築することが可能ですが、コードの可読性と保守性には注意が必要です。
+- `or` メソッドを明示的に呼び出すと、その直後のクエリ条件メソッドは `and` ではなく `or` で接続されます。
+- `or` メソッドを呼び出さない場合、クエリ条件はデフォルトで `and` によって接続されます。
+- `or` メソッドはネストして使用することができ、`Consumer` 関数型インターフェースを渡すことで複雑な OR ネスト条件を構築できます。
+- `or` メソッドを使用する際は、`condition` パラメータが OR 論理の適用を正しく制御していることを確認してください。
+- `or` メソッドのネスト使用は複雑なクエリロジックを構築できますが、コードの可読性と保守性に注意する必要があります。
 
 :::
 
 ### and
 
-`and` メソッドは、MyBatis-Plus でクエリ条件を構築するための基本的なメソッドの1つで、クエリ条件に AND 論理を追加するために使用されます。`and` メソッドを呼び出すことで、AND ネスト条件を作成できます。つまり、1つの AND 論理ブロック内に複数のクエリ条件を含めることができます。
+`and` メソッドは、MyBatis-Plus においてクエリ条件を構築するための基本的なメソッドの一つであり、クエリ条件に AND 論理を追加するために使用されます。`and` メソッドを呼び出すことで、AND ネスト条件、つまり一つの AND 論理ブロック内に複数のクエリ条件を含む条件を作成できます。
 
 #### 使用範囲
 
@@ -1974,17 +1973,17 @@ SELECT * FROM user WHERE (name = '李白' AND status = 'alive') OR (name = '杜�
 #### メソッドシグネチャ
 
 ```java
-// AND ネスト条件を追加します
+// AND ネスト条件を追加
 and(Consumer<Param> consumer)
 and(boolean condition, Consumer<Param> consumer)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `consumer`：`Consumer` 関数型インターフェース。`Param` 型のパラメータを受け取り、AND ネスト条件を構築するために使用されます。
-- `condition`：この AND ネスト論理を適用するかどうかを制御するためのブール値です。
+- `consumer`：`Consumer` 関数型インターフェースです。`Param` 型のパラメータを受け取り、`Param` オブジェクトのメソッドを呼び出して AND ネスト条件を構築できます。
+- `condition`：この AND ネストロジックを適用するかどうかを制御するためのブール値です。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -2002,25 +2001,25 @@ lambdaQueryWrapper.and(i -> i.and(j -> j.eq(User::getName, "李白").eq(User::ge
                               .and(j -> j.eq(User::getName, "杜甫").eq(User::getStatus, "alive")));
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE ((name = '李白' AND status = 'alive') AND (name = '杜甫' AND status = 'alive'))
 ```
 
 :::note[注意事項]
 
-- `and` メソッドの複雑な使用は、AND 条件を複数のクエリ条件に含めることができる複雑なクエリ論理を構築できます。
-- `and` メソッドのネスト機能を使用する場合、`Consumer` 関数型インターフェース内のロジックが正確に必要なクエリ条件を構築していることを確認してください。
-- `condition` パラメータは、`Consumer` ロジックを適用するかどうかを制御します。これにより、特定の条件に基づいてクエリ条件を動的に追加できます。
-- `and` メソッドをネストして使用することで、複雑なクエリロジックを構築することが可能ですが、コードの可読性と保守性には注意が必要です。
+- `and` メソッドをネストして使用することで、複雑なクエリロジックを構築できます。この場合、AND 条件は複数のクエリ条件を含むことができます。
+- `and` メソッドのネスト機能を使用する際は、`Consumer` 関数型インターフェース内のロジックが、必要なクエリ条件を正しく構築していることを確認してください。
+- `condition` パラメータは、`Consumer` ロジックを適用するかどうかを制御するために使用されます。これにより、特定の条件に基づいてクエリ条件を動的に追加することが可能になります。
+- `and` メソッドのネスト使用は複雑なロジックを実行できるため、使用時にはコードの可読性と保守性に特に注意する必要があります。
 
 :::
 
 ### nested
 
-`nested` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、独立したクエリ条件ブロックを作成します。デフォルトの AND または OR 論理は使用されません。`nested` メソッドを呼び出すことで、クエリ条件に独立したサブ句を追加できます。このサブ句は、複数のクエリ条件を含めることができ、外部クエリ条件は AND または OR を使用して接続できます。
+`nested` メソッドは、MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つです。これはデフォルトの AND または OR ロジックを持たない、独立したクエリ条件ブロックを作成するために使用されます。`nested` メソッドを呼び出すことで、クエリ条件にネストされた句を追加できます。この句は複数のクエリ条件を含むことができ、外部のクエリ条件から AND または OR で接続されます。
 
 #### 使用範囲
 
@@ -2037,10 +2036,10 @@ nested(Consumer<Param> consumer)
 nested(boolean condition, Consumer<Param> consumer)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `consumer`：`Consumer` 関数型インターフェース、`Param` 型のパラメータを受け取り、独立したクエリ条件を構築するために使用されます。
-- `condition`：このネスト論理を適用するかどうかを制御するためのブール値です。
+- `consumer`：`Param` 型のパラメータを受け取り、`Param` オブジェクトのメソッドを呼び出してネストされたクエリ条件を構築するための `Consumer` 関数型インターフェースです。
+- `condition`：このネストされたロジックを適用するかどうかを制御するブール値です。
 
 #### 例
 
@@ -2058,25 +2057,25 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.nested(i -> i.eq(User::getName, "李白").ne(User::getStatus, "活着"));
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user WHERE (name = '李白' AND status <> '活着')
 ```
 
 :::note[注意事項]
 
-- `nested` メソッドで作成されたクエリ条件ブロックは独立したサブ句であり、外部クエリ条件は AND または OR を使用して接続できます。
-- `nested` メソッドを使用する場合、`Consumer` 関数型インターフェース内のロジックが正確に必要なクエリ条件を構築していることを確認してください。
-- `condition` パラメータは、`Consumer` ロジックを適用するかどうかを制御します。これにより、特定の条件に基づいてクエリ条件を動的に追加できます。
-- `nested` メソッドをネストして使用することで、複雑なクエリロジックを構築することが可能ですが、コードの可読性と保守性には注意が必要です。
+- `nested` メソッドで作成されたクエリ条件ブロックは独立した句であり、外部のクエリ条件から AND または OR で接続できます。
+- `nested` メソッドを使用する際は、`Consumer` 関数型インターフェース内のロジックが、必要なクエリ条件を正しく構築していることを確認してください。
+- `condition` パラメータは、`Consumer` ロジックを適用するかどうかを制御するために使用されます。これにより、特定の条件に基づいてクエリ条件を動的に追加できます。
+- `nested` メソッドは複雑なロジックを実行できるため、使用時にはコードの可読性と保守性に特に注意する必要があります。
 
 :::
 
 ### apply
 
-`apply` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、SQL文を直接クエリ条件に追加できます。このメソッドは、データベース関数などの複雑なSQL構築が必要なシナリオに特に便利です。
+`apply` メソッドは、MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つであり、SQL フラグメントを直接クエリ条件に連結することを可能にします。このメソッドは、データベース関数やその他の複雑な SQL 構文を使用する必要があるシナリオで特に有用です。
 
 #### 使用範囲
 
@@ -2088,18 +2087,18 @@ SELECT * FROM user WHERE (name = '李白' AND status <> '活着')
 #### メソッドシグネチャ
 
 ```java
-// SQL文を追加します
+// SQL フラグメントを連結
 apply(String applySql, Object... params)
 apply(boolean condition, String applySql, Object... params)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `applySql`：追加するSQL文を含む文字列。
-- `params`：SQL文中のプレースホルダーを置き換えるために使用される可変引数リスト。
-- `condition`：このSQL文を適用するかどうかを制御するためのブール値です。
+- `applySql`：連結する SQL フラグメントを含む文字列。
+- `params`：SQL フラグメント内のプレースホルダを置き換える値を格納した可変引数リスト。
+- `condition`：この SQL フラグメントを適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -2115,38 +2114,38 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.apply("date_format(dateColumn, '%Y-%m-%d') = '2008-08-08'");
 ```
 
-**パラメータプレースホルダーを使用する例**：
+**パラメータプレースホルダを使用した例**：
 
 ```java
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.apply("date_format(dateColumn, '%Y-%m-%d') = {0}", "2008-08-08");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper が生成するSQL
+-- 通常の Wrapper で生成される SQL
 SELECT * FROM user WHERE id = 1
 
--- Lambda Wrapper が生成するSQL
+-- Lambda Wrapper で生成される SQL
 SELECT * FROM user WHERE date_format(dateColumn, '%Y-%m-%d') = '2008-08-08'
 
--- パラメータプレースホルダーを使用して生成されるSQL
+-- パラメータプレースホルダを使用して生成される SQL
 SELECT * FROM user WHERE date_format(dateColumn, '%Y-%m-%d') = '2008-08-08'
 ```
 
 :::warning[注意事項]
 
-- `apply` メソッドは、データベース関数を含む SQL 文を追加できます。
-- 動的に入力される `params` は、`applySql` 内部の `{index}` 部分に対応します。これは SQL インジェクションのリスクがありません。パラメータを直接 SQL に連結すると、SQL インジェクションのリスクがあるため、フロントエンドからの動的パラメータをそのまま使用するのは避けるべきです。
-- `apply` メソッドを使用する場合、`applySql` パラメータが有効な SQL 文であり、`params` パラメータが正確にプレースホルダーを置き換えることを確認してください。
-- `condition` パラメータは、この SQL 文を適用するかどうかを制御します。これにより、特定の条件に基づいてクエリ条件を動的に追加できます。
+- `apply` メソッドは、データベース関数を含む SQL フラグメントを連結するために使用できます。
+- 動的入力パラメータ `params` は、`applySql` 内部の `{index}` 部分に対応します。この方法では SQL インジェクションのリスクはありません。パラメータを直接 SQL に連結すると SQL インジェクションのリスクが生じるため、SQL がフロントエンドからの動的パラメータによって直接参照されることは避けるべきです。
+- `apply` メソッドを使用する際は、`applySql` パラメータが有効な SQL フラグメントであり、`params` パラメータがプレースホルダを正しく置き換えていることを確認してください。
+- `condition` パラメータは、この SQL フラグメントを適用するかどうかを制御するために使用され、特定の条件に基づいてクエリ条件を動的に追加することが可能になります。
 
 :::
 
 ### last
 
-`last` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、クエリの最後にSQL文を直接追加でき、MyBatis-Plus のクエリ最適化ルールの影響を受けません。このメソッドは慎重に使用する必要があります。なぜなら、MyBatis-Plus のクエリ最適化ルールが回避される可能性があるからです。
+`last` メソッドは、MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つです。このメソッドを使用すると、MyBatis-Plus のクエリ最適化ルールの影響を受けずに、クエリの最後に直接 SQL フラグメントを追加することができます。このメソッドは、MyBatis-Plus のクエリ最適化を迂回する可能性があるため、注意して使用する必要があります。
 
 #### 使用範囲
 
@@ -2158,51 +2157,51 @@ SELECT * FROM user WHERE date_format(dateColumn, '%Y-%m-%d') = '2008-08-08'
 #### メソッドシグネチャ
 
 ```java
-// クエリの最後にSQL文を追加します
+// クエリの最後に SQL フラグメントを追加します
 last(String lastSql)
 last(boolean condition, String lastSql)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `lastSql`：クエリの最後に追加するSQL文を含む文字列。
-- `condition`：このSQL文を適用するかどうかを制御するためのブール値です。
+- `lastSql`: クエリの最後に追加する SQL フラグメントを含む文字列です。
+- `condition`: この SQL フラグメントを適用するかどうかを制御するブール値です。
 
 #### 例
 
-**通常の Wrapper (`QueryWrapper`)**：
+**通常の Wrapper (`QueryWrapper`)**:
 
 ```java
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.last("limit 1");
 ```
 
-**Lambda Wrapper (`LambdaQueryWrapper`)**：
+**Lambda Wrapper (`LambdaQueryWrapper`)**:
 
 ```java
 LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.last("limit 1");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 SELECT * FROM user LIMIT 1
 ```
 
 :::tip[注意事項]
 
-- `last` メソッドは1回しか呼び出せません。複数回呼び出すと、最後の呼び出しが優先されます。
-- `last` メソッドを使用すると、MyBatis-Plus のクエリ最適化ルールが回避される可能性があり、クエリのパフォーマンスが低下する可能性があります。
-- `lastSql` パラメータは直接SQLに追加されるため、入力されたSQL文が安全であることを確認する必要があります。つまり、`lastSql`はバックエンドで制御する必要があり、フロントエンドからの動的パラメータを直接参照するのを避ける必要があります。
-- `last` メソッドを使用する場合、`lastSql` パラメータが安全なSQL文であり、`condition`パラメータが正確にSQL文を適用するかどうかを制御することを確認してください。
+- `last` メソッドは一度しか呼び出せません。複数回呼び出した場合、最後の呼び出しが有効になります。
+- `last` メソッドを使用すると、MyBatis-Plus のクエリ最適化ルールを迂回するため、クエリの効率が低下する可能性があります。
+- `lastSql` パラメータは直接 SQL に連結されるため、入力される SQL フラグメントが安全であることを保証する必要があります。すなわち、`lastSql` はバックエンドで制御されるべきであり、フロントエンドから渡される動的なパラメータであってはなりません。
+- `last` メソッドを使用する際は、`lastSql` パラメータが安全な SQL フラグメントであり、かつ `condition` パラメータが SQL フラグメントの適用を正しく制御していることを確認してください。
 
 :::
 
 ### exists
 
-`exists` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、クエリに EXISTS サブクエリを追加できます。`exists` メソッドを呼び出すことで、完全なSQLサブクエリを EXISTS 条件として主クエリに追加できます。
+`exists` メソッドは、MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つであり、クエリに EXISTS 副問い合わせを追加するために使用されます。`exists` メソッドを呼び出すことで、完全な SQL 副問い合わせを EXISTS 条件としてメインクエリに追加できます。
 
 #### 使用範囲
 
@@ -2214,51 +2213,51 @@ SELECT * FROM user LIMIT 1
 #### メソッドシグネチャ
 
 ```java
-// EXISTS サブクエリを追加します
+// EXISTS 副問い合わせを追加
 exists(String existsSql)
 exists(boolean condition, String existsSql)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `existsSql`：EXISTS 条件として使用するSQLサブクエリを含む文字列。
-- `condition`：この EXISTS 条件を適用するかどうかを制御するためのブール値です。
+- `existsSql`: EXISTS 条件として使用する SQL 副問い合わせを含む文字列。
+- `condition`: この EXISTS 条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
-**通常の Wrapper (`QueryWrapper`)**：
+**通常の Wrapper (`QueryWrapper`)**:
 
 ```java
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.exists("select id from table where age = 1");
 ```
 
-**Lambda Wrapper (`LambdaQueryWrapper`)**：
+**Lambda Wrapper (`LambdaQueryWrapper`)**:
 
 ```java
 LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.exists("select id from table where age = 1");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapperと Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じ
 SELECT * FROM user WHERE EXISTS (select id from table where age = 1)
 ```
 
 :::tip[注意事項]
 
-- `exists` メソッドは、EXISTS サブクエリを追加することで、通常、サブクエリが行を返すかどうかを確認するために使用されます。
-- `exists` メソッドを使用する場合、`existsSql` パラメータは有効な SQL 文である必要があり、生成される SQL にそのまま埋め込まれるため、安全性と正確性を確保する必要があります。フロントエンドからの動的なパラメータを直接参照することは避けてください。
-- `condition` パラメータは、EXISTS 条件を適用するかどうかを制御します。これにより、特定の条件に基づいてクエリ条件を動的に追加できます。
-- `exists` メソッドは複雑なロジックを実行できるようなるため、コードの可読性と保守性には注意が必要です。
+- `exists` メソッドは EXISTS 副問い合わせを追加するために使用され、これは通常、副問い合わせが行を返すかどうかをチェックするために使用されます。
+- `exists` メソッドを使用する際は、`existsSql` パラメータが有効な SQL 副問い合わせであることを確認してください。これは生成される SQL に直接埋め込まれるため、その安全性と正確性を保証する必要があります。SQL がフロントエンドから動的なパラメータとして渡され、直接参照されることは避けるべきです。
+- `condition` パラメータは、EXISTS 条件を適用するかどうかを制御するために使用され、特定の条件に基づいてクエリ条件を動的に追加することができます。
+- `exists` メソッドは複雑なロジックの実行を可能にするため、使用時にはコードの可読性と保守性に特に注意する必要があります。
 
 :::
 
 ### notExists
 
-`notExists` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、クエリに NOT EXISTS サブクエリを追加できます。`notExists` メソッドを呼び出すことで、完全なSQLサブクエリを NOT EXISTS 条件として主クエリに追加できます。
+`notExists` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの一つであり、クエリに NOT EXISTS 副問い合わせを追加するために使用されます。`notExists` メソッドを呼び出すことで、完全な SQL 副問い合わせを NOT EXISTS 条件としてメインクエリに追加できます。
 
 #### 使用範囲
 
@@ -2270,17 +2269,17 @@ SELECT * FROM user WHERE EXISTS (select id from table where age = 1)
 #### メソッドシグネチャ
 
 ```java
-// NOT EXISTS サブクエリを追加します
+// NOT EXISTS 副問い合わせを追加
 notExists(String notExistsSql)
 notExists(boolean condition, String notExistsSql)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `notExistsSql`：NOT EXISTS 条件として使用するSQLサブクエリを含む文字列。
-- `condition`：このNOT EXISTS 条件を適用するかどうかを制御するためのブール値です。
+- `notExistsSql`：NOT EXISTS 条件として使用する SQL 副問い合わせを含む文字列。
+- `condition`：この NOT EXISTS 条件を適用するかどうかを制御するブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -2296,25 +2295,25 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.notExists("select id from table where age = 1");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じ
 SELECT * FROM user WHERE NOT EXISTS (select id from table where age = 1)
 ```
 
 :::tip[注意事項]
 
-- `notExists` メソッドは、NOT EXISTS サブクエリを追加することで、通常、サブクエリが行を返さないかどうかを確認するために使用されます。
-- `notExists` メソッドを使用する場合、`notExistsSql` パラメータは有効な SQL 文である必要があり、生成される SQL にそのまま埋め込まれるため、安全性と正確性を確保する必要があります。フロントエンドからの動的なパラメータを直接参照することは避けてください。
-- `condition` パラメータは、NOT EXISTS 条件を適用するかどうかを制御します。これにより、特定の条件に基づいてクエリ条件を動的に追加できます。
-- `notExists` メソッドは複雑なロジックを実行できるようなるため、コードの可読性と保守性には注意が必要です。
+- `notExists` メソッドは NOT EXISTS 副問い合わせを追加するために使用され、通常、副問い合わせが行を返さないかどうかをチェックするために使用されます。
+- `notExists` メソッドを使用する際は、`notExistsSql` パラメータが有効な SQL 副問い合わせであることを確認してください。これは生成される SQL に直接埋め込まれるため、その安全性と正確性を保証する必要があります。フロントエンドから動的なパラメータを渡され、直接参照されるような SQL は避けるべきです。
+- `condition` パラメータは、NOT EXISTS 条件を適用するかどうかを制御するために使用され、特定の条件に基づいて動的にクエリ条件を追加することができます。
+- `notExists` メソッドは複雑なロジックの実行を可能にするため、使用時にはコードの可読性と保守性に特に注意する必要があります。
 
 :::
 
 ### select
 
-`select` メソッドは、MyBatis-Plus でクエリ条件を構築するための高度なメソッドの1つで、クエリのフィールドを設定します。`select` メソッドを呼び出すことで、クエリ結果に含めるフィールドを指定できます。これにより、フィールドレベルのクエリカスタマイズを実現できます。
+`select` メソッドは、MyBatis-Plus においてクエリ条件を構築するための高度なメソッドの一つであり、クエリするフィールドを設定するために使用されます。`select` メソッドを呼び出すことで、クエリ結果に含めるフィールドを指定し、フィールドレベルでのクエリカスタマイズを実現できます。
 
 #### 使用範囲
 
@@ -2324,21 +2323,21 @@ SELECT * FROM user WHERE NOT EXISTS (select id from table where age = 1)
 #### メソッドシグネチャ
 
 ```java
-// クエリのフィールドを設定します
+// クエリフィールドを設定
 select(String... sqlSelect)
 
-// クエリのフィールドをフィルタリングします（主キーを除く）
+// クエリフィールドをフィルタリング（主キーを除く）
 select(Predicate<TableFieldInfo> predicate)
 select(Class<T> entityClass, Predicate<TableFieldInfo> predicate)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `sqlSelect`：クエリのフィールド名を含む文字列配列。
-- `predicate`：`Predicate` 関数型インターフェース。`TableFieldInfo` 型のパラメータを受け取り、ブール値を返す関数。`TableFieldInfo`型のパラメータを受け取り、ブール値を返す関数。
-- `entityClass`：エンティティクラスの型。フィールド情報を取得するために使用されます。
+- `sqlSelect`：クエリするフィールド名を含む文字列配列。
+- `predicate`：クエリフィールドをフィルタリングするための `Predicate` 関数型インターフェース。`TableFieldInfo` 型のパラメータを受け取り、そのフィールドを選択するかどうかを示すブール値を返します。
+- `entityClass`：フィールド情報を取得するためのエンティティクラスの型。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`QueryWrapper`)**：
 
@@ -2354,35 +2353,35 @@ LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
 lambdaQueryWrapper.select(User::getId, User::getName, User::getAge);
 ```
 
-**Predicate を使用してフィールドをフィルタリングする例**：
+**Predicate を使用したフィールドフィルタリングの例**：
 
 ```java
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.select(i -> i.getProperty().startsWith("test"));
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper および Lambda Wrapper で生成される SQL
 SELECT id, name, age FROM user
 
--- Predicate を使用してフィールドをフィルタリングしたSQL
+-- Predicate を使用したフィールドフィルタリングで生成される SQL
 SELECT testField1, testField2 FROM user
 ```
 
 :::tip[説明]
 
-- `select` メソッドは2種類あります。1つは直接フィールド名を指定するもので、2つ目は `Predicate` を使用してフィールドをフィルタリングするものです。
-- 2つ目の方法は、主キーを除くクエリフィールドをフィルタリングするために使用されます。`entityClass` が指定されていない場合、 `wrapper` 内の `entity` プロパティが値を持っていることを確認する必要があります。
-- これらのメソッドを繰り返し呼び出す場合、最後に呼び出されたものが優先されます。
-- `select` メソッドを使用する場合、指定されたフィールド名またはフィルタ条件が正確であることを確認し、期待通りの結果が得られない事態を避けてください。
+- `select` メソッドは2つのカテゴリに分類されます。1つ目はクエリするフィールド名を直接指定する方法、2つ目は `Predicate` を使用してフィールドをフィルタリングする方法です。
+- 2つ目のメソッドは、クエリフィールドをフィルタリングするために使用されます（主キーを除く）。`entityClass` パラメータが含まれていない場合、呼び出し前に `wrapper` 内の `entity` 属性に値が設定されていることを確認する必要があります。
+- これらのメソッドを繰り返し呼び出す場合、最後の呼び出しが優先されます。
+- `select` メソッドを使用する際は、指定したフィールド名またはフィルタ条件が正しいことを確認し、クエリ結果が期待通りになるように注意してください。
 
 :::
 
 ### set
 
-`set` メソッドは、MyBatis-Plus で更新操作を構築するための高度なメソッドの1つで、更新文の SET フィールドを設定するために使用されます。`set` メソッドを呼び出すことで、更新操作で変更するフィールドとその新しい値を指定できます。
+`set` メソッドは MyBatis-Plus において更新操作を構築するための高度なメソッドの一つであり、UPDATE 文の SET 句で設定するフィールドを指定するために使用されます。`set` メソッドを呼び出すことで、更新操作において変更するフィールドとその新しい値を指定できます。
 
 #### 使用範囲
 
@@ -2399,14 +2398,14 @@ set(boolean condition, R column, Object val)
 set(boolean condition, R column, Object val, String mapping)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：データベースのフィールド名または `Lambda` 式を使用したフィールド名。
-- `condition`：この SET フィールドを適用するかどうかを制御するためのブール値です。
-- `val`：更新するフィールドの新しい値を含むオブジェクト。
-- `mapping`：追加指定。例：`javaType=int,jdbcType=NUMERIC,typeHandler=xxx.xxx.MyTypeHandler`
+- `column`：データベースのフィールド名、または `Lambda` 式を使用したフィールド名。
+- `condition`：この SET フィールドを適用するかどうかを制御するブール値。
+- `val`：フィールドに更新する新しい値を表すオブジェクト。
+- `mapping`：追加で指定します。例: `javaType=int,jdbcType=NUMERIC,typeHandler=xxx.xxx.MyTypeHandler`
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`UpdateWrapper`)**：
 
@@ -2422,61 +2421,61 @@ LambdaUpdateWrapper<User> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
 lambdaUpdateWrapper.set(User::getName, "老李头");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じです
 UPDATE user SET name = '老李头'
 ```
 
-**条件制御を使用する例**：
+**条件制御を使用した例**：
 
 ```java
 UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
 updateWrapper.set(true, "name", "");
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 条件制御を使用したSQL
+-- 条件制御を使用した SQL
 UPDATE user SET name = ''
 ```
 
 :::tip[注意事項]
 
-- `set` メソッドは、更新文の SET フィールドを設定するために使用されます。指定するフィールドとその新しい値を指定できます。
-- `val` パラメータが空文字列の場合、データベースのフィールド値は空文字列になります。
+- `set` メソッドは更新文の SET フィールドを設定するために使用され、更新するフィールドとその新しい値を指定できます。
+- `val` パラメータが空文字の場合、データベースのフィールド値は空文字になります。
 - `val` パラメータが `null` の場合、データベースのフィールド値は `null` になります。
-- `condition` パラメータは、この SET フィールドを適用するかどうかを制御します。これにより、特定の条件に基づいて更新フィールドを動的に追加できます。
-- `set` メソッドを使用する場合、`column` パラメータが有効なフィールド名であり、`val` パラメータが適切な新しい値であることを確認してください。
+- `condition` パラメータはこの SET フィールドを適用するかどうかを制御するために使用され、特定の条件に基づいて更新フィールドを動的に追加することができます。
+- `set` メソッドを使用する際は、`column` パラメータが有効なフィールド名であり、`val` パラメータが適切な新しい値であることを確認してください。
 
 :::
 
 ### setSql
 
-`setSql` メソッドは、MyBatis-Plus で更新操作を構築するための高度なメソッドの1つで、更新文の SET 部分SQLを直接設定できます。`setSql` メソッドを呼び出すことで、独自のSQL文を SET 句として更新文に追加できます。
+`setSql` メソッドは、MyBatis-Plus において更新操作を構築するための高度なメソッドの一つです。このメソッドを使用すると、更新文の SET 句に相当する SQL を直接設定することができます。`setSql` メソッドを呼び出すことで、カスタムの SQL フラグメントを SET 句として更新文に追加できます。
 
 #### 使用範囲
 
 - `UpdateWrapper`
 - `LambdaUpdateWrapper`
 
-#### メソッドシグネチャ
+#### メソッド・シグネチャ
 
 ```java
-// 更新文の SET 部分の SQL を設定します
+// 更新文の SET 句に相当する SQL を設定します
 setSql(String setSql, Object... params)
 setSql(boolean condition, String setSql, Object... params)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `setSql`：SET 句として使用する独自のSQL文を含む文字列。
-- `condition`：この SET フィールドを適用するかどうかを制御するためのブール値です。
-- `params`：SQL文中のプレースホルダーを置き換えるために使用される可変引数リスト。
+- `setSql`：SET 句として使用する SQL フラグメントを含む文字列。
+- `condition`：この SET フィールドを適用するかどうかを制御するブール値。
+- `params`：SQL フラグメント内のプレースホルダを置き換える値を含む可変長引数リスト。
 
-#### 例
+#### 使用例
 
 ```java
 setSql("name = '老李头'")
@@ -2486,15 +2485,15 @@ setSql("type={0,javaType=int,jdbcType=NUMERIC,typeHandler=xxx.xxx.MyTypeHandler}
 
 :::tip[注意事項]
 
-- `setSql` メソッドは、更新文の SET 部分SQLを設定するために使用されます。これは通常、複雑なSQL構築が必要なシナリオに使用されます。
-- `setSql` メソッドを使用する場合、`sql` パラメータは有効な SQL 文である必要があり、生成される SQL にそのまま埋め込まれるため、安全性と正確性を確保する必要があります。フロントエンドからの動的なパラメータを直接参照することは避けてください。
-- `setSql` メソッドは複雑なロジックを実行できるため、コードの可読性と保守性には注意が必要です。
+- `setSql` メソッドは、更新文の SET 句に相当する SQL を設定するために使用されます。これは通常、複雑な SQL 構文が必要なシナリオで使用されます。
+- `setSql` メソッドを使用する際は、`sql` パラメータが有効な SQL フラグメントであることを確認してください。これは生成される SQL に直接埋め込まれるため、その安全性と正確性を保証する必要があります。SQL がフロントエンドからの動的パラメータによって渡され、直接参照されることは避けるべきです。
+- `setSql` メソッドは複雑なロジックの実行を可能にするため、使用時にはコードの可読性と保守性に特に注意する必要があります。
 
 :::
 
 ### setIncrBy <Badge text="Since 3.5.6" type="error"/>
 
-`setIncrBy` メソッドは、MyBatis-Plus で更新操作を構築するための高度なメソッドの1つで、指定されたフィールドの値をデータベース内で指定された数値だけ増加させるために使用されます。このメソッドは、数値フィールドに対して増量操作が必要なシナリオに特に便利です。
+`setIncrBy` メソッドは、MyBatis-Plus における更新操作の高度なメソッドの一つであり、特定のフィールドを指定してデータベース内の値を指定した数値だけ増加させることができます。このメソッドは、数値フィールドに対して増分操作が必要なシナリオに特に適しています。
 
 #### 使用範囲
 
@@ -2503,20 +2502,20 @@ setSql("type={0,javaType=int,jdbcType=NUMERIC,typeHandler=xxx.xxx.MyTypeHandler}
 #### メソッドシグネチャ
 
 ```java
-// フィールドを指定された数値だけ増加させます
+// フィールドを指定数値だけインクリメント
 setIncrBy(SFunction<T, ?> column, Number val)
 
-// 条件が満たされる場合、フィールドを指定された数値だけ増加させます
+// 条件を満たす場合にフィールドを指定数値だけインクリメント
 setIncrBy(boolean condition, SFunction<T, ?> column, Number val)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：`SFunction` オブジェクト。増加するフィールドを表します。
-- `val`：増加する数値を含む `Number` オブジェクト。
-- `condition`（オプション）：条件が満たされる場合にのみ増加操作を実行するかどうかを制御するブール値。
+- `column`：インクリメント対象のフィールドを表す `SFunction` オブジェクト
+- `val`：増加させる数値を表す `Number` オブジェクト
+- `condition`（オプション）：条件を満たす場合にのみインクリメント操作を実行するかどうかを示すブール値
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`UpdateWrapper`)**：
 
@@ -2525,31 +2524,31 @@ UpdateWrapper<Product> updateWrapper = new UpdateWrapper<>();
 updateWrapper.setIncrBy(Product::getNum, 1);
 ```
 
-**Lambda Wrapper (`LambdaUpdateWrapper`)**：
+**ラッパー (`LambdaUpdateWrapper`)**：
 
 ```java
 LambdaUpdateWrapper<Product> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
 lambdaUpdateWrapper.setIncrBy(Product::getNum, 1);
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper と Lambda Wrapper で生成される SQL は同じ
 UPDATE product SET num = num + 1
 ```
 
 :::tip[注意事項]
 
-- `setIncrBy` メソッドは、指定されたフィールドに対して増量操作を行うために使用されます。これは通常、数値フィールドに対して増量更新が必要なシナリオに使用されます。
-- `setIncrBy` メソッドを使用する場合、`column` パラメータが有効なフィールド式であり、`val` パラメータが有効な数値であることを確認してください。
-- `condition` パラメータが提供されている場合、条件が `true` の場合にのみ増加操作が実行されます。
+- `setIncrBy` メソッドは、指定されたフィールドに対してインクリメント操作を行うために使用されます。これは通常、数値フィールドに対して増分更新が必要なシナリオで使用されます。
+- `setIncrBy` メソッドを使用する際は、`column` パラメータが有効なフィールド式であり、`val` パラメータが有効な数値であることを確認してください。
+- `condition` パラメータが指定された場合、条件が `true` のときのみインクリメント操作が実行されます。
 
 :::
 
 ### setDecrBy <Badge text="Since 3.5.6" type="error"/>
 
-`setDecrBy` メソッドは、MyBatis-Plus で更新操作を構築するための高度なメソッドの1つで、指定されたフィールドの値をデータベース内で指定された数値だけ減少させるために使用されます。このメソッドは、数値フィールドに対して減量操作が必要なシナリオに特に便利です。
+`setDecrBy` メソッドは、MyBatis-Plus における更新操作のための高度なメソッドの一つであり、指定したフィールドのデータベース上の値を指定した数値だけ減少させることを可能にします。このメソッドは、数値フィールドに対して減算操作を行う必要があるシナリオに特に適しています。
 
 #### 使用範囲
 
@@ -2558,20 +2557,20 @@ UPDATE product SET num = num + 1
 #### メソッドシグネチャ
 
 ```java
-// フィールドを指定された数値だけ減少させます
+// フィールドを指定数値で減算
 setDecrBy(SFunction<T, ?> column, Number val)
 
-// 条件が満たされる場合、フィールドを指定された数値だけ減少させます
+// 条件を満たす場合にフィールドを指定数値で減算
 setDecrBy(boolean condition, SFunction<T, ?> column, Number val)
 ```
 
-#### パラメータの説明
+#### パラメータ説明
 
-- `column`：`SFunction` オブジェクト。減少するフィールドを表します。
-- `val`：減少する数値を含む `Number` オブジェクト。
-- `condition`（オプション）：条件が満たされる場合にのみ減少操作を実行するかどうかを制御するブール値。
+- `column`：減算対象のフィールドを表す `SFunction` オブジェクト。
+- `val`：減算する数値を表す `Number` オブジェクト。
+- `condition`（オプション）：条件を満たす場合にのみ減算操作を実行するかどうかを示すブール値。
 
-#### 例
+#### 使用例
 
 **通常の Wrapper (`UpdateWrapper`)**：
 
@@ -2580,41 +2579,41 @@ UpdateWrapper<Product> updateWrapper = new UpdateWrapper<>();
 updateWrapper.setDecrBy("num", 1);
 ```
 
-**Lambda Wrapper (`LambdaUpdateWrapper`)**：
+**ラムダ Wrapper (`LambdaUpdateWrapper`)**：
 
 ```java
 LambdaUpdateWrapper<Product> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
 lambdaUpdateWrapper.setDecrBy(Product::getNum, 1);
 ```
 
-**生成されるSQL**
+**生成される SQL**
 
 ```sql
--- 通常の Wrapper と Lambda Wrapper が生成するSQLは同じです
+-- 通常の Wrapper とラムダ Wrapper で生成される SQL は同じです
 UPDATE product SET num = num - 1
 ```
 
 :::tip[注意事項]
 
-- `setDecrBy` メソッドは、指定されたフィールドに対して減量操作を行うために使用されます。これは通常、数値フィールドに対して減量更新が必要なシナリオに使用されます。
-- `setDecrBy` メソッドを使用する場合、`column` パラメータが有効なフィールド式であり、`val` パラメータが有効な数値であることを確認してください。
-- `condition` パラメータが提供されている場合、条件が `true` の場合にのみ減少操作が実行されます。
+- `setDecrBy` メソッドは、指定されたフィールドに対して減算操作を行うために使用されます。これは通常、数値フィールドに対して減算更新を行う必要があるシナリオで使用されます。
+- `setDecrBy` メソッドを使用する際は、`column` パラメータが有効なフィールド式であり、`val` パラメータが有効な数値であることを確認してください。
+- `condition` パラメータが指定された場合、条件が `true` の場合にのみ減算操作が実行されます。
 
 :::
 
 ### lambda
 
-`lambda` メソッドは、便利なメソッドです。`QueryWrapper` または `UpdateWrapper` オブジェクトから対応する `LambdaQueryWrapper`または `LambdaUpdateWrapper` オブジェクトを取得できます。これにより、ラムダ式を使用してクエリ条件を構築し、コードがより簡潔で型安全になります。
+`lambda` メソッドは、`QueryWrapper` または `UpdateWrapper` オブジェクトから対応する `LambdaQueryWrapper` または `LambdaUpdateWrapper` オブジェクトを取得するための便利なメソッドです。これにより、Lambda 式を使用してクエリ条件や更新条件を構築できるようになり、コードがより簡潔で型安全になります。
 
 #### 使用範囲
 
 - `QueryWrapper`
 - `UpdateWrapper`
 
-#### メソッドシグネチャ
+#### メソッド署名
 
 ```java
-// Lamdba Wrapper を取得します
+// ラムダ Wrapper を取得
 lambda();
 ```
 
@@ -2625,8 +2624,8 @@ lambda();
 ```java
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 LambdaQueryWrapper<User> lambdaQueryWrapper = queryWrapper.lambda();
-// Lambda 式を使用してクエリ条件を構築します
-lambdaQueryWrapper.eq("name", "张三");
+// Lambda 式を使用してクエリ条件を構築
+lambdaQueryWrapper.eq(User::getName, "张三");
 ```
 
 **UpdateWrapper から LambdaUpdateWrapper を取得**：
@@ -2634,28 +2633,27 @@ lambdaQueryWrapper.eq("name", "张三");
 ```java
 UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
 LambdaUpdateWrapper<User> lambdaUpdateWrapper = updateWrapper.lambda();
-// ラムダ式を使用して更新条件を構築します
+// Lambda 式を使用して更新条件を構築
 lambdaUpdateWrapper.set(User::getName, "李四");
 ```
 
 #### 説明
 
-- `lambda` メソッドは、`LambdaWrapper` オブジェクトを返します。具体的な型は、呼び出し元の `Wrapper` 型に依存します。
+- `lambda` メソッドは `LambdaWrapper` オブジェクトを返します。具体的な型は、呼び出し元の `Wrapper` の型によって異なります。
 - `QueryWrapper` で `lambda` メソッドを呼び出すと、`LambdaQueryWrapper` が返されます。
 - `UpdateWrapper` で `lambda` メソッドを呼び出すと、`LambdaUpdateWrapper` が返されます。
-- ラムダ式を使用することで、フィールド名を文字列で直接指定する必要がなくなり、ミスを減らし、コードの可読性を高めることができます。
+- Lambda 式を使用すると、フィールド名を直接文字列で指定することを避けられるため、エラーを減らし、コードの可読性を向上させることができます。
 
 :::tip[注意事項]
 
-- `lambda` メソッドを使用する場合、`QueryWrapper` または `UpdateWrapper` オブジェクトが正確に初期化されていることを確認してください。
-- `LambdaWrapper` オブジェクトを取得した後、ラムダ式を使用してクエリ条件を構築できます。これにより、コードが型安全となり、保守性が向上します。
+- `lambda` メソッドを使用する際は、`QueryWrapper` または `UpdateWrapper` オブジェクトが正しく初期化されていることを確認してください。
+- `LambdaWrapper` オブジェクトを取得したら、Lambda 式を使用してクエリ条件や更新条件を構築できます。これにより、コードがより型安全で保守しやすくなります。
 
 :::
 
+## TypeHandler の使用
 
-## TypeHandlerを使用
-
-> `wrapper` で `typeHandler` を使用する場合、`formatSqlMaybeWithParam` メソッドを特別に処理する必要があります
+> `wrapper` で `typeHandler` を使用するには、`formatSqlMaybeWithParam` メソッドを利用した特別な処理が必要です
 
 ```java
 // クエリ
@@ -2665,56 +2663,55 @@ queryWrapper.apply("type={0,typeHandler="+ MyTypeHandler.class.getCanonicalName(
 updateWrapper.setSql("type={0,javaType=string,jdbcType=VARCHAR,typeHandler=xxx.xxx.MyTypeHandler}", "待处理字符串");
 ```
 
+## 使用上のヒント
 
-## 使用ヒント
+MyBatis-Plus の Wrapper 条件構築器を使用することで、開発者は複雑なデータベースクエリ条件をより効率的に構築でき、コードの簡潔さと安全性を維持できます。以下に、いくつかの注意事項と推奨される方法を示します：
 
-MyBatis-Plus の Wrapper 条件ビルダーを使用することで、開発者は複雑なデータベースクエリ条件を構築でき、コードの簡潔さと安全性を維持できます。以下はいくつかの注意点と推奨される方法です：
-
-- Wrapper を使用する場合、できるだけラムダ式を使用してハードコーディングされたフィールド名を避けることで、コードの可読性と保守性を向上させることができます。
-- Wrapper はメソッドチェーンをサポートしているため、`and`、`or` などの論理演算子を組み合わせて使用できます。
-- UpdateWrapper または LambdaUpdateWrapper を使用する場合、エンティティオブジェクトを作成せずに、直接 Wrapper 内で更新フィールドと条件を設定できます。
-- Wrapper のスレッド安全性に注意してください。通常、使用時に新しいWrapperインスタンスを作成します。
-- MyBatis-Plus の Wrapper を使用する場合、SQLインジェクションを避けるため、フロントエンドからの動的パラメータを直接SQL文に追加しないでください。MyBatis-Plus は安全なパラメータバインド方式を提供しているため、`eq`、`apply` などのメソッドを使用すると、自動的にパラメータバインドを処理し、SQLインジェクションのリスクを回避できます。
+- Wrapper を使用する際は、ハードコーディングされたフィールド名を避けるために Lambda 式を使用することを推奨します。これにより、コードの可読性と保守性が向上します。
+- Wrapper はメソッドチェーンをサポートしており、`and`、`or` などの論理演算子を使用して複数の条件を組み合わせることができます。
+- 更新操作で UpdateWrapper または LambdaUpdateWrapper を使用する場合、エンティティオブジェクトを省略し、Wrapper 内で直接更新フィールドを設定できます。
+- Wrapper のスレッドセーフ性に注意し、通常は使用するたびに新しい Wrapper インスタンスを作成してください。
+- MyBatis-Plus の Wrapper を使用する際は、SQL インジェクション攻撃を防ぐために、フロントエンドの動的パラメータを直接 SQL フラグメントに連結しないでください。MyBatis-Plus は安全なパラメータバインディング方法を提供しており、`eq`、`apply` などのメソッドを使用すると、パラメータバインディングが自動的に処理され、SQL インジェクションのリスクを回避できます。
 
 ### Wrappers
 
-MyBatis-Plus は `Wrappers` クラスを提供しており、これは静的ファクトリークラスです。`QueryWrapper`、`UpdateWrapper`、`LambdaQueryWrapper`、`LambdaUpdateWrapper` のインスタンスを迅速に作成できます。`Wrappers` を使用することで、コード量を減らし、開発効率を向上させることができます。
+MyBatis-Plus は `Wrappers` クラスを提供しています。これは静的ファクトリクラスであり、`QueryWrapper`、`UpdateWrapper`、`LambdaQueryWrapper`、`LambdaUpdateWrapper` のインスタンスを素早く作成するために使用されます。`Wrappers` を使用することで、コード量を削減し、開発効率を向上させることができます。
 
-**例**：
+**例**:
 
 ```java
-// QueryWrapper を作成します
+// QueryWrapper の作成
 QueryWrapper<User> queryWrapper = Wrappers.query();
 queryWrapper.eq("name", "张三");
 
-// LambdaQueryWrapper を作成します
+// LambdaQueryWrapper の作成
 LambdaQueryWrapper<User> lambdaQueryWrapper = Wrappers.lambdaQuery();
 lambdaQueryWrapper.eq(User::getName, "张三");
 
-// UpdateWrapper を作成します
+// UpdateWrapper の作成
 UpdateWrapper<User> updateWrapper = Wrappers.update();
 updateWrapper.set("name", "李四");
 
-// LambdaUpdateWrapper を作成します
+// LambdaUpdateWrapper の作成
 LambdaUpdateWrapper<User> lambdaUpdateWrapper = Wrappers.lambdaUpdate();
 lambdaUpdateWrapper.set(User::getName, "李四");
 ```
 
 :::tip[注意事項]
 
-- `QueryWrapper` と `UpdateWrapper` の`条件フィールド部分`は、SQLインジェクションを防ぐため、必ず安全であることを確認してください。
-- 任意の`フロントエンド`からの`SQLフラグメント`は`厳密にフィルタリング`する必要があります。詳細は[データセキュリティ保護](/ja/guides/security/) [セキュリティ脆弱性の予防](/ja/reference/about-cve/)を参照してください。
+- `QueryWrapper` および `UpdateWrapper` を使用してクエリを実行したり、`条件フィールド部分`を設定したりする際は、SQLインジェクション攻撃を避けるため、必ず安全性を確保してください。
+- `フロントエンド`から渡される `SQLフラグメント` はすべて `厳密にフィルタリング` する必要があります。詳細は [データセキュリティ保護](/guides/security/) および [セキュリティ脆弱性の予防](/reference/about-cve/) をご覧ください。
 
 :::
 
 ### スレッド安全性
 
-Wrapper インスタンスはスレッドセーフではありません。そのため、使用時に新しい Wrapper インスタンスを作成することをお勧めします。これにより、マルチスレッド環境下でのデータ競合と潜在的なエラーを避けることができます。
+Wrapper インスタンスはスレッドセーフではありません。そのため、使用するたびに新しい Wrapper インスタンスを作成することを推奨します。これにより、マルチスレッド環境におけるデータ競合や潜在的なエラーを回避できます。
 
 **例**：
 
 ```java
-// 各メソッドまたはリクエストで新しい Wrapper インスタンスを作成します
+// 各メソッドまたはリクエストで新しい Wrapper インスタンスを作成
 public List<User> getUsersByName(String name) {
     QueryWrapper<User> queryWrapper = Wrappers.query();
     queryWrapper.eq("name", name);
@@ -2722,22 +2719,22 @@ public List<User> getUsersByName(String name) {
 }
 ```
 
-これらのベストプラクティスに従うことで、開発者は MyBatis-Plus の Wrapper 条件ビルダーをより安全かつ効率的に使用でき、セキュアかつ保守性の高いデータベース操作コードを構築できます。
+これらのベストプラクティスに従うことで、開発者は MyBatis-Plus の Wrapper 条件コンストラクターをより安全かつ効率的に使用し、安全で保守性の高いデータベース操作コードを構築できます。
 
-### Wrapper で独自のSQLを使用
+### Wrapper を使用したカスタム SQL
 
-MyBatis-Plus は強力な Wrapper 条件ビルダーを提供しており、開発者が独自のSQL文を使用して、より複雑なデータベースクエリ要件を満たすことができます。この機能を使用するためには、`mybatis-plus` のバージョンが`3.0.7` 以上であることを確認してください。
+MyBatis-Plus は強力な Wrapper 条件構築器を提供しており、開発者がより複雑なデータベースクエリのニーズを満たすために、カスタム SQL 文を定義することができます。この機能を使用するには、`mybatis-plus` のバージョンが `3.0.7` 以上であることを確認してください。
 
 #### 注意事項
 
-- **バージョン要件**：プロジェクトで使用される `mybatis-plus` のバージョンが少なくとも`3.0.7`であることを確認してください。これにより、独自のSQL機能がサポートされます。
-- **パラメータ命名**：独自のSQLを使用する際、Wrapper オブジェクトをパラメータとして渡す場合、パラメータ名は `ew` である必要があります。または、アノテーション `@Param(Constants.WRAPPER)` を使用して明示的にパラメータが Wrapper オブジェクトであることを指定する必要があります。
-- **`${ew.customSqlSegment}` を使用**：SQL文で、`${ew.customSqlSegment}` を使用して Wrapper オブジェクトが生成するSQLフラグメントを参照します。
-- **entity ベースの where 句はサポートされていません**：独自のSQLを使用する場合、Wrapper オブジェクトはエンティティクラスに基づいて自動的に生成される where 句を生成しません。完全なSQL文を手動で記述する必要があります。
+- **バージョン要件**：カスタム SQL 機能をサポートするために、プロジェクトで使用している `mybatis-plus` のバージョンが少なくとも `3.0.7` であることを確認してください。
+- **パラメータ名**：カスタム SQL を使用する際、Wrapper オブジェクトをパラメータとして渡すときは、パラメータ名を `ew` とするか、アノテーション `@Param(Constants.WRAPPER)` を使用してパラメータが Wrapper オブジェクトであることを明示的に指定する必要があります。
+- **`${ew.customSqlSegment}` の使用**：SQL 文内で `${ew.customSqlSegment}` を使用して、Wrapper オブジェクトが生成した SQL フラグメントを参照します。
+- **エンティティベースの where 文はサポートされていません**：カスタム SQL を使用する際、Wrapper オブジェクトはエンティティクラスに基づいて自動的に where 句を生成しません。完全な SQL 文を手動で記述する必要があります。
 
 #### 例
 
-以下は、Wrapper で独自のSQLを使用する例です：
+以下は、Wrapper を使用したカスタム SQL の例です：
 
 ```java
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -2750,11 +2747,11 @@ public interface UserMapper extends BaseMapper<User> {
 }
 ```
 
-上記の例では、`selectByCustomSql` メソッドを定義し、カスタムSQL文を使用し、`${ew.customSqlSegment}` を通じて Wrapper オブジェクトによって生成されたSQLフラグメントを導入しています。
+上記の例では、`selectByCustomSql` メソッドを定義しています。このメソッドはカスタム SQL 文を使用し、`${ew.customSqlSegment}` を通じて Wrapper オブジェクトが生成した SQL フラグメントを導入しています。
 
 #### 使用方法
 
-カスタムSQLを使用するには、上記のメソッドを呼び出し、Wrapper オブジェクトを渡すだけです：
+カスタム SQL を使用するには、上記のメソッドを呼び出し、Wrapper オブジェクトを渡します：
 
 ```java
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
@@ -2763,13 +2760,13 @@ queryWrapper.eq("name", "张三");
 List<User> userList = userMapper.selectByCustomSql(queryWrapper);
 ```
 
-この例では、`selectByCustomSql` メソッドは、渡された `queryWrapper` オブジェクトによって生成された where 条件を持つクエリを実行します。
+この例では、`selectByCustomSql` メソッドは、渡された `queryWrapper` オブジェクトによって生成された where 条件を含むクエリを実行します。
 
-この方法により、MyBatis-Plus の Wrapper 機能とカスタムSQLを柔軟に組み合わせて、様々かつ複雑なデータベース操作の要件を満たすことができます。
+この方法により、MyBatis-Plus の Wrapper 機能とカスタム SQL を柔軟に組み合わせて、さまざまな複雑なデータベース操作のニーズを満たすことができます。
 
-## Kotlin の永続化オブジェクト定義のベストプラクティス
+## Kotlinにおける永続化オブジェクト定義のベストプラクティス
 
-Kotlin で永続化オブジェクトを定義する際は、コードの明確性と保守性を確保するために、いくつかのベストプラクティスに従うべきです。以下は、MyBatis-Plus を使用した永続化オブジェクトの定義例です：
+Kotlinで永続化オブジェクトを定義する際には、コードの明確性と保守性を確保するために、いくつかのベストプラクティスに従うべきです。以下は、MyBatis-Plusを使用した永続化オブジェクトの定義方法を示す例です：
 
 ```kotlin
 @TableName("sys_user")
@@ -2784,9 +2781,9 @@ class User {
 }
 ```
 
-**注意**：上記のコードの `@TableId` と `@TableField` アノテーションは、MyBatis-Plus での使用例を示すためのものであり、必須ではありません。すべてのメンバー変数は、Java の `updateSelective` のようなシナリオで使用できるように、nullable 型として定義し、初期値として `null` を設定する必要があります。
+**注意**：上記のコードにおける`@TableId`および`@TableField`アノテーションは、MyBatis-Plusの使用方法を示すためのものであり、必須ではありません。すべてのメンバ変数は、Javaにおける`updateSelective`のようなシナリオで使用できるように、nullable型として定義し、初期値として`null`を設定する必要があります。
 
-`data class` や全パラメータコンストラクタの使用は推奨されません。これは、空のオブジェクトを作成する際に不要な `null` 値を提供してしまう可能性があるからです。
+`data class`や全パラメータコンストラクタの使用は推奨されません。これは、空のオブジェクトを作成する際に不必要な`null`値を提供しなければならない可能性があるためです。
 
 ### アノテーションを使用したクエリ
 
@@ -2795,7 +2792,7 @@ class User {
 List<MysqlData> getAll(@Param(Constants.WRAPPER) Wrapper wrapper);
 ```
 
-### XML設定を使用したクエリ
+### XMLを使用したクエリ設定
 
 ```java
 List<MysqlData> getAll(Wrapper ew);
@@ -2807,9 +2804,9 @@ List<MysqlData> getAll(Wrapper ew);
 </select>
 ```
 
-### Kotlin での Wrapper の使用
+### KotlinでのWrapper使用
 
-Kotlinは `QueryWrapper` と `UpdateWrapper` をサポートしていますが、`LambdaQueryWrapper` と `LambdaUpdateWrapper` はサポートしていません。ラムダ形式の Wrapper が必要な場合は、 `KtQueryWrapper` と `KtUpdateWrapper` を使用できます。
+Kotlinは`QueryWrapper`と`UpdateWrapper`をサポートしていますが、`LambdaQueryWrapper`と`LambdaUpdateWrapper`はサポートしていません。LambdaスタイルのWrapperを使用する必要がある場合は、`KtQueryWrapper`と`KtUpdateWrapper`を使用できます。
 
 参考例：
 
@@ -2828,23 +2825,23 @@ updateRecord.name = "haha"
 userMapper.updateById(updateRecord)
 ```
 
-### チェーン呼び出しとラムダ式呼び出し
+### チェーンメソッド呼び出しとラムダ式呼び出し
 
-MyBatis-Plusは2つのスタイルのチェーン呼び出しを提供しています：通常のチェーン呼び出しとラムダ式チェーン呼び出しです。ラムダ式チェーン呼び出しはKotlinではサポートされていないことに注意してください。
+MyBatis-Plusは2種類のチェーンメソッド呼び出しスタイルを提供しています：通常のチェーンメソッド呼び出しとラムダ式チェーンメソッド呼び出しです。注意点として、ラムダ式チェーンメソッド呼び出しはKotlinではサポートされていません。
 
 ```java
-// 通常のチェーン呼び出し
+// 通常のチェーンメソッド呼び出し
 UpdateChainWrapper<T> update();
-// ラムダ式チェーン呼び出し（Kotlinではサポートされていません）
+// ラムダ式チェーンメソッド呼び出し（Kotlinではサポートされていません）
 LambdaUpdateChainWrapper<T> lambdaUpdate();
 
-// 等価比較での使用例：
+// 同等の例：
 query().eq("id", value).one();
 lambdaQuery().eq(Entity::getId, value).one();
 
-// 等価比較での使用例：
+// 同等の例：
 update().eq("id", value).remove();
 lambdaUpdate().eq(Entity::getId, value).remove();
 ```
 
-これらのベストプラクティスに従うことで、Kotlin での永続化オブジェクトの定義が明確で保守しやすくなり、同時に MyBatis-Plus が提供する機能を十分に活用することができます。
+これらのベストプラクティスに従うことで、Kotlinにおける永続化オブジェクトの定義を明確かつ保守しやすい状態に保ちながら、MyBatis-Plusが提供する機能を十分に活用することができます。

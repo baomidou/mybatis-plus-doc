@@ -4,69 +4,69 @@ sidebar:
   order: 17
 ---
 
-MyBatis-Plus は、`sqlInjector` グローバル設定を通じてカスタムSQLメソッドを注入する柔軟なメカニズムを提供しています。`ISqlInjector`インターフェースを実装するか、`AbstractSqlInjector` 抽象クラスを継承することで、カスタムの汎用メソッドを MyBatis コンテナに注入できます。
+MyBatis-Plusは、カスタムSQLメソッドを注入するための柔軟なメカニズムを提供しており、これは `sqlInjector` グローバル設定を通じて実現されます。`ISqlInjector` インターフェースを実装するか、`AbstractSqlInjector` 抽象クラスを継承することで、カスタムの汎用メソッドをMyBatisコンテナに注入できます。
 
-SQLインジェクターは、開発者が特定のビジネスロジックとクエリ要件に合わせてSQLステートメントの生成を拡張およびカスタマイズすることを可能にします。以下はSQLインジェクターの使用例と実現できる機能です：
+SQLインジェクターは、開発者がSQL文の生成を拡張およびカスタマイズし、特定のビジネスロジックやクエリ要件に対応できるようにします。以下は、SQLインジェクターの使用例とその実現可能な機能です：
 
-**使用例**
+**使用シナリオ**
 
-1. **カスタムクエリメソッド**：標準のCRUD操作が複雑なクエリ要件を満たせない場合、SQLインジェクターを使用してカスタムクエリメソッドを追加できます。
+1. **カスタムクエリメソッド**: 標準的なCRUD操作では複雑なクエリ要件を満たせない場合、SQLインジェクターを使用してカスタムクエリメソッドを追加できます。
 
-2. **複雑なデータ処理**：複数テーブルの結合、サブクエリ、集計関数などの複雑なデータ処理が必要な場合、SQLインジェクターは対応するSQLステートメントの生成を支援します。
+2. **複雑なデータ処理**: 複数テーブルの結合、サブクエリ、集計関数など、複雑なデータ処理が必要な場合、SQLインジェクターは対応するSQL文の生成を支援します。
 
-3. **パフォーマンス最適化**：カスタムSQLステートメントを使用して、特定のクエリシナリオのパフォーマンスを最適化できます。
+3. **パフォーマンス最適化**: カスタムSQL文を使用することで、特定のクエリシナリオに対してパフォーマンス最適化を行うことができます。
 
-4. **データ権限制御**：ユーザー権限に基づいてSQLステートメントを動的に生成する必要がある場合、SQLインジェクターを使用してデータ権限の制御を実装できます。
+4. **データ権限制御**: ユーザー権限に基づいて動的にSQL文を生成する必要がある場合、SQLインジェクターを使用してデータ権限制御を実装できます。
 
-5. **レガシーシステムの移行**：レガシーシステムを MyBatis-Plus に移行する際、既存のSQLステートメント構造を維持する必要がある場合、SQLインジェクターはこの移行を支援します。
+5. **レガシーシステム移行**: レガシーシステムをMyBatis-Plusに移行する際、既存のSQL文構造を維持する必要がある場合、SQLインジェクターがこの移行を支援します。
 
 **機能**
 
-1. **カスタムSQLメソッドの注入**：`ISqlInjector` インターフェースを実装することで、カスタムSQLメソッドを MyBatis コンテナに注入できます。いかなる複雑な SQL クエリであっても構いません。
+1. **カスタムSQLメソッドの注入**: `ISqlInjector` インターフェースを実装することで、任意の複雑なSQLクエリであるカスタムSQLメソッドをMyBatisコンテナに注入できます。
 
-2. **BaseMapperの拡張**：`BaseMapper` を継承した上で、SQLインジェクターを使用して追加のクエリメソッドを追加できます。これらのメソッドは自動的に MyBatis-Plus によって認識され使用されます。
+2. **BaseMapperの拡張**: `BaseMapper` を継承した上で、SQLインジェクターを通じて追加のクエリメソッドを追加でき、これらのメソッドは自動的にMyBatis-Plusによって認識され使用されます。
 
-3. **柔軟なSQL生成**：SQLインジェクターは柔軟なSQL生成メカニズムを提供し、ビジネス要件に基づいて SELECT、INSERT、UPDATE、DELETE などの様々なSQLステートメントを生成できます。
+3. **柔軟なSQL生成**: SQLインジェクターは柔軟なSQL生成メカニズムを提供し、SELECT、INSERT、UPDATE、DELETEなどを含む様々なSQL文をビジネス要件に基づいて生成できます。
 
-4. **サードパーティデータベース機能の統合**：データベースの特定の機能（ストアドプロシージャ、トリガーなど）を使用する必要がある場合、SQLインジェクターはこれらの機能を呼び出すSQLステートメントの生成を支援します。
+4. **サードパーティデータベース機能の統合**: ストアドプロシージャ、トリガーなどのデータベース固有の機能を使用する必要がある場合、SQLインジェクターはこれらの機能を呼び出すSQL文の生成を支援します。
 
-5. **動的SQLのサポート**：一部のシナリオでは、SQLステートメントを実行時の条件に基づいて動的に生成する必要があります。SQLインジェクターはこのような動的SQLの生成をサポートします。
+5. **動的SQLサポート**: 実行時の条件に基づいてSQL文を動的に生成する必要があるシナリオにおいて、SQLインジェクターはこのような動的SQLの生成をサポートします。
 
-SQLインジェクターを通じて、MyBatis-Plus は強力な拡張ポイントを提供し、開発者がプロジェクトの具体的な要件に基づいてSQLステートメントを柔軟にカスタマイズおよび最適化し、アプリケーションのパフォーマンスと適応性を向上させることができます。
+SQLインジェクターを通じて、MyBatis-Plusは強力な拡張ポイントを提供し、開発者がプロジェクトの具体的な要件に基づいてSQL文を柔軟にカスタマイズおよび最適化し、アプリケーションのパフォーマンスと適応性を向上させることができます。
 
-## インジェクターの設定
+## インジェクター設定
 
-MyBatis-Plus では、`sqlInjector` 設定はグローバル設定項目で、`ISqlInjector` インターフェースを実装したクラスを指定するために使用されます。このクラスは、カスタムSQLメソッドを MyBatis の Mapper インターフェースに注入する責務を負います。
+MyBatis-Plusでは、`sqlInjector` 設定は、カスタムSQLメソッドをMyBatisのMapperインターフェースに注入する責任を持つ、`ISqlInjector` インターフェースを実装したクラスを指定するためのグローバル設定項目です。
 
 ```java
 <!-- ISqlInjector.java -->
 public interface ISqlInjector {
 
     /**
-     * SQLが既に注入されているかどうかをチェックします（既に注入されている場合は再注入しません）
+     * SQLが既に注入されているかチェックします（既に注入済みの場合は再度注入しません）
      *
-     * @param builderAssistant mapper 構築アシスタント
+     * @param builderAssistant mapper ビルドアシスタント
      * @param mapperClass      mapper インターフェースの class オブジェクト
      */
     void inspectInject(MapperBuilderAssistant builderAssistant, Class<?> mapperClass);
 }
 ```
 
-デフォルトのインジェクター実装は [DefaultSqlInjector](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-core/src/main/java/com/baomidou/mybatisplus/core/injector/DefaultSqlInjector.java) です。これを参考にして独自のインジェクターを作成できます。
+デフォルトのインジェクター実装は [DefaultSqlInjector](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-core/src/main/java/com/baomidou/mybatisplus/core/injector/DefaultSqlInjector.java) です。独自のインジェクターを作成する際の参考にしてください。
 
-以下は `sqlInjector` を設定する方法の例です。
+以下は `sqlInjector` の設定方法の例です。
 
-提供された参考情報に基づいて、MyBatis-Plus でカスタムのグローバルメソッドを実装する方法を確認できます。これには、論理削除、自動入力、カスタムの `insert` および `insertBatch` メソッドが含まれます。以下は、より詳細な手順とサンプルコードです：
+提供された参考情報に基づくと、MyBatis-Plusで論理削除、自動フィル、およびカスタムの `insert` および `insertBatch` メソッドを含むカスタムグローバルメソッドを実装する方法を確認できます。以下は、より詳細な手順の説明とサンプルコードです：
 
-## カスタムグローバルメソッドの設定方法
+## カスタムグローバルメソッド攻略
 
 ### ステップ 1: SQLの定義
 
-まず、カスタムメソッドのSQLステートメントを定義する必要があります。これは通常、`AbstractMethod` を継承したクラスで行われます。例えば、`MysqlInsertAllBatch` などです。
+まず、カスタムメソッドのSQL文を定義する必要があります。これは通常、`AbstractMethod` を継承したクラス（例：`MysqlInsertAllBatch`）で完了します。
 
 ```java
 public class MysqlInsertAllBatch extends AbstractMethod {
-        
+    
     /**
      * @since 3.5.0
      */
@@ -76,7 +76,7 @@ public class MysqlInsertAllBatch extends AbstractMethod {
     
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        // SQLステートメントを定義 (主キー+通常のフィールド)  insert into table(....) values(....),(....)
+ 		// SQL文の定義 (主キー＋通常フィールド)  insert into table(....) values(....),(....)
         String sql = "INSERT INTO " + tableInfo.getTableName() + "(" + tableInfo.getKeyColumn() + "," +
                 tableInfo.getFieldList().stream().map(TableFieldInfo::getColumn).collect(Collectors.joining(",")) + ") VALUES ";
         String value = "(" + "#{" + ENTITY + DOT + tableInfo.getKeyProperty() + "}" + ","
@@ -85,7 +85,7 @@ public class MysqlInsertAllBatch extends AbstractMethod {
         String valuesScript = SqlScriptUtils.convertForeach(value, "list", null, ENTITY, COMMA);
         SqlSource sqlSource = super.createSqlSource(configuration, "<script>" + sql + valuesScript + "</script>", modelClass);
         KeyGenerator keyGenerator = tableInfo.getIdType() == IdType.AUTO ? Jdbc3KeyGenerator.INSTANCE : NoKeyGenerator.INSTANCE;
-        // 3番目のパラメータは baseMapper のカスタムメソッド名と一致する必要があります
+        // 3番目のパラメータはbaseMapperのカスタムメソッド名と一致している必要があります
         return this.addInsertMappedStatement(mapperClass, modelClass, this.methodName, sqlSource, keyGenerator,tableInfo.getKeyProperty(), tableInfo.getKeyColumn());
     }
 }
@@ -93,7 +93,7 @@ public class MysqlInsertAllBatch extends AbstractMethod {
 
 ### ステップ 2: カスタムメソッドの登録
 
-次に、`DefaultSqlInjector` を継承したクラスを作成し、`getMethodList` メソッドをオーバーライドしてカスタムメソッドを登録します。
+次に、`DefaultSqlInjector` を継承するクラスを作成し、`getMethodList` メソッドをオーバーライドしてカスタムメソッドを登録する必要があります。
 
 ```java
 public class MyLogicSqlInjector extends DefaultSqlInjector {
@@ -109,9 +109,9 @@ public class MyLogicSqlInjector extends DefaultSqlInjector {
 }
 ```
 
-### ステップ 3: BaseMapper の定義
+### ステップ 3: BaseMapperの定義
 
-次に、BaseMapper インターフェースでカスタムメソッドを定義する必要があります。
+次に、BaseMapperインターフェースでカスタムメソッドを定義する必要があります。
 
 ```java
 public interface MyBaseMapper<T> extends BaseMapper<T> {
@@ -144,14 +144,14 @@ mybatis-plus.global-config.sql-injector=com.example.MyLogicSqlInjector
 
 ### 注意事項
 
-- カスタムメソッドを定義する際は、メソッド名が注入するSQLステートメントのIDと一致することを確認してください。
-- カスタムのバッチ挿入と自動入力機能を使用する際は、Mapperメソッドのパラメータに `@Param` アノテーションを使用し、名前が MyBatis-Plus のデフォルトサポート（`list`、`collection`、`array`）に準拠していることを確認してください。
-- カスタムSQLステートメントは、ビジネス要件に基づいて記述し、実行したい操作を正しく実行できることを確認してください。
+- カスタムメソッドを定義する際は、メソッド名が注入されたSQL文のIDと一致していることを確認してください。
+- カスタムのバッチ挿入と自動フィル機能を使用する際は、Mapperメソッドのパラメータに `@Param` アノテーションを使用し、その名前がMyBatis-Plusのデフォルトサポート（`list`, `collection`, `array`）に準拠していることを確認してください。
+- カスタムSQL文は、ビジネス要件に基づいて記述し、目的の操作を正しく実行できることを確認してください。
 
-上記の手順により、MyBatis-Plus でカスタムのグローバルメソッドを正常に実装できます。実際の使用では、ビジネス要件に基づいてSQLステートメントとメソッドの実装を調整することを忘れないでください。
+以上の手順により、MyBatis-Plusでカスタムグローバルメソッドを正常に実装できます。実際の使用では、ビジネス要件に応じてSQL文とメソッドの実装を調整してください。
 
 ## その他の例
 
-[カスタム BaseMapper の例](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-deluxe) を参照すると、カスタムSQLインジェクターを作成する方法や、プロジェクトでそれらを使用する方法といった、詳細な手順を見つけることができます。
+[カスタム BaseMapper サンプル](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-deluxe) を参照すると、カスタムSQLインジェクターの作成方法とプロジェクトでの使用方法に関する詳細な手順を見つけることができます。
 
-この方法により、MyBatis-Plus は特定のビジネス要件を満たすために機能を拡張すると同時に、コードの読みやすさと保守性を維持することを可能にします。
+この方法により、MyBatis-Plusは特定のビジネス要件を満たすためにその機能を拡張することができ、同時にコードの整理整頓と保守性を維持します。

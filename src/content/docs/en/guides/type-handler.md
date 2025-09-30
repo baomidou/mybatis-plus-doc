@@ -4,15 +4,15 @@ sidebar:
   order: 18
 ---
 
-In MyBatis, TypeHandlers act as bridges for conversion between JavaType and JdbcType. They are used to set Java object values into PreparedStatements during SQL execution or retrieve values from ResultSets or CallableStatements.
+In MyBatis, Type Handlers act as a bridge for conversion between JavaType and JdbcType. They are used to set Java object values into a PreparedStatement when executing SQL statements, or to retrieve values from a ResultSet or CallableStatement.
 
-MyBatis-Plus provides several built-in TypeHandlers that can be quickly injected into the MyBatis container through the `TableField` annotation, simplifying the development process.
+MyBatis-Plus provides several built-in type handlers. They can be quickly injected into the MyBatis container via the `TableField` annotation, simplifying the development process.
 
-> Example project: 👉 [mybatis-plus-sample-typehandler](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-typehandler)
+> Sample Project: 👉 [mybatis-plus-sample-typehandler](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-typehandler)
 
 ## JSON Field Type Handlers
 
-MyBatis-Plus includes various JSON TypeHandlers, such as `AbstractJsonTypeHandler` and its subclasses `Fastjson2TypeHandler`, `FastjsonTypeHandler`, `GsonTypeHandler`, `JacksonTypeHandler`, etc. These handlers can convert JSON strings to Java objects and vice versa.
+MyBatis-Plus includes various built-in JSON type handlers, such as `AbstractJsonTypeHandler` and its subclasses `Fastjson2TypeHandler`, `FastjsonTypeHandler`, `GsonTypeHandler`, `JacksonTypeHandler`, etc. These handlers can convert between JSON strings and Java objects.
 
 ### Configuration
 
@@ -30,24 +30,24 @@ public class User {
      *
      * @TableName(autoResultMap = true)
      *
-     * Select the corresponding JSON handler and ensure the required JSON parsing dependency is included
+     * Select the corresponding JSON handler and ensure the corresponding JSON parsing dependency exists
      */
     @TableField(typeHandler = JacksonTypeHandler.class)
-    // Alternatively, use FastjsonTypeHandler
+    // Or use FastjsonTypeHandler
     // @TableField(typeHandler = FastjsonTypeHandler.class)
     private OtherInfo otherInfo;
 }
 ```
 
-### XML Configuration
+### Corresponding XML Configuration
 
-In XML mapping files, the `<result>` element can be used to specify a field's TypeHandler.
+In the XML mapping file, you can use the `<result>` element to specify the type handler for a field.
 
 ```xml
-<!-- Single field TypeHandler configuration -->
+<!-- Type handler configuration for a single field -->
 <result column="other_info" jdbcType="VARCHAR" property="otherInfo" typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler" />
 
-<!-- TypeHandler configuration for a specific field among multiple fields -->
+<!-- Type handler configuration for a specific field among multiple fields -->
 <resultMap id="departmentResultMap" type="com.baomidou...DepartmentVO">
     <result property="director" column="director" typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler" />
 </resultMap>
@@ -56,28 +56,28 @@ In XML mapping files, the `<result>` element can be used to specify a field's Ty
 </select>
 ```
 
-### Using TypeHandlers in Wrapper Queries
+### Using Type Handlers in Wrapper Queries
 
-Starting from MyBatis-Plus 3.5.3.2, TypeHandlers can be directly used in Wrapper queries.
+Starting from MyBatis-Plus version 3.5.3.2, you can use Type Handlers directly in Wrapper queries.
 
 ```java
 Wrappers.<H2User>lambdaQuery()
     .apply("name={0,typeHandler=" + H2userNameJsonTypeHandler.class.getCanonicalName() + "}", "{\"id\":101,\"name\":\"Tomcat\"}"))
 ```
 
-The above examples demonstrate MyBatis-Plus's flexible and powerful TypeHandler support, making it easier to handle complex data types. When using them, ensure you select the correct JSON handler and include the corresponding JSON parsing library dependency.
+Through the examples above, you can see that MyBatis-Plus provides flexible and powerful type handler support, making it more convenient to handle complex data types. When using them, ensure you select the correct JSON handler and include the corresponding JSON parsing library dependency.
 
 ## Custom Type Handlers
 
-In MyBatis-Plus, besides using built-in TypeHandlers, developers can also create custom TypeHandlers as needed.
+In MyBatis-Plus, besides using the built-in type handlers, developers can also create custom type handlers as needed.
 
-For example, when working with PostgreSQL databases, you might encounter JSONB-type fields. In such cases, you can create a custom TypeHandler to handle JSONB data.
+For example, when using a PostgreSQL database, you might encounter fields of type JSONB. In this case, you can create a custom type handler to process JSONB data.
 
-Here’s an example of a custom JSONB TypeHandler:
+Here is an example of a custom JSONB type handler:
 
-> Example project: 👉 [mybatis-plus-sample-jsonb](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-jsonb)
+> Sample Project: 👉 [mybatis-plus-sample-jsonb](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-jsonb)
 
-### Creating a Custom TypeHandler
+### Creating a Custom Type Handler
 
 ```java
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
@@ -104,7 +104,7 @@ public class JsonbTypeHandler<T> extends JacksonTypeHandler<T> {
         this.clazz = clazz;
     }
 
-    // Support for generics added in version 3.5.6. This constructor is required.
+    // Support for generics added starting from version 3.5.6, this constructor is required.
     public JsonbTypeHandler(Class<?> type, Field field) {
         super(type, field);
     }
@@ -119,9 +119,9 @@ public class JsonbTypeHandler<T> extends JacksonTypeHandler<T> {
 }
 ```
 
-### Using Custom TypeHandlers
+### Using a Custom Type Handler
 
-In entity classes, specify the custom TypeHandler using the `TableField` annotation:
+In the entity class, specify the custom type handler via the `TableField` annotation:
 
 ```java
 @Data
@@ -133,11 +133,11 @@ public class User {
     ...
 
     /**
-     * Use a custom JSONB TypeHandler
+     * Use the custom JSONB type handler
      */
     @TableField(typeHandler = JsonbTypeHandler.class)
     private OtherInfo otherInfo;
 }
 ```
 
-Through the above steps, you can use custom JSONB TypeHandlers in MyBatis-Plus to handle JSONB-type fields in PostgreSQL databases. Custom TypeHandlers provide great flexibility, allowing developers to tailor data processing logic to specific database features and business requirements.
+By following the steps above, you can use a custom JSONB type handler in MyBatis-Plus to handle JSONB type fields in a PostgreSQL database. Custom type handlers offer great flexibility, allowing developers to tailor data processing logic according to specific database characteristics and business requirements.

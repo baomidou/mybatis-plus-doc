@@ -6,15 +6,15 @@ sidebar:
 
 import LastedDependency from '@/components/LastedDependency.astro';
 
-We will demonstrate the powerful features of MyBatis-Plus through a simple demo. Before we begin, we assume you already have:
+We'll demonstrate the powerful features of MyBatis-Plus through a simple Demo. Before we begin, we assume you already have:
 
-- A Java development environment and a corresponding IDE
+- A Java development environment and corresponding IDE
 - Familiarity with Spring Boot
 - Familiarity with Maven or Gradle
 
 ---
 
-Consider a User table with the following structure:
+Let's consider a `User` table with the following structure:
 
 | id | name   | age | email              |
 |----|--------|-----|--------------------|
@@ -59,7 +59,7 @@ INSERT INTO `user` (id, name, age, email) VALUES
 ---
 
 :::tip[Did you know?]
-What do we need to do if we want to implement CRUD operations for this table using MyBatis-Plus from scratch?
+What would we need to do to implement CRUD operations for this table using MyBatis-Plus from scratch?
 :::
 
 ## Initialize Project
@@ -67,25 +67,28 @@ What do we need to do if we want to implement CRUD operations for this table usi
 Create an empty Spring Boot project and add the H2 database for integration testing.
 
 :::tip
-Click here [Spring Initializer](https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.1.8&packaging=jar&jvmVersion=17&groupId=com.example&artifactId=demo&name=demo&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.demo&dependencies=h2) to quickly initialize a Spring Boot project
+Click [Spring Initializer](https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.1.8&packaging=jar&jvmVersion=17&groupId=com.example&artifactId=demo&name=demo&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.demo&dependencies=h2) to quickly initialize a Spring Boot project.
 :::
 
 ## Add Dependencies
 
-Introduce the MyBatis-Plus Starter dependency
+Add the MyBatis-Plus Starter dependency.
 
-### Spring Boot 2
+### Spring Boot2
 
 <LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-boot-starter" />
 
-### Spring Boot 3
+### Spring Boot3
 
 <LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-spring-boot3-starter" />
 
+### Spring Boot4 (Since 3.5.13)
+
+<LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-spring-boot4-starter" />
 
 ## Configuration
 
-Add the relevant H2 database configuration to the `application.yml` configuration file:
+Add H2 database configuration in the `application.yml` configuration file:
 
 ```yaml
 <!-- application.yml -->
@@ -102,9 +105,9 @@ spring:
       data-locations: classpath:db/data-h2.sql
 ```
 
-The configuration above is the database connection information that any Spring Boot project would configure. If you are using a different database, such as MySQL, you need to modify the corresponding configuration information.
+The configuration above contains the standard database connection settings for any Spring Boot project. If you're using a different database like MySQL, modify the configuration accordingly.
 
-Add the `@MapperScan` annotation to the Spring Boot startup class to scan the Mapper folder:
+Add the `@MapperScan` annotation to the Spring Boot application class to scan the Mapper package:
 
 ```java {2}
 <!-- Application.java -->
@@ -122,7 +125,7 @@ public class Application {
 
 ## Coding
 
-Write the entity class `User.java`:
+Create the entity class `User.java`:
 
 ```java
 <!-- User.java -->
@@ -138,11 +141,10 @@ public class User {
 ```
 
 :::note
-The code above uses [Lombok](https://projectlombok.org/) for code generation. If you are not comfortable with it, please generate the relevant Getter/Setter methods yourself.
+The code above uses [Lombok](https://projectlombok.org/) for code generation. If you prefer not to use it, please generate the Getter/Setter methods manually.
 :::
 
-
-Write the Mapper interface class `UserMapper.java`:
+Create the Mapper interface `UserMapper.java`:
 
 ```java
 public interface UserMapper extends BaseMapper<User> {
@@ -152,7 +154,7 @@ public interface UserMapper extends BaseMapper<User> {
 
 ## Start Using
 
-Add a test class for functional testing:
+Add a test class for functionality testing:
 
 ```java
 @SpringBootTest
@@ -173,10 +175,10 @@ public class SampleTest {
 ```
 
 :::tip
-The parameter of the `selectList()` method in UserMapper is MP's built-in condition wrapper `Wrapper`, so leaving it empty means no conditions.
+The parameter for the `selectList()` method in UserMapper is MP's built-in conditional wrapper `Wrapper`, so passing `null` means no conditions are applied.
 :::
 
-Console Output:
+Console output:
 
 ```txt
 User(id=1, name=Jone, age=18, email=test1@baomidou.com)
@@ -187,13 +189,13 @@ User(id=5, name=Billie, age=24, email=test5@baomidou.com)
 ```
 
 :::note
-For complete code examples, please refer to: [Spring Boot Quick Start Example](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart) | [Spring MVC Quick Start Example](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart-springmvc)
+For complete code examples, please visit: [Spring Boot Quick Start Example](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart) | [Spring MVC Quick Start Example](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-quickstart-springmvc)
 :::
 
 ## Summary
 
-Through these simple steps, we have implemented the CRUD functions for the User table, without even needing to write an XML file!
+With just these simple steps, we've implemented CRUD functionality for the User table without even writing any XML files!
 
-From the steps above, we can see that integrating MyBatis-Plus is very simple. Just introduce the starter dependency and configure it briefly to use.
+From the steps above, you can see that integrating MyBatis-Plus is very straightforward—just add the starter dependency and do some basic configuration to start using it.
 
-But the power of MyBatis-Plus goes far beyond these features. Want to learn more about the powerful features of MyBatis-Plus? Then keep reading!
+But MyBatis-Plus is much more powerful than what we've shown here. Want to learn more about its powerful features? Continue reading!

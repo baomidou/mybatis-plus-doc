@@ -1,8 +1,8 @@
 ---
 title: SpringBoot Low-Code Rapid Development Platform
 description: >-
-  SpringBoot Enterprise-Grade Open-Source Low-Code Application Development
-  Platform_Low-Code Microservice Development Management Platform
+  SpringBoot Enterprise Open-Source Low-Code Application Development
+  Platform_Low-Code Microservices Development Management Platform
 sidebar:
   hidden: true
 ---
@@ -11,9 +11,9 @@ sidebar:
 
 ### Product Introduction
 
-Snowy is China's first national cryptographic frontend-backend separated rapid development platform, adopting Vue3+AntDesignVue3 + Vite+SpringBoot+Mp+HuTool+SaToken. It integrates national cryptographic encryption/decryption plugins, achieving true "inseparable" frontend-backend separation in a separated framework. Simultaneously, it supports adaptation to domestic hardware, middleware, and databases, making it your optimal choice.
+Snowy is China's first national cryptographic algorithm-enabled rapid development platform with frontend-backend separation architecture. It adopts Vue3 + AntDesignVue3 + Vite + SpringBoot + Mp + HuTool + SaToken. Integrated with national cryptographic encryption/decryption plugins, it truly achieves "inseparable encryption" in frontend-backend separation frameworks. Simultaneously, it supports adaptation to domestic hardware, middleware, and databases, making it your optimal choice.
 
-The official website offers enterprise edition plugins such as workflow, multi-tenancy, multi-data sources, and Vue3 form designer for flexible use.
+The official website provides enterprise edition plugins including workflow, multi-tenancy, multiple data sources, Vue3 form designer, and more for flexible use.
 
 > PS: The Combined Edition (Mp Enterprise Edition + Snowy Enterprise Edition) refers to joint authorization from both parties, offering better value than purchasing separately.
 
@@ -25,42 +25,42 @@ Product Documentation: [https://www.xiaonuo.vip/doc](https://www.xiaonuo.vip/doc
 
 ![](https://pan.xiaonuo.vip/?explorer/share/file&hash=87aezjDgKhZAtVBvlw0lkiiLfz6MmgIF3Q4aRp6B9pjbP10oHPz4QXrR&name=/admin_index_01.0edb73a4.png)
 
-### Architectural Features
+### Architecture Features
 
-- Frontend-backend separated architecture, independent development, aligned with mainstream development models
-- Frontend primarily uses Vue3+Vite with AntdV as the UI framework
-- Backend based on SpringBoot2, MybatisPlus as the data operation framework, and Redis as the caching framework
+- Frontend-backend separation architecture, independent development, compliant with mainstream development patterns
+- Frontend primarily uses Vue3 + Vite with AntdV as the UI framework
+- Backend based on SpringBoot2, MybatisPlus as data operation framework, Redis as caching framework
 - Maven multi-module management, plugin-based development for easy installation, uninstallation, and upgrades, reducing coupling
-- Business modules and APIs are decoupled, enabling convenient cross-module references
-- Ingenious database design with standardized fields and easy extensibility
-- Supports national cryptographic algorithms for encryption/decryption, effortlessly meeting domestic project security evaluation requirements
-- Supports mainstream structured databases like MYSQL, ORACLE, SQLSERVER, and PGSQL
-- Supports domestic databases and middleware such as Dameng and Kingbase
+- Business modules and APIs are separated, enabling convenient module referencing
+- Sophisticated database design with standardized fields and easy extensibility
+- Supports national cryptographic algorithms for encryption/decryption, effortless compliance with domestic project security assessments
+- Supports mainstream structured databases: MYSQL, ORACLE, SQLSERVER, PGSQL
+- Supports domestic databases and middleware: Dameng Database, Kingbase ES
 - Supports deployment on Windows, Linux, and domestic operating systems
 
 ### Security Features
 
-- Utilizes SaToken, a lightweight Java permission authentication framework, powerful yet easy to learn
-- Supports authentication modes like login authentication, permission authentication, SSO, third-party login, and OAuth2.0
+- Uses SaToken lightweight Java authentication framework, powerful with low learning curve
+- Supports login authentication, permission authentication, single sign-on, third-party login, OAuth2.0 authentication modes
 - Enhanced RBAC permission design with independent resource and interface authorization for greater flexibility
 - Supports button-level granular authorization with dynamic UI button display
 - Supports API interface annotation-based and route interception-based authentication to prevent unauthorized access
-- Innovative data scope mechanism allowing different data scopes per interface
-- Supports rate limiting, anti-shake, and anti-duplicate submission to prevent dirty data
-- Encrypts passwords, phone numbers, ID cards, etc., during transmission and storage using national cryptographic algorithms for enhanced security
-- Operation logs use SM2 for integrity protection, meeting security audit requirements
+- Unique data scope mechanism allowing different data scopes for each interface
+- Supports rate limiting, anti-shake, and duplicate submission prevention to effectively block dirty data
+- Password, mobile number, ID card numbers transmitted and stored using national cryptographic algorithms for enhanced security
+- Operation logs protected with SM2 for integrity, meeting security audit requirements
 
-### Benefits
+### Benefits You Get
 
 1. Enterprise Edition source code (1 copy)
-2. VIP-exclusive group chat (1 frontend + 1 backend member)
-3. Official verifiable authorization
-4. Formal invoice
+2. VIP exclusive chat group (1 frontend + 1 backend developer)
+3. Official authorization verifiable
+4. Official invoice
 5. Permanent usage with 1-year update subscription
-6. GitLab private server for updates
+6. GitLab private server for downloads and updates
 7. Chinese-style workflow
-8. Exclusive dual-mode multi-tenancy (database isolation + ID isolation)
-9. Multi-data source support
+8. Exclusive dual-mode multi-tenancy (database isolation, ID isolation)
+9. Multiple data sources
 10. Payment module
 11. Advanced example module
 12. Complimentary reporting functionality (limited to integrated ureport features)

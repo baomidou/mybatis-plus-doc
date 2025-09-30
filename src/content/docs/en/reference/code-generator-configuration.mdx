@@ -5,31 +5,31 @@ sidebar:
 ---
 import Badge from "@/components/Badge.astro";
 
-The MyBatis-Plus code generator is a powerful tool that can automatically generate corresponding entity classes, Mapper interfaces, XML mapping files, and Service layer code based on database table structures. This tool significantly simplifies the development process based on the MyBatis framework and improves development efficiency, especially when dealing with a large number of database tables.
+The MyBatis-Plus code generator is a powerful tool that automatically generates corresponding entity classes, Mapper interfaces, XML mapping files, and Service layer code based on your database table structure. This tool significantly simplifies development workflows based on the MyBatis framework and improves development efficiency, especially when you need to work with numerous database tables.
 
-### Main Features  
+### Key Features
 
-- **Automation**: The code generator can automatically generate corresponding Java code based on database table structures, reducing the workload of manually writing repetitive code.  
-- **Configurability**: Through configuration files or code, you can flexibly specify the package path, table names, field names, templates, etc., to meet the needs of different projects.  
-- **Template Support**: Supports custom code templates, allowing you to tailor code style and structure according to project requirements.  
-- **Multi-Database Support**: Compatible with various database types, such as MySQL, Oracle, SQL Server, etc. Simply configure the corresponding database connection information.  
-- **Easy Integration**: Can be easily integrated into existing projects—just a few lines of code are needed to start the code generation process.
+- **Automation**: The code generator automatically creates corresponding Java code based on your database table structure, reducing the manual effort of writing repetitive code.
+- **Configurability**: You can flexibly specify package paths, table names, field names, templates, and other settings for the generated code through configuration files or code, meeting the needs of different projects.
+- **Template Support**: Supports custom code templates, allowing you to tailor the code style and structure according to your project requirements.
+- **Multi-Database Support**: Works with multiple database types such as MySQL, Oracle, and SQL Server. You only need to configure the corresponding database connection information.
+- **Easy Integration**: Easily integrates into existing projects. You can start the code generation process with just a few lines of code.
 
-### Use Cases  
+### Use Cases
 
-- **New Project Setup**: When starting a new project, you can use the code generator to quickly generate basic CRUD code, accelerating project initiation.  
-- **Table Structure Changes**: When the database table structure changes, the code generator can update the corresponding Java code to maintain consistency between the code and the database.  
-- **Repetitive Tasks**: In scenarios requiring a large amount of similar CRUD operations, the code generator can significantly reduce repetitive work and improve development efficiency.
+- **New Project Setup**: When starting a new project, you can use the code generator to quickly create basic CRUD code, accelerating project launch.
+- **Table Structure Changes**: When your database table structure changes, you can use the code generator to update the corresponding Java code, maintaining consistency between your code and database.
+- **Repetitive Tasks**: In scenarios requiring extensive similar CRUD operations, the code generator can significantly reduce repetitive work and improve development efficiency.
 
 ### How to Use
 
-1. **Configure Data Source**: Specify the database type, connection URL, username, password, etc.
-2. **Configure Strategy**: Select the tables for which code needs to be generated, set naming strategies for table and field names, etc.
-3. **Configure Package Information**: Set the package path for the generated code, including entity classes, Mapper interfaces, Service classes, etc.
-4. **Configure Templates**: If custom code styles are needed, configure or create custom code templates.
-5. **Execute Generation**: Run the code generator to produce the corresponding Java code based on the configuration.
+1. **Configure Data Source**: Specify the database type, connection URL, username, and password.
+2. **Configure Strategy**: Select the tables for which you want to generate code, and set naming strategies for table names and column names.
+3. **Configure Package Information**: Set the package path for the generated code, including entity classes, Mapper interfaces, Services, and more.
+4. **Configure Templates**: If you need to customize the code style, you can configure or create custom code templates.
+5. **Execute Generation**: Run the code generator to produce the corresponding Java code based on your configuration.
 
-### Sample Code
+### Example Code
 
 ```java
 import com.baomidou.mybatisplus.generator.AutoGenerator;
@@ -43,16 +43,16 @@ public class CodeGenerator {
         // Global configuration
         GlobalConfig globalConfig = new GlobalConfig();
         globalConfig.setOutputDir(System.getProperty("user.dir") + "/src/main/java") // Set output directory
-                .setAuthor("Your Name") // Set author
-                .setOpen(false) // Whether to open the directory after generation
-                .setFileOverride(true) // Whether to overwrite existing files
-                .setServiceName("%sService") // Service interface name suffix
-                .setIdType(IdType.AUTO) // Primary key generation strategy
-                .setSwagger2(true); // Whether to generate Swagger annotations
+                .setAuthor("Your Name") // Set author name
+                .setOpen(false) // Set whether to open the directory after generation
+                .setFileOverride(true) // Set whether to overwrite existing files
+                .setServiceName("%sService") // Set Service interface name suffix
+                .setIdType(IdType.AUTO) // Set primary key generation strategy
+                .setSwagger2(true); // Set whether to generate Swagger annotations
 
         // Data source configuration
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
-        dataSourceConfig.setDbType(DbType.MYSQL) // Database type
+        dataSourceConfig.setDbType(DbType.MYSQL) // Set database type
                 .setUrl("jdbc:mysql://localhost:3306/mybatis_plus?useSSL=false&serverTimezone=UTC") // Database connection URL
                 .setUsername("root") // Database username
                 .setPassword("password") // Database password
@@ -60,30 +60,30 @@ public class CodeGenerator {
 
         // Strategy configuration
         StrategyConfig strategyConfig = new StrategyConfig();
-        strategyConfig.setInclude("user", "order") // Tables to generate code for
-                .setNaming(NamingStrategy.underline_to_camel) // Table name to class name strategy
-                .setColumnNaming(NamingStrategy.underline_to_camel) // Column name to property name strategy
-                .setEntityLombokModel(true) // Use Lombok for entity classes
-                .setRestControllerStyle(true) // REST-style Controller
-                .setTablePrefix(new String[]{"tbl_"}); // Table name prefix
+        strategyConfig.setInclude("user", "order") // Specify table names to generate code for
+                .setNaming(NamingStrategy.underline_to_camel) // Set table name to class name conversion strategy
+                .setColumnNaming(NamingStrategy.underline_to_camel) // Set column name to property name conversion strategy
+                .setEntityLombokModel(true) // Set entity class to use Lombok model
+                .setRestControllerStyle(true) // Set Controller to use REST style
+                .setTablePrefix(new String[]{"tbl_"}); // Set table name prefixes
 
         // Package configuration
         PackageConfig packageConfig = new PackageConfig();
-        packageConfig.setParent("com.example") // Parent package name
-                .setMapper("mapper") // Mapper interface subpackage
-                .setEntity("entity") // Entity class subpackage
-                .setController("controller") // Controller subpackage
-                .setService("service") // Service subpackage
-                .setXml("mapper"); // Mapper XML file subpackage
+        packageConfig.setParent("com.example") // Set parent package name
+                .setMapper("mapper") // Set sub-package name for Mapper interfaces
+                .setEntity("entity") // Set sub-package name for entity classes
+                .setController("controller") // Set sub-package name for Controller classes
+                .setService("service") // Set sub-package name for Service classes
+                .setXml("mapper"); // Set sub-package name for Mapper XML files
 
         // Template configuration
         TemplateConfig templateConfig = new TemplateConfig();
-        templateConfig.setXml(null) // Disable XML generation
-                .setController("templates/controller.java.vm") // Controller template path
-                .setEntity("templates/entity.java.vm") // Entity template path
-                .setMapper("templates/mapper.java.vm"); // Mapper interface template path
+        templateConfig.setXml(null) // Do not generate XML files
+                .setController("templates/controller.java.vm") // Set Controller template path
+                .setEntity("templates/entity.java.vm") // Set entity class template path
+                .setMapper("templates/mapper.java.vm"); // Set Mapper interface template path
 
-        // Integrate configurations
+        // Combine configurations
         AutoGenerator autoGenerator = new AutoGenerator();
         autoGenerator.setGlobalConfig(globalConfig)
                 .setDataSource(dataSourceConfig)
@@ -97,7 +97,7 @@ public class CodeGenerator {
 }
 ```
 
-With the MyBatis-Plus code generator, developers can focus more on implementing business logic rather than writing repetitive CRUD code, thereby improving development efficiency and code quality.
+With the MyBatis-Plus code generator, you can focus more on implementing business logic rather than writing repetitive CRUD code, which improves development efficiency and code quality.
 
 ## Basic Configuration
 
@@ -106,13 +106,13 @@ With the MyBatis-Plus code generator, developers can focus more on implementing 
 - Type: `DataSourceConfig`
 - Default: `null`
 
-The data source configuration is used to specify the target database for code generation. By configuring the data source, the code generator can connect to the database and retrieve table structure information to generate corresponding code.
+The data source configuration specifies the target database for code generation. By configuring the data source, the code generator can connect to the database and retrieve table structure information to generate the corresponding code.
 
 **Example Configuration:**
 
 ```java
 DataSourceConfig dataSourceConfig = new DataSourceConfig();
-dataSourceConfig.setDbType(DbType.MYSQL) // Set database type, such as MySQL, Oracle, etc.
+dataSourceConfig.setDbType(DbType.MYSQL) // Set the database type, such as MySQL, Oracle, etc.
     .setUrl("jdbc:mysql://localhost:3306/mybatis_plus") // Database connection URL
     .setUsername("root") // Database username
     .setPassword("password") // Database password
@@ -122,9 +122,9 @@ dataSourceConfig.setDbType(DbType.MYSQL) // Set database type, such as MySQL, Or
 ### Database Table Configuration (strategy)
 
 - Type: `StrategyConfig`
-- Default: `null`
+- Default value: `null`
 
-The database table configuration is used to specify which tables to generate code for or exclude. Through strategy configuration, you can flexibly control the scope of code generation.
+The database table configuration specifies which tables to generate code for or which tables to exclude. Using strategy configuration, you can flexibly control the scope of code generation.
 
 **Example Configuration:**
 
@@ -133,24 +133,24 @@ StrategyConfig strategyConfig = new StrategyConfig();
 strategyConfig.setInclude("user", "order") // Specify table names for code generation
     .setExclude("user_detail") // Exclude table names from code generation
     .setEntityLombokModel(true) // Enable Lombok model for entity classes
-    .setRestControllerStyle(true); // Set REST style for Controller
+    .setRestControllerStyle(true); // Use REST style for Controller
 ```
 
-### Package Configuration (packageInfo)
+### Package Name Configuration (packageInfo)
 
 - Type: `PackageConfig`
 - Default: `null`
 
-Package configuration is used to specify the package path for generated code. By configuring the package names, you can ensure the generated code is placed in the correct directory structure.
+Package name configuration is used to specify the package path for the generated code. By configuring the package names, you can ensure the generated code is placed in the correct directory structure.
 
 **Example Configuration:**
 
 ```java
 PackageConfig packageConfig = new PackageConfig();
-packageConfig.setParent("com.example") // Set parent package name
-    .setMapper("mapper") // Set subpackage name for Mapper interfaces
-    .setEntity("entity") // Set subpackage name for entity classes
-    .setController("controller"); // Set subpackage name for Controllers
+packageConfig.setParent("com.example") // Set the parent package name
+    .setMapper("mapper") // Set the sub-package name for Mapper interfaces
+    .setEntity("entity") // Set the sub-package name for entity classes
+    .setController("controller"); // Set the sub-package name for Controller classes
 ```
 
 ### Template Configuration (template)
@@ -158,16 +158,16 @@ packageConfig.setParent("com.example") // Set parent package name
 - Type: `TemplateConfig`
 - Default: `null`
 
-Template configuration allows customization of code generation templates to achieve personalized operations. Through template configuration, you can tailor the format and content of the generated code.
+Template configuration allows you to customize the templates used for code generation, enabling personalized operations. Through template configuration, you can customize the format and content of the generated code.
 
 **Example Configuration:**
 
 ```java
 TemplateConfig templateConfig = new TemplateConfig();
 templateConfig.setXml(null) // Do not generate XML files
-    .setController("templates/controller.java.vm") // Set Controller template path
-    .setEntity("templates/entity.java.vm") // Set entity class template path
-    .setMapper("templates/mapper.java.vm"); // Set Mapper interface template path
+    .setController("templates/controller.java.vm") // Set the Controller template path
+    .setEntity("templates/entity.java.vm") // Set the entity class template path
+    .setMapper("templates/mapper.java.vm"); // Set the Mapper interface template path
 ```
 
 ### Global Strategy Configuration (globalConfig)
@@ -175,7 +175,7 @@ templateConfig.setXml(null) // Do not generate XML files
 - Type: `GlobalConfig`
 - Default: `null`
 
-Global strategy configuration provides some global settings, such as author information, output path, etc.
+The global strategy configuration provides global settings such as author information and output paths.
 
 **Example Configuration:**
 
@@ -192,7 +192,7 @@ globalConfig.setOutputDir("src/main/java") // Set the output directory for gener
 - Type: `InjectionConfig`
 - Default: `null`
 
-Injection configuration allows for operations such as injecting custom parameters to achieve personalized customization. Through injection configuration, additional logic can be added during the code generation process.
+Injection configuration allows you to perform operations like injecting custom parameters to achieve personalized operations. Through injection configuration, you can add additional logic during the code generation process.
 
 **Example Configuration:**
 
@@ -213,37 +213,37 @@ InjectionConfig injectionConfig = new InjectionConfig() {
 };
 ```
 
-With the above configuration, the MyBatis-Plus code generator can produce code that aligns with your project structure based on your requirements, significantly improving development efficiency. Remember to adjust the configuration parameters according to your actual project needs to achieve optimal code generation results.
+With the above configuration, the MyBatis-Plus code generator can generate code that matches your project structure according to your requirements, significantly improving development efficiency. Remember to adjust configuration parameters based on your actual project needs to achieve optimal code generation results.
 
-## Data Source Configuration (dataSource) Explained  
+## Data Source Configuration (dataSource) Explained
 
-Data source configuration is a critical part of the MyBatis-Plus code generator, defining how to connect to the database and query database information. Below is a detailed explanation and examples of data source configuration.
+The data source configuration is a crucial part of the MyBatis-Plus code generator. It defines how to connect to your database and how to query database information. Below is a detailed explanation and examples for data source configuration.
 
-### dbQuery  
+### dbQuery
 
-- **Description**: A database information query class used to perform database query operations.  
-- **Default Implementation**: Automatically selects the built-in implementation for the corresponding database based on `dbType`.  
+- **Description**: A database information query class used to perform database query operations.
+- **Default Implementation**: Automatically selects the built-in implementation for the corresponding database based on the `dbType`.
 - **Customization**: You can implement the `IDbQuery` interface to customize database query SQL statements for returning specific content.
 
 ### dbType
 
-- **Description**: Database type, a mandatory configuration option.
-- **Built-in Support**: MyBatis-Plus provides built-in support for various common database types, such as MySQL, Oracle, PostgreSQL, etc.
+- **Description**: Database type, a required configuration option.
+- **Built-in Support**: MyBatis-Plus has built-in support for various common database types, such as MySQL, Oracle, PostgreSQL, and more.
 
 ### schemaName
 
-- **Description**: Database schema name, required by certain database systems (such as PostgreSQL).
-- **Example**: In PostgreSQL, it can be specified as `public`.
+- **Description**: The database schema name, required by certain database systems (such as PostgreSQL).
+- **Example**: In PostgreSQL, you can specify it as `public`.
 
 ### typeConvert
 
-- **Description**: Type conversion, used to convert database field types to Java types.  
-- **Default Implementation**: Automatically selects the built-in implementation for the corresponding database based on `dbType`.  
-- **Customization**: If the built-in conversion types do not meet requirements, you can implement the `ITypeConvert` interface to customize the conversion from database field types to Java types, or implement the `IColumnType` interface for more advanced customization.
+- **Description**: Type conversion, used to convert database field types to Java types.
+- **Default Implementation**: Automatically selects the built-in implementation for the corresponding database based on the `dbType`.
+- **Customization**: If the built-in conversion types do not meet your requirements, you can implement the `ITypeConvert` interface to customize the conversion from database field types to Java types, or implement the `IColumnType` interface for more advanced customization.
 
 ### url
 
-- **Description**: The URL for the database connection, containing all the information required to connect to the database.
+- **Description**: The database connection URL, which contains all the information required to connect to the database.
 
 ### driverName
 
@@ -251,11 +251,11 @@ Data source configuration is a critical part of the MyBatis-Plus code generator,
 
 ### username
 
-- **Description**: The username for database connection, used for authentication.
+- **Description**: The username for the database connection, used for authentication.
 
 ### password
 
-- **Description**: The password for database connection, used for authentication.
+- **Description**: The password for the database connection, used for authentication.
 
 ### Example Configuration
 
@@ -268,13 +268,13 @@ dataSourceConfig.setDbType(DbType.MYSQL) // Set database type to MySQL
     .setDriverName("com.mysql.cj.jdbc.Driver"); // Set database driver name
 ```
 
-In this example, we have configured a data source for a MySQL database. We specified the database type, connection URL, username, password, and driver name. This information will be used to establish a connection to the database and retrieve table structure information to generate the corresponding Java code.
+In this example, we configure a data source for a MySQL database. We specify the database type, connection URL, username, password, and driver name. This information is used to establish a connection to the database and retrieve table structure information to generate the corresponding Java code.
 
-Please adjust these parameters according to your actual database configuration to ensure they match your database environment.
+Adjust these parameters according to your actual database configuration to ensure they match your database environment.
 
-## Database Table Configuration (strategy) Details  
+## Database Table Configuration (strategy) Explained
 
-Database table configuration is used to define how database tables and fields are handled during code generation. Through strategy configuration, you can specify which tables to generate code for, how to name entity classes and fields, and whether to include specific annotations or attributes.
+Database table configuration defines how database tables and fields are handled during code generation. Through strategy configuration, you can specify which tables to generate code for, how to name entity classes and fields, and whether to include specific annotations or properties.
 
 ### isCapitalMode
 
@@ -289,24 +289,24 @@ Database table configuration is used to define how database tables and fields ar
 ### naming
 
 - **Description**: The naming strategy for mapping database tables to entities.
-- **Default value**: Uses underscore to camel case naming.
+- **Default**: Uses underscore to camel case naming.
 
-### columnNaming  
+### columnNaming
 
-- **Description**: The naming strategy for mapping database table fields to entities.  
-- **Default Value**: When unspecified, follows the `naming` strategy.
+- **Description**: The naming strategy for mapping database table columns to entity properties.
+- **Default Value**: When not specified, follows the `naming` strategy.
 
 ### tablePrefix
 
-- **Description**: Table prefix, used to filter tables with specific prefixes.
+- **Description**: Table prefix used to filter tables that have a specific prefix.
 
 ### fieldPrefix
 
-- **Description**: Field prefix, used to filter fields with a specific prefix.
+- **Description**: Field prefix, used to filter fields that have a specific prefix.
 
 ### superEntityClass
 
-- **Description**: The fully qualified name of the custom inherited Entity class, including the package name.
+- **Description**: Specifies the fully qualified class name (including package name) for your custom base Entity class.
 
 ### superEntityColumns
 
@@ -314,77 +314,89 @@ Database table configuration is used to define how database tables and fields ar
 
 ### superMapperClass
 
-- **Description**: The fully qualified name of the custom inherited Mapper class, including the package name.
+- **Description**: The fully qualified name of your custom base Mapper class, including the package name.
 
 ### superServiceClass
 
-- **Description**: The fully qualified name (including package name) of the custom inherited Service class.
+- **Description**: The fully qualified class name (including package name) of your custom inherited Service class.
 
 ### superServiceImplClass
 
-- **Description**: The fully qualified name of the custom inherited ServiceImpl class, including the package name.
+- **Description**: The fully qualified class name, including package name, for your custom inherited ServiceImpl class.
 
 ### superControllerClass
 
-- **Description**: The fully qualified name of the custom inherited Controller class, including the package name.
+- **Description**: The fully qualified class name, including package name, of the custom Controller class you are extending.
 
 ### enableSqlFilter <Badge text="Since 3.3.1" type="error"/>
 
-- **Description**: By default, enables fuzzy table name matching in SQL. When disabled, `likeTable` and `notLikeTable` will become ineffective, and `include` and `exclude` will use in-memory filtering.
-- **Default value**: `true`
-- **Note**: If SQL syntax compatibility issues arise, manually set this to `false`. Known incompatible cases include the MyCat middleware. For more details, refer to [ISSUE-2102](https://github.com/baomidou/mybatis-plus/issues/2102).
+- **Description**: Enables SQL fuzzy table name matching by default. When disabled, `likeTable` and `notLikeTable` become ineffective, and `include` and `exclude` will use in-memory filtering instead.
+- **Default**: `true`
+- **Note**: Set this to `false` manually if you encounter SQL syntax compatibility issues. Known incompatible scenarios include the MyCat middleware. For more information, see [ISSUE-2102](https://github.com/baomidou/mybatis-plus/issues/2102).
 
 ### include
 
-- **Description**: The table names to be included. When `enableSqlFilter` is `false`, regular expressions are allowed.
+- **Description**: The table names to include. Regular expressions are allowed when `enableSqlFilter` is `false`.
 
 ### likeTable <Badge text="Since 3.3.0" type="error"/>
 
-- **Description**: Fuzzy matching for table names. This should be configured alternatively with notLikeTable.
+- **Description**: Performs fuzzy matching on table names. Use this or notLikeTable, but not both.
+
+- **Type**: `String`
+
+- **Default**: `null`
+
+```java
+// Example: Query all tables starting with 'sys'
+List<Map<String, Object>> list = mapper.selectList(
+    Wrappers.<Map<String, Object>>query()
+        .likeTable("sys%")
+);
+```
 
 ### exclude
 
-- **Description**: Table names to be excluded. Regular expressions are allowed when `enableSqlFilter` is `false`.
+- **Description**: The table names you want to exclude. Regular expressions are allowed when `enableSqlFilter` is `false`.
 
 ### notLikeTable <Badge text="Since 3.3.0" type="error"/>
 
-- **Description**: Excludes table names with fuzzy matching. This and `likeTable` are mutually exclusive configurations.
+- **Description**: Excludes table names using fuzzy matching. Use this or `likeTable` - choose one to configure.
 
 ### entityColumnConstant
 
-- **Description**: Whether to generate field constants for the 【entity】.
-- **Default value**: `false`
+- **Description**: Whether to generate field constants for the entity.
+- **Default Value**: `false`
 
 ### ~~entityBuilderModel~~ <Badge text="@Deprecated" type="error"/>
 
-- **Description**: Whether the [entity] is in builder model.
+- **Description**: Whether the entity uses the builder pattern.
 - **Default**: `false`
-- **Note**: Renamed to [chainModel](#chainmodel) since version 3.3.2
+- **Note**: Renamed to [chainModel](#chainmodel) starting from version 3.3.2
 
 ### chainModel <Badge text="Since 3.3.2" type="error"/>
 
-- **Description**: Whether the [entity] is a chain model.
+- **Description**: Whether the [entity] uses the chain model.
 - **Default value**: `false`
-- **Note**: Versions prior to 3.3.2 generated chain models by default. Starting from 3.3.2, they are not generated by default. Enable this option if needed.
+- **Note**: Versions below 3.3.2 generated the chain model by default. Starting from version 3.3.2, it is not generated by default. Enable this option if you need it.
 
 ### entityLombokModel
 
-- **Description**: Whether the 【entity】 is a Lombok model.
+- **Description**: Whether the entity is a Lombok model.
 - **Default value**: `false`
 
 ### entityBooleanColumnRemoveIsPrefix
 
-- **Description**: Whether to remove the 'is' prefix for Boolean type fields.  
+- **Description**: Whether to remove the "is" prefix for Boolean type fields.
 - **Default value**: `false`
 
 ### restControllerStyle
 
-- **Description**: Generate `@RestController` controllers.
+- **Description**: Generates `@RestController` controllers.
 - **Default value**: `false`
 
 ### controllerMappingHyphenStyle
 
-- **Description**: Convert camelCase to hyphen-case.
+- **Description**: Convert camelCase to hyphenated style.
 - **Default value**: `false`
 
 ### entityTableFieldAnnotationEnable
@@ -398,7 +410,7 @@ Database table configuration is used to define how database tables and fields ar
 
 ### logicDeleteFieldName
 
-- **Description**: The field name for logical deletion.
+- **Description**: The property name for logical deletion.
 
 ### tableFillList
 
@@ -408,28 +420,28 @@ Database table configuration is used to define how database tables and fields ar
 
 ```java
 StrategyConfig strategyConfig = new StrategyConfig();
-strategyConfig.setCapitalMode(true) // Enable uppercase naming mode
+strategyConfig.setCapitalMode(true) // Use uppercase naming mode
     .setEntityLombokModel(true) // Use Lombok model
-    .setRestControllerStyle(true) // Generate @RestController controllers
+    .setRestControllerStyle(true) // Generate @RestController controller
     .setInclude("user", "order") // Include specific tables
     .setExclude("user_detail") // Exclude specific tables
-    .setEntityBooleanColumnRemoveIsPrefix(true) // Remove 'is' prefix for Boolean fields
+    .setEntityBooleanColumnRemoveIsPrefix(true) // Remove 'is' prefix from Boolean fields
     .setTablePrefix("tbl_") // Set table prefix
-    .setControllerMappingHyphenStyle(true); // Convert camelCase to hyphenated style
+    .setControllerMappingHyphenStyle(true); // Convert camel case to hyphenated style
 ```
 
-In this example, we configured a strategy specifying uppercase naming mode, using Lombok model, generating REST-style controllers, and defining tables to include/exclude. We also set table prefixes and camelCase-to-hyphen mapping style for controller routes.
+In this example, we configure a strategy that specifies uppercase naming mode, uses the Lombok model, generates REST-style controllers, and defines which tables to include and exclude. We also set a table prefix and enable hyphenated style for controller mappings.
 
 Adjust these configuration parameters according to your project requirements to ensure the generated code meets your expectations.
 
-## Package Configuration (packageInfo) Explained  
+## Package Name Configuration (packageInfo) Detailed Explanation
 
-Package configuration is used to define the package structure of the generated code, ensuring that the generated code is placed in the correct directory. By configuring the package names, you can control how the code is organized to align with the project's architectural design.
+Package name configuration defines the package structure for generated code, ensuring that the generated code is placed in the correct directories. By configuring package names, you can control how the code is organized to align with your project's architectural design.
 
-### parent  
+### parent
 
-- **Description**: The parent package name, which serves as the top-level package for all generated code.  
-- **Default Value**: If not specified, the full package path must be defined for each sub-package.
+- **Description**: The parent package name, which serves as the top-level package for all generated code.
+- **Default Value**: If not set, you must specify the full package path for each sub-package name.
 
 ### moduleName
 
@@ -437,31 +449,31 @@ Package configuration is used to define the package structure of the generated c
 
 ### entity
 
-- **Description**: The package name for entities, i.e., the package name where the entity classes are located.
+- **Description**: The entity package name, which is the package name where your entity classes are located.
 
 ### service
 
-- **Description**: The package name for Service, which is the package name where the service interfaces are located.
+- **Description**: The service package name, which is the package where your service interfaces are located.
 
 ### serviceImpl
 
-- **Description**: The package name for Service Impl, which is the package where service implementation classes are located.
+- **Description**: The service implementation package name, which is the package name where the service implementation classes are located.
 
 ### mapper
 
-- **Description**: The package name for Mapper, which is the package where the Mapper interfaces are located.
+- **Description**: The Mapper package name, which is the package name where the Mapper interfaces are located.
 
 ### xml
 
-- **Description**: The package name for Mapper XML, which is the package name where the Mapper XML files are located.
+- **Description**: The package name for Mapper XML files, which is the package where your Mapper XML files are located.
 
 ### controller
 
-- **Description**: The package name for controllers, indicating the package where controller classes are located.
+- **Description**: The controller package name, which is the package where your controller classes are located.
 
 ### pathInfo
 
-- **Description**: Path configuration information used to specify the physical path for generated code.
+- **Description**: Path configuration information used to specify the physical path where the code will be generated.
 
 ### Example Configuration
 
@@ -477,41 +489,41 @@ packageConfig.setParent("com.example") // Set parent package name
     .setController("controller"); // Set subpackage name for controller classes
 ```
 
-In this example, we have configured a package structure where the parent package name is `com.example`, and each subpackage name is set according to its functionality. For instance, entity classes will be placed in the `com.example.mybatisplus.entity` package, service interfaces will be placed in the `com.example.mybatisplus.service` package, and so on.
+In this example, we configure a package structure where the parent package name is `com.example`, and each subpackage name is set according to its function. For instance, entity classes will be placed in the `com.example.mybatisplus.entity` package, service interfaces will be placed in the `com.example.mybatisplus.service` package, and so on.
 
-Please adjust these configuration parameters based on your project structure and organizational habits to ensure the generated code can be properly integrated into your project.
+Adjust these configuration parameters according to your project structure and organizational preferences to ensure the generated code integrates properly into your project.
 
-## Template Configuration (template) Explained  
+## Template Configuration (template) Detailed Explanation
 
-Template configuration allows developers to customize the templates used by the code generator to produce code that aligns with the style and requirements of specific projects. The MyBatis-Plus code generator supports various types of templates, including entity classes, service classes, Mapper interfaces, XML mapping files, controller classes, and more.
+Template configuration allows you to customize the templates used by the code generator to produce code that matches your specific project style and requirements. The MyBatis-Plus code generator supports various types of templates, including entity classes, service classes, Mapper interfaces, XML mapping files, and controller classes.
 
 ### entity
 
-- **Description**: Java entity class template, used for generating Java entity class code.
+- **Description**: Java entity class template used to generate Java entity class code.
 
-### entityKt  
+### entityKt
 
-- **Description**: Kotlin entity class template, used for generating Kotlin entity class code.
+- **Description**: Kotlin entity class template, used to generate Kotlin entity class code.
 
 ### service
 
-- **Description**: Service class template, used for generating service interface code.
+- **描述**: Service class template used to generate service interface code.
 
 ### serviceImpl
 
-- **Description**: Service impl implementation class template, used for generating service implementation class code.
+- **Description**: Service implementation class template, used to generate service implementation class code.
 
-### mapper  
+### mapper
 
-- **Description**: The mapper template, used for generating Mapper interface code.
+- **Description**: Mapper template used for generating Mapper interface code.
 
 ### xml
 
-- **Description**: The mapper xml template, used for generating Mapper XML mapping file code.
+- **Description**: Mapper XML template used to generate Mapper XML mapping file code.
 
 ### controller
 
-- **Description**: The controller template is used for generating controller class code.
+- **描述**: Controller template for generating controller class code.
 
 ### Example Configuration
 
@@ -525,44 +537,44 @@ templateConfig.setEntity("templates/entity.java.vm") // Set entity class templat
     .setController("templates/controller.java.vm"); // Set controller template path
 ```
 
-In this example, we have configured template paths for different types of files. For instance, the entity class template path is set to `templates/entity.java.vm`, the service class template path is set to `templates/service.java.vm`, and so on. These template paths point to custom template files in the project, which the code generator will use to produce the corresponding code.
+In this example, we configure template paths for different types of files. For instance, the entity class template path is set to `templates/entity.java.vm`, the service class template path is set to `templates/service.java.vm`, and so on. These template paths point to custom template files in your project, which the code generator will use to generate the corresponding code.
 
-Ensure your template file paths are correct and that the template files adhere to the syntax of template engines like Velocity or Freemarker. By customizing templates, you can control the structure, comments, naming conventions, and other aspects of the generated code to meet your project's specific requirements.
+Make sure your template file paths are correct and that the template files follow the syntax of template engines like Velocity or Freemarker. By customizing templates, you can control the structure, comments, naming conventions, and other aspects of the generated code to meet your project's specific requirements.
 
-In practical use, you may need to adjust template configurations based on your project's needs. For example, if your project uses Kotlin, you would need to configure the `entityKt` template path. If your project does not require certain types of code (such as XML mapping files), you can omit the corresponding template configurations.
+In practice, you may need to adjust the template configuration based on your project's specific needs. For example, if your project uses Kotlin, you would need to configure the `entityKt` template path. If your project doesn't require certain types of generated code (such as XML mapping files), you can omit the corresponding template configuration.
 
-## Global Strategy Configuration (globalConfig) Detailed Explanation  
+## Global Strategy Configuration (globalConfig) Detailed Explanation
 
-Global strategy configuration provides some global settings, such as output directory, file overwrite, developer information, etc., as well as some advanced options like Kotlin mode, Swagger2 integration, ActiveRecord mode, etc.
+The global strategy configuration provides global settings such as output directory, file overwriting, developer information, and some advanced options like Kotlin mode, Swagger2 integration, and ActiveRecord mode.
 
 ### outputDir
 
 - **Description**: The output directory for generated files.
-- **Default value**: `Root directory of D drive`
+- **Default Value**: `D drive root directory`
 
-### fileOverride  
+### fileOverride
 
-- **Description**: Whether to overwrite existing files.  
-- **Default value**: `false`
+- **Description**: Whether to overwrite existing files.
+- **Default Value**: `false`
 
 ### open
 
 - **Description**: Whether to automatically open the output directory after generation.
 - **Default value**: `true`
 
-### enableCache  
+### enableCache
 
-- **Description**: Whether to add second-level cache configuration in XML.  
+- **Description**: Whether to add second-level cache configuration in XML.
 - **Default value**: `false`
 
 ### author
 
-- **Description**: The name of the developer.
+- **Description**: Developer name.
 - **Default value**: `null`
 
-### kotlin  
+### kotlin
 
-- **Description**: Whether to enable Kotlin mode.  
+- **Description**: Whether to enable Kotlin mode.
 - **Default value**: `false`
 
 ### swagger2
@@ -570,65 +582,65 @@ Global strategy configuration provides some global settings, such as output dire
 - **Description**: Whether to enable Swagger2 mode.
 - **Default value**: `false`
 
-### activeRecord  
+### activeRecord
 
-- **Description**: Whether to enable ActiveRecord mode.  
+- **Description**: Whether to enable ActiveRecord mode.
 - **Default value**: `false`
 
-### baseResultMap  
+### baseResultMap
 
-- **Description**: Whether to enable BaseResultMap.  
+- **Description**: Whether to enable BaseResultMap.
 - **Default value**: `false`
 
-### baseColumnList  
+### baseColumnList
 
-- **Description**: Whether to enable baseColumnList.  
+- **Description**: Whether to enable baseColumnList.
 - **Default value**: `false`
 
 ### dateType
 
-- **Description**: The corresponding strategy for time type.
-- **Default value**: `TIME_PACK`
+- **Description**: The corresponding strategy for time types.
+- **Default Value**: `TIME_PACK`
 
 ### entityName
 
-- **Description**: The naming convention for entities, where `%s` acts as a placeholder.
-- **Default Value**: `null`
+- **Description**: The naming pattern for entities, where `%s` acts as a placeholder.
+- **Default value**: `null`
 - **Example**: `%sEntity` generates `UserEntity`
 
 ### mapperName
 
-- **Description**: Naming convention for Mapper, where `%s` acts as a placeholder.
-- **Default value**: `null`
+- **Description**: Naming pattern for Mapper interfaces, where `%s` acts as a placeholder.
+- **Default Value**: `null`
 - **Example**: `%sDao` generates `UserDao`
 
 ### xmlName
 
-- **Description**: The naming convention for Mapper XML files, where `%s` acts as a placeholder.
+- **Description**: Naming pattern for Mapper XML files, where `%s` acts as a placeholder.
 - **Default Value**: `null`
 - **Example**: `%sDao` generates `UserDao.xml`
 
 ### serviceName
 
-- **Description**: The naming convention for Service, where `%s` acts as a placeholder.
-- **Default value**: `null`
+- **Description**: The naming pattern for Service classes, where `%s` is a placeholder.
+- **Default Value**: `null`
 - **Example**: `%sBusiness` generates `UserBusiness`
 
 ### serviceImplName
 
-- **Description**: Naming convention for Service impl, where `%s` is a placeholder.
-- **Default value**: `null`
+- **Description**: Naming pattern for Service implementations, where `%s` acts as a placeholder.
+- **Default Value**: `null`
 - **Example**: `%sBusinessImpl` generates `UserBusinessImpl`
 
 ### controllerName
 
-- **Description**: Naming convention for Controller, where `%s` acts as a placeholder.
-- **Default value**: `null`
+- **Description**: The naming pattern for Controllers, where `%s` is a placeholder.
+- **Default Value**: `null`
 - **Example**: `%sAction` generates `UserAction`
 
 ### idType
 
-- **Description**: Specifies the ID type for the generated primary key.
+- **Description**: Specifies the ID type for generated primary keys.
 - **Default value**: `null`
 
 ### Example Configuration
@@ -637,51 +649,51 @@ Global strategy configuration provides some global settings, such as output dire
 GlobalConfig globalConfig = new GlobalConfig();
 globalConfig.setOutputDir("src/main/java") // Set output directory
     .setFileOverride(true) // Allow overwriting existing files
-    .setOpen(false) // Do not automatically open output directory
+    .setOpen(false) // Don't automatically open output directory
     .setEnableCache(true) // Add secondary cache configuration in XML
     .setAuthor("Your Name") // Set developer name
-    .setKotlin(false) // Disable Kotlin mode
+    .setKotlin(false) // Don't enable Kotlin mode
     .setSwagger2(true) // Enable Swagger2 mode
-    .setActiveRecord(false) // Disable ActiveRecord mode
+    .setActiveRecord(false) // Don't enable ActiveRecord mode
     .setBaseResultMap(true) // Enable BaseResultMap
     .setBaseColumnList(true) // Enable baseColumnList
     .setDateType(DateType.TIME_PACK) // Set time type strategy
-    .setEntityName("%sEntity") // Set entity naming convention
-    .setMapperName("%sDao") // Set Mapper naming convention
-    .setXmlName("%sDao") // Set Mapper XML naming convention
-    .setServiceName("%sService") // Set Service naming convention
-    .setServiceImplName("%sServiceImpl") // Set Service impl naming convention
-    .setControllerName("%sController") // Set Controller naming convention
+    .setEntityName("%sEntity") // Set entity naming pattern
+    .setMapperName("%sDao") // Set Mapper naming pattern
+    .setXmlName("%sDao") // Set Mapper XML naming pattern
+    .setServiceName("%sService") // Set Service naming pattern
+    .setServiceImplName("%sServiceImpl") // Set Service impl naming pattern
+    .setControllerName("%sController") // Set Controller naming pattern
     .setIdType(IdType.AUTO); // Set primary key ID type to auto-increment
 ```
 
-In this example, we have configured global strategies, specifying the output directory, file overwrite settings, developer information, etc., and set various naming conventions and primary key ID types. These configurations will affect the structure and content of the generated code.
+In this example, we configure the global strategy by specifying the output directory, file overwrite settings, developer information, and various naming patterns and primary key ID types. These configurations will affect the structure and content of the generated code.
 
-Adjust these configuration parameters according to your project requirements and preferences to ensure the generated code meets your expectations. For example, if you want entity class names to end with `Entity`, you can set `entityName` to `%sEntity`. If you want secondary cache configurations included in the generated XML files, set `enableCache` to `true`.
+Adjust these configuration parameters according to your project requirements and preferences to ensure the generated code meets your expectations. For example, if you want generated entity class names to end with `Entity`, you can set `entityName` to `%sEntity`. If you want generated XML files to include secondary cache configuration, you can set `enableCache` to `true`.
 
-## Injection Configuration (injectionConfig) Explained
+## Injection Configuration (injectionConfig) Detailed Explanation
 
-Injection configuration allows developers to customize the behavior of the code generator, including custom return configurations, custom output files, and custom file creation logic. These configurations provide flexibility, enabling the code generator to adapt to more complex project requirements.
+Injection configuration allows you to customize the behavior of the code generator, including custom return configurations, custom output files, and custom file creation logic. These configurations provide flexibility, enabling the code generator to adapt to more complex project requirements.
 
 ### map
 
-- **Description**: Customizes the return configuration Map object, which can be passed to the template engine and referenced via `cfg.xxx`.
-- **Purpose**: Used to access custom configuration information in templates.
+- **Description**: Customizes the returned configuration Map object, which can be passed to the template engine and referenced via `cfg.xxx`.
+- **Purpose**: Used to access custom configuration information within templates.
 
 ### fileOutConfigList
 
-- **Description**: Customize output files by configuring `FileOutConfig` to specify template files and output files, enabling custom file generation.  
-- **Purpose**: Used to generate non-standard format files or create files in specific directories.
+- **Description**: Customize output files by configuring `FileOutConfig` to specify template files and output files, enabling custom file generation.
+- **Purpose**: Used for generating files in non-standard formats or for generating files in specific directories.
 
-### fileCreate  
+### fileCreate
 
-- **Description**: Customize whether to create a file by implementing the `IFileCreate` interface.  
-- **Purpose**: Used to determine whether a class needs to be overwritten during creation or to implement the file diff algorithm `merge`.
+- **Description**: Customize whether to create a file by implementing the `IFileCreate` interface.
+- **Purpose**: Use this to determine if a specific class should be overwritten during creation, or to implement the file difference algorithm `merge`.
 
 ### initMap
 
-- **Description**: Injects a custom Map object. Note that it needs to be placed using the `setMap` method.
-- **Purpose**: Used to inject additional configuration information in the code generator.
+- **Description**: Injects a custom Map object. Note that you need to put it in using the `setMap` method.
+- **Purpose**: Used to inject additional configuration information into the code generator.
 
 ### Example Configuration
 
@@ -689,7 +701,7 @@ Injection configuration allows developers to customize the behavior of the code 
 InjectionConfig injectionConfig = new InjectionConfig() {
     @Override
     public void initMap() {
-        // Custom Map object, which can be referenced in templates via cfg.xxx
+        // Custom Map object that you can reference in templates using cfg.xxx
         this.setMap(new HashMap<String, Object>() {{
             put("author", "Your Name");
             put("project", "MyBatis-Plus Code Generator");
@@ -722,13 +734,10 @@ InjectionConfig injectionConfig = new InjectionConfig() {
 };
 ```
 
-In this example, we have configured injection settings, including a custom Map object, custom output file configuration, and custom file creation logic.
+In this example, we configure the injection settings, including a custom Map object, custom output file configuration, and custom file creation logic.
 
-- In the `initMap` method, we created a Map object containing author and project name, which can be referenced in templates via `cfg.xxx`.
-- In the `getFileOutConfig` method, we returned a custom `FileOutConfig` object specifying the output file path.
-- In the `getFileCreate` method, we returned a custom `IFileCreate` implementation to determine whether a file needs to be created.
+- In the `initMap` method, we create a Map object containing author and project name information that you can reference in templates using `cfg.xxx`.
+- In the `getFileOutConfig` method, we return a custom `FileOutConfig` object that specifies the output file path.
+- In the `getFileCreate` method, we return a custom `IFileCreate` implementation used to determine whether a file needs to be created.
 
-Adjust these configuration parameters according to your project requirements to ensure the generated code meets your expectations. For example:
-- If you need to access additional configuration information in templates, add these details in the `initMap` method.
-- If you need to generate files in a specific format, specify the corresponding template and output path in the `getFileOutConfig` method.
-- If you require custom file creation logic, implement the corresponding decision logic in the `getFileCreate` method.
+Adjust these configuration parameters according to your project requirements to ensure the generated code meets your expectations. For example, if you need to access additional configuration information in your templates, you can add this information in the `initMap` method. If you need to generate files in a specific format, you can specify the corresponding template and output path in the `getFileOutConfig` method. If you need custom file creation logic, you can implement the appropriate decision logic in the `getFileCreate` method.

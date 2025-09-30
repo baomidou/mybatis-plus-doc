@@ -4,13 +4,13 @@ sidebar:
   order: 16
 ---
 
-MyBatis-Plus provides data security protection features designed to prevent sensitive information leaks caused by developer turnover. Starting from version 3.3.2, MyBatis-Plus supports enhanced database security through encrypted configurations and data security measures.
+MyBatis-Plus provides data security protection features designed to prevent sensitive information leaks caused by developer turnover. Starting from version 3.3.2, MyBatis-Plus supports enhanced database security through encrypted configuration and data security measures.
 
 ## Configuration Security
 
 ### YML Configuration Encryption
 
-MyBatis-Plus allows you to use encrypted strings for configuring database connection information. In YML configuration files, items prefixed with `mpw:` are treated as encrypted content.
+MyBatis-Plus allows you to use encrypted strings to configure database connection information. In YML configuration files, configuration items starting with `mpw:` are treated as encrypted content.
 
 ```yml
 spring:
@@ -39,36 +39,36 @@ Pass the key via command-line arguments when starting the application.
 Starting from version 3.5.10, system properties and environment variables are supported for passing the key.
 
 ```txt
-// Example of Jar startup arguments (set as Program arguments in IDEA or as startup environment variables on the server)
+// Example Jar startup parameter (set as Program arguments in IDEA, or as startup environment variables on the server)
 --mpw.key=d1104d7c3b616f0b
 ```
 
 :::note
 
 - Encrypted configurations must start with the `mpw:` string.
-- The random key should be securely stored by the responsible person, and the fewer people who know it, the better.
+- The random key should be properly safeguarded by the responsible person, and known by as few people as possible.
 
 :::
 
 ## Data Security
 
-MyBatis-Plus provides field encryption/decryption and field desensitization features to protect sensitive data stored in databases.
+MyBatis-Plus provides field encryption/decryption and field data masking features to protect sensitive data stored in the database.
 
-- **Field Encryption/Decryption**: Encrypts specific fields in the database for storage and decrypts them when needed.
-- **Field Desensitization**: Processes sensitive fields to hide or obscure sensitive information.
+- **Field Encryption/Decryption**: Encrypts specific fields in the database for storage and decrypts them when needed for use.
+- **Field Data Masking**: Applies masking to sensitive fields to hide or obscure sensitive information.
 
-## SQL Injection Protection
+## SQL Injection Security Protection
 
-MyBatis-Plus offers both automatic and manual methods to check for SQL injection risks.
+MyBatis-Plus provides both automatic and manual methods to check for SQL injection risks.
 
 ### Automatic Check
 
-When using the `Wrappers.query()` method, automatic SQL injection checking can be enabled via `.checkSqlInjection()`.
+When using the `Wrappers.query()` method, automatic checking can be enabled via `.checkSqlInjection()`.
 
 ```java
 Wrappers.query()
 // Enable automatic SQL injection check
-.checkSqlInjection().orderByDesc("Any field passed from the frontend. We recommend whitelist processing as the best practice, as there may be cases where checks are not fully comprehensive.")
+.checkSqlInjection().orderByDesc("Any field passed from the frontend; we recommend using an allowlist approach, as coverage might be incomplete")
 ```
 
 ### Manual Validation
@@ -76,11 +76,11 @@ Wrappers.query()
 Use the `SqlInjectionUtils.check()` method for manual validation.
 
 ```java
-// Manually validate whether fields passed from the frontend pose SQL injection risks
-SqlInjectionUtils.check("Any field passed from the frontend. We recommend whitelist processing as the best practice, as there may be cases where checks are not fully comprehensive.")
+// Manually validate if fields passed from the frontend pose SQL injection risks
+SqlInjectionUtils.check("Any field passed from the frontend; we recommend using an allowlist approach, as coverage might be incomplete")
 ```
 :::danger[Note]
-The best prevention method is still to **not allow any SQL fragments** to be passed from the frontend to the backend. We strongly advise against exposing too much dynamic SQL to the frontend, as this is the most secure approach.
+The best prevention method is still to **not allow any SQL fragments** to be passed from the frontend to the backend. We strongly advise against giving the frontend too much dynamic SQL capability, as this is the most secure approach.
 :::
 
-Through these measures, MyBatis-Plus helps you build a more secure database environment, protecting sensitive data from leaks.
+Through the above measures, MyBatis-Plus helps you build a more secure database environment, protecting sensitive data from being leaked.

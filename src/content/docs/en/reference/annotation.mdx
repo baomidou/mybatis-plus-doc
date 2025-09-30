@@ -6,26 +6,26 @@ sidebar:
 import { LinkCard } from '@astrojs/starlight/components';
 import Badge from "@/components/Badge.astro";
 
-This article details the usage and attributes of MyBatisPlus annotations, providing source code links for deeper understanding. You are welcome to view the source code of annotation classes through the links below.
+This article details the usage and properties of MyBatis-Plus annotations and provides source code links for deeper understanding. You can view the source code of the annotation classes via the link below.
 
 <LinkCard
-  title="MyBatis-Plus Annotation Source Code"
-  description="The source code contains relatively complete comments, allowing you to understand the functionality by examining it."
+  title="MyBatis-Plus Annotation 源码"
+  description="源码中包含较为完整的注释，可以查看源码了解功能。"
   href="https://github.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation"
 />
 
-## @TableName  
+## @TableName
 
-This annotation is used to specify the database table name corresponding to the entity class. When the entity class name does not match the database table name, or the entity class name is not the camel-case version of the table name, you need to use this annotation to explicitly specify the table name.  
+This annotation is used to specify the database table name that corresponds to an entity class. Use this annotation when the entity class name differs from the database table name, or when the entity class name is not the camelCase version of the table name.
 
-```java {1}  
-@TableName("sys_user")  
-public class User {  
-    private Long id;  
-    private String name;  
-    private Integer age;  
-    private String email;  
-}  
+```java {1}
+@TableName("sys_user")
+public class User {
+    private Long id;
+    private String name;
+    private Integer age;
+    private String email;
+}
 ```
 
 ### value
@@ -35,25 +35,25 @@ public class User {
     **Default value:** `""`
 </p>
 
-Specifies the database table name corresponding to the entity class. If the entity class name does not match the table name, use this attribute to specify the correct table name.
+Specifies the database table name that corresponds to the entity class. Use this attribute to specify the correct table name when your entity class name differs from the table name.
 
 ### schema
 
 <p>
     **Type:** `String` <br/>
-    **Default:** `""`
+    **Default value:** `""`
 </p>
 
-Specifies the name of the database Schema. Typically, if your database does not use Schema to organize tables, this property can be left blank.
+Specifies the database schema name. Typically, if your database does not use schemas to organize tables, you can leave this property empty.
 
-### keepGlobalPrefix  
+### keepGlobalPrefix
 
-<p>  
-    **Type:** `boolean` <br/>  
-    **Default:** `false`  
-</p>  
+<p>
+    **Type:** `boolean` <br/>
+    **Default:** `false`
+</p>
 
-When a global `tablePrefix` is configured, this property determines whether to retain the use of the global table prefix. If set to `true`, the global table prefix will be automatically added even if a table name is specified in the annotation.
+When you configure a global tablePrefix, this property determines whether to keep using the global table prefix. If you set this to true, the global table prefix will automatically be added even when you specify a table name in the annotation.
 
 ### resultMap
 
@@ -62,26 +62,26 @@ When a global `tablePrefix` is configured, this property determines whether to r
     **Default value:** `""`
 </p>
 
-Specifies the ID of the ResultMap defined in the XML, used to map query results to entity class objects of a specific type.
+Specifies the ID of the ResultMap defined in your XML file, which maps query results to a specific type of entity class object.
 
-### autoResultMap  
+### autoResultMap
 
-<p>  
-    **Type:** `boolean` <br/>  
-    **Default:** `false`  
-</p>  
+<p>
+    **Type:** `boolean` <br/>
+    **Default:** `false`
+</p>
 
-Whether to automatically build the resultMap. If a resultMap has already been set, this property will not take effect.  
+Whether to automatically build a resultMap. If you have already configured a resultMap, this setting will not take effect.
 
-:::note  
-MyBatis-Plus will automatically construct a resultMap and inject it into MyBatis. However, once the injection is complete, the generated content becomes static, similar to the content in XML configurations. When performing operations related to resultMap, please pay attention to the handling of typeHandler.  
+:::note
+MyBatis-Plus automatically builds a resultMap and injects it into MyBatis. However, once the injection is complete, the generated content becomes static, similar to what you would define in XML configuration. When performing operations related to resultMap, pay attention to typeHandler processing.
 
-MyBatis only supports specifying typeHandler in two places:  
+MyBatis only supports defining typeHandler in two locations:
 
-- Defined in the resultMap, which applies to the encapsulation of query results.  
-- Defined after the property in `#{property}` within insert and update statements, e.g., `#{property,typehandler=xxx.xxx.xxx}`, and only applies to the currently set value.  
+- Defined in the resultMap, which applies to query result mapping.
+- Defined after the property in `#{property}` within insert and update statements, for example: `#{property,typehandler=xxx.xxx.xxx}`, which only applies to the currently set value.
 
-Apart from the above two methods of directly specifying typeHandler, MyBatis also has a global configuration for scanning custom typeHandler packages. The principle is to search for the corresponding typeHandler based on your property type and use it.  
+Besides these two methods of directly specifying typeHandler, MyBatis also provides a configuration for globally scanning custom typeHandler packages. This works by searching for the corresponding typeHandler based on your property type and using it.
 :::
 
 ### excludeProperty
@@ -92,31 +92,31 @@ Apart from the above two methods of directly specifying typeHandler, MyBatis als
     **Added in:** <Badge text="@since 3.3.1" vertical="middle"/>
 </p>
 
-Specifies the property names to be excluded during mapping. These properties will not be included in the generated SQL statements.
+Specifies the property names to exclude during mapping. These properties will not be included in the generated SQL statements.
 
-## @TableId  
+## @TableId
 
-This annotation is used to mark the primary key field in an entity class. If your primary key field is named `id`, you can omit this annotation.  
+This annotation marks the primary key field in your entity class. If your primary key field is named `id`, you can omit this annotation.
 
-```java {3}  
-@TableName("sys_user")  
-public class User {  
-    @TableId  
-    private Long id;  
-    private String name;  
-    private Integer age;  
-    private String email;  
-}  
+```java {3}
+@TableName("sys_user")
+public class User {
+    @TableId
+    private Long id;
+    private String name;
+    private Integer age;
+    private String email;
+}
 ```
 
 ### value
 
 <p>
     **Type:** `String` <br/>
-    **Default:** `""`
+    **Default value:** `""`
 </p>
 
-Specifies the primary key field name of the database table. If not set, MyBatis-Plus will use the field name in the entity class as the primary key field name of the database table.
+Specifies the primary key field name in the database table. If you don't set this value, MyBatis-Plus will use the field name from your entity class as the primary key field name in the database table.
 
 ### type
 
@@ -127,32 +127,32 @@ Specifies the primary key field name of the database table. If not set, MyBatis-
 
 Specifies the primary key generation strategy.
 
-**IdType Enum Definition**
+**IdType Enumeration Definitions**
 
-- `IdType.AUTO`: Uses database auto-increment ID as the primary key.  
-- `IdType.NONE`: No specific generation strategy. If there are global configurations related to IdType, it will follow the global settings.  
-- `IdType.INPUT`: The user manually sets the primary key value before inserting data.  
-- `IdType.ASSIGN_ID`: Automatically assigns an `ID`, suitable for primary keys of type `Long`, `Integer`, or `String`. By default, it uses the snowflake algorithm implemented via `IdentifierGenerator`'s `nextId`. <Badge text="@since 3.3.0"/>  
-- `IdType.ASSIGN_UUID`: Automatically assigns a `UUID`, suitable for primary keys of type `String`. The default implementation is `IdentifierGenerator`'s `nextUUID` method. <Badge text="@since 3.3.0"/>  
+- `IdType.AUTO`: Uses the database's auto-increment ID as the primary key.
+- `IdType.NONE`: No specific generation strategy. If there are IdType-related configurations in the global settings, it will follow those.
+- `IdType.INPUT`: You manually set the primary key value before inserting data.
+- `IdType.ASSIGN_ID`: Automatically assigns an `ID`, suitable for primary keys of type `Long`, `Integer`, or `String`. By default, this uses the snowflake algorithm implemented via `IdentifierGenerator`'s `nextId` method. <Badge text="@since 3.3.0"/>
+- `IdType.ASSIGN_UUID`: Automatically assigns a `UUID`, suitable for `String` type primary keys. The default implementation uses `IdentifierGenerator`'s `nextUUID` method. <Badge text="@since 3.3.0"/>
 
-:::note  
-Note: Deprecated ID types (e.g., `ID_WORKER`, `UUID`, `ID_WORKER_STR`) should be avoided. Use `ASSIGN_ID` or `ASSIGN_UUID` instead. These new strategies offer better flexibility and compatibility.  
+:::note
+Please note that deprecated ID types (such as `ID_WORKER`, `UUID`, `ID_WORKER_STR`) should be avoided. Use `ASSIGN_ID` or `ASSIGN_UUID` instead. These new strategies offer better flexibility and compatibility.
 :::
 
-## @TableField  
+## @TableField
 
-This annotation is used to mark non-primary key fields in entity classes, instructing MyBatis-Plus on how to map entity class fields to database table fields. If your entity class field names follow camelCase naming conventions and match the database table field names, you can omit this annotation.  
+This annotation marks non-primary key fields in your entity class. It tells MyBatis-Plus how to map entity class fields to database table columns. If your entity field names follow camelCase naming conventions and match the database column names exactly, you can omit this annotation.
 
-```java {5}  
-@TableName("sys_user")  
-public class User {  
-    @TableId  
-    private Long id;  
-    @TableField("nickname") // Maps to the database field "nickname"  
-    private String name;  
-    private Integer age;  
-    private String email;  
-}  
+```java {5}
+@TableName("sys_user")
+public class User {
+    @TableId
+    private Long id;
+    @TableField("nickname") // Maps to database column "nickname"
+    private String name;
+    private Integer age;
+    private String email;
+}
 ```
 
 ### value
@@ -161,7 +161,7 @@ public class User {
     **Type:** `String`<br/>
     **Default value:** `""`
 </p>
-Specifies the field name in the database. If your entity class field name differs from the database field name, use this attribute to specify the correct database field name.
+Specifies the column name in the database. Use this attribute to specify the correct database column name when your entity class field name differs from the database column name.
 
 ### exist
 
@@ -169,7 +169,7 @@ Specifies the field name in the database. If your entity class field name differ
     **Type:** `boolean`<br/>
     **Default value:** `true`
 </p>
-Indicates whether this field exists in the database table. If set to false, MyBatis-Plus will ignore this field when generating SQL.
+Indicates whether this field exists in the database table. If you set this to false, MyBatis-Plus will ignore this field when generating SQL.
 
 ### condition
 
@@ -177,17 +177,17 @@ Indicates whether this field exists in the database table. If set to false, MyBa
     **Type:** `String`<br/>
     **Default value:** `""`
 </p>
-Specifies the conditional expression for a field when executing an EntityQuery. This allows you to customize how the field is compared in the WHERE clause. If a value is provided, it will be used as specified; otherwise, the global default `%s=#{%s}` will be applied.
+Specifies the conditional expression for a field when executing an EntityQuery. This allows you to customize how the field is compared in the WHERE clause. If a value is set for this property, it will be used; otherwise, the global default `%s=#{%s}` is applied.
 
-For writing conventions, refer to [SqlCondition](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java).
+For specific syntax, refer to [SqlCondition](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java).
 
 :::note[EntityQuery Explanation]
-EntityQuery refers to constructing query conditions by directly using the fields of an entity class to set the query criteria, rather than manually writing SQL fragments.
+EntityQuery refers to building query conditions by directly using the fields of an entity class to set the query criteria, rather than manually writing SQL fragments.
 :::
 
 **Example Explanation**
 
-Suppose we have an entity class `User` with three fields: `id`, `name`, and `age`. We want to query all users older than 18. We can use `QueryWrapper` to build this query by passing an instance of the `User` entity class:
+Suppose we have a User entity class with three fields: id, name, and age. We want to query all users older than 18. We can use QueryWrapper to build this query by passing a User entity instance:
 
 ```java
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -208,13 +208,13 @@ public class User {
     private String email;
 }
 
-// Building the query using EntityQuery
+// Build query using EntityQuery
 public List<User> findUserAgeOver18() {
-    // Create a User instance to set query conditions
+    // Create User instance for setting query conditions
     User queryEntity = new User();
     queryEntity.setAge(18); // Set the value for the age field
 
-    // Create a QueryWrapper instance and pass the User instance
+    // Create QueryWrapper instance and pass the User instance
     QueryWrapper<User> queryWrapper = new QueryWrapper<>(queryEntity);
 
     // Execute the query
@@ -224,15 +224,15 @@ public List<User> findUserAgeOver18() {
 }
 ```
 
-In this example, we use the `@TableField(condition = "%s > #{%s}")` annotation to set a custom condition expression for the `age` field. When building the query, we create a `User` instance and set the `age` field to 18. Then, we use this instance to create a `QueryWrapper`, and MyBatis-Plus will automatically generate the corresponding SQL query conditions based on the annotations on the entity class.
+In this example, we use the `@TableField(condition = "%s > #{%s}")` annotation to set a custom condition expression for the age field. When building the query, we create a User instance and set the age field value to 18. We then use this instance to create the QueryWrapper, and MyBatis-Plus automatically generates the corresponding SQL query condition based on the annotations on the entity class.
 
-When the `findUserAgeOver18` method is executed, MyBatis-Plus will generate SQL similar to the following:
+When you execute the `findUserAgeOver18` method, MyBatis-Plus generates an SQL statement similar to:
 
 ```sql
 SELECT * FROM sys_user WHERE age > 18;
 ```
 
-This approach allows the `condition` property to customize how fields behave in queries, making queries more flexible and tailored to specific needs while avoiding the tediousness of manually writing SQL fragments.
+This approach allows the condition property to customize how fields behave during queries, making queries more flexible and tailored to specific requirements while avoiding the tedious task of manually writing SQL fragments.
 
 ### update
 
@@ -240,11 +240,11 @@ This approach allows the `condition` property to customize how fields behave in 
     **Type:** `String`<br/>
     **Default value:** `""`
 </p>
-Specifies the expression for a field in the SET clause during update operations. This attribute takes precedence over the `el` property, allowing you to customize the update logic for fields.
+Specifies the expression for a field in the SET clause during update operations. This property takes precedence over the el attribute, allowing you to customize the update logic for the field.
 
 **Example Explanation**
 
-Suppose we have an entity class `User` containing a `version` field. We want the `version` field to automatically increment by 1 whenever user information is updated. We can achieve this using the `update` attribute of the `@TableField` annotation:
+Suppose you have a User entity class containing a version field, and you want to automatically increment the version field by 1 each time user information is updated. You can use the update attribute of the @TableField annotation to implement this functionality:
 
 ```java
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -265,9 +265,9 @@ public class User {
 }
 ```
 
-In this example, the `@TableField(update="%s+1")` annotation instructs MyBatis-Plus to use the expression `version = version + 1` for the `version` field during update operations. This means the `version` field will automatically increment by 1 each time user information is updated.
+In this example, the `@TableField(update="%s+1")` annotation tells MyBatis-Plus to use the expression `version = version + 1` for the version field during update operations. This means that each time user information is updated, the version field value automatically increases by 1.
 
-If we perform the following update operation:
+If you execute the following update operation:
 
 ```java
 User user = new User();
@@ -279,7 +279,7 @@ user.setEmail("updated@example.com");
 userMapper.updateById(user);
 ```
 
-MyBatis-Plus will automatically generate an SQL statement similar to the following:
+MyBatis-Plus automatically generates SQL similar to:
 
 ```sql
 UPDATE sys_user
@@ -287,7 +287,7 @@ SET name = 'Updated Name', age = 30, email = 'updated@example.com', version = ve
 WHERE id = 1;
 ```
 
-This approach allows the `update` attribute to customize field behavior during updates, making operations more flexible and tailored to specific requirements while avoiding the complexity of manually writing SQL fragments.
+This approach allows you to customize field behavior during updates, making update operations more flexible and tailored to specific requirements, while avoiding the complexity of manually writing SQL fragments.
 
 ### insertStrategy
 
@@ -296,20 +296,20 @@ This approach allows the `update` attribute to customize field behavior during u
     **Default:** `FieldStrategy.DEFAULT`
 </p>
 
-Defines how to handle field values when inserting new records. This property allows you to control whether a field should be included in the INSERT statement and under what conditions.
+Defines how to handle field values when inserting new records. This property allows you to control whether a field should be included in the INSERT statement, and under what conditions.
 
-**[FieldStrategy](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldStrategy.java) Enum Definitions**
+**[FieldStrategy](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldStrategy.java) Enum Definition**
 
-- FieldStrategy.DEFAULT: Follows the global configuration strategy. If the global configuration is not specified, the default behavior is to include the field in the INSERT statement only when its value is not NULL.
-- FieldStrategy.ALWAYS: Always includes the field in the INSERT statement, regardless of whether its value is NULL.
-- FieldStrategy.NOT_NULL: Includes the field in the INSERT statement only when its value is not NULL.
-- FieldStrategy.NOT_EMPTY: Includes the field in the INSERT statement only when its value is not empty (for string types) or not NULL (for other types).
-- FieldStrategy.NEVER: Never includes the field in the INSERT statement, even if its value is not NULL.
-- FieldStrategy.IGNORED: Ignores the check, equivalent to "ALWAYS" <Badge text="@Deprecated" type="error"/>
+- FieldStrategy.DEFAULT: Follows the global configuration strategy. If no global configuration is specified, the default behavior is to insert the field only when its value is not NULL.
+- FieldStrategy.ALWAYS: Always insert the field, regardless of whether the field value is NULL.
+- FieldStrategy.NOT_NULL: Insert the field only when its value is not NULL.
+- FieldStrategy.NOT_EMPTY: Insert the field only when its value is not empty (for string types) or not NULL (for other types).
+- FieldStrategy.NEVER: Never insert the field, even if the field value is not NULL.
+- FieldStrategy.IGNORED: Ignore the check, equivalent to "ALWAYS" <Badge text="@Deprecated" type="error"/>
 
-**Example**
+**Example Explanation**
 
-Suppose we have an entity class `User` with a `nickname` field. We want to include the `nickname` field in the INSERT statement only when it is not empty. We can achieve this using the `insertStrategy` property of the `@TableField` annotation:
+Suppose we have a User entity class containing a nickname field. We want to insert this field only when nickname is not empty when creating a new user. We can use the insertStrategy property of the @TableField annotation to achieve this:
 
 ```java
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -320,7 +320,7 @@ public class User {
     @TableId
     private Long id;
 
-    @TableField(insertStrategy = FieldStrategy.NOT_EMPTY) // Include only when nickname is not empty
+    @TableField(insertStrategy = FieldStrategy.NOT_EMPTY) // Insert only when nickname is not empty
     private String nickname;
 
     private Integer age;
@@ -329,7 +329,7 @@ public class User {
 }
 ```
 
-In this example, the `@TableField(insertStrategy = FieldStrategy.NOT_EMPTY)` annotation instructs MyBatis-Plus to include the `nickname` field in the INSERT statement only when it is not empty.
+In this example, the `@TableField(insertStrategy = FieldStrategy.NOT_EMPTY)` annotation tells MyBatis-Plus to include the nickname field in the INSERT statement only when it's not empty.
 
 If we perform the following insert operation:
 
@@ -342,21 +342,21 @@ user.setEmail("john.doe@example.com");
 userMapper.insert(user);
 ```
 
-MyBatis-Plus will automatically generate an SQL statement similar to the following:
+MyBatis-Plus will automatically generate an SQL statement similar to:
 
 ```sql
 INSERT INTO sys_user (nickname, age, email)
 VALUES ('John Doe', 25, 'john.doe@example.com');
 ```
 
-If the `nickname` field is empty, the generated SQL will exclude the `nickname` field:
+If the nickname field is empty, the generated SQL will not include the nickname field:
 
 ```sql
 INSERT INTO sys_user (age, email)
 VALUES (25, 'john.doe@example.com');
 ```
 
-This behavior is equivalent to the following custom MyBatis XML configuration:
+This achieves the same effect as the following custom MyBatis XML configuration:
 
 ```xml
 <mapper namespace="com.example.mapper.UserMapper">
@@ -381,21 +381,21 @@ This behavior is equivalent to the following custom MyBatis XML configuration:
 </mapper>
 ```
 
-In this way, the `insertStrategy` property allows us to customize the behavior of fields during insertion, making the operation more flexible and tailored to specific requirements while avoiding the tediousness of manually writing SQL fragments.
+This way, the insertStrategy property allows you to customize field behavior during insertion, making insert operations more flexible and tailored to specific requirements, while avoiding the complexity of manually writing SQL fragments.
 
 ### updateStrategy
 
 <p>
     **Type:** `Enum`<br/>
-    **Default value:** `FieldStrategy.DEFAULT`
+    **Default:** `FieldStrategy.DEFAULT`
 </p>
-Defines how to handle field values when updating records. This property allows you to control whether a field should be included in the SET clause of an UPDATE statement and under what conditions it should be included.
+Defines how to handle field values when updating records. This property allows you to control whether a field should be included in the SET clause of an UPDATE statement and under what conditions.
 
-Refer to the insertStrategy property for more details about the FieldStrategy enum type.
+Refer to the insertStrategy property for more detailed information about the FieldStrategy enum type.
 
 **Example Explanation**
 
-Suppose we have an entity class `User` containing a `nickname` field. We want to always update the `nickname` field when modifying user information, regardless of whether its value is empty. We can achieve this using the `updateStrategy` property of the `@TableField` annotation:
+Suppose we have a User entity class containing a nickname field. We want to always update the nickname field when modifying user information, regardless of whether its value is empty. We can use the updateStrategy property of the @TableField annotation to achieve this:
 
 ```java
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -415,9 +415,9 @@ public class User {
 }
 ```
 
-In this example, the `@TableField(updateStrategy = FieldStrategy.ALWAYS)` annotation instructs MyBatis-Plus to always include the `nickname` field in the SET clause of the UPDATE statement during user information updates, disregarding value checks.
+In this example, the `@TableField(updateStrategy = FieldStrategy.ALWAYS)` annotation tells MyBatis-Plus to always include the nickname field in the SET clause of the UPDATE statement when updating user information, ignoring any value checks.
 
-If we perform the following update operation:
+If we execute the following update operation:
 
 ```java
 User user = new User();
@@ -429,7 +429,7 @@ user.setEmail("updated@example.com");
 userMapper.updateById(user);
 ```
 
-MyBatis-Plus will automatically generate an SQL statement similar to the following:
+MyBatis-Plus will automatically generate an SQL statement similar to:
 
 ```sql
 UPDATE sys_user
@@ -437,9 +437,9 @@ SET nickname = 'Updated Nickname', age = 30, email = 'updated@example.com'
 WHERE id = 1;
 ```
 
-Regardless of whether the `nickname` field's value is empty, the generated SQL will include the `nickname` field. That is, even if the `nickname` field is null, the generated SQL will update the `nickname` field to NULL.
+Regardless of whether the nickname field's value is empty, the generated SQL will include the nickname field. This means that even if the nickname field's value is empty, the generated SQL will update the nickname field to NULL.
 
-This way, the `updateStrategy` property allows us to customize field behavior during updates, making update operations more flexible and tailored to specific requirements while avoiding the tediousness of manually writing SQL fragments.
+This approach allows the updateStrategy property to customize field behavior during updates, making update operations more flexible and suitable for specific requirements, while avoiding the complexity of manually writing SQL fragments.
 
 ### whereStrategy
 
@@ -447,13 +447,13 @@ This way, the `updateStrategy` property allows us to customize field behavior du
     **Type:** `Enum`<br/>
     **Default:** `FieldStrategy.DEFAULT`
 </p>
-Defines how field values should be handled when generating the WHERE clause for update statements. This property allows you to control whether a field should be included in the WHERE clause and under what conditions.
+Defines how to handle field values when generating the WHERE clause for update statements. This property allows you to control whether a field should be included in the WHERE clause and under what conditions.
 
-Refer to the insertStrategy and updateStrategy properties for more details about the FieldStrategy enum type.
+Refer to the insertStrategy and updateStrategy properties for more detailed information about the FieldStrategy enum type.
 
 **Example Explanation**
 
-Suppose we have an entity class `User` containing a `nickname` field. We want the `nickname` field to be included as a condition in the WHERE clause only when it is not empty during user information updates. We can achieve this using the `whereStrategy` property of the `@TableField` annotation:
+Suppose we have a User entity class containing a nickname field. We want the nickname field to be used as a condition in the WHERE clause only when it is not empty during user information updates. We can use the whereStrategy property of the @TableField annotation to achieve this:
 
 ```java
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -464,7 +464,7 @@ public class User {
     @TableId
     private Long id;
 
-    @TableField(whereStrategy = FieldStrategy.NOT_EMPTY) // Include in WHERE clause only when nickname is not empty
+    @TableField(whereStrategy = FieldStrategy.NOT_EMPTY) // Only use nickname in WHERE clause when not empty
     private String nickname;
 
     private Integer age;
@@ -473,9 +473,9 @@ public class User {
 }
 ```
 
-In this example, the `@TableField(whereStrategy = FieldStrategy.NOT_EMPTY)` annotation instructs MyBatis-Plus to include the `nickname` field in the WHERE clause only when it is not empty when generating the WHERE clause for update statements using `whereEntity`.
+In this example, the `@TableField(whereStrategy = FieldStrategy.NOT_EMPTY)` annotation tells MyBatis-Plus to include the nickname field in the WHERE clause only when it is not empty when generating update statements using whereEntity.
 
-If we perform the following update operation:
+If we execute the following update operation:
 
 ```java
 User user = new User();
@@ -485,12 +485,12 @@ User whereEntity = new User();
 whereEntity.setNickname("John Doe");
 whereEntity.setAge(30);
 
-// Using the whereEntity method
+// Use the whereEntity method
 UpdateWrapper<User> updateWrapper = new UpdateWrapper<>(whereEntity);
 userMapper.update(user, updateWrapper);
 ```
 
-MyBatis-Plus will automatically generate an SQL statement similar to the following:
+MyBatis-Plus will automatically generate SQL similar to:
 
 ```sql
 UPDATE sys_user
@@ -498,7 +498,7 @@ SET email = 'john.doe@example.com'
 WHERE nickname = 'John Doe' AND age = 30;
 ```
 
-If the `nickname` field is empty, the generated SQL will exclude the `nickname` field:
+If the nickname field is empty, the generated SQL will not include the nickname field:
 
 ```sql
 UPDATE sys_user
@@ -526,33 +526,33 @@ This effect is equivalent to the following custom MyBatis XML configuration:
 </mapper>
 ```
 
-In this way, the `whereStrategy` property allows us to customize the behavior of fields in the WHERE clause, making update operations more flexible and tailored to specific requirements while avoiding the tediousness of manually writing SQL fragments. Refer to the insertStrategy and updateStrategy properties for more details about the FieldStrategy enum type.
+Through this approach, the whereStrategy property allows you to customize field behavior in WHERE clauses, making update operations more flexible and tailored to specific requirements while avoiding the tediousness of manually writing SQL fragments. Refer to the insertStrategy and updateStrategy properties for more detailed information about the FieldStrategy enum type.
 
 ### fill
 
 <p>
     **Type:** `Enum`<br/>
-    **Default value:** `FieldFill.DEFAULT`
+    **Default:** `FieldFill.DEFAULT`
 </p>
-Field auto-fill strategy. This property is used to specify how field values are automatically populated during database operations (such as insert or update). By using the FieldFill enum, you can flexibly control the filling behavior of fields.
+Field auto-fill strategy. This property specifies how to automatically populate field values during database operations (such as insert and update). By using the FieldFill enum, you can flexibly control field population behavior.
 
 :::note
-This feature requires the use of the [Auto-fill Field](/guides/auto-fill-field) functionality.
+This feature must be used in conjunction with the [auto-fill fields](/guides/auto-fill-field) functionality.
 :::
 
-**[FieldFill](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldFill.java) Enum Definitions**
+**[FieldFill](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldFill.java) Enum Definition**
 
-- `FieldFill.DEFAULT`: No auto-fill by default, relying on the database's default value or manual setting.
+- `FieldFill.DEFAULT`: No automatic filling by default, relies on database default values or manual setting.
 
-- `FieldFill.INSERT`: Automatically fills the field value during insert operations.
+- `FieldFill.INSERT`: Automatically populates the field value during insert operations.
 
-- `FieldFill.UPDATE`: Automatically fills the field value during update operations.
+- `FieldFill.UPDATE`: Automatically populates the field value during update operations.
 
-- `FieldFill.INSERT_UPDATE`: Automatically fills the field value during both insert and update operations.
+- `FieldFill.INSERT_UPDATE`: Automatically populates the field value during both insert and update operations.
 
 **Example**
 
-Suppose there is a User entity class containing `createTime` and `updateTime` fields. We want to automatically populate the creation time when creating a user and automatically update the modification time when updating user information.
+Suppose you have a User entity class containing createTime and updateTime fields. You want to automatically populate the creation time when creating a user and automatically update the modification time when updating user information.
 
 ```java
 import com.baomidou.mybatisplus.annotation.FieldFill;
@@ -574,54 +574,54 @@ public class User {
 }
 ```
 
-In this example, the `createTime` field will be automatically populated with the current time during insert operations, while the `updateTime` field will be automatically updated with the current time during update operations. This eliminates the need to manually set these timestamp fields during each database operation.
+In this example, the createTime field will be automatically populated with the current time during insert operations, while the updateTime field will be automatically populated with the current time during update operations. This eliminates the need to manually set these time field values during every database operation.
 
-**Note:** For the auto-fill feature to work properly, you need to configure the corresponding auto-fill handler in MyBatis-Plus's settings and ensure that the relevant insert and update methods are defined in the Mapper interface corresponding to the entity class.
+**Please note** that for the auto-fill feature to work properly, you need to configure the appropriate auto-fill handler in your MyBatis-Plus configuration and ensure that the corresponding insert and update methods are defined in the Mapper interface for your entity class.
 
-### select  
+### select
 
-<p>  
-    **Type:** `boolean`<br/>  
-    **Default:** `true`  
-</p>  
-Indicates whether the field should be included in the SELECT statement during query operations. This attribute allows you to control which fields are included in the query results, providing finer-grained data access control.  
+<p>
+    **Type:** `boolean`<br/>
+    **Default value:** `true`
+</p>
+Specifies whether the field should be included in SELECT statements during query operations. This attribute gives you granular control over which fields appear in query results.
 
-**Detailed Explanation**  
+**Detailed Description**
 
-- When the `select` attribute is set to `true` (default), the field will be included in the query results.  
+- When the select attribute is set to true (the default value), the field will be included in query results.
 
-- When the `select` attribute is set to `false`, the field will not be included in the query results, even if it exists in the database table. This is useful for protecting sensitive data or optimizing query performance.  
+- When the select attribute is set to false, the field will be excluded from query results, even if it exists in the database table. This is useful for protecting sensitive data or optimizing query performance.
 
-**Example**  
+**Example**
 
-Suppose there is a `User` entity class containing a `password` field. To protect user privacy, we want to exclude the password field when querying user information.  
+Suppose you have a User entity class containing a password field. You want to exclude the password field from query results to protect user privacy.
 
-```java  
-import com.baomidou.mybatisplus.annotation.TableField;  
-import com.baomidou.mybatisplus.annotation.TableName;  
+```java
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 
-@TableName("user")  
-public class User {  
-    // Other fields...  
+@TableName("user")
+public class User {
+    // Other fields...
 
-    @TableField(select = false)  
-    private String password;  
+    @TableField(select = false)
+    private String password;
 
-    // Constructors, getters, and setters...  
-}  
-```  
+    // Constructors, getters, and setters...
+}
+```
 
-In this example, when executing a query, the `password` field will not be included in the SELECT statement and thus will not appear in the query results. This ensures that even if the password is stored in the database, it will not be exposed in routine queries.  
+In this example, when you execute a query operation, the password field will not be included in the SELECT statement and therefore won't appear in query results. This ensures that even though passwords are stored in the database, they won't be exposed during routine queries.
 
-Note that the `select` attribute of the `@TableField` annotation only affects the queries generated by MyBatis-Plus and does not impact other frameworks or manually written SQL statements. Additionally, if a field uses `select = false`, extra caution is required regarding data security and integrity when accessing the field through custom queries or other methods.
+Note that the select attribute of the @TableField annotation only affects queries generated by MyBatis-Plus. It doesn't impact other frameworks or manually written SQL statements. Additionally, when using fields with select = false, you need to pay special attention to data security and integrity when accessing these fields through custom queries or other methods.
 
 ### keepGlobalFormat
 
 <p>
     **Type:** `boolean`<br/>
-    **Default value:** `false`
+    **Default:** `false`
 </p>
-Indicates whether to maintain the columnFormat rules defined in the global DbConfig when processing fields. This property controls whether global column formatting rules are applied to field values during database operations.
+Specifies whether to maintain the columnFormat rules defined in the global DbConfig when processing fields. This property controls whether field values apply global column formatting rules during database operations.
 
 ### jdbcType
 
@@ -629,17 +629,17 @@ Indicates whether to maintain the columnFormat rules defined in the global DbCon
     **Type:** `JdbcType`<br/>
     **Default:** `JdbcType.UNDEFINED`
 </p>
-JDBC type, used to specify the data type of a field in the database. This property allows you to explicitly set the database type of a field to ensure compatibility with the database, especially when dealing with special or custom types.
+JDBC type, used to specify the data type of a field in the database. This property allows you to explicitly set the database type for a field to ensure compatibility with the database, especially when handling special types or custom types.
 
-**Detailed Explanation**
+**Detailed Description**
 
-- When the jdbcType property is set to JdbcType.UNDEFINED (default), MyBatis-Plus will automatically infer the JDBC type based on the field's Java type.
+- When the jdbcType property is set to JdbcType.UNDEFINED (the default), MyBatis-Plus automatically infers the JDBC type based on the field's Java type.
 
-- When the jdbcType property is set to a specific JdbcType enum value, the field will use the specified JDBC type for database operations. This can be used to resolve type mapping issues or when precise control over the database type is required.
+- When the jdbcType property is set to a specific JdbcType enum value, the field will use the specified JDBC type for database operations. This can be used to resolve type mapping issues or when you need precise control over the database type.
 
 **Example**
 
-Suppose there is a CustomType entity class containing a field of the custom type MyCustomType, and we want to store it in the database with a specific JDBC type.
+Suppose you have a CustomType entity class containing a field of custom type MyCustomType, and you want to store it in the database using a specific JDBC type.
 
 ```java
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -657,27 +657,27 @@ public class CustomType {
 }
 ```
 
-In this example, the myCustomField field will use the VARCHAR JDBC type for database operations. This way, even if MyCustomType is a custom type, it will be converted to VARCHAR when stored in the database.
+In this example, the myCustomField field will use the VARCHAR JDBC type for database operations. This way, even though MyCustomType is a custom type, it will be converted to VARCHAR type when stored in the database.
 
-**Note** that the jdbcType property only needs to be set in specific cases, such as when there is ambiguous mapping between Java types and database types. In most cases, MyBatis-Plus can handle type mapping automatically, so explicitly setting jdbcType is unnecessary. Additionally, the jdbcType property only affects the SQL statements generated by MyBatis-Plus and does not impact other frameworks or manually written SQL statements.
+**Note** that the jdbcType property only needs to be set in specific cases, such as when there's ambiguous mapping between Java types and database types. In most cases, MyBatis-Plus can automatically handle type mapping, so you don't need to explicitly set jdbcType. Additionally, the jdbcType property only affects SQL statements generated by MyBatis-Plus and doesn't impact other frameworks or manually written SQL statements.
 
 ### typeHandler
 
 <p>
     **Type:** `Class<? extends TypeHandler>`<br/>
-    **Default value:** `UnknownTypeHandler.class`
+    **Default:** `UnknownTypeHandler.class`
 </p>
-A type handler used to specify how the value of a particular field should be processed during database operations. This property allows you to customize the conversion logic for field values to accommodate specific data types or business requirements.
+The type handler specifies how to handle specific field values during database operations. This property allows you to customize the conversion logic for field values to accommodate specific data types or business requirements.
 
-**Detailed Explanation**
+**Detailed Description**
 
-- When the typeHandler property is not set (i.e., the default value `UnknownTypeHandler.class` is used), MyBatis-Plus will use the default type handler to process the field value.
+- When the typeHandler property is not set (i.e., using the default value UnknownTypeHandler.class), MyBatis-Plus uses the default type handler to process field values.
 
-- When the typeHandler property is set to a specific subclass of TypeHandler, the field will use the specified type handler for database operations. This can be used to handle custom types, special data formats, or non-standard database types.
+- When the typeHandler property is set to a specific TypeHandler subclass, the field will use the specified type handler for database operations. This is useful for handling custom types, special data formats, or non-standard database types.
 
 **Example**
 
-Suppose we have a User entity class containing a `birthDate` field. We want to use a custom type handler to process the date format, which can store dates in a specific format in the database.
+Suppose you have a User entity class with a birthDate field. You want to use a custom type handler to manage the date format, enabling the date to be stored in the database in a specific format.
 
 ```java
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -696,9 +696,9 @@ public class User {
 }
 ```
 
-In this example, the `birthDate` field will use the `CustomDateTypeHandler` for database operations. This ensures that both converting database date values to `LocalDate` objects during queries and converting `LocalDate` objects to specific date formats in the database during updates are handled by `CustomDateTypeHandler`.
+In this example, the birthDate field uses the CustomDateTypeHandler for database operations. This means CustomDateTypeHandler will handle converting the date value from the database to a LocalDate object during queries, and converting the LocalDate object to a specific date format in the database during updates.
 
-The `CustomDateTypeHandler` might be implemented as follows:
+The CustomDateTypeHandler might be implemented as follows:
 
 ```java
 import org.apache.ibatis.type.BaseTypeHandler;
@@ -728,9 +728,9 @@ public class CustomDateTypeHandler extends BaseTypeHandler<LocalDate> {
 }
 ```
 
-In this custom type handler, we define a `DateTimeFormatter` to specify the date format and implement the conversion logic for date values in the `setNonNullParameter` and `getNullableResult` methods.
+In this custom type handler, a DateTimeFormatter defines the date format, and the conversion logic for date values is implemented in the setNonNullParameter and getNullableResult methods.
 
-**Note:** To ensure the custom type handler takes effect, you must ensure it is correctly registered in the MyBatis-Plus configuration and can be loaded at runtime. Additionally, the use of custom type handlers should be approached with caution to ensure correctness and performance. For more details, refer to the [Field Type Handler](/guides/type-handler) documentation.
+**Please note** that for your custom type handler to take effect, you must ensure it is properly registered in the MyBatis-Plus configuration and can be loaded at runtime. Additionally, use custom type handlers carefully to ensure their correctness and performance. For more details, refer to the [Field Type Handler](/guides/type-handler) documentation.
 
 ### numericScale
 
@@ -738,15 +738,15 @@ In this custom type handler, we define a `DateTimeFormatter` to specify the date
     **Type:** `String`<br/>
     **Default value:** `""`
 </p>
-Specifies the number of decimal places to retain. This property only takes effect during update operations. It is used to control the decimal precision of numeric fields during updates.
+Specifies the number of decimal places to retain. This property only takes effect during update operations. It controls the decimal precision for numeric type fields when updating.
 
-**Detailed Explanation**
+**Detailed Description**
 
-- When the numericScale property is set to an empty string (default value), the decimal precision of the field will follow the database's default settings or the settings defined during field creation.
-- When the numericScale property is set to a specific value (e.g., "2"), the field will be processed with the specified number of decimal places during update operations.
+- When the numericScale property is set to an empty string (the default value), the field's decimal precision will follow the database's default settings or the settings defined when the field was created.
+- When the numericScale property is set to a specific numeric value (such as "2"), the field will be processed with the specified number of decimal places during update operations.
 
 **Example**
-Suppose there is a Product entity class containing a price field, and we want to ensure that the price retains two decimal places during updates.
+Suppose you have a Product entity class containing a price field. You want to ensure the price retains two decimal places when updated.
 
 ```java
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -763,166 +763,166 @@ public class Product {
 }
 ```
 
-In this example, the price field will ensure two decimal places are retained during update operations. This means that when updating the price, regardless of the number of decimal places in the input value, it will be formatted to two decimal places.
+In this example, the price field will ensure two decimal places are retained during update operations. This means that when updating the price, regardless of how many decimal places the input price value has, it will be formatted to two decimal places.
 
-**Note**: For the numericScale property to take effect, you must ensure that the database supports the specified number of decimal places and that the numeric field values are processed correctly during update operations. Additionally, the numericScale property only affects the SQL statements generated by MyBatis-Plus and does not impact other frameworks or manually written SQL statements.
+**Please note** that for the numericScale property to take effect, you must ensure your database supports the specified number of decimal places and that the numeric type field values are processed correctly during update operations. Additionally, the numericScale property only affects the SQL statements generated by MyBatis-Plus and does not affect other frameworks or manually written SQL statements.
 
-:::note[About numericScale, jdbcType, and typeHandler]
+:::note[Regarding numericScale, jdbcType, and typeHandler]
 
 - The numericScale property only takes effect during update operations.
-- The jdbcType and typeHandler properties also only take effect during update operations unless used with `autoResultMap = true` in @TableName.
-- For typeHandler, if the field type and the set value type are in an equals relationship, you only need to ensure the typeHandler is loaded by MyBatis; no annotation is required.
+- The jdbcType and typeHandler properties also only take effect during update operations unless used with `autoResultMap = true` in the @TableName annotation.
+- For typeHandler, if the field type and the set value type are in an equals relationship, you only need to ensure the typeHandler is loaded by MyBatis; using the annotation is not required.
 
 :::
 
-## @Version  
+## @Version
 
-This annotation is used to mark a field in an entity class as an optimistic lock version number field. Optimistic locking is a concurrency control mechanism that assumes multiple transactions can proceed simultaneously without interfering with each other, only checking for conflicts when committing the transaction. By using the `@Version` annotation in an entity class, MyBatis-Plus will automatically check the version number during update operations to ensure the data has not been modified by other transactions during the update process.  
+This annotation marks a field in an entity class as an optimistic locking version number field. Optimistic locking is a concurrency control mechanism that assumes multiple transactions can proceed simultaneously without interfering with each other, only checking for conflicts when committing transactions. By using the `@Version` annotation in your entity class, MyBatis-Plus automatically checks the version number during update operations to ensure the data hasn't been modified by other transactions during the update process.
 
-```java  
-@TableName("sys_user")  
-public class User {  
-    @TableId  
-    private Long id;  
-    @TableField("nickname") // Maps to the database field "nickname"  
-    private String name;  
-    private Integer age;  
-    private String email;  
-    @Version // Marked as an optimistic lock version number field  
-    private Integer version;  
-}  
-```  
+```java
+@TableName("sys_user")
+public class User {
+    @TableId
+    private Long id;
+    @TableField("nickname") // Maps to database column "nickname"
+    private String name;
+    private Integer age;
+    private String email;
+    @Version // Marks as optimistic locking version number field
+    private Integer version;
+}
+```
 
-In the example above, the `version` field is marked as the optimistic lock version number. When performing an update operation, MyBatis-Plus checks whether the value of this field matches the value in the database. If they do not match, it indicates that another transaction has modified the data after it was read, and an optimistic lock exception will be thrown, prompting the developer to handle it accordingly.  
+In the example above, the version field is marked as the optimistic lock version number. When performing an update operation, MyBatis-Plus checks whether this field's value matches the value in the database. If the values don't match, it indicates that another transaction modified the data after it was read, and MyBatis-Plus throws an optimistic locking exception to alert you to handle the situation appropriately.
 
-Using the `@Version` annotation effectively prevents data inconsistency issues during concurrent updates, improving system concurrency performance and data integrity. Developers do not need to manually write version number checking code, as MyBatis-Plus handles this process automatically.
+Using the @Version annotation effectively prevents data inconsistency issues during concurrent updates, improving your system's concurrency performance and data integrity. You don't need to manually write version checking code—MyBatis-Plus automatically handles this process for you.
 
-## @EnumValue  
+## @EnumValue
 
-This annotation is used to mark fields in an enum class, specifying the enum value to be stored in the database. When a field in an entity class is of an enum type, the `@EnumValue` annotation tells MyBatis-Plus which property of the enum to store in the database.  
+This annotation marks a field in an enumeration class to specify which value gets stored in the database. When a field in your entity class is an enum type, the `@EnumValue` annotation tells MyBatis-Plus which property of the enum to use for database storage.
 
-```java  
-@TableName("sys_user")  
-public class User {  
-    @TableId  
-    private Long id;  
-    @TableField("nickname") // Maps to the database field "nickname"  
-    private String name;  
-    private Integer age;  
-    private String email;  
-    private Gender gender; // Assuming Gender is an enum type  
-}  
+```java
+@TableName("sys_user")
+public class User {
+    @TableId
+    private Long id;
+    @TableField("nickname") // Maps to the database column "nickname"
+    private String name;
+    private Integer age;
+    private String email;
+    private Gender gender; // Assume Gender is an enum type
+}
 
-public enum Gender {  
-    MALE("M", "男"),  
-    FEMALE("F", "女");  
+public enum Gender {
+    MALE("M", "男"),
+    FEMALE("F", "女");
 
-    private String code;  
-    private String description;  
+    private String code;
+    private String description;
 
-    Gender(String code, String description) {  
-        this.code = code;  
-        this.description = description;  
-    }  
+    Gender(String code, String description) {
+        this.code = code;
+        this.description = description;
+    }
 
-    @EnumValue // Specifies that the enum's code value will be stored in the database  
-    public String getCode() {  
-        return code;  
-    }  
-}  
-```  
+    @EnumValue // Specifies that the 'code' value is stored in the database
+    public String getCode() {
+        return code;
+    }
+}
+```
 
-In the example above, the `code` field in the `Gender` enum is marked with `@EnumValue`, which means that when storing the `gender` field of the `User` entity class in the database, the `code` value of the `Gender` enum will be stored instead of the enum constant itself.  
+In the example above, the `code` field in the `Gender` enum is marked with `@EnumValue`. This means when the `gender` field of the `User` entity is saved to the database, MyBatis-Plus will store the enum's `code` value ("M" or "F") instead of the enum constant itself (`MALE` or `FEMALE`).
 
-Using the `@EnumValue` annotation allows flexible control over how enum types are stored in the database, making the data more compact and easier to handle. Additionally, it simplifies the conversion process when reading enum values from the database, as MyBatis-Plus will automatically convert the database value into the corresponding enum instance based on the `@EnumValue` configuration.
+Using the `@EnumValue` annotation gives you flexible control over how enum types are stored in the database, making the data more compact and easier to handle. It also simplifies the conversion process when reading enum values from the database, as MyBatis-Plus automatically converts the stored value back into the corresponding enum instance based on the `@EnumValue` configuration.
 
-## @TableLogic  
+## @TableLogic
 
-This annotation is used to mark a field in an entity class as a logical deletion field. Logical deletion is a data management strategy where records are not physically deleted from the database but are instead marked as deleted. By using the `@TableLogic` annotation, MyBatis-Plus can automatically handle the values of logical deletion fields during query, update, and delete operations.  
+This annotation marks a field in your entity class as a logical delete field. Logical deletion is a data management strategy where records aren't physically removed from the database. Instead, they are marked as deleted. By using the `@TableLogic` annotation, MyBatis-Plus automatically handles the values for the logical delete field during query, update, and delete operations.
 
-```java  
-@TableName("sys_user")  
-public class User {  
-    @TableId  
-    private Long id;  
-    @TableField("nickname") // Maps to the database field "nickname"  
-    private String name;  
-    private Integer age;  
-    private String email;  
-    @TableLogic(value = "0", delval = "1") // Logical deletion field  
-    private Integer deleted;  
-}  
-```  
+```java
+@TableName("sys_user")
+public class User {
+    @TableId
+    private Long id;
+    @TableField("nickname") // Maps to the database field "nickname"
+    private String name;
+    private Integer age;
+    private String email;
+    @TableLogic(value = "0", delval = "1") // Logical delete field
+    private Integer deleted;
+}
+```
 
-In the example above, the `deleted` field is marked as a logical deletion field. The `value` attribute of the `@TableLogic` annotation specifies the value for logically non-deleted records (in this case, `0`), while the `delval` attribute specifies the value for logically deleted records (in this case, `1`).  
+In the example above, the `deleted` field is marked as the logical delete field. The `value` attribute of the `@TableLogic` annotation specifies the value for "not deleted" (0 in this case), and the `delval` attribute specifies the value for "deleted" (1 in this case).
 
-When performing query operations, MyBatis-Plus automatically filters out records marked as logically deleted, returning only non-deleted records. During update operations, if the update would change the logical deletion field's value to the deletion value, MyBatis-Plus automatically marks the record as deleted. For delete operations, MyBatis-Plus updates the logical deletion field's value to the deletion value instead of physically removing the record.  
+When you perform a query, MyBatis-Plus automatically filters out records marked as logically deleted and only returns active records. During an update operation, if the update would change the logical delete field to the "deleted" value, MyBatis-Plus automatically marks the record as deleted. When you perform a delete operation, MyBatis-Plus updates the logical delete field to the "deleted" value instead of physically removing the record.
 
-Using the `@TableLogic` annotation enables logical deletion of data, helping maintain data integrity and traceability while avoiding the risks of data loss associated with physical deletion. Developers do not need to manually write code for logical deletion, as MyBatis-Plus handles this process automatically.
+Using the `@TableLogic` annotation enables logical deletion of data, which helps maintain data integrity and traceability while avoiding the risk of data loss associated with physical deletion. You don't need to write code for logical deletion manually, as MyBatis-Plus handles this process automatically.
 
-## @KeySequence  
+## @KeySequence
 
-This annotation is used to specify the name of a sequence in Oracle databases for generating primary key values in entity classes. In Oracle databases, primary keys are typically generated through sequences rather than auto-increment fields as in other databases. The `@KeySequence` annotation instructs MyBatis-Plus to use a specific sequence for primary key generation.  
+The `@KeySequence` annotation specifies the name of a sequence in Oracle databases for generating primary key values in entity classes. In Oracle databases, primary keys are typically generated using sequences rather than auto-incrementing fields like in other databases. This annotation tells MyBatis-Plus to use a specific sequence for primary key generation.
 
-```java  
-@TableName("sys_user")  
-@KeySequence("SEQ_USER_ID") // Specifies the sequence name as "SEQ_USER_ID"  
-public class User {  
-    @TableId(type = IdType.INPUT) // Uses sequence-generated primary keys  
-    private Long id;  
-    @TableField("nickname") // Maps to the database column "nickname"  
-    private String name;  
-    private Integer age;  
-    private String email;  
-}  
-```  
+```java
+@TableName("sys_user")
+@KeySequence("SEQ_USER_ID") // Specify sequence name as "SEQ_USER_ID"
+public class User {
+    @TableId(type = IdType.INPUT) // Use sequence to generate primary key
+    private Long id;
+    @TableField("nickname") // Map to database column "nickname"
+    private String name;
+    private Integer age;
+    private String email;
+}
+```
 
-In the example above, the `@KeySequence` annotation is applied to the `User` entity class, specifying the sequence name as `"SEQ_USER_ID"`. This means that when inserting a new record, MyBatis-Plus will use this sequence to generate the value for the `id` field.  
+In the example above, the `@KeySequence` annotation is applied to the `User` entity class and specifies the sequence name as "SEQ_USER_ID". This means when inserting new records, MyBatis-Plus will use this sequence to generate values for the `id` field.
 
-The `value` attribute of the `@KeySequence` annotation specifies the sequence name, while the `dbType` attribute specifies the database type. If `dbType` is not specified, MyBatis-Plus will default to the injected `IKeyGenerator` implementation. If there are multiple `IKeyGenerator` implementations, `dbType` must be specified.  
+The `value` attribute of the `@KeySequence` annotation specifies the sequence name, while the `dbType` attribute specifies the database type. If you don't specify `dbType`, MyBatis-Plus will use the injected `IKeyGenerator` implementation by default. If there are multiple `IKeyGenerator` implementations, you must specify `dbType`.
 
-Using the `@KeySequence` annotation ensures correct primary key generation in Oracle databases while simplifying the configuration process. Developers do not need to manually write code to retrieve sequence values, as MyBatis-Plus handles this process automatically.
+Using the `@KeySequence` annotation ensures that primary key values are generated correctly in Oracle databases while simplifying the configuration process for primary key generation. You don't need to manually write code to retrieve sequence values, as MyBatis-Plus automatically handles this process.
 
-## @InterceptorIgnore  
+## @InterceptorIgnore
 
-This annotation is used to specify whether a specific `method` of a `Mapper` (when annotated on the `method`) or all `methods` (when annotated on the `Mapper`) should ignore certain plugins (such as multi-tenancy) during execution.  
+This annotation specifies whether specific plugins (such as multi-tenancy) should be ignored when executing a particular `method` (when annotated on the method) or all `methods` (when annotated on the `Mapper`).
 
-```java  
-// @InterceptorIgnore(tenantLine = "1") // Ignore the multi-tenancy interceptor  
-public interface UserMapper extends BaseMapper<User> {  
+```java
+// @InterceptorIgnore(tenantLine = "1") // Ignore the multi-tenancy interceptor
+public interface UserMapper extends BaseMapper<User> {
 
-    @InterceptorIgnore(tenantLine = "1") // Ignore the multi-tenancy interceptor  
-    List<User> selectUsers();  
-}  
-```  
+    @InterceptorIgnore(tenantLine = "1") // Ignore the multi-tenancy interceptor
+    List<User> selectUsers();
+}
+```
 
-In the example above, the multi-tenancy interceptor will be ignored when executing the `selectUsers` method.  
+In the example above, the multi-tenancy interceptor will be ignored when the `selectUsers` method is executed.
 
-MyBatis-Plus provides corresponding attributes in the annotation for each plugin. For example, the multi-tenancy plugin uses the `tenantLine` attribute. If the attribute value is "1", "yes", or "on", the corresponding plugin will be ignored. If the attribute value is "0", "false", "off", or empty, the plugin will execute normally.  
+Each plugin provided by MyBatis-Plus has a corresponding property in this annotation. For example, the multi-tenancy plugin uses the `tenantLine` property. If the property value is "1", "yes", or "on", the corresponding plugin will be ignored. If the property value is "0", "false", "off", or empty, the plugin will execute normally.
 
-For details on plugin usage, refer to the [Plugin Main Body](/plugins).
+For details on plugin usage, see the [Plugin Main Body](/plugins).
 
-## @OrderBy  
+## @OrderBy
 
-This annotation is used to specify the default sorting method for fields in an entity class during query operations. By applying the `@OrderBy` annotation to a field in an entity class, you can ensure that when executing a query without explicitly specifying sorting conditions, MyBatis-Plus will return results according to the sorting rules defined in the annotation.  
+This annotation is used to specify the default sorting method for entity class fields when performing query operations. By using the @OrderBy annotation on entity class fields, you can ensure that when executing queries, if no explicit sorting conditions are specified, MyBatis-Plus will return results according to the sorting rules defined in the annotation.
 
-```java  
-@TableName("sys_user")  
-public class User {  
-    @TableId  
-    private Long id;  
-    @TableField("nickname") // Maps to the database field "nickname"  
-    private String name;  
-    @OrderBy(asc = false, sort = 10) // Specifies default sorting as descending with a priority of 10  
-    private Integer age;  
-    private String email;  
-}  
-```  
+```java
+@TableName("sys_user")
+public class User {
+    @TableId
+    private Long id;
+    @TableField("nickname") // Maps to database field "nickname"
+    private String name;
+    @OrderBy(asc = false, sort = 10) // Specifies default sorting as descending with priority 10
+    private Integer age;
+    private String email;
+}
+```
 
-In the example above, the `age` field is marked with `@OrderBy`, with the `asc` attribute set to `false`, indicating default sorting in descending order, and the `sort` attribute set to `10`, representing the priority of this sorting rule.  
+In the example above, the age field is marked with @OrderBy, with the asc attribute set to false (indicating default descending order) and the sort attribute set to 10 (indicating the priority of this sorting rule).
 
-The `asc` attribute of the `@OrderBy` annotation is used to specify whether the sorting is ascending. If set to `true`, it means ascending order; if set to `false`, it means descending order. The `sort` attribute is used to define the priority of the sorting rule—the smaller the number, the higher the priority, meaning it will be applied earlier.  
+The asc attribute of the @OrderBy annotation specifies whether the sorting is ascending. If set to true, it indicates ascending order; if set to false, it indicates descending order. The sort attribute specifies the priority of the sorting rule - smaller numbers indicate higher priority, meaning they are applied first.
 
-Note that the sorting rules defined by the `@OrderBy` annotation have lower priority than the sorting conditions explicitly specified in the query through the `Wrapper` conditional query object. If sorting conditions are specified in the `Wrapper`, the default sorting defined by `@OrderBy` will be overridden.  
+Note that the sorting rules defined by the @OrderBy annotation have lower priority than sorting conditions explicitly specified through the Wrapper condition query object during queries. If you specify sorting conditions in the Wrapper, the default sorting defined in the @OrderBy annotation will be overridden.
 
-Using the `@OrderBy` annotation simplifies code by avoiding the need to explicitly specify sorting conditions in every query. It also provides a default sorting method, improving code readability and maintainability.
+Using the @OrderBy annotation simplifies your code by avoiding the need to explicitly specify sorting conditions in every query. It also provides a default sorting method, which helps improve code readability and maintainability.

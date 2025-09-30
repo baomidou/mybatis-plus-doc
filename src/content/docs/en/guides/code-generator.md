@@ -3,10 +3,10 @@ title: Code Generator
 sidebar:
   order: 2
 ---
-AutoGenerator is the code generator of MyBatis-Plus. With AutoGenerator, you can quickly generate code for various modules such as Entity, Mapper, Mapper XML, Service, Controller, etc., greatly improving development efficiency.
+AutoGenerator is MyBatis-Plus's code generator that enables you to quickly generate code for various modules including Entity, Mapper, Mapper XML, Service, and Controller, significantly improving development efficiency.
 
 :::note
-The old code generator is applicable to versions below 3.5.1. If you are using version 3.5.1 or above, please refer to the [New Code Generator](/guides/new-code-generator/) for configuration and usage. The new code generator is more concise and powerful, and it is recommended that everyone upgrade to it.
+The legacy code generator is applicable for versions below 3.5.1. If you are using version 3.5.1 or above, please refer to the [new code generator](/guides/new-code-generator/) for configuration and usage. The new code generator is more concise and powerful, and we recommend that everyone upgrade to it.
 :::
 
 Demo effect:
@@ -14,7 +14,7 @@ Demo effect:
 ![relationship](/images/content/generator.gif)
 
 ```java
-// Demo example, execute the main method and enter the module table name in the console to automatically generate the corresponding project directory
+// Demo example, run the main method and enter the table name in the console to automatically generate code in the corresponding project directory
 public class CodeGenerator {
 
     /**
@@ -25,7 +25,7 @@ public class CodeGenerator {
     public static String scanner(String tip) {
         Scanner scanner = new Scanner(System.in);
         StringBuilder help = new StringBuilder();
-        help.append("Please enter " + tip + ":");
+        help.append("请输入" + tip + "：");
         System.out.println(help.toString());
         if (scanner.hasNext()) {
             String ipt = scanner.next();
@@ -33,7 +33,7 @@ public class CodeGenerator {
                 return ipt;
             }
         }
-        throw new MybatisPlusException("Please enter the correct " + tip + "!");
+        throw new MybatisPlusException("请输入正确的" + tip + "！");
     }
 
     public static void main(String[] args) {
@@ -55,12 +55,12 @@ public class CodeGenerator {
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("password");
+        dsc.setPassword("密码");
         mpg.setDataSource(dsc);
 
         // Package configuration
         PackageConfig pc = new PackageConfig();
-        pc.setModuleName(scanner("module name"));
+        pc.setModuleName(scanner("模块名"));
         pc.setParent("com.baomidou.ant");
         mpg.setPackageInfo(pc);
 
@@ -72,18 +72,18 @@ public class CodeGenerator {
             }
         };
 
-        // If the template engine is freemarker
+        // If template engine is freemarker
         String templatePath = "/templates/mapper.xml.ftl";
-        // If the template engine is velocity
+        // If template engine is velocity
         // String templatePath = "/templates/mapper.xml.vm";
 
         // Custom output configuration
         List<FileOutConfig> focList = new ArrayList<>();
-        // Custom configurations will be output first
+        // Custom configuration will be output first
         focList.add(new FileOutConfig(templatePath) {
             @Override
             public String outputFile(TableInfo tableInfo) {
-                // Custom output filename. If you set prefixes/suffixes for Entity, note that the XML name will change accordingly!!
+                // Custom output filename, if you set prefix/suffix for Entity, note that the XML name will change accordingly!!
                 return projectPath + "/src/main/resources/mapper/" + pc.getModuleName()
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
@@ -92,13 +92,13 @@ public class CodeGenerator {
         cfg.setFileCreate(new IFileCreate() {
             @Override
             public boolean isCreate(ConfigBuilder configBuilder, FileType fileType, String filePath) {
-                // Check if custom directories need to be created
-                checkDir("Directories created by default methods, use custom directories");
+                // Check if custom directory needs to be created
+                checkDir("Directory created using default method, use for custom directories");
                 if (fileType == FileType.MAPPER) {
-                    // Check if the mapper file already exists to avoid regeneration
+                    // Check if mapper file already exists, return false if you don't want to regenerate
                     return !new File(filePath).exists();
                 }
-                // Allow template file generation
+                // Allow generating template files
                 return true;
             }
         });
@@ -110,7 +110,7 @@ public class CodeGenerator {
         TemplateConfig templateConfig = new TemplateConfig();
 
         // Configure custom output templates
-        // Specify custom template paths. Do not include .ftl/.vm, as the template engine will automatically recognize them
+        // Specify custom template path, don't include .ftl/.vm extension, will be automatically recognized based on template engine used
         // templateConfig.setEntity("templates/entity2.java");
         // templateConfig.setService();
         // templateConfig.setController();
@@ -122,14 +122,14 @@ public class CodeGenerator {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        strategy.setSuperEntityClass("Your own parent entity class, leave unset if not needed!");
+        strategy.setSuperEntityClass("Your own parent entity class, no need to set if you don't have one!");
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
         // Common parent class
-        strategy.setSuperControllerClass("Your own parent controller class, leave unset if not needed!");
-        // Common fields in the parent class
+        strategy.setSuperControllerClass("Your own parent controller class, no need to set if you don't have one!");
+        // Common fields in parent class
         strategy.setSuperEntityColumns("id");
-        strategy.setInclude(scanner("Table names, separated by commas").split(","));
+        strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);
@@ -140,15 +140,15 @@ public class CodeGenerator {
 }
 ```
 
-For more detailed configurations, please refer to the [Code Generator Configuration](/reference/code-generator-configuration) article.
+For more detailed configuration, please refer to the [Code Generator Configuration](/reference/code-generator-configuration) article.
 
 ## Usage Tutorial
 
 ### Adding Dependencies
 
-Starting from version `3.0.3`, MyBatis-Plus has removed the default dependencies for the code generator and template engine, requiring manual addition of the relevant dependencies:
+Starting from version `3.0.3`, MyBatis-Plus removed the default dependencies for the code generator and template engine. You need to manually add the relevant dependencies:
 
-- Add the **Code Generator** dependency:
+- Add the code generator dependency
 
   ```xml
   <dependency>
@@ -158,7 +158,7 @@ Starting from version `3.0.3`, MyBatis-Plus has removed the default dependencies
   </dependency>
   ```
 
-- Add the **Template Engine** dependency. MyBatis-Plus supports Velocity (default), Freemarker, and Beetl. Users can choose their preferred template engine. If none meet your requirements, a custom template engine can be used.
+- Add a template engine dependency. MyBatis-Plus supports Velocity (default), Freemarker, and Beetl. You can choose a template engine you are familiar with. If none of these meet your requirements, you can use a custom template engine.
 
   Velocity (default):
 
@@ -190,7 +190,7 @@ Starting from version `3.0.3`, MyBatis-Plus has removed the default dependencies
   </dependency>
   ```
 
-  Note! If you choose a non-default engine, you need to configure the template engine in the `AutoGenerator`.
+  Note! If you choose a non-default engine, you must set the template engine in the AutoGenerator.
 
   ```java
   AutoGenerator generator = new AutoGenerator();
@@ -208,20 +208,20 @@ Starting from version `3.0.3`, MyBatis-Plus has removed the default dependencies
   ...
   ```
 
-### Writing Configuration  
+### Writing Configuration
 
-MyBatis-Plus's code generator provides a wide range of customizable parameters to meet the needs of most users.  
+MyBatis-Plus code generator provides numerous custom parameters for you to choose from, meeting the usage requirements for most scenarios.
 
-- Configuring GlobalConfig  
+- Configure GlobalConfig
 
   ```java
   GlobalConfig globalConfig = new GlobalConfig();
   globalConfig.setOutputDir(System.getProperty("user.dir") + "/src/main/java");
   globalConfig.setAuthor("jobob");
   globalConfig.setOpen(false);
-  ```  
+  ```
 
-- Configuring DataSourceConfig  
+- Configure DataSourceConfig
 
   ```java
   DataSourceConfig dataSourceConfig = new DataSourceConfig();
@@ -229,73 +229,73 @@ MyBatis-Plus's code generator provides a wide range of customizable parameters t
   dataSourceConfig.setDriverName("com.mysql.jdbc.Driver");
   dataSourceConfig.setUsername("root");
   dataSourceConfig.setPassword("password");
-  ```  
+  ```
 
 For more generator configurations, please refer to [Code Generator Configuration](/reference/code-generator-configuration/).
 
-## Custom Template Engine  
+## Custom Template Engine
 
-Please inherit the class `com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine`  
+Please extend the class `com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine`
 
-:::tip  
-What parameters are available for custom templates? All values in the `objectMap` returned by the `getObjectMap` method in the [AbstractTemplateEngine](https://github.com/baomidou/generator/blob/develop/mybatis-plus-generator/src/main/java/com/baomidou/mybatisplus/generator/engine/AbstractTemplateEngine.java) class are usable.  
+:::tip
+What parameters are available for custom templates? All values in the `objectMap` returned by the `getObjectMap` method in the [AbstractTemplateEngine](https://github.com/baomidou/generator/blob/develop/mybatis-plus-generator/src/main/java/com/baomidou/mybatisplus/generator/engine/AbstractTemplateEngine.java) class are available.
 :::
 
 ## Custom Code Templates
 
 ```java
-//Specify the custom template path, location: /resources/templates/entity2.java.ftl (or .vm)
-//Note: Do not include .ftl (or .vm), it will be automatically recognized based on the template engine used
+//Specify custom template path, location: /resources/templates/entity2.java.ftl (or .vm)
+//Note: Do not include .ftl (or .vm) extension, it will be automatically recognized based on the template engine used
 TemplateConfig templateConfig = new TemplateConfig()
     .setEntity("templates/entity2.java");
 
 AutoGenerator mpg = new AutoGenerator();
-//Configure custom templates
+//Configure custom template
 mpg.setTemplate(templateConfig);
 ```
 
-## Custom Attribute Injection  
+## Custom Property Injection
 
-```java  
-InjectionConfig injectionConfig = new InjectionConfig() {  
-    //Custom attribute injection: abc  
-    //In .ftl (or .vm) templates, access the attribute via ${cfg.abc}  
-    @Override  
-    public void initMap() {  
-        Map<String, Object> map = new HashMap<>();  
-        map.put("abc", this.getConfig().getGlobalConfig().getAuthor() + "-mp");  
-        this.setMap(map);  
-    }  
-};  
-AutoGenerator mpg = new AutoGenerator();  
-//Configure custom attribute injection  
-mpg.setCfg(injectionConfig);  
-```  
-
-```xml  
-entity2.java.ftl  
-Custom attribute injection abc=${cfg.abc}  
-
-entity2.java.vm  
-Custom attribute injection abc=$!{cfg.abc}  
+```java
+InjectionConfig injectionConfig = new InjectionConfig() {
+    // Custom property injection: abc
+    // In .ftl (or .vm) templates, access the property via ${cfg.abc}
+    @Override
+    public void initMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("abc", this.getConfig().getGlobalConfig().getAuthor() + "-mp");
+        this.setMap(map);
+    }
+};
+AutoGenerator mpg = new AutoGenerator();
+// Configure custom property injection
+mpg.setCfg(injectionConfig);
 ```
 
-## Field Additional Information Query Injection  
+```xml
+entity2.java.ftl
+Custom property injection abc=${cfg.abc}
 
-![relationship](/images/content/custom-fields.png)  
+entity2.java.vm
+Custom property injection abc=$!{cfg.abc}
+```
 
-```java  
-new DataSourceConfig().setDbQuery(new MySqlQuery() {  
+## Field Additional Information Query Injection
 
-    /**  
-     * Override the parent class's reserved query for custom fields.<br>  
-     * The SQL queried here corresponds to the query fields in the parent class's `tableFieldsSql`. If the default does not meet your needs, override it.<br>  
-     * In the template, call: `table.fields` to retrieve all field information,  
-     * then loop through the fields and use `field.customMap` to obtain injected fields such as `NULL` or `PRIVILEGES` from the MAP.  
-     */  
-    @Override  
-    public String[] fieldCustom() {  
-        return new String[]{"NULL", "PRIVILEGES"};  
-    }  
-})  
+![relationship](/images/content/custom-fields.png)
+
+```java
+new DataSourceConfig().setDbQuery(new MySqlQuery() {
+
+    /**
+     * Override the parent class's reserved query for custom fields<br>
+     * The SQL queried here corresponds to the query fields in the parent class's tableFieldsSql. Override it if the default implementation doesn't meet your requirements<br>
+     * Called in the template: table.fields gets all field information,
+     * then loop through the fields and get field.customMap to retrieve injected fields like NULL or PRIVILEGES from the MAP
+     */
+    @Override
+    public String[] fieldCustom() {
+        return new String[]{"NULL", "PRIVILEGES"};
+    }
+})
 ```

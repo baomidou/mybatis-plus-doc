@@ -2,10 +2,7 @@
   "targetLanguages": ["en", "ja"],
   "frontmatterKeys": ["title", "description", "tagline"],
   "sourceDir": "src/content/docs",
-  "excludeFiles": [
-    "404.md",
-    "index.mdx"
-  ],
+  "excludeFiles": [ ],
   "excludeDirs": [
     "en",
     "ja"
@@ -41,7 +38,7 @@
   "parallel": {
     "enabled": true,
     "segmentParallel": false,
-    "maxConcurrency": 3
+    "maxConcurrency": 30
   },
   "segmentation": {
     "enabled": true,

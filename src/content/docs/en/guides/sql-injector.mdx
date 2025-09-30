@@ -4,35 +4,35 @@ sidebar:
   order: 17
 ---
 
-MyBatis-Plus provides a flexible mechanism for injecting custom SQL methods through the global `sqlInjector` configuration. By implementing the `ISqlInjector` interface or extending the `AbstractSqlInjector` abstract class, you can inject custom generic methods into the MyBatis container.
+MyBatis-Plus provides a flexible mechanism for injecting custom SQL methods, achieved through the global `sqlInjector` configuration. By implementing the `ISqlInjector` interface or extending the `AbstractSqlInjector` abstract class, you can inject custom generic methods into the MyBatis container.
 
-The SQL injector allows developers to extend and customize SQL statement generation to meet specific business logic and query requirements. Here are some example use cases and functionalities of the SQL injector:
+The SQL Injector allows developers to extend and customize SQL statement generation to accommodate specific business logic and query requirements. Here are some example usage scenarios and the capabilities it enables:
 
-**Use Cases**
+**Usage Scenarios**
 
-1. **Custom Query Methods**: When standard CRUD operations cannot meet complex query requirements, custom query methods can be added via the SQL injector.
+1. **Custom Query Methods**: When standard CRUD operations are insufficient for complex query needs, you can add custom query methods via the SQL Injector.
 
-2. **Complex Data Processing**: For scenarios requiring complex data processing, such as multi-table joins, subqueries, or aggregate functions, the SQL injector can help generate the corresponding SQL statements.
+2. **Complex Data Processing**: For scenarios requiring complex data processing, such as multi-table joins, subqueries, and aggregate functions, the SQL Injector can help generate the corresponding SQL statements.
 
-3. **Performance Optimization**: Custom SQL statements can be used to optimize performance for specific query scenarios.
+3. **Performance Optimization**: Custom SQL statements allow for performance optimization tailored to specific query scenarios.
 
-4. **Data Permission Control**: When SQL statements need to be dynamically generated based on user permissions, the SQL injector can help implement data permission control.
+4. **Data Permission Control**: When SQL statements need to be dynamically generated based on user permissions, the SQL Injector can be used to implement data permission control.
 
-5. **Legacy System Migration**: When migrating legacy systems to MyBatis-Plus, preserving the original SQL statement structure may be necessary, and the SQL injector can facilitate this transition.
+5. **Legacy System Migration**: When migrating legacy systems to MyBatis-Plus, you may need to preserve the original SQL statement structure. The SQL Injector can facilitate this transition.
 
-**Functionalities**
+**Capabilities**
 
-1. **Inject Custom SQL Methods**: By implementing the `ISqlInjector` interface, custom SQL methods can be injected into the MyBatis container, including any complex SQL queries.
+1. **Inject Custom SQL Methods**: By implementing the `ISqlInjector` interface, you can inject custom SQL methods into the MyBatis container. These methods can represent any complex SQL query.
 
-2. **Extend BaseMapper**: Additional query methods can be added to `BaseMapper` via the SQL injector, and these methods will be automatically recognized and used by MyBatis-Plus.
+2. **Extend BaseMapper**: You can add additional query methods by extending `BaseMapper` through the SQL Injector. These methods will be automatically recognized and used by MyBatis-Plus.
 
-3. **Flexible SQL Generation**: The SQL injector provides a flexible SQL generation mechanism to produce various SQL statements, including but not limited to SELECT, INSERT, UPDATE, and DELETE.
+3. **Flexible SQL Generation**: The SQL Injector provides a flexible SQL generation mechanism, allowing the creation of various SQL statements (SELECT, INSERT, UPDATE, DELETE, etc.) based on business requirements.
 
-4. **Integrate Third-Party Database Features**: For scenarios requiring specific database features like stored procedures or triggers, the SQL injector can generate SQL statements to invoke these functionalities.
+4. **Integrate Third-Party Database Features**: If you need to use specific database features like stored procedures or triggers, the SQL Injector can help generate SQL statements that invoke these features.
 
-5. **Dynamic SQL Support**: In cases where SQL statements need to be dynamically generated based on runtime conditions, the SQL injector supports this dynamic SQL generation.
+5. **Dynamic SQL Support**: In scenarios where SQL statements need to be dynamically generated based on runtime conditions, the SQL Injector supports this dynamic SQL generation.
 
-Through the SQL injector, MyBatis-Plus offers a powerful extension point, enabling developers to flexibly customize and optimize SQL statements according to project-specific needs, thereby improving application performance and adaptability.
+Through the SQL Injector, MyBatis-Plus provides a powerful extension point, enabling developers to flexibly customize and optimize SQL statements according to project-specific needs, thereby improving application performance and adaptability.
 
 ## Injector Configuration
 
@@ -54,15 +54,15 @@ public interface ISqlInjector {
 
 The default injector implementation is [DefaultSqlInjector](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-core/src/main/java/com/baomidou/mybatisplus/core/injector/DefaultSqlInjector.java). You can refer to it when creating your own injector.
 
-Below is an example of how to configure `sqlInjector`.
+Below is an example of how to configure the `sqlInjector`.
 
-Based on the provided reference information, we can see how to implement custom global methods in MyBatis-Plus, including logical deletion, auto-fill, and custom `insert` and `insertBatch` methods. Here is a more detailed step-by-step guide with example code:
+Based on the provided reference information, we can see how to implement custom global methods in MyBatis-Plus, including logical delete, automatic filling, and custom `insert` and `insertBatch` methods. Here is a more detailed step-by-step guide and example code:
 
-## Custom Global Method Guide
+## Custom Global Methods Guide
 
-### Step 1: Define SQL
+### Step 1: Define the SQL
 
-First, define the SQL statements for your custom methods. This is typically done in a class that extends `AbstractMethod`, such as `MysqlInsertAllBatch`.
+First, you need to define the SQL statements for your custom methods. This is typically done within a class that extends `AbstractMethod`, such as `MysqlInsertAllBatch`.
 
 ```java
 public class MysqlInsertAllBatch extends AbstractMethod {
@@ -76,7 +76,7 @@ public class MysqlInsertAllBatch extends AbstractMethod {
     
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
- 		// Define SQL statement (primary key + regular fields)  insert into table(....) values(....),(....)
+ 		// Define SQL statement (primary key + regular fields) insert into table(....) values(....),(....)
         String sql = "INSERT INTO " + tableInfo.getTableName() + "(" + tableInfo.getKeyColumn() + "," +
                 tableInfo.getFieldList().stream().map(TableFieldInfo::getColumn).collect(Collectors.joining(",")) + ") VALUES ";
         String value = "(" + "#{" + ENTITY + DOT + tableInfo.getKeyProperty() + "}" + ","
@@ -93,7 +93,7 @@ public class MysqlInsertAllBatch extends AbstractMethod {
 
 ### Step 2: Register Custom Methods
 
-Next, create a class that extends `DefaultSqlInjector` and override the `getMethodList` method to register your custom methods.
+Next, you need to create a class that extends `DefaultSqlInjector` and override the `getMethodList` method to register your custom methods.
 
 ```java
 public class MyLogicSqlInjector extends DefaultSqlInjector {
@@ -111,7 +111,7 @@ public class MyLogicSqlInjector extends DefaultSqlInjector {
 
 ### Step 3: Define BaseMapper
 
-Then, define your custom methods in your BaseMapper interface.
+Then, you need to define the custom methods in your BaseMapper interface.
 
 ```java
 public interface MyBaseMapper<T> extends BaseMapper<T> {
@@ -126,7 +126,7 @@ public interface MyBaseMapper<T> extends BaseMapper<T> {
 
 ### Step 4: Configure SqlInjector
 
-Finally, specify your custom SQL injector in the configuration file.
+Finally, you need to specify your custom SQL injector in the configuration file.
 
 #### Configure in `application.yml`
 
@@ -142,16 +142,16 @@ mybatis-plus:
 mybatis-plus.global-config.sql-injector=com.example.MyLogicSqlInjector
 ```
 
-### Notes
+### Important Notes
 
-- When defining custom methods, ensure the method names match the IDs in the injected SQL statements.
-- When using custom batch insert and auto-fill features, ensure the `@Param` annotation is used on Mapper method parameters, and the naming conforms to MyBatis-Plus's default support (`list`, `collection`, `array`).
-- Custom SQL statements should be written according to your business requirements to ensure they correctly execute the desired operations.
+- When defining custom methods, ensure the method name matches the ID used in the injected SQL statement.
+- When using custom batch insert and automatic fill functionality, ensure you use the `@Param` annotation on the Mapper method parameters, and the naming conforms to MyBatis-Plus's default support (`list`, `collection`, `array`).
+- Custom SQL statements should be written according to your business requirements to ensure they correctly perform the intended operations.
 
-By following these steps, you can successfully implement custom global methods in MyBatis-Plus. Adjust the SQL statements and method implementations as needed for your specific business requirements.
+By following these steps, you can successfully implement custom global methods in MyBatis-Plus. Remember to adjust the SQL statements and method implementations according to your specific business needs in practice.
 
 ## More Examples
 
-Refer to the [Custom BaseMapper Example](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-deluxe) for detailed steps on creating custom SQL injectors and using them in your projects.
+Refer to the [Custom BaseMapper Example](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-deluxe) for detailed steps on how to create custom SQL injectors and use them in your projects.
 
-This approach allows MyBatis-Plus to extend its functionality to meet specific business needs while maintaining clean and maintainable code.
+This approach allows MyBatis-Plus to extend its functionality to meet specific business requirements while maintaining clean and maintainable code.

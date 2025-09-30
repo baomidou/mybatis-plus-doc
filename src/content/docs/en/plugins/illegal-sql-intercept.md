@@ -6,17 +6,17 @@ sidebar:
 
 ## Introduction
 
-`IllegalSQLInnerInterceptor` is a security control plugin in the MyBatis-Plus framework, designed to intercept and inspect illegal SQL statements. This plugin helps developers identify and resolve potential security issues before SQL execution, such as full-table updates, delete operations, and index checks.
+`IllegalSQLInnerInterceptor` is a security control plugin within the MyBatis-Plus framework, designed to intercept and inspect illegal SQL statements. This plugin helps developers identify and resolve potential security issues before SQL execution, such as full table updates, delete operations, and index checks.
 
 - Plugin Source 👉 [IllegalSQLInnerInterceptor](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-jsqlparser-support/mybatis-plus-jsqlparser/src/main/java/com/baomidou/mybatisplus/extension/plugins/inner/IllegalSQLInnerInterceptor.java)
 - Test Cases 👉 [IllegalSQLInnerInterceptorTest](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-jsqlparser-support/mybatis-plus-jsqlparser/src/test/java/com/baomidou/mybatisplus/test/extension/plugins/inner/IllegalSQLInnerInterceptorTest.java)
 
 ## Features
 
-- **Interception of SQL Types**: The plugin can identify and intercept specific types of SQL statements, such as high-risk operations like full-table updates or deletes.
-- **Mandatory Index Usage**: Ensures the use of indexes in queries to improve performance and avoid full-table scans.
-- **Full-Table Update/Delete Checks**: Prevents unauthorized full-table updates or deletes, reducing the risk of data loss.
-- **`not`, `or`, and Subquery Checks**: Performs additional checks on SQL statements containing `not`, `or` keywords or subqueries to prevent logical errors or performance issues.
+- **Intercepts Specific SQL Types**: The plugin can identify and intercept specific types of SQL statements, such as high-risk operations like full table updates and deletes.
+- **Enforces Index Usage**: Ensures queries use indexes to improve performance and avoid full table scans.
+- **Full Table Update/Delete Checks**: Prevents unauthorized full table update or delete operations to reduce the risk of data loss.
+- **`not`, `or`, and Subquery Checks**: Performs additional checks on SQL statements containing `not`, `or` keywords, or subqueries to prevent logical errors or performance issues.
 
 ## Usage
 
@@ -50,9 +50,9 @@ public class MybatisPlusConfig {
 
 :::note
 
-- **Review Official Documentation**: Before using the plugin, carefully read the official MyBatis-Plus documentation to understand detailed usage instructions and configuration methods.
-- **Custom Adaptation**: This plugin provides a solution for intercepting illegal SQL, but it may not suit all enterprise environments. Developers should modify and optimize the plugin according to their project requirements.
+- **Consult the Official Documentation**: Before using the plugin, carefully read the MyBatis-Plus official documentation to understand detailed usage instructions and configuration methods.
+- **Custom Adaptation**: This plugin provides a solution for intercepting illegal SQL, but it may not be suitable for all enterprise environments. Developers should modify and optimize the plugin according to their specific project requirements.
 
 :::
 
-The `IllegalSQLInnerInterceptor` plugin is a powerful security tool provided by MyBatis-Plus, helping developers identify and resolve potential SQL security issues in advance. Proper configuration and use of this plugin can significantly enhance the security and efficiency of database operations.
+The `IllegalSQLInnerInterceptor` plugin is a powerful security tool provided by MyBatis-Plus that helps developers identify and resolve potential SQL security issues in advance. By properly configuring and using this plugin, you can significantly improve the security and efficiency of your database operations.

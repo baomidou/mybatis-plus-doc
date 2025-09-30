@@ -4,37 +4,35 @@ sidebar:
   order: 14
 ---
 
-プロジェクト規模の拡大に伴い、単一のデータソースでは複雑なビジネス要件を満たすことができなくなり、マルチデータソース（動的データソース）が生まれました。本稿では、MyBatis-Plus の2つのマルチデータソース拡張プラグインについて紹介します：オープンソースエコシステムの `dynamic-datasource` とエンタープライズエコシステムの `mybatis-mate` です。
+プロジェクト規模の拡大に伴い、単一データソースでは複雑な業務要件を満たせなくなり、マルチデータソース（動的データソース）が登場しました。本稿では、MyBatis-Plusの2つのマルチデータソース拡張プラグイン、オープンソースエコシステムの `dynamic-datasource` とエンタープライズエコシステムの `mybatis-mate` を紹介します。
 
 ## dynamic-datasource
 
-`dynamic-datasource` は、オープンソースの Spring Boot マルチデータソーススターターで、データソースのグループ化、機密情報の暗号化、独立したテーブル構造の初期化など、豊富な機能を提供しています。
+`dynamic-datasource` はオープンソースのSpring Bootマルチデータソーススターターで、データソースのグループ化、機密情報の暗号化、独立したテーブル構造の初期化など、豊富な機能を提供します。
 
 ### 特徴
 
-- **データソースのグループ化**：読み書き分離、一主多従など、様々なシナリオに適用可能です。
-- **機密情報の暗号化**：`ENC()` を使用してデータベース設定情報を暗号化します。
-- **独立した初期化**：各データベースのテーブル構造とデータベースを独立して初期化することをサポートします。
-- **カスタムアノテーション**：`DS` を継承したカスタムアノテーションをサポートします。
-- **簡素化された統合**：Druid、HikariCP などのコネクションプールへの迅速な統合を提供します。
-- **コンポーネント統合**：Mybatis-Plus、Quartz などのコンポーネントの統合ソリューションをサポートします。
-- **動的データソース**：プロジェクト起動後にデータソースを動的に追加または削除することをサポートします。
-- **分散トランザクション**：Seata ベースの分散トランザクションソリューションを提供します。
+- **データソースグループ化**: 読み書き分離、1マスタ-複数スレーブなど、様々なシナリオに適用可能。
+- **機密情報暗号化**: `ENC()` を使用してデータベース設定情報を暗号化。
+- **独立初期化**: 各データベースのテーブル構造とデータベースを独立して初期化することをサポート。
+- **カスタムアノテーション**: カスタムアノテーションをサポート。`DS` を継承する必要があります。
+- **簡素化された統合**: Druid、HikariCPなどのコネクションプールとの迅速な統合を提供。
+- **コンポーネント統合**: Mybatis-Plus、Quartzなどのコンポーネントの統合ソリューションをサポート。
+- **動的データソース**: プロジェクト起動後のデータソースの動的な追加や削除をサポート。
+- **分散トランザクション**: Seataベースの分散トランザクションソリューションを提供。
 
 ### 規約
 
-- 本フレームワークはデータソースの切り替えに特化しており、具体的な操作は制限しません。
-- 設定ファイルでアンダースコア `_` で区切られたデータソースの先頭がグループ名となります。
-- データソースの切り替えはグループ名または具体的なデータソース名で行えます。
-- デフォルトのデータソース名は `master` で、`spring.datasource.dynamic.primary` で変更可能です。
-- メソッド上のアノテーションはクラス上のアノテーションよりも優先されます。
+- 本フレームワークはデータソース切り替えに特化しており、具体的な操作を制限しません。
+- 設定ファイルにおいて、アンダースコア `_` で分割されたデータソースの先頭部分はグループ名です。
+- データソースの切り替えは、グループ名または特定のデータソース名で行えます。
+- デフォルトのデータソース名は `master` です。`spring.datasource.dynamic.primary` で変更可能です。
+- メソッド上のアノテーションはクラス上のアノテーションより優先されます。
 
 ### 使用方法
 
-1. **依存関係の追加**：
-
-- SpringBoot2
-
+1. **依存関係の追加**:
+  - SpringBoot2
   ```xml
   <dependency>
     <groupId>com.baomidou</groupId>
@@ -43,8 +41,7 @@ sidebar:
   </dependency>
   ```
 
-- SpringBoot3
-
+ - SpringBoot3
  ```xml
  <dependency>
   <groupId>com.baomidou</groupId>
@@ -53,7 +50,7 @@ sidebar:
  </dependency>
  ```  
 
-2. **データソースの設定**：
+2. **データソースの設定**:
 
 ```yaml
 spring:
@@ -79,7 +76,7 @@ spring:
           driver-class-name: com.mysql.jdbc.Driver
 ```
 
-3. **`@DS` を使用してデータソースを切り替え**：
+3. **`@DS` を使用したデータソースの切り替え**:
 
 ```java
 @Service
@@ -97,22 +94,22 @@ public class UserServiceImpl implements UserService {
 }
 ```
 
-より詳細な使用方法については[Dynamic-Datasource 公式サイト](https://github.com/baomidou/dynamic-datasource)を参照してください。
+より詳細な使用方法については、[Dynamic-Datasource 公式サイト](https://github.com/baomidou/dynamic-datasource)を参照してください。
 
 ## mybatis-mate
 
-`mybatis-mate` は、MyBatis-Plus の有料エンタープライズコンポーネントで、便利かつ高度な機能が数多く組み込まれており、その中にはマルチデータソース拡張コンポーネントも含まれています。効率的でシンプルなマルチデータソースサポートを提供します。
+`mybatis-mate` は MyBatis-Plus の有償エンタープライズコンポーネントであり、多くの便利な高度な機能が組み込まれており、その中にはマルチデータソース拡張コンポーネントも含まれ、効率的でシンプルなマルチデータソースサポートを提供します。
 
 ### 特徴
 
-- **`@Sharding` アノテーション**：アノテーションを使用してデータソースを切り替えることをサポートします。
-- **設定**：柔軟なデータソース設定をサポートします。
-- **動的ロード/アンロード**：データソースの動的なロードとアンロードをサポートします。
-- **マルチデータソーストランザクション**：JTA Atomikos 分散トランザクションをサポートします。
+- **アノテーション `@Sharding`**: アノテーションによるデータソース切り替えをサポート。
+- **設定**: 柔軟なデータソース設定をサポート。
+- **動的ロード/アンロード**: データソースの動的なロードとアンロードをサポート。
+- **マルチデータソーストランザクション**: JTA Atomikos 分散トランザクションをサポート。
 
 ### 使用方法
 
-1. **データソースの設定**：
+1. **データソースの設定**:
 
 ```xml
 mybatis-mate:
@@ -130,7 +127,7 @@ mybatis-mate:
           ...
 ```
 
-2. **`@Sharding` を使用してデータソースを切り替え**：
+2. **`@Sharding` を使用したデータソースの切り替え**:
 
 ```java
 @Mapper
@@ -143,17 +140,17 @@ public interface UserMapper extends BaseMapper<User> {
 }
 ```
 
-3. **指定したデータベースノードに切り替え**：
+3. **指定したデータベースノードへの切り替え**:
 
 ```java
-// mysql のスレーブノード node2 に切り替え
+// mysql スレーブライブラリ node2 ノードに切り替え
 ShardingKey.change("mysqlnode2");
 ```
 
-より詳細な使用例については以下を参照してください
+その他の使用例については、以下を参照してください。
 
-- マルチデータソースの動的ロード/アンロード：👉 [mybatis-mate-sharding-dynamic](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding-dynamic)
+- マルチデータソース動的ロード/アンロード: 👉 [mybatis-mate-sharding-dynamic](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding-dynamic)
 
-- マルチデータソーストランザクション（jta atomikos）：👉 [mybatis-mate-sharding-jta-atomikos](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding-jta-atomikos)
+- マルチデータソーストランザクション (jta atomikos): 👉 [mybatis-mate-sharding-jta-atomikos](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding-jta-atomikos)
 
-上記の紹介から、`dynamic-datasource` と `mybatis-mate` の両方が強力なマルチデータソース対応を提供していることがわかります。開発者はプロジェクトの要件に応じて適切なプラグインを選択し、データソースを柔軟に管理することができます。
+上記の紹介から、`dynamic-datasource` と `mybatis-mate` の両方が強力なマルチデータソースサポートを提供していることがわかります。開発者はプロジェクトの要件に応じて適切なプラグインを選択し、データソースの柔軟な管理を実現できます。

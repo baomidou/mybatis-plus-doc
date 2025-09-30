@@ -3,8 +3,7 @@ title: Frequently Asked Questions
 sidebar:
   order: 6
 ---
-
-This document compiles various common issues encountered when using MyBatis-Plus. If you encounter any problems while using MyBatis-Plus, please refer to this document first.
+This documentation collects various common issues encountered when using MyBatis-Plus. If you run into problems while using MyBatis-Plus, please check this documentation first.
 
 ## How to Exclude Non-Table Fields?
 
@@ -29,9 +28,9 @@ Choose one of the following three methods:
   private String noColumn;
   ```
 
-## How to Exclude Entity Superclass Attributes?
+## How to Exclude Entity Superclass Properties?
 
-Use the `transient` modifier to exclude superclass attributes
+Use the `transient` modifier for the superclass properties you want to exclude.
 
 ```java
 /**
@@ -40,14 +39,14 @@ Use the `transient` modifier to exclude superclass attributes
 private transient String createTime;
 ```
 
-## Encountering `Invalid bound statement (not found)` Exception  
+## Resolving `Invalid bound statement (not found)` Exception
 
-This exception typically occurs due to incorrect configuration or the Mapper not being properly scanned. Solutions are as follows:  
+This exception typically occurs due to incorrect configuration or Mapper classes not being properly scanned. Use the following solutions:
 
-- Check for potential jar package conflicts.  
-- Verify the scanning path of Mapper.java:  
+- Check for potential JAR package conflicts.
+- Verify the Mapper.java scan path:
 
-  - Method 1: Use the `@MapperScan` annotation on the `Configuration` class  
+  - Method 1: Use the `@MapperScan` annotation on your `Configuration` class
 
     ```java
     @Configuration
@@ -55,30 +54,30 @@ This exception typically occurs due to incorrect configuration or the Mapper not
     public class YourConfigClass{
       ...
     }
-    ```  
+    ```
 
-  - Method 2: Configure `MapperScannerConfigurer` in the `Configuration` class ([See Example](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/config%E6%96%B9%E5%BC%8F/src/main/java/com/baomidou/springboot/config/MybatisPlusConfig.java))  
+  - Method 2: Configure `MapperScannerConfigurer` in your `Configuration` class ([View example](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/config%E6%96%B9%E5%BC%8F/src/main/java/com/baomidou/springboot/config/MybatisPlusConfig.java))
 
     ```java
     @Bean
     public MapperScannerConfigurer mapperScannerConfigurer(){
         MapperScannerConfigurer scannerConfigurer = new MapperScannerConfigurer();
-        // You can obtain your mapper path via environment variables, allowing mapper scanning to be configured in the properties file  
+        // You can get your mapper path through environment variables, allowing mapper scanning to be configured via configuration files
         scannerConfigurer.setBasePackage("com.yourpackage.*.mapper");
         return scannerConfigurer;
     }
-    ```  
+    ```
 
-- Check whether the primary key is specified. If not, operations like `selectById` will fail. Use the `@TableId` annotation to mark the primary key. Note that the `@TableId` annotation can be omitted, but the primary key must be named `id` (case-insensitive).  
-- Do not use the native `SqlSessionFactory`; instead, use `MybatisSqlSessionFactory`.  
-- Check if a custom `SqlInjector` is implemented and whether the `getMethodList()` method is overridden. Ensure that the required methods are injected in this method (refer to `DefaultSqlInjector` for guidance).  
-- By default, IDEA's build process may prevent mapper files from being compiled into the corresponding resources folder. Verify whether the XML files exist in the relevant resource folders after building. If not, adjust IDEA's build settings. It is recommended to use Maven or Gradle for building.
+- Check if you've specified a primary key. If not specified, `selectById` and related ID operations will fail. Use the `@TableId` annotation to mark your table's primary key. Note: While the `@TableId` annotation can be omitted, your primary key column must be named 'id' (case-insensitive).
+- Do not use the native SqlSessionFactory; use MybatisSqlSessionFactory instead.
+- Check if you've customized SqlInjector and overridden the `getMethodList()` method. Ensure this method injects all the methods you need (refer to DefaultSqlInjector for guidance).
+- IDEA's default build process might prevent mapper XML files from being compiled to the corresponding resources folder. Check if the XML files exist in the relevant resources folders after building. If not, adjust IDEA's build settings. We recommend using Maven or Gradle for building instead.
 
-## Custom SQL Fails to Execute
+## Custom SQL Not Executing
 
-Issue Description: Refers to custom SQL defined in XML files that cannot be invoked. This feature, like `MyBatis`, requires configuring the XML scanning path:
+Problem Description: This refers to custom SQL defined in XML files that cannot be invoked. This feature, like `MyBatis`, requires configuring the XML scan path:
 
-- Spring MVC Configuration (Reference [mybatisplus-spring-mvc](https://gitee.com/baomidou/mybatisplus-spring-mvc/blob/dev/src/main/resources/spring/spring-mybatis.xml))
+- Spring MVC Configuration (Refer to [mybatisplus-spring-mvc](https://gitee.com/baomidou/mybatisplus-spring-mvc/blob/dev/src/main/resources/spring/spring-mybatis.xml))
 
 ```xml
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
@@ -89,29 +88,29 @@ Issue Description: Refers to custom SQL defined in XML files that cannot be invo
 </bean>
 ```
 
-- Spring Boot Configuration (Reference [mybatisplus-spring-boot](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/2.x/src/main/resources/application.yml))
+- Spring Boot Configuration (Refer to [mybatisplus-spring-boot](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/2.x/src/main/resources/application.yml))
 
 ```yaml
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
 ```
 
-- For `IDEA` series editors, XML files cannot be placed in the java folder. By default, IDEA does not compile XML files in the source code folder. Solutions include:
+- For `IDEA` series editors, XML files cannot be placed in the java folder because IDEA does not compile XML files in the source code folders by default. You can resolve this using the following methods:
 
   - Place configuration files in the resource folder
-  - For Maven projects, specify resources in the POM file
+  - For Maven projects, specify the resource in the POM file
 
   ```xml
   <build>
     <resources>
         <resource>
-            <!-- Place XML files under the java directory -->
+            <!-- xml placed in the java directory -->
             <directory>src/main/java</directory>
             <includes>
                 <include>**/*.xml</include>
             </includes>
         </resource>
-        <!-- Specify resource location (if XML is placed under resources, this can be omitted) -->
+        <!-- Specify the resource location (not necessary if xml is placed under resources) -->
         <resource>
             <directory>src/main/resources</directory>
         </resource>
@@ -120,54 +119,54 @@ mybatis-plus:
   ```
 
 :::note
-Note! For Maven multi-module projects, the scanning path must start with `classpath*:` (i.e., loading XML files from multiple jar packages)
+Note! For Maven multi-module projects, the scan path must start with `classpath*:` (which loads XML files from multiple JARs).
 :::
 
-## Troubleshooting Startup Exceptions  
+## Troubleshooting Startup Exceptions
 
-- Exception 1:  
+- Exception 1:
 
-  ```txt  
-  java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.TypeVariableImpl cannot be cast to java.lang.Class  
-  ```  
+  ```txt
+  java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.TypeVariableImpl cannot be cast to java.lang.Class
+  ```
 
-  MapperScan needs to exclude the `com.baomidou.mybatisplus.mapper.BaseMapper` class and its subclasses (custom public Mappers), for example:  
+  MapperScan needs to exclude the `com.baomidou.mybatisplus.mapper.BaseMapper` class and its subclasses (custom public Mappers). For example:
 
-  ```java  
-  import com.baomidou.mybatisplus.core.mapper.BaseMapper;  
+  ```java
+  import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-  public interface SuperMapper<T> extends BaseMapper<T> {  
-      // your methods  
-  }  
-  ```  
+  public interface SuperMapper<T> extends BaseMapper<T> {
+      // your methods
+  }
+  ```
 
-- Exception 2:  
+- Exception 2:
 
-  ```txt  
-  Injection of autowired  
-  ```  
+  ```txt
+  Injection of autowired
+  ```
 
-  Cause: Lower versions do not support generic injection. Please upgrade Spring to version 4 or higher.  
+  Cause: Lower versions do not support generic injection. Please upgrade your Spring version to 4 or higher.
 
-- Exception 3:  
+- Exception 3:
 
-  ```txt  
-  java.lang.NoSuchMethodError: org.apache.ibatis.session.Configuration.getDefaultScriptingLanguageInstance() Lorg/apache/ibatis/scripting/LanguageDriver  
-  ```  
+  ```txt
+  java.lang.NoSuchMethodError: org.apache.ibatis.session.Configuration.getDefaultScriptingLanguageInstance() Lorg/apache/ibatis/scripting/LanguageDriver
+  ```
 
-  Version issue: This method is absent in version 3.4.1 but available in 3.4.2!
+  Version introduction issue: This method is not available in version 3.4.1, but was introduced in version 3.4.2!
 
-## Regarding the Issue of Long Type Primary Key Auto-fill Not Taking Effect
+## About Long Type Primary Key Auto-fill Not Taking Effect
 
-Check if you're using `long` instead of `Long`!
+Check if you are using `long` instead of `Long`!
 
 :::tip
-The default value of `long` type is 0, while MP only checks whether it is `null`
+The `long` type has a default value of 0, while MyBatis-Plus only checks if the value is `null`
 :::
 
-## Long Primary Key Causes JS Precision Loss Due to Excessive Length
+## Generated Primary Key Too Long Causes JS Precision Loss
 
-JavaScript cannot handle Java's Long integer type, resulting in precision loss. The specific manifestation is that the last two digits of the primary key are always 0. Solution: Convert Long to String when returning.
+JavaScript cannot handle Java's Long data type, which results in precision loss. The specific symptom is that the last two digits of the primary key are always 0. Solution: Convert Long to String when returning data.
 
 - FastJson Approach
 
@@ -183,105 +182,105 @@ JavaScript cannot handle Java's Long integer type, resulting in precision loss. 
   }
   ```
 
-- JackJson Approach
+- Jackson Approach
 
-  - Method 1
+  - Method One
 
     ```java
-    // Annotation processing, can be configured in a common baseEntity
+    // Annotation approach - you can configure this in a common baseEntity
     @JsonSerialize(using=ToStringSerializer.class)
     public long getId() {
         return id;
     }
     ```
 
-  - Method 2
+  - Method Two
 
     ```java
-    // Global JSON serialization configuration
+    // Global configuration for JSON serialization
     final ObjectMapper objectMapper = new ObjectMapper();
     SimpleModule simpleModule = new SimpleModule();
     simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
     objectMapper.registerModule(simpleModule);
     ```
 
-- Common Workaround: Add a `public String getIdStr()` method and let the frontend retrieve `idStr`
+- More General Approach: Add a `public String getIdStr()` method and let the frontend get `idStr`
 
-## Fields with empty strings or `null` in insert or update operations
+## Inserting or Updating Fields with Empty Strings or `null`
 
-FieldStrategy has three strategies:
+FieldStrategy has three policies:
 
-- IGNORED: Ignore
-- NOT_NULL: Non-NULL, default strategy  
+- IGNORED: Ignore checks
+- NOT_NULL: Non-NULL, the default policy
 - NOT_EMPTY: Non-empty
 
-When users need to update fields to empty strings or `null`, the `FieldStrategy` needs to be adjusted:
+When you need to update fields to empty strings or `null`, you need to adjust the `FieldStrategy` policy:
 
-- Method 1: Adjust the global validation strategy  
+- Method 1: Adjust the global validation strategy
 
-  Configure the fieldStrategy property in GlobalConfiguration  
+  Inject the GlobalConfiguration and set the fieldStrategy property
 
-- Method 2: Adjust field validation annotations  
+- Method 2: Adjust field validation annotations
 
-  Modify validation annotations on specific fields as needed, e.g., for non-empty validation:  
+  Based on your specific needs, adjust the validation annotation on fields that require updating. For example, to validate non-empty:
 
   ```java
   @TableField(strategy=FieldStrategy.NOT_EMPTY)
   ```
 
-- Method 3: Use `UpdateWrapper` (3.x)  
+- Method 3: Use `UpdateWrapper` (3.x)
 
-  Perform update or insert operations using the following methods:  
+  Use the following methods for update or insert operations:
 
   ```java
-  //updateAllColumnById(entity) // Full field update: removed in 3.0
+  //updateAllColumnById(entity) // update all columns: removed in 3.0
   mapper.update(
      new User().setName("mp").setAge(3),
      Wrappers.<User>lambdaUpdate()
-             .set(User::getEmail, null) //Set email to null
+             .set(User::getEmail, null) // set email to null
              .eq(User::getId, 2)
   );
-  //Alternative writing style:
+  // Alternatively, you can use this approach
   mapper.update(
       null,
       Wrappers.<User>lambdaUpdate()
          .set(User::getAge, 3)
          .set(User::getName, "mp")
-         .set(User::getEmail, null) //Set email to null
+         .set(User::getEmail, null) // set email to null
          .eq(User::getId, 2)
   );
   
   ```
 
-## Field types `bit` and `tinyint(1)` are mapped as `boolean` type  
+## Fields with `bit` or `tinyint(1)` Types Map to `boolean` Type
 
-By default, the MySQL driver maps `tinyint(1)` fields to `boolean`: 0=false, non-zero=true.  
+By default, the MySQL driver maps `tinyint(1)` fields to boolean: 0=false, non-zero=true.
 
-MyBatis does not handle this mapping automatically. If you do not want `tinyint(1)` to be mapped as `boolean` type:  
+MyBatis does not handle this mapping automatically. If you don't want to map `tinyint(1)` to boolean type:
 
-* Change the type from `tinyint(1)` to `tinyint(2)` or `int`.  
-* Add the parameter `tinyInt1isBit=false` to the connection URL, as shown below:  
+* Change the type from `tinyint(1)` to `tinyint(2)` or `int`
+* Add the parameter `tinyInt1isBit=false` to your connection string, as shown below:
 
 ```xml
 jdbc:mysql://127.0.0.1:3306/mp?tinyInt1isBit=false
 ```
 
-## Occurrence of 2 `limit` statements  
+## Multiple `limit` Statements Appear
 
-Reason: Two pagination interceptors are configured! Check the configuration file or code and keep only one!
+**Cause:** Two pagination interceptors are configured! Check your configuration file or code and keep only one!
 
 ## How to Return the Primary Key After Insert
 
-The primary key will automatically be set to the ID field of the entity after insertion, so you only need to call `getId()`.
+After an insert operation, the primary key is automatically set to the entity's ID field, so you only need to call `getId()`.
 
 ## How to Query Specific Fields in MP
 
-EntityWrapper.sqlSelect configures the fields you want to query
+Use EntityWrapper.sqlSelect to configure the fields you want to query
 
 ```java
 //2.x
 EntityWrapper<H2User> ew = new EntityWrapper<>();
-ew.setSqlSelect("test_id as id, name, age");//Only query 3 fields
+ew.setSqlSelect("test_id as id, name, age");//Query only 3 fields
 List<H2User> list = userService.selectList(ew);
 for(H2User u:list){
     Assert.assertNotNull(u.getId());
@@ -301,188 +300,208 @@ mapper.selectList(
 );
 ```
 
-## Mapper Layer Second-Level Cache Issue  
+## Mapper Layer Second-Level Cache Issues
 
-We recommend placing the cache at the service layer. You can customize your own `BaseServiceImpl` to override the parent class methods with annotations and inherit your own implementation.
+We recommend placing the cache at the service layer. You can customize your own BaseServiceImpl to override parent class methods with annotations and inherit your own implementation.
 
-## Mapper Layer Second-Level Cache Refresh Issue  
+## Mapper Layer Second-Level Cache Refresh Issue
 
-If you configure a third-party second-level cache following MyBatis' approach and use version 2.0.9 or above, you may find that the built-in methods fail to update the cache content. In this case, resolve the issue using one of the following methods (choose one):  
+If you configure a third-party second-level cache following the MyBatis approach and use version 2.0.9 or higher, you may find that the built-in methods cannot update the cache content. To resolve this issue, choose one of the following solutions:
 
-1. Add a cache annotation to the MyBatis mapper layer in the code, specifying the `implementation` or `eviction` value as the cache interface's implementation class.  
-```java  
-@CacheNamespace(implementation=MybatisRedisCache.class,eviction=MybatisRedisCache.class)  
-public interface DataResourceMapper extends BaseMapper<DataResource>{}  
-```  
+1. Add a cache annotation to the MyBatis mapper layer in your code, specifying the `implementation` or `eviction` value as the cache interface implementation class:
+```java
+@CacheNamespace(implementation=MybatisRedisCache.class,eviction=MybatisRedisCache.class)
+public interface DataResourceMapper extends BaseMapper<DataResource>{}
+```
 
-2. Modify the original annotation in the corresponding mapper.xml to a linked declaration to ensure the cache in the XML file works properly.  
-```xml  
-<cache-ref namespace="com.mst.cms.dao.DataResourceMapper"></cache-ref>  
+2. Modify the original annotation in the corresponding mapper.xml file to a linked declaration, ensuring the cache in the XML file works properly:
+```xml
+<cache-ref namespace="com.mst.cms.dao.DataResourceMapper"></cache-ref>
 ```
 
 ## `Cause: org.apache.ibatis.type.TypeException:Error setting null for parameter #1 with JdbcType OTHER`
 
-> Configure jdbcTypeForNull=NULL
-> Spring Bean configuration method:
+In MyBatis-Plus, the `jdbcTypeForNull` configuration option determines how Java `null` values are mapped to the database.
+
+By default, when a field is `null` in Java, MyBatis-Plus maps it to the `JdbcType.OTHER` value in the database. However, some JDBC drivers (such as Oracle) do not support `JdbcType.OTHER`, which causes the error: `Cause: org.apache.ibatis.type.TypeException:Error setting null for parameter #1 with JdbcType OTHER . Try setting a different JdbcType for this parameter or a different jdbcTypeForNull configuration property. Cause: java.sql.SQLException: Invalid column type: 1111`.
+
+To configure `jdbcTypeForNull`, add the following code to your MyBatis-Plus configuration class (choose one option):
+
+> Spring Bean Configuration
 
 ```java
 MybatisConfiguration configuration = new MybatisConfiguration();
 configuration.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
 configuration.setJdbcTypeForNull(JdbcType.NULL);
-configuration.setMapUnderscoreToCamelCase(true);//Enable underscore to camel case conversion
 sqlSessionFactory.setConfiguration(configuration);
 ```
 
-> yml configuration
+> YAML Configuration
 ```yaml
 mybatis-plus:
   configuration:
     jdbc-type-for-null: 'null' 
 ```
 
-## Unable to Pass Parameters via Page Object in Custom SQL  
+> Properties Configuration
+```properties
+mybatis-plus.configuration.jdbc-type-for-null=NULL
+```
 
-In custom SQL, since the Page object inherits from RowBounds, it cannot be directly retrieved in the Mapper. To resolve this issue, consider the following alternatives:  
+> XML Configuration
+```XML
+<configuration>
+    <settings>
+        <setting name="jdbcTypeForNull" value="NULL" />
+    </settings>
+</configuration>
+```
 
-- Use a custom Map object or a plain Java object to pass parameters.  
-- Pass the page number and page size by using `@Param("page") int page, @Param("size") int size` in the method parameters.  
+> Note: If you customize the `SqlSessionFactory` in your project, the `jdbc-type-for-null` configuration might not take effect.
 
-These approaches can help you correctly pass parameters in custom SQL, ensuring smooth code execution.
+## Cannot Pass Parameters Through Page Object in Custom SQL
 
-## How to Automatically Convert Underscore to CamelCase in Map  
+In custom SQL, since the Page object inherits from RowBounds, it cannot be directly retrieved in the Mapper. To solve this problem, consider the following alternatives:
 
-When using `resultType="java.util.Map"`, you can achieve automatic underscore-to-camelCase conversion in Spring Boot by following these steps:  
+- Use a custom Map object or a regular Java object to pass parameters.
+- Pass the page number and page size by using `@Param("page") int page, @Param("size") int size` in your method parameters.
 
-Create a configuration class in your Spring Boot project.  
+These methods can help you correctly pass parameters in custom SQL, ensuring your code runs smoothly.
 
-```java  
-@Configuration  
-public class MybatisConfigurationCustomizer {  
-    @Bean  
-    public ConfigurationCustomizer configurationCustomizer() {  
-        return configuration -> configuration.setObjectWrapperFactory(new MybatisMapWrapperFactory());  
-    }  
-}  
-```  
+## How to Automatically Convert Underscores to Camel Case in Map
 
-With this configuration, you can automatically convert underscores in Map keys to camelCase. This way, when MyBatis maps query results to a Map object, the key names will be automatically transformed, making it more convenient for you to access the data in your code.
+When using `resultType="java.util.Map"`, you can implement automatic underscore-to-camel-case conversion in Spring Boot by following these steps:
 
-## How to Use `limit` in Wrapper to Restrict SQL  
-
-You can use the following method to restrict the SQL result set with `limit` in Wrapper:  
+Create a configuration class in your Spring Boot project.
 
 ```java
-// Fetch only one piece of data  
-wrapper.last("limit 1");  
-```  
+@Configuration
+public class MybatisConfigurationCustomizer {
+    @Bean
+    public ConfigurationCustomizer configurationCustomizer() {
+        return configuration -> configuration.setObjectWrapperFactory(new MybatisMapWrapperFactory());
+    }
+}
+```
 
-This code appends `limit 1` at the end of the SQL statement to limit the returned result set to one row.
+With this configuration, you can automatically convert underscores to camel case in Map objects. When MyBatis query results are mapped to Map objects, the key names will be automatically converted, allowing you to access data more conveniently in your code.
 
-## Why Place Generic Batch Insert Operations in the Service Layer
+## How to Use `limit` in Wrapper to Restrict SQL
 
-Placing generic batch insert operations in the Service layer has the following reasons:
+You can use the following approach to limit SQL result sets with `limit` in Wrapper:
 
-- SQL length limitations: When processing massive data, a single SQL statement may fail to execute or easily cause memory leaks, JDBC connection timeouts, and other issues.
-- Batch syntax for single SQL statements varies across databases, which is not conducive to universality.
-- Solution: Adopt the method of loop preprocessing with batch commits. Although slightly slower in performance compared to single SQL inserts, it resolves the above problems.
+```java
+// Get only one record
+wrapper.last("limit 1");
+```
 
-If you prefer the single SQL insert approach, you can manually inject the optional method [insertbatchsomecolumn](https://baomidou.com/pages/49cc81/#insertbatchsomecolumn) or refer to the methods provided in the [SQL Injector](https://baomidou.com/pages/42ea4a/).
+This code appends `limit 1` to the end of the SQL statement, restricting the result set to return only one row.
 
-## Handling Database Keywords in 3.x Version  
+## Why Generic Batch Insert Operations are Handled at the Service Layer
 
-In MyBatis-Plus 3.x, the feature of automatically identifying and handling keywords is no longer provided. Here are the methods to handle database keywords:  
+Placing generic batch insert operations in the Service layer offers the following advantages:
 
-1. Different databases handle keywords differently, making maintenance challenging. During database design, it is recommended to avoid using keywords as field or table names.  
+- **SQL length limitations**: When processing massive amounts of data, a single SQL statement might fail to execute or could easily cause memory leaks, JDBC connection timeouts, and other issues.
+- **Database syntax variations**: Different databases have inconsistent syntax for single-statement batch operations, which hinders generalizability.
+- **Solution**: Use a loop-based approach with prepared statements and batch commits. While slightly slower than single-SQL insertion, this method resolves the issues mentioned above.
 
-2. If keywords must be used, they can be escaped by adding backticks (`) around the field or table name, as shown below:  
+If you prefer the single-SQL insertion approach, you can manually inject the optional method [insertbatchsomecolumn](https://baomidou.com/pages/49cc81/#insertbatchsomecolumn), or check the methods available in the [SQL Injector](https://baomidou.com/pages/42ea4a/).
+
+## Database Keyword Handling Methods in 3.x Version
+
+In MyBatis-Plus 3.x, automatic keyword recognition and processing functionality is no longer provided. Here are the methods for handling database keywords:
+
+1. Different databases handle keywords differently, making maintenance difficult. During database design, we recommend avoiding the use of keywords as field names or table names.
+
+2. If you must use keywords, you can handle them by adding backticks (`) before and after the field or table name, as shown below:
     ```java
     @TableField(value = "`status`")
     private Boolean status;
-    ```  
+    ```
 
-In summary, to avoid issues, it is advisable to refrain from using keywords in database design whenever possible.
+In summary, to avoid issues, we recommend avoiding the use of keywords in your database design whenever possible.
 
 ## MybatisPlusException: Your property named "xxx" cannot find the corresponding database column name!
 
-For issues occurring in MyBatis Plus 3.1.1 and later versions:
+Issue occurring in MyBatis Plus 3.1.1 and later versions:
 
-Symptom: No issues arise during unit testing, but this exception occurs when starting the server for debugging.
+**Symptom**: The unit tests pass without issues, but this exception occurs when you start the server for debugging.
 
-Cause: In version 3.1.1 and later, optimizations were made to the field cache, using `.class` as the key instead of the original class name (className). However, when using dev-tools, `.class` might be loaded by different class loaders, resulting in the inability to find the corresponding property.
+**Cause**: In version 3.1.1 and later, field caching was optimized by using `.class` as the key instead of the original class name (className). However, when using dev-tools, `.class` might be loaded by different class loaders, which can cause properties to not be found.
 
-Solution: Remove the dev-tools plugin. This avoids loading `.class` with different class loaders, thereby resolving the exception.
+**Solution**: Remove the dev-tools plugin. This prevents `.class` from being loaded by different class loaders, resolving the exception.
 
 ## Error attempting to get column "create_time" from result set. Cause: java.sql.SQLFeatureNotSupportedException
 
-Issue occurring in MyBatis-Plus 3.1.1 and later versions:
+Issue affecting MyBatis-Plus 3.1.1 and later versions:
 
-Symptom: When integrating with the Druid data source, after upgrading to version 3.1.1 or later, the error `java.sql.SQLFeatureNotSupportedException` occurs. This issue was not present in versions prior to 3.1.0.
+**Symptom**: When integrating with Druid data source, after upgrading to version 3.1.1 or later, you encounter the error: `java.sql.SQLFeatureNotSupportedException`. This issue does not occur in versions prior to 3.1.0.
 
-Cause: MyBatis-Plus versions 3.1.1 and above adopted a newer JDBC implementation, which introduced upgrades in handling modern date types (e.g., `LocalDateTime`). However, Druid versions prior to 1.1.21 do not support this feature, resulting in the exception. For details, refer to the [related issue](https://github.com/baomidou/mybatis-plus/issues/1245).
+**Cause**: MyBatis-Plus versions 3.1.1 and later use a newer JDBC implementation that includes upgraded handling for new date types (such as `LocalDateTime`). However, Druid versions prior to 1.1.21 do not support this feature, causing this exception. For more details, refer to the [related issue](https://github.com/baomidou/mybatis-plus/issues/1245).
+
+**Solutions**:
+1. Upgrade the Druid data source to version 1.1.21 or later to resolve this issue.
+2. If you cannot upgrade the Druid data source, you can keep using MyBatis-Plus version 3.1.0 or earlier.
+3. If you want to continue using the latest MyBatis-Plus version, consider switching to another data source that is compatible with the new JDBC features to avoid this exception.
+
+## New Date Types Fail to Map After Upgrading to MyBatis Plus 3.1.1 or Later
+
+If you upgrade MyBatis Plus from version 3.1.0 or earlier to a higher version and encounter mapping errors with new date types (such as LocalDateTime), this may be due to the following reasons:
+
+MP_3.1.0 and earlier versions depend on MyBatis 3.5.0. MP_3.1.1 upgrades the MyBatis dependency to 3.5.1, and in MyBatis 3.5.1, the new date types require JDBC driver support for the JDBC 4.2 API.
+
+If your JDBC driver version does not support the JDBC 4.2 API, you will encounter mapping errors with the new date types.
+
+Referencing the content from the [MyBatis official blog](blog.mybatis.org):
+```text
+There is one backward incompatible changes since 3.5.0.
+    Because of the fix for #1478 , LocalDateTypeHandler, LocalTimeTypeHandler and LocalDateTimeTypeHandler now require a JDBC driver that supports JDBC 4.2 API.
+    [EDIT] These type handlers no longer work with Druid. Please see #1516 .
+```
 
 Solutions:
-1. Upgrade the Druid data source to version 1.1.21 or later to resolve this issue.
-2. If upgrading Druid is not feasible, consider keeping MyBatis-Plus at version 3.1.0 or earlier
-3. To continue using the latest MyBatis-Plus version, you may switch to other data sources compatible with the new JDBC implementation to avoid this exception.
-
-## Error: New Date Types Fail to Map After Upgrading MyBatis Plus to 3.1.1 or Later Versions  
-
-If you upgraded MyBatis Plus from version 3.1.0 or earlier to a higher version and encountered mapping errors for new date types (e.g., `LocalDateTime`), the possible reasons are as follows:  
-
-MP_3.1.0 and earlier versions depend on MyBatis 3.5.0. However, MP_3.1.1 upgraded the MyBatis dependency to 3.5.1, where new date types require JDBC driver support for the JDBC 4.2 API.  
-
-If your JDBC driver version does not support the JDBC 4.2 API, mapping errors for new date types will occur.  
-
-Refer to the [MyBatis official blog](blog.mybatis.org) for details:  
-```text
-There is one backward incompatible changes since 3.5.0.  
-    Because of the fix for #1478 , LocalDateTypeHandler, LocalTimeTypeHandler and LocalDateTimeTypeHandler now require a JDBC driver that supports JDBC 4.2 API.  
-    [EDIT] These type handlers no longer work with Druid. Please see #1516 .  
-```  
-
-Solutions:  
-- Upgrade your JDBC driver to a version that supports the JDBC 4.2 API.  
-- If upgrading the JDBC driver is not feasible, consider rolling back MyBatis Plus to version 3.1.0 or earlier.
+- Upgrade your JDBC driver to a version that supports the JDBC 4.2 API.
+- If you cannot upgrade the JDBC driver, consider rolling back your MyBatis Plus version to 3.1.0 or earlier.
 
 ## Failed to bind properties under "mybatis-plus.configuration.incomplete-result-maps[0].assistant.configuration.mapped-statements[0].parameter-map.parameter-mappings[0]" to org.apache.ibatis.mapping.ParameterMapping
 
-If you encounter this issue when upgrading your Spring Boot version from 2.2.0 to a higher version, it may be due to the following reasons:
+If you encounter this issue when upgrading your Spring Boot version from 2.2.0 to a later version, it may be due to the following reasons:
 
-Symptom: The application starts normally locally, but this problem occurs when deploying the packaged war file to the server.
+**Symptom**: The application starts without issues locally, but this problem occurs when you deploy it as a WAR package to a server.
 
-Cause: In Spring Boot 2.2.0, there was an issue with constructor injection that prevented MyBatis's private constructor from correctly binding properties, causing frameworks dependent on MyBatis (such as MyBatis-Plus) to report errors. For details, please refer to [related issue](https://github.com/spring-projects/spring-boot/issues/18670). This issue was fixed in Spring Boot 2.2.1.
+**Cause**: Spring Boot 2.2.0 had an issue with constructor injection that prevented MyBatis's private constructor from properly binding properties. This caused dependent frameworks like MyBatis-Plus to throw errors. For detailed information, refer to the [related issue](https://github.com/spring-projects/spring-boot/issues/18670). This issue was fixed in Spring Boot 2.2.1.
 
-Solution:
-1. Downgrade Spring Boot to version 2.1.x, or upgrade to version 2.2.1 or higher. It is recommended to directly upgrade to Spring Boot 2.2.2 for better stability and fixes.
+**Solution**:
+1. Downgrade Spring Boot to version 2.1.x, or upgrade to version 2.2.1 or later. We recommend upgrading directly to Spring Boot 2.2.2 for better stability and fixes.
 
-## ClassNotFoundException Occurs During Separate Packaging Deployment
+## ClassNotFoundException During Separate Packaging and Deployment
 
-Phenomenon: The project runs without issues in the development tool, but after packaging and deploying to the server, a ClassNotFoundException occurs when executing Lambda expressions.
+Symptom: The application runs without issues in your development environment, but after packaging and deploying to the server, a ClassNotFoundException occurs when executing Lambda expressions.
 
-For MyBatis-Plus versions below 3.3.2, if a ClassNotFoundException occurs during separate packaging deployment, it may be due to an error in the class loader during deserialization operations.
+For MyBatis-Plus versions below 3.3.2, if you encounter ClassNotFoundException issues during separate packaging and deployment, it might be caused by incorrect class loader behavior during deserialization operations.
 
 Solutions:
-1. Remove the `spring-boot-maven-plugin` for packaging, or  
-2. Upgrade to MyBatis-Plus 3.3.2. You can refer to the example [Separate Packaging](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-assembly) for guidance.
+1. Remove the `spring-boot-maven-plugin` from your packaging process, or
+2. Upgrade to MyBatis-Plus version 3.3.2. You can refer to the [separate packaging example](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-assembly) for implementation guidance.
 
 ## Enable MyBatis Internal Logging
 
-You can enable internal logging in MyBatis through the following two methods:
+You can enable MyBatis internal logging using either of the following two methods:
 
-**Method 1:**  
+**Method 1:**
 Add the following configuration to your `application.yml` or `application.properties` file:
 
 ```yaml
 mybatis-plus:
   configuration:
-    # If the project lacks a logging framework, consider specifying org.apache.ibatis.logging.stdout.StdOutImpl (do not use in actual production).
+    # If your project doesn't have a logging framework, consider specifying org.apache.ibatis.logging.stdout.StdOutImpl (do not use in actual production).
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl 
 ```
 
-This will use MyBatis's built-in StdOutImpl logging implementation to output logs to the console.
+This uses MyBatis's built-in StdOutImpl logging implementation to output logs to the console.
 
-**Method 2:**  
-Add logging level configuration to your `application.yml` or `application.properties` file to specify the logging level for specific packages. For example:
+**Method 2:**
+Add logging level configuration to your `application.yml` or `application.properties` file to specify the log level for specific packages. For example:
 
 ```yaml
 logging:
@@ -490,11 +509,11 @@ logging:
     com.baomidou.example.mapper: debug
 ```
 
-This sets the logging level for the `com.baomidou.example.mapper` package to `debug`. You can adjust the level as needed.
+This sets the log level to debug for the com.baomidou.example.mapper package. You can adjust the level according to your needs.
 
-With the above configurations, you can enable MyBatis internal logging and adjust the logging level according to your requirements.
+With the above configurations, you can enable MyBatis internal logging and adjust the log levels as required.
 
-## How to Perform Field Auto-increment During Update
+## How to Perform Field Auto-Increment Operations During Update
 
 If you want to perform an auto-increment operation on a field during an update, you can use the `Wrapper` provided by MyBatis Plus. Here is a feasible solution:
 
@@ -510,11 +529,11 @@ wrapper.setSql("column = column + 1");
 baseMapper.update(null, wrapper);
 ```
 
-This allows you to perform an auto-increment operation on the field during the update. Note that you need to directly specify the SQL update statement in the `setSql` method.
+This allows you to perform field auto-increment operations during updates. Note that you need to directly specify the SQL update statement in the `setSql` method.
 
-## How to Globally Handle Database Keywords
+## How to Handle Database Keywords Globally
 
-If you want to globally handle database keywords, you can use the global configuration provided by MyBatis Plus. Here is a configuration example (using MySQL as an example):
+If you want to handle database keywords globally, you can use the global configuration provided by MyBatis Plus. Here's a configuration example (using MySQL):
 
 ```yaml
 mybatis-plus:
@@ -523,17 +542,17 @@ mybatis-plus:
       column-format: "`%s`"
 ```
 
-After this configuration, MyBatis Plus will wrap database column names with backticks (``) when generating SQL statements to ensure they do not conflict with database keywords.
+After applying this configuration, MyBatis Plus will wrap database column names with backticks (`` ` ``) when generating SQL statements, ensuring they don't conflict with database keywords.
 
-Things to note:
+Important notes:
 - If you use the `@TableField` annotation and want to maintain global formatting, you need to set the parameter `keepGlobalFormat=true`.
-- You can also directly specify fixed-format database keywords in the `@TableField` annotation, such as `@TableField("'status'")`.
+- You can also directly specify fixed-format database keywords in the `@TableField` annotation, for example `@TableField("'status'")`.
 
-With the above configuration, you can globally handle database keywords to ensure the generated SQL statements are not affected by keyword conflicts.
+With the above configuration, you can handle database keywords globally, ensuring that your generated SQL statements aren't affected by keyword conflicts.
 
 ## How to Select Different SQL Fragments Based on Database Type in XML
 
-If you want to select different SQL fragments in XML based on the database type, you can use the `database-id` parameter provided by MyBatis Plus. Here is a configuration example (using MySQL as an example):
+If you want to select different SQL fragments in XML based on the database type, you can use the `database-id` parameter provided by MyBatis Plus. Here's a configuration example (using MySQL):
 
 ```yaml
 mybatis-plus:
@@ -543,9 +562,9 @@ mybatis-plus:
 
 After configuring this, MyBatis Plus will select different SQL fragments based on the `database-id` parameter when executing SQL statements.
 
-You can make judgments in XML using different approaches:
+You can implement conditional logic in XML using different approaches:
 
-1. Using the variable `_databaseId`:
+1. Using the `_databaseId` variable:
 
 ```xml
 <select id="selectAllNames" resultType="java.lang.String">
@@ -562,7 +581,7 @@ from user
 </select>
 ```
 
-2. Using the tag attribute `databaseId`:
+2. Using the `databaseId` tag attribute:
 
 ```xml
 <select id="selectAllNames" databaseId="mysql" resultType="java.lang.String">
@@ -573,99 +592,100 @@ from user
 </select>
 ```
 
-With the above configurations, you can select different SQL fragments based on the database type.
+With the above configurations, you can select different SQL fragments based on different database types.
 
-## Why MyBatis Plus Does Not Support Composite Primary Keys and Enforces Unique IDs  
+## Why MyBatis Plus Doesn't Support Composite Primary Keys and Enforces Unique ID
 
-MyBatis Plus does not support composite primary keys and enforces the use of a unique ID for the following reasons:  
+MyBatis Plus doesn't support composite primary keys and enforces the use of a unique ID for the following reasons:
 
-1. **Increased Interdependence Between Tables**: Using composite primary keys complicates relationships between tables, making maintenance and management more difficult.  
+1. **Increased interdependency between tables**: Using composite primary keys makes relationships between tables more complex, increasing maintenance and management difficulty.
 
-2. **Added Complexity in Data Constraints and Rules**: Composite primary keys introduce additional constraints and rules, such as enforcing uniqueness, which can already be achieved using composite indexes.  
+2. **Added complexity for data constraints and rules**: Composite primary keys introduce additional data constraints and rules, such as requiring uniqueness constraints, which can be achieved using composite indexes instead.
 
-3. **Restrictions on Data Updates**: When updating data, all values of the composite primary key must be modified, adding limitations and complexity to update operations.  
+3. **Increased limitations for data updates**: When updating data, you need to update all values of the composite primary key, which adds restrictions and complexity to update operations.
 
-4. **Severe Data Redundancy and Update Anomalies**: Composite primary keys may lead to data redundancy and update anomalies, particularly in large-scale systems where update inconsistencies can occur.  
+4. **Serious data redundancy and update anomaly issues**: Composite primary keys can lead to data redundancy and update anomalies, particularly in large systems where update anomalies may occur.
 
-5. **Performance Issues**: When querying a specific ID with composite primary keys, indexes cannot be utilized, resulting in performance degradation.  
+5. **Performance issues**: When using composite primary keys, queries for specific IDs cannot utilize indexes effectively, resulting in performance degradation.
 
-In summary, while using composite primary keys may eliminate the need for an additional ID field, the drawbacks outweigh the benefits. MyBatis Plus adheres to the use of a unique ID to ensure simplicity, maintainability, and performance in data management.
+In summary, while using composite primary keys can eliminate the need for an ID field, the disadvantages of this approach outweigh the advantages. MyBatis Plus insists on using a unique ID to ensure simplicity in data management, maintainability, and performance.
 
-## Slow Project Startup Speed
-- Caused by default Snowflake ID initialization
+## Slow Project Startup
+- Caused by initializing default Snowflake ID
 
-  1. Check the local hostname
-  2. Edit the system hosts file and add the local hostname to the hosts file
+  1. Check your local hostname
+  2. Edit the system hosts file and add your local hostname to it
 
   ```properties
-  # Example: If my hostname is nieqiurong-PC, I would configure it in the hosts file as follows
+  # Example: If my hostname is nieqiurong-PC, I would configure the hosts file as follows
   127.0.0.1       localhost nieqiurong-PC
   ```
 
 - Check database connection pool initialization
 
-  Encountered slow startup with hikari on Linux systems
+  We've encountered cases where using HikariCP causes slow startup on Linux systems
 
   Solution:
 
-  Specify `-Djava.security.egd=file:/dev/urandom` in the Java startup command to change the random number acquisition method from `/dev/random` to `/dev/urandom`
+  Specify `-Djava.security.egd=file:/dev/urandom` in the Java startup command to change the random number generation method from `/dev/random` to `/dev/urandom`
 
   Example: `java -Djava.security.egd=file:/dev/urandom -jar xxxx.jar`
 
-## Version 3.5.7+ Db.saveBatch Return Value Always false  
+## 3.5.7+ Version Db.saveBatch Return Value Always False
 
-- Cause: Driver configuration incompatibility  
-> Solution: Remove the `rewriteBatchedStatements=true` configuration from the driver connection
+- **Cause**: Driver configuration incompatibility
+> **Solution**: Remove the `rewriteBatchedStatements=true` configuration from the driver connection
 
-## When the Page or List returned result set is null or contains partial null elements  
-- Reason: By default in MyBatis, when all columns of a returned row are empty (including properties that cannot be automatically mapped), it returns null by default.  
-> Solution: Configure `returnInstanceForEmptyRow` to `true`  
+## Page or List Returns null Result Set or Contains Some null Elements
+- **Cause**: By default in MyBatis, when all columns of a returned row are empty (including properties that cannot be automatically mapped), it returns null by default.
+> **Solution**: Configure `returnInstanceForEmptyRow` to true
 ```yaml
 mybatis-plus:
     configuration:
         return-instance-for-empty-row: true
 ```
 
-## When the return value is Map or List&lt;Map&gt;, the key corresponding to the null value is not added to the Map  
+## When Return Value is Map or List&lt;Map&gt;, Keys Corresponding to null Values Are Not Added to the Map
 
-- Reason: By default in MyBatis, when a value is null, the `put` method is not called.  
-> Solution: Configure `callSettersOnNulls` to `true`.  
+- **Reason**: By default in MyBatis, when a value is null, the put method is not called
+> **Solution**: Configure `callSettersOnNulls` to `true`
 ```yaml
 mybatis-plus:
     configuration:
         call-setters-on-nulls: true
 ```
 
-## How to Override BaseMapper Methods  
-When overriding interface methods, distinguish between default methods and abstract interface methods. The overridden method should align with the actual method being called in the end.  
+## How to Override BaseMapper Methods
 
-Abstract interface methods: Directly override the method in the XML to complete the implementation.  
+When overriding interface methods, distinguish between default methods and abstract interface methods. The overridden method should ultimately call the actual method that will be executed.
 
-Default methods: Either directly override the actual method being called or rewrite the original default method as a real interface method, then override the execution statement via XML or annotations.  
+**Abstract interface methods**: You can override these methods directly in XML.
+
+**Default methods**: Either override the actual method being called directly, or rewrite the original default method as a real interface method, then override the execution statement using XML or annotations.
 
 ```java
-// Method 1: Annotation-style override of the selectPage method in BaseMapper (may be an interface method in older versions; here, we use the newer default method as an example)  
-@Override  
-@Select("select * from h2user")  
-<P extends IPage<H2User>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<H2User> queryWrapper);  
+// Method 1: Override the selectPage method in BaseMapper using annotations (may be an interface method in older versions, using new version default as example here)
+@Override
+@Select("select * from h2user")
+<P extends IPage<H2User>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<H2User> queryWrapper);
 
-// Method 2: XML-style override of the selectPage method in BaseMapper (may be an interface method in older versions; here, we use the newer default method as an example)  
-@Override  
-<P extends IPage<H2User>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<H2User> queryWrapper);  
-// Override the selectPage query statement in the XML yourself  
+// Method 2: Override the selectPage method in BaseMapper using XML (may be an interface method in older versions, using new version default as example here)
+@Override
+<P extends IPage<H2User>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<H2User> queryWrapper);
+// You need to rewrite the selectPage query statement in XML yourself
 
-// Method 3: Override the selectPage method in BaseMapper  
-@Override  
-default <P extends IPage<User>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<User> queryWrapper) {  
-    return xxxx(); // The actual custom interface method being called  
-}  
+// Method 3: Override the selectPage method in BaseMapper
+@Override
+default <P extends IPage<User>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<User> queryWrapper) {
+	return xxxx(); // The actual custom interface method being called
+}
 ```
 
-## Kotlin Calling Interface Default Method Results in Invalid bound statement (not found)
+## Invalid bound statement (not found) when calling interface default methods in Kotlin
 
-- Reason: https://blog.jetbrains.com/kotlin/2020/07/kotlin-1-4-m3-generating-default-methods-in-interfaces/
+- **Cause**: https://blog.jetbrains.com/kotlin/2020/07/kotlin-1-4-m3-generating-default-methods-in-interfaces/
 
-> Solution: Configure the compilation parameter of the compiler plugin with `-Xjvm-default=all`
+> **Solution**: Configure the compiler argument `-Xjvm-default=all` for the compilation plugin
 
 ```xml
 <plugin>
@@ -689,17 +709,17 @@ compileKotlin {
 }
 ```
 
-## Encountered unexpected token: "\n\n\n" or Could not set parameters for mapping  
+## Encountered unexpected token: "\n\n\n" or Could not set parameters for mapping
 
-- Cause: In jsqlParser4.9, consecutive line breaks are interpreted as statement terminators, resulting in an "Encountered unexpected token" parsing error. Starting from version 5.0, if consecutive `\n\n` are encountered, the subsequent statements will be truncated, leading to a "Could not set parameters for mapping" error at the MyBatis layer.  
+- **Cause**: In jsqlParser 4.9, consecutive line breaks are interpreted as the end of a statement, throwing an "Encountered unexpected token" parsing error. Starting from version 5.0, when encountering consecutive `\n\n`, the subsequent statements are truncated, leading to a "Could not set parameters for mapping" error at the MyBatis layer.
 
-  Reference link: https://github.com/JSQLParser/JSqlParser/issues/1988  
+  Reference link: https://github.com/JSQLParser/JSqlParser/issues/1988
 
-  Since version 3.5.3.2, MyBatis-Plus has handled line breaks in framework-injected SQL, but manually written SQL statements in projects need to be handled separately.  
+  Starting from version 3.5.3.2, MyBatis-Plus handles line breaks for SQL statements injected by the framework itself. However, you need to handle line breaks in SQL statements you write within your project.
 
-- Note: Versions 3.5.10 and 3.5.10.1 address line breaks in project SQL but do not support single-line comments (such as `--` or `#`). Starting from version 3.5.11, this handling will no longer be applied. If you need to process statements with consecutive line breaks, use the following methods.  
+- **Note**: Versions 3.5.10 and 3.5.10.1 handle line breaks in project SQL, but they cannot support single-line comments (`--` or `#`) within these statements. Starting from version 3.5.11, this handling will be removed. If you need to process statements with consecutive line breaks, use one of the following methods.
 
-Method 1:  
+**Method 1:**
 ```java
 static {
     JsqlParserGlobal.setParserMultiFunc((sql)-> {
@@ -712,7 +732,7 @@ static {
     });
 }
 
-// If jsqlParser is below 5.0, copy the following method into your project (code sourced from JsqlParser 5.0).
+// If your jsqlParser version is lower than 5.0, copy the following method into your project. The code is sourced from JsqlParser version 5.0.
 public static String sanitizeSingleSql(String sqlStr) {
         Pattern SQL_DELIMITER_SPLIT = Pattern.compile("((?:'[^']*+'|[^\\n])*+)");
         StringBuilder builder = new StringBuilder();
@@ -726,34 +746,34 @@ public static String sanitizeSingleSql(String sqlStr) {
         }
         return builder.toString();
 }
-```  
+```
 
-Method 2: Enable MyBatis' whitespace removal in SQL (less versatile, does not handle single-line comments like `--` or `#`):  
+**Method 2:** Enable MyBatis' whitespace removal in SQL (may be less versatile and cannot handle single-line comments like `--` or `#`)
 ```yaml
 mybatis-plus:
     configuration:
         shrink-whitespaces-in-sql: true
 ```
 
-## How to Configure the Code Generator to Generate XXXRepository  
+## How to Configure the Code Generator to Generate XXXRepository
 
-The maintenance of Service and Repository will no longer be continued. It is recommended not to use them further. If generation is required, follow the steps below to convert the service to a repository.  
+Service and Repository will no longer be maintained going forward. We recommend you discontinue their use. If you need to generate them, follow these steps to convert the service to a repository.
 
 ```java
 AutoGenerator generator = new AutoGenerator(DATA_SOURCE_CONFIG);
 generator.packageInfo(new PackageConfig.Builder()
-    //-- Conversion start----
+    //-- Conversion Start----
     .service("repository")
     .serviceImpl("repository.impl")
-    //-- Conversion end----
+    //-- Conversion End----
     .build());
 generator.strategy(
     new StrategyConfig.Builder()
-        //-- Conversion start----
+        //-- Conversion Start----
         .serviceBuilder().convertServiceFileName(entityName -> "I" + entityName + "Repository")
         .superServiceClass(IRepository.class).convertServiceImplFileName(entityName -> entityName + "Repository")
         .superServiceImplClass(CrudRepository.class)
-        //-- Conversion end----
+        //-- Conversion End----
         .build());
 generator.execute();
 ```

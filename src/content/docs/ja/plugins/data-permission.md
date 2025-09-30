@@ -4,20 +4,19 @@ sidebar:
   order: 4
 ---
 
-DataPermissionInterceptor は、MyBatis-Plus が提供するデータ権限制御を実現するためのプラグインです。実行される SQL ステートメントをインターセプトし、権限関連の SQL フラグメントを動的に結合することで、ユーザーのデータアクセスを制御します。
+DataPermissionInterceptor は、MyBatis-Plus が提供するデータ権限制御を実現するためのプラグインです。実行される SQL 文をインターセプトし、権限に関連する SQL フラグメントを動的に連結することで、ユーザーのデータアクセスを制御します。
 
 ## プラグインの原理
 
-DataPermissionInterceptor の動作原理はテナントプラグインと似ており、SQL 実行前に SQL ステートメントをインターセプトし、ユーザー権限に基づいて権限関連の SQL フラグメントを動的に追加します。これにより、ユーザーがアクセス権を持つデータのみが照会されます。
+DataPermissionInterceptor の動作原理は、テナントプラグインと同様です。SQL 実行前に SQL 文をインターセプトし、ユーザーの権限に基づいて権限関連の SQL フラグメントを動的に追加します。これにより、ユーザーがアクセス権限を持つデータのみがクエリで取得されるようになります。
 
-## プラグインの場所とテストケース
+## プラグインのアドレスとテストケース
 
-- **プラグインの場所**：[DataPermissionInterceptor](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/plugins/inner/DataPermissionInterceptor.java)
-- **テストケース**：[DataPermissionInterceptorTest](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/test/java/com/baomidou/mybatisplus/test/extension/plugins/inner/DataPermissionInterceptorTest.java)
+- **プラグインアドレス**: [DataPermissionInterceptor](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-jsqlparser-support/mybatis-plus-jsqlparser-5.0/src/main/java/com/baomidou/mybatisplus/extension/plugins/inner/DataPermissionInterceptor.java)
+- **テストケース**: [DataPermissionInterceptorTest](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-jsqlparser-support/mybatis-plus-jsqlparser-5.0/src/test/java/com/baomidou/mybatisplus/test/extension/plugins/inner/DataPermissionInterceptorTest.java)
 
 ## コアコード
-
-以下は、SQL フラグメントを組み立てるコアロジックコードです。
+以下は、SQL フラグメントを組み立てるコアロジックのコードです：
 
 ```java
 new DataPermissionInterceptor(new MultiDataPermissionHandler() {
@@ -43,18 +42,17 @@ new DataPermissionInterceptor(new MultiDataPermissionHandler() {
 
 :::note
 
-プラグインの主要部分の使用説明をよく読み、データ権限プラグインが正しく注入されていることを確認し、`SQL` の組み立てロジックを独自にカスタマイズしてください。
+プラグインの主要な部分の使用説明を注意深く読み、データ権限プラグインを正しく注入し、独自の `SQL` 組み立てロジックをカスタマイズするようにしてください。
 
 :::
 
 ## JSQLParser
+**JSQLParser** は、SQL 文を簡単に解析および変更できるオープンソースの SQL 解析ライブラリです。これはプラグインが権限ロジックを実装するための重要なツールであり、MyBatis-Plus のデータ権限は JSQLParser の解析能力に依存しています。
 
-**JSQLParser** は、SQL ステートメントを簡単に解析および変更できるオープンソースの SQL 解析ライブラリです。これは、プラグインが権限ロジックを実装するための重要なツールであり、MyBatis-Plus のデータ権限は JSQLParser の解析能力に依存しています。
-
-以下の例は、JSQLParser を使用して `SQL` を変更する方法を示しています。
+以下の例は、JSQLParser を使用して `SQL` を変更する方法を示しています：
 
 ```java
-// SQL 例
+// サンプル SQL
 String sql = "SELECT * FROM user WHERE status = 'active'";
 Expression expression;
 
@@ -71,9 +69,8 @@ try {
 
 ## 使用方法
 
-### ステップ1：データ権限ロジックの実装
-
-カスタム `MultiDataPermissionHandler` を作成し、特定のビジネスロジックを実装します。
+### ステップ 1: データ権限ロジックを実装する
+`MultiDataPermissionHandler` をカスタマイズし、特定のビジネスロジックを実装します。
 
 ```java
 public class CustomDataPermissionHandler extends MultiDataPermissionHandler {
@@ -81,7 +78,7 @@ public class CustomDataPermissionHandler extends MultiDataPermissionHandler {
     public Expression getSqlSegment(Table table, Expression where, String mappedStatementId) {
         // ここにカスタムデータ権限ロジックを記述します
         try {
-            String sqlSegment = "..."; // データ権限関連の SQL フラグメント
+            String sqlSegment = "..."; // データ権限に関連する SQL フラグメント
             return CCJSqlParserUtil.parseCondExpression(sqlSegment);
         } catch (JSQLParserException e) {
             e.printStackTrace();
@@ -91,14 +88,13 @@ public class CustomDataPermissionHandler extends MultiDataPermissionHandler {
 }
 ```
 
-### ステップ2：データ権限インターセプターの登録
-
-カスタムハンドラーを `DataPermissionInterceptor` に登録します。
+### ステップ 2: データ権限インターセプターを登録する
+カスタマイズしたハンドラーを `DataPermissionInterceptor` に登録します。
 
 ```java
-// MyBatis 設定内
+// MyBatis 設定内で
 Interceptor dataPermissionInterceptor = new DataPermissionInterceptor(new CustomDataPermissionHandler());
 mybatisConfiguration.addInterceptor(dataPermissionInterceptor);
 ```
 
-DataPermissionInterceptor を使用することで、MyBatis-Plus アプリケーションでデータ権限制御を簡単に実装でき、ユーザーが権限範囲内のデータにのみアクセスできるようにし、データのセキュリティを向上させることができます。
+DataPermissionInterceptor を使用することで、MyBatis-Plus アプリケーションで簡単にデータ権限制御を実装でき、ユーザーが自身の権限範囲内のデータにのみアクセスできることを保証し、データのセキュリティを向上させることができます。

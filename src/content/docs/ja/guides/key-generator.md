@@ -4,15 +4,15 @@ sidebar:
   order: 11
 ---
 
-MyBatis-Plusにおいて、主キー生成戦略は重要な概念で、データベーステーブルのレコードに一意の主キー値を生成する方法を決定します。以下に主キー生成戦略の詳細な説明と設定方法を示します。
+MyBatis-Plusでは、主キー生成戦略は重要な概念であり、データベーステーブルのレコードに対して一意の主キー値をどのように生成するかを決定します。以下では、主キー生成戦略の詳細な説明と設定方法について説明します。
 
 ## 主キー生成戦略の概要
 
-主キー生成戦略は `INPUT` タイプを使用する必要があります。これは、主キー値をユーザーがデータ挿入時に提供する必要があることを意味します。MyBatis-Plus は、親クラスで `@KeySequence` アノテーションを定義し、子クラスで継承して使用することをサポートしています。
+主キー生成戦略は `INPUT` タイプを使用する必要があります。これは、主キー値をユーザーがデータ挿入時に提供する必要があることを意味します。MyBatis-Plusは、親クラスで `@KeySequence` アノテーションを定義することをサポートしており、子クラスはこれを継承して使用できます。
 
-バージョン 3.3.0 以降、MyBatis-Plus は主キータイプを自動的に認識するため、手動で主キータイプを指定する必要がなくなりました。
+バージョン3.3.0以降、MyBatis-Plusは主キータイプを自動的に認識するため、主キータイプを手動で指定する必要はなくなりました。
 
-MyBatis-Plus は、以下のような複数のデータベースの主キー生成戦略を組み込みでサポートしています：
+MyBatis-Plusは、以下のデータベースの主キー生成戦略を組み込みでサポートしています：
 
 - DB2KeyGenerator
 - H2KeyGenerator
@@ -20,7 +20,7 @@ MyBatis-Plus は、以下のような複数のデータベースの主キー生�
 - OracleKeyGenerator
 - PostgreKeyGenerator
 
-組み込みの主キー生成戦略が要件を満たさない場合は、`IKeyGenerator` インターフェースを実装してカスタムの主キー生成戦略を拡張することができます。
+組み込みの主キー生成戦略が要件を満たさない場合は、`IKeyGenerator` インターフェースを実装することで、カスタムの主キー生成戦略を拡張できます。
 
 ## 例
 
@@ -33,17 +33,17 @@ public class YourEntity {
     @TableId(value = "ID_STR", type = IdType.INPUT)
     private String idStr;
 
-    // その他のフィールドとメソッド...
+    // 他のフィールドとメソッド...
 }
 ```
 
-この例では、`YourEntity` クラスは `@KeySequence` アノテーションを使用して、Oracle データベースのシーケンス  `SEQ_ORACLE_STRING_KEY` を使用して主キー値を生成するように指定し、主キータイプを `String` としています。
+この例では、`YourEntity` クラスは `@KeySequence` アノテーションを使用して、Oracleデータベースのシーケンス `SEQ_ORACLE_STRING_KEY` を主キー値の生成に指定しており、主キーのタイプは `String` です。
 
 ## Spring Boot 設定
 
-### 方法1：設定クラスを使用
+### 方法1：設定クラスを使用する
 
-Spring Boot アプリケーションでは、設定クラスを使用して主キー生成戦略を設定できます：
+Spring Bootアプリケーションでは、設定クラスを通じて主キー生成戦略を設定できます：
 
 ```java
 @Bean
@@ -52,7 +52,7 @@ public IKeyGenerator keyGenerator() {
 }
 ```
 
-### 方法2：MybatisPlusPropertiesCustomizer でカスタマイズ
+### 方法2：MybatisPlusPropertiesCustomizer によるカスタマイズ
 
 `MybatisPlusPropertiesCustomizer` を使用して主キー生成戦略をカスタマイズすることもできます：
 
@@ -67,7 +67,7 @@ public MybatisPlusPropertiesCustomizer plusPropertiesCustomizer() {
 
 ### 方法1: XML 設定
 
-従来の Spring アプリケーションでは、XML 設定を使用して主キー生成戦略を設定できます：
+従来のSpringアプリケーションでは、XML設定を通じて主キー生成戦略を設定できます：
 
 ```xml
 <bean id="globalConfig" class="com.baomidou.mybatisplus.core.config.GlobalConfig">
@@ -83,7 +83,7 @@ public MybatisPlusPropertiesCustomizer plusPropertiesCustomizer() {
 
 ### 方法2：アノテーション設定
 
-アノテーションを使用して主キー生成戦略を設定：
+アノテーションを使用して主キー生成戦略を設定する：
 
 ```java
 @Bean
@@ -94,4 +94,4 @@ public GlobalConfig globalConfig() {
 }
 ```
 
-上記の設定方法は、実際のプロジェクト要件に応じて適切な方法を選択して主キー生成戦略を設定できます。
+上記の設定方法は、実際のプロジェクトの要件に応じて、適切な方法で主キー生成戦略を設定するために選択できます。

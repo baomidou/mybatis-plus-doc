@@ -1,63 +1,52 @@
 ---
-title: よくある質問
+title: よくあるご質問
 sidebar:
   order: 6
 ---
+本文書は、MyBatis-Plus の使用中に発生する様々なよくある問題をまとめたものです。MyBatis-Plus の使用中に問題が発生した場合は、まずこの文書をご確認ください。
 
-import Accordion from '@/components/Accordion.svelte';
+## 非テーブルカラムの除外方法
 
-本ドキュメントには、MyBatis-Plus を使用する際によくある問題をまとめています。MyBatis-Plus を使用していて問題が発生した場合は、まずこのドキュメントをご確認ください。
+以下の3つの方法からいずれか1つを選択してください：
 
-<br/>
-
-<Accordion client:load title={'テーブルに存在しないフィールドを除外するには？'}>
-
-以下の3つの方法のいずれかを選択してください：
-
-- `transient` 修飾子を使用
+- `transient` 修飾子を使用する
 
   ```java
   private transient String noColumn;
   ```
 
-- `static` 修飾子を使用
+- `static` 修飾子を使用する
 
   ```java
   private static String noColumn;
   ```
 
-- `TableField` アノテーションを使用
+- `TableField` アノテーションを使用する
 
   ```java
   @TableField(exist=false)
   private String noColumn;
   ```
 
-</Accordion>
+## エンティティの親クラス属性を除外する方法
 
+除外したい親クラスの属性に `transient` 修飾子を使用します
 
-<Accordion client:load title={'エンティティの親クラスのプロパティを除外するには？'}>
-
-除外したい親クラスのプロパティに `transient` 修飾子を使用します
-
-``` java
+```java
 /**
  * 親クラスの createTime フィールドのマッピングを無視
  */
 private transient String createTime;
 ```
 
-</Accordion>
+## `Invalid bound statement (not found)` 例外が発生する
 
+この例外は通常、設定が正しくないか、Mapperが適切にスキャンされていないことが原因で発生します。解決策は以下の通りです：
 
-<Accordion client:load title={'`Invalid bound statement (not found)` 例外が発生する場合'}>
+- jarパッケージの競合がないか確認してください。
+- Mapper.javaのスキャンパスを確認してください：
 
-この例外は通常、設定が正しくないか、Mapper が正しくスキャンされていないことが原因です。以下の解決方法を試してください：
-
-- jar パッケージの競合がないか確認します。
-- Mapper.java のスキャンパスを確認します：
-
-  - 方法1：`Configuration` クラスで `MapperScan` アノテーションを使用
+  - 方法1：`Configuration`クラスに注釈`@MapperScan`を使用する
 
     ```java
     @Configuration
@@ -67,31 +56,28 @@ private transient String createTime;
     }
     ```
 
-  - 方法2：`Configuration` クラスで `MapperScannerConfigurer` を設定（[サンプルを参照](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/config%E6%96%B9%E5%BC%8F/src/main/java/com/baomidou/springboot/config/MybatisPlusConfig.java)）
+  - 方法2：`Configuration`クラスで`MapperScannerConfigurer`を設定する（[サンプルを確認](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/config%E6%96%B9%E5%BC%8F/src/main/java/com/baomidou/springboot/config/MybatisPlusConfig.java)）
 
     ```java
     @Bean
     public MapperScannerConfigurer mapperScannerConfigurer(){
         MapperScannerConfigurer scannerConfigurer = new MapperScannerConfigurer();
-        // 環境変数から mapper のパスを取得できます。これにより mapper のスキャンを設定ファイルで構成できます
+        // 環境変数からmapperのパスを取得できます。これにより、mapperのスキャンは設定ファイルで設定可能になります
         scannerConfigurer.setBasePackage("com.yourpackage.*.mapper");
         return scannerConfigurer;
     }
     ```
 
-- 检查是否指定了主键。如果未指定，将导致 `selectById` 相关 ID 无法操作。请使用注解 `@TableId` 注解表 ID 主键。当然，`@TableId` 注解可以省略，但是你的主键必须叫 id（忽略大小写）。
-- 不要使用原生的 SqlSessionFactory，请使用 MybatisSqlSessionFactory。
-- 检查是否自定义了 SqlInjector，是否复写了 `getMethodList()` 方法。在该方法中是否注入了你需要的方法（可参考 DefaultSqlInjector）。
-- IDEA 默认的 build 步骤可能会导致 mapper 文件无法正常编译到对应的 resources 文件夹中。请检查 build 后相关资源文件夹是否有对应的 XML 文件。如果没有，请调整 IDEA 的 build 设置。推荐调整为 Maven 或 Gradle 的 build。
+- 主キーが指定されているか確認してください。指定されていない場合、`selectById`関連のID操作ができなくなります。注釈`@TableId`を使用してテーブルID主キーを注釈してください。もちろん、`@TableId`注釈は省略可能ですが、主キーはid（大文字小文字を区別しない）という名前にする必要があります。
+- ネイティブのSqlSessionFactoryを使用せず、MybatisSqlSessionFactoryを使用してください。
+- SqlInjectorをカスタマイズしたかどうか、`getMethodList()`メソッドをオーバーライドしたかどうか確認してください。このメソッドで必要なメソッドが注入されているかどうか確認してください（DefaultSqlInjectorを参考にしてください）。
+- IDEAのデフォルトのビルド手順により、mapperファイルが対応するresourcesフォルダに正常にコンパイルされない場合があります。ビルド後、関連するリソースフォルダに対応するXMLファイルがあるか確認してください。ない場合は、IDEAのビルド設定を調整してください。MavenまたはGradleのビルドに調整することを推奨します。
 
-</Accordion>
+## カスタム SQL が実行できない
 
+問題説明: XML 内でカスタム SQL を定義しているにもかかわらず、呼び出せない状況を指します。この機能は `MyBatis` と同様に、XML スキャンパスの設定が必要です:
 
-<Accordion client:load title={'カスタム SQL が実行できない場合'}>
-
-問題の説明：XML 内でカスタム SQL を定義しても呼び出せない場合。この機能は `MyBatis` と同様に、XML スキャンパスの設定が必要です：
-
-- Spring MVC の設定（[mybatisplus-spring-mvc](https://gitee.com/baomidou/mybatisplus-spring-mvc/blob/dev/src/main/resources/spring/spring-mybatis.xml) を参照）
+- Spring MVC 設定（[mybatisplus-spring-mvc](https://gitee.com/baomidou/mybatisplus-spring-mvc/blob/dev/src/main/resources/spring/spring-mybatis.xml) を参照）
 
 ```xml
 <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
@@ -102,29 +88,29 @@ private transient String createTime;
 </bean>
 ```
 
-- Spring Boot の設定（[mybatisplus-spring-boot](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/2.x/src/main/resources/application.yml) を参照）
+- Spring Boot 設定（[mybatisplus-spring-boot](https://gitee.com/baomidou/mybatisplus-spring-boot/blob/2.x/src/main/resources/application.yml) を参照）
 
 ```yaml
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
 ```
 
-- `IDEA` シリーズのエディタでは、XML ファイルを java フォルダに配置することはできません。IDEA はデフォルトでソースコードフォルダ内の XML ファイルをコンパイルしません。以下の方法で解決できます：
+- `IDEA` シリーズのエディターでは、XML ファイルを java フォルダー内に配置することはできません。IDEA はデフォルトでソースフォルダー内の XML ファイルをコンパイルしません。以下の方法で解決できます:
 
-  - 設定ファイルを resource フォルダに配置する
-  - Maven プロジェクトの場合、POM ファイルの resource を指定する
+  - 設定ファイルを resource フォルダーに配置する
+  - Maven プロジェクトの場合、POM ファイルで resource を指定する
 
   ```xml
   <build>
     <resources>
         <resource>
-            <!-- XMLをjavaディレクトリに配置 -->
+            <!-- xmlをjavaディレクトリに配置する場合-->
             <directory>src/main/java</directory>
             <includes>
                 <include>**/*.xml</include>
             </includes>
         </resource>
-        <!-- リソースの場所を指定（XMLをresourcesに配置する場合は指定不要） -->
+        <!-- リソースの位置を指定（xmlをresourcesに配置する場合は、指定不要）-->
         <resource>
             <directory>src/main/resources</directory>
         </resource>
@@ -133,13 +119,10 @@ mybatis-plus:
   ```
 
 :::note
-注意！Maven マルチモジュールプロジェクトのスキャンパスは `classpath*:` で始める必要があります（複数の jar パッケージ内の XML ファイルを読み込むため）
+注意！ Maven マルチモジュールプロジェクトでは、スキャンパスは `classpath*:` で始める必要があります（つまり、複数の jar パッケージ内の XML ファイルを読み込みます）
 :::
 
-</Accordion>
-
-
-<Accordion client:load title={'起動時の例外問題のトラブルシューティング'}>
+## 起動時例外のトラブルシューティング
 
 - 例外1：
 
@@ -147,13 +130,13 @@ mybatis-plus:
   java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.TypeVariableImpl cannot be cast to java.lang.Class
   ```
 
-  MapperScan では com.baomidou.mybatisplus.mapper.BaseMapper クラスとそのサブクラス（カスタム共通 Mapper）を除外する必要があります。例：
+  MapperScan では、com.baomidou.mybatisplus.mapper.BaseMapper クラスおよびそのサブクラス（カスタム共通 Mapper）を除外する必要があります。例：
 
   ```java
   import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
   public interface SuperMapper<T> extends BaseMapper<T> {
-      // your methods
+      // カスタムメソッド
   }
   ```
 
@@ -163,7 +146,7 @@ mybatis-plus:
   Injection of autowired
   ```
 
-  原因：古いバージョンではジェネリクスの注入をサポートしていません。Spring バージョンを 4+ 以上にアップグレードしてください。
+  原因：低バージョンではジェネリックスの注入をサポートしていません。Spring のバージョンを 4 以上にアップグレードしてください。
 
 - 例外3：
 
@@ -171,24 +154,19 @@ mybatis-plus:
   java.lang.NoSuchMethodError: org.apache.ibatis.session.Configuration.getDefaultScriptingLanguageInstance() Lorg/apache/ibatis/scripting/LanguageDriver
   ```
 
-  バージョンの問題：3.4.1 バージョンには存在せず、3.4.2 バージョンで追加されました！
+  バージョン導入の問題：このメソッドは 3.4.1 バージョンには存在せず、3.4.2 バージョンで導入されました！
 
-</Accordion>
+## Long 型主キーの自動入力が有効にならない問題について
 
+`Long`ではなく`long`を使用していないか確認してください！
 
-<Accordion client:load title={'Long 型主キーの自動補完が機能しない問題について'}>
-
-`long` ではなく `Long` を使用しているか確認してください！
 :::tip
-`long` 型のデフォルト値は 0 ですが、MP は `null` かどうかのみを判定します
+`long`型のデフォルト値は 0 ですが、MyBatis-Plus は `null` かどうかのみを判定します
 :::
 
-</Accordion>
+## 生成される主キーが長すぎることによる JS の精度損失
 
-
-<Accordion client:load title={'生成された主キーが長すぎて JS で精度が失われる場合'}>
-
-JavaScript では Java の long 型を正しく処理できないため精度が失われ、具体的には主キーの最後の2桁が常に 0 になります。解決方法：Long を String に変換して返します。
+JavaScript は Java の長整数型 Long を処理できず、精度損失が発生します。具体的な現象として、主キーの最後の2桁が常に 0 になります。解決策：Long を String に変換して返す。
 
 - FastJson での処理方法
 
@@ -197,122 +175,107 @@ JavaScript では Java の long 型を正しく処理できないため精度が
   public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
       FastJsonHttpMessageConverter fastJsonConverter = new FastJsonHttpMessageConverter();
       FastJsonConfig fjc = new FastJsonConfig();
-      // シリアル化戦略を設定
+      // シリアライゼーション戦略を設定
       fjc.setSerializerFeatures(SerializerFeature.BrowserCompatible);
       fastJsonConverter.setFastJsonConfig(fjc);
       converters.add(fastJsonConverter);
   }
   ```
 
-- Jackson での処理方法
+- JackJson での処理方法
 
-  - 方法1
+  - 方法 1
 
     ```java
-    // アノテーション処理：ここでは共通の baseEntity の処理を設定することができます。
+    // アノテーションによる処理、ここでは共通の baseEntity 処理を設定可能
     @JsonSerialize(using=ToStringSerializer.class)
     public long getId() {
         return id;
     }
     ```
 
-  - 方式二
+  - 方法 2
 
     ```java
-    // グローバル設定でシリアライズ JSON 処理を設定
+    // グローバルなシリアライゼーション設定による JSON 返却処理
     final ObjectMapper objectMapper = new ObjectMapper();
     SimpleModule simpleModule = new SimpleModule();
     simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
     objectMapper.registerModule(simpleModule);
     ```
 
-- 一般的な処理方法：`public String getIdStr()` メソッドを追加し、フロントエンドで `idStr` を取得する
+- 比較的一般的な処理方法：`public String getIdStr()` メソッドを追加し、フロントエンドで `idStr` を取得する
 
-</Accordion>
+## 挿入または更新するフィールドに空文字列または `null` がある場合
 
+FieldStrategy には 3 つの戦略があります：
 
-<Accordion client:load title={'挿入または更新するフィールドに空文字列または `null` がある場合'}>
-
-FieldStrategy には3つの戦略があります：
-
-- IGNORED：無視
-- NOT_NULL：NULL 以外、デフォルト戦略
+- IGNORED：無視する
+- NOT_NULL：NULL でない（デフォルト戦略）
 - NOT_EMPTY：空でない
 
-ユーザーがフィールドを空文字列または `null` に更新する必要がある場合、`FieldStrategy` 戦略を調整する必要があります：
+ユーザーがフィールドを空文字列または `null` に更新する必要がある場合、`FieldStrategy` の戦略を調整する必要があります：
 
-- 方式一：グローバル検証戦略の調整
+- 方法 1：グローバルな検証戦略を調整する
 
-  設定 GlobalConfiguration にプロパティ fieldStrategy を注入する
+  GlobalConfiguration 属性 fieldStrategy を注入して設定します
 
-- 方式二：フィールド検証アノテーションの調整
+- 方法 2：フィールド検証アノテーションを調整する
 
-  必要に応じて、更新が必要なフィールドで検証アノテーションを調整します。例：空でないことを検証：
+   具体的な状況に応じて、更新が必要なフィールドで検証アノテーションを調整します。例えば、空でないことを検証する場合：
 
   ```java
   @TableField(strategy=FieldStrategy.NOT_EMPTY)
   ```
 
-- 方式三：`UpdateWrapper` の使用 (3.x)
+- 方法 3：`UpdateWrapper` を使用する (3.x)
 
-  以下の方法を使用して更新または挿入操作を行います：
+  以下の方法を使用して更新または挿入操作を実行します：
 
   ```java
-  //updateAllColumnById(entity) // 全フィールド更新: 3.0で削除されました
+  //updateAllColumnById(entity) // 全フィールド更新: 3.0 で削除されました
   mapper.update(
      new User().setName("mp").setAge(3),
      Wrappers.<User>lambdaUpdate()
-             .set(User::getEmail, null) //emailをnullに設定
+             .set(User::getEmail, null) //email を null に設定
              .eq(User::getId, 2)
   );
-  //以下の書き方も参考にしてください
+  //以下の書き方も参考にできます
   mapper.update(
       null,
       Wrappers.<User>lambdaUpdate()
          .set(User::getAge, 3)
          .set(User::getName, "mp")
-         .set(User::getEmail, null) //emailをnullに設定
+         .set(User::getEmail, null) //email を null に設定
          .eq(User::getId, 2)
   );
   
   ```
 
-</Accordion>
+## フィールドタイプが `bit`、`tinyint(1)` の場合の `boolean` 型へのマッピング
 
+デフォルトでは、MySQL ドライバは `tinyint(1)` フィールドを boolean 型にマッピングします: 0=false, 0以外=true
 
-<Accordion client:load title={'フィールドタイプが `bit`、`tinyint(1)` の場合、`boolean` 型にマッピングされる'}>
+MyBatis はこのマッピングを自動的に処理しません。`tinyint(1)` を boolean 型にマップしたくない場合は、以下のいずれかの方法を採用してください：
 
-デフォルトで MySQL ドライバは tinyint(1) フィールドを boolean にマッピングします：0=false、0以外=true
-
-MyBatis はこのマッピングを自動的に処理しません。tinyint(1) を boolean 型にマッピングしたくない場合：
-
-* タイプを tinyint(1) から tinyint(2) または int に変更する
-* 接続リクエストにパラメータ `tinyInt1isBit=false` を追加する必要があります。例：
+* タイプを `tinyint(1)` から `tinyint(2)` または `int` に変更する
+* リクエスト接続文字列にパラメータ `tinyInt1isBit=false` を追加する。例：
 
 ```xml
 jdbc:mysql://127.0.0.1:3306/mp?tinyInt1isBit=false
 ```
 
-</Accordion>
+## 2 つの `limit` 文が出現する
 
+原因：2 つのページネーションインターセプターが設定されています！設定ファイルまたはコードを確認し、1 つだけ残してください！
 
-<Accordion client:load title={'2つの `limit` 文が出現する'}>
+## insert 后如何返回主鍵
 
-原因：2つのページングインターセプターが設定されています！設定ファイルまたはコードを確認し、1つだけを残してください！
+insert 後、主キーは自動的にエンティティの ID フィールドに設定されます。そのため、`getId()` を呼び出すだけで取得できます。
 
-</Accordion>
+## MP で特定のフィールドのみを検索する方法
 
-
-<Accordion client:load title={'insert 後に主キーを返す方法'}>
-
-insert 後、主キーは自動的にエンティティの ID フィールドに設定されるため、getId() を呼び出すだけで取得できます
-
-</Accordion>
-
-
-<Accordion client:load title={'MP で特定のフィールドを検索する方法'}>
-
-EntityWrapper.sqlSelect 設定で検索したいフィールドを設定します
+EntityWrapper.sqlSelect で検索したいフィールドを設定します
 
 ```java
 //2.x
@@ -330,7 +293,7 @@ mapper.selectList(
     Wrappers.<User>lambdaQuery()
     .select(User::getId, User::getName)
 );
-// または QueryWrapper を使用
+//またはQueryWrapperを使用
 mapper.selectList(
     new QueryWrapper<User>()
     .select("id","name")
@@ -338,72 +301,77 @@ mapper.selectList(
 
 ```
 
-</Accordion>
+## Mapper 層のセカンドレベルキャッシュ問題
 
+キャッシュは service 層に配置することを推奨します。独自の BaseServiceImpl をカスタマイズして、アノテーション付きの親クラスメソッドをオーバーライドし、独自の実装を継承することができます。
 
-<Accordion client:load title={'Mapper 層の2次キャッシュの問題'}>
+## Mapper 層のセカンダリキャッシュ更新問題
 
-キャッシュは service 層に配置することをお勧めします。独自の BaseServiceImpl を作成し、アノテーション付きの親クラスメソッドをオーバーライドして、独自の実装を継承することができます。
+MyBatis の方法でサードパーティのセカンダリキャッシュを設定し、かつ 2.0.9 以上のバージョンを使用している場合、組み込みのメソッドではキャッシュ内容を更新できないことがあります。以下のいずれかの方法で解決してください（二択）：
 
-</Accordion>
-
-
-<Accordion client:load title={'Mapper 層の2次キャッシュの更新の問題'}>
-
-MyBatis の方法でサードパーティの2次キャッシュを設定し、2.0.9 以上のバージョンを使用している場合、組み込みメソッドでキャッシュの内容を更新できない場合があります。以下の方法で解決できます（いずれかを選択）：
-
-1.コード内の MyBatis の mapper 層にキャッシュアノテーションを追加し、implementation または eviction の値を cache インターフェースの実装クラスとして宣言します
+1. コード内の MyBatis の Mapper 層にキャッシュ注釈を追加し、implementation または eviction の値をキャッシュインターフェースの実装クラスとして宣言する
 ```java
 @CacheNamespace(implementation=MybatisRedisCache.class,eviction=MybatisRedisCache.class)
 public interface DataResourceMapper extends BaseMapper<DataResource>{}
 ```
 
-2.対応する mapper.xml 中で既存のアノテーションをリンク式の宣言に変更し、xml ファイル内のキャッシュが正常に動作するようにします
+2. 対応する mapper.xml で既存の注釈をリンク式宣言に変更し、xml ファイル内のキャッシュが正常に機能するようにする
 ```xml
 <cache-ref namespace="com.mst.cms.dao.DataResourceMapper"></cache-ref>
 ```
 
-</Accordion>
+## `Cause: org.apache.ibatis.type.TypeException:Error setting null for parameter #1 with JdbcType OTHER`
 
+MyBatis-Plus において、`jdbcTypeForNull` は重要な設定オプションであり、Java の `null` 値をデータベースにどのようにマッピングするかを決定します。
 
-<Accordion client:load title={'`Cause: org.apache.ibatis.type.TypeException:Error setting null for parameter #1 with JdbcType OTHER`'}>
+デフォルトでは、Java でフィールドが `null` の場合、MyBatis-Plus はそれをデータベースの `JdbcType.OTHER` 値にマッピングします。しかし、一部の JDBC ドライバ（Oracle など）は `JdbcType.OTHER` をサポートしていないため、デフォルト設定ではエラーが発生します: `Cause: org.apache.ibatis.type.TypeException:Error setting null for parameter #1 with JdbcType OTHER . Try setting a different JdbcType for this parameter or a different jdbcTypeForNull configuration property. Cause: java.sql.SQLException: 無効な列タイプ: 1111`.
 
-> jdbcTypeForNull=NULL を設定
-> Spring Bean 設定方法：
+`jdbcTypeForNull` を設定するには、MyBatis-Plus の設定クラスに以下のコードを追加する必要があります（いずれか一つを選択してください）:
+
+> Spring Bean 設定
 
 ```java
 MybatisConfiguration configuration = new MybatisConfiguration();
 configuration.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
 configuration.setJdbcTypeForNull(JdbcType.NULL);
-configuration.setMapUnderscoreToCamelCase(true);//アンダースコアをキャメルケースに変換
 sqlSessionFactory.setConfiguration(configuration);
 ```
 
-> yml 設定
+> Yaml 設定
 ```yaml
 mybatis-plus:
   configuration:
     jdbc-type-for-null: 'null' 
 ```
 
-</Accordion>
+> Properties 設定
+```properties
+mybatis-plus.configuration.jdbc-type-for-null=NULL
+```
 
+> XML 設定
+```XML
+<configuration>
+    <settings>
+        <setting name="jdbcTypeForNull" value="NULL" />
+    </settings>
+</configuration>
+```
 
-<Accordion client:load title={'Page オブジェクトを使用してカスタム SQL でパラメータを渡せない'}>
+> 注意点として、プロジェクトで `SqlSessionFactory` をカスタマイズしている場合、`jdbc-type-for-null` 設定が無効になる可能性があります。
 
-カスタム SQL では、Page オブジェクトは RowBounds を継承しているため、Mapper で直接取得できません。この問題を解決するために、以下の代替案を検討してください：
+## Page オブジェクトをカスタム SQL でパラメータとして渡せない問題
+
+カスタム SQL において、Page オブジェクトは RowBounds を継承しているため、Mapper 内で直接取得することができません。この問題を解決するには、以下の代替案をご検討ください：
 
 - カスタムの Map オブジェクトまたは通常の Java オブジェクトを使用してパラメータを渡す
-- メソッドパラメータで @Param("page") int page, @Param("size") int size を使用してページ番号とページサイズを渡す
+- メソッドパラメータで `@Param("page") int page, @Param("size") int size` を使用して、ページ番号とページサイズを渡す
 
-これらの方法により、カスタム SQL でパラメータを正しく渡し、コードがスムーズに実行されることを確認できます。
+これらの方法により、カスタム SQL でパラメータを正しく渡すことができ、コードの円滑な実行を確保できます。
 
-</Accordion>
+## Map 下划线自動キャメルケース変換の使用方法
 
-
-<Accordion client:load title={'Map のアンダースコアを自動的にキャメルケースに変換する方法'}>
-
-`resultType="java.util.Map"` を使用する場合、Spring Boot でアンダースコアを自動的にキャメルケースに変換するには、以下の手順で実装できます：
+`resultType="java.util.Map"` を使用する場合、Spring Boot で下線からキャメルケースへの自動変換を実装するには、以下の手順に従ってください。
 
 Spring Boot プロジェクトに設定クラスを作成します。
 
@@ -417,90 +385,73 @@ public class MybatisConfigurationCustomizer {
 }
 ```
 
-このように設定することで、Map 内のアンダースコアを自動的にキャメルケース形式に変換できます。これにより、MyBatis のクエリ結果が Map オブジェクトにマッピングされる際に、キー名が自動的に変換され、コード内でより簡単にデータにアクセスできるようになります。
+この設定により、Map 内の下線からキャメルケースへの自動変換が実現します。これにより、MyBatis のクエリ結果が Map オブジェクトにマッピングされる際、キー名が自動的に変換され、コード内でデータにアクセスする際により便利になります。
 
-</Accordion>
+## Wrapper での `limit` を使用した SQL 制限方法
 
-
-<Accordion client:load title={'Wrapper で `limit` を使用して SQL を制限する方法'}>
-
-Wrapper で `limit` を使用して SQL 結果セットを制限するには、以下の方法を使用できます：
+Wrapper で `limit` を使用して SQL の結果セットを制限するには、以下の方法があります：
 
 ```java
-// 1行のデータのみを取得
+// データを1件のみ取得
 wrapper.last("limit 1");
 ```
 
-このコードは SQL 文の末尾に limit 1 を追加し、結果セットの行数を1に制限します。
+このコードは SQL 文の末尾に limit 1 を追加し、結果セットが返す行数を1行に制限します。
 
-</Accordion>
+## 汎用的なバッチ挿入操作を Service 層で処理する理由
 
+汎用的なバッチ挿入操作を Service 層で処理する理由は以下の通りです：
 
-<Accordion client:load title={'なぜ一般的なバッチ挿入操作を Service 層で処理するのか'}>
+- **SQL 長の制限**: 大量データを処理する場合、単一の SQL 文では実行できない、またはメモリリークや JDBC 接続タイムアウトなどの問題を引き起こす可能性があります。
+- **データベースによるバッチ構文の不一致**: 異なるデータベースでは単一 SQL 文でのバッチ挿入構文が異なるため、汎用性に欠けます。
+- **解決策**: ループ処理とプリペアドステートメントを使用したバッチコミット方式を採用します。単一 SQL 文での挿入よりもパフォーマンスは若干低下しますが、上記の問題を解決できます。
 
-一般的なバッチ挿入操作を Service 層で処理する理由は以下の通りです：
+単一 SQL 文での挿入方式を使用したい場合は、オプションメソッド [insertbatchsomecolumn](https://baomidou.com/pages/49cc81/#insertbatchsomecolumn) を自行注入するか、[SQL インジェクター](https://baomidou.com/pages/42ea4a/)で提供されているメソッドを参照してください。
 
-- SQL の長さに制限がある：大量のデータを処理する場合、単一の SQL が実行できないか、メモリリークや JDBC 接続タイムアウトなどの問題が発生する可能性があります。
-- 異なるデータベースの単一 SQL バッチ構文が一致しないため、汎用性が低下します。
-- 解決策：ループ処理によるバッチコミットの方法を採用します。単一 SQL 挿入よりも若干パフォーマンスが低下しますが、上記の問題を解決できます。
+## 3.xバージョンにおけるデータベースキーワードの処理方法
 
-単一 SQL 挿入方式を使用したい場合は、[insertbatchsomecolumn](https://baomidou.com/pages/49cc81/#insertbatchsomecolumn) を独自に注入するか、[SQL インジェクター](https://baomidou.com/pages/42ea4a/) で提供されている方法を参照してください。
+MyBatis-Plus 3.xでは、キーワードを自動的に識別して処理する機能は提供されなくなりました。データベースキーワードの処理方法には以下のいくつかの方法があります：
 
-</Accordion>
+1. 異なるデータベースではキーワードの処理方法が異なるため、保守が困難です。データベース設計時には、フィールド名やテーブル名としてキーワードを使用しないことを推奨します。
 
-<Accordion client:load title={'3.x バージョンでのデータベースキーワードの処理方法'}>
-
-MyBatis Plus 3.x では、キーワードを自動的に認識して処理する機能は提供されなくなりました。データベースキーワードを処理する方法は以下の通りです：
-
-1. 異なるデータベースでキーワードの処理方法が異なるため、メンテナンスが困難です。データベース設計時には、キーワードをフィールド名やテーブル名として使用することを避けることをお勧めします。
-
-2. キーワードを使用する必要がある場合は、フィールドまたはテーブル名の前後にバッククォート（`）を追加して処理できます：
+2. キーワードを使用する必要がある場合は、フィールドまたはテーブル名の前後にバッククォート（`）を追加して処理することができます。以下の例をご覧ください：
     ```java
     @TableField(value = "`status`")
     private Boolean status;
     ```
 
-結論として、問題を避けるために、データベース設計でできる限りキーワードを使用しないことをお勧めします。
+以上のことから、問題を回避するためには、データベース設計においてキーワードの使用を可能な限り避けることをお勧めします。
 
-</Accordion>
+## MybatisPlusException: プロパティ名 "xxx" に対応するデータベース列名が見つかりません！
 
+MyBatis Plus 3.1.1 以降のバージョンで発生する問題について：
 
-<Accordion client:load title={'MybatisPlusException: Your property named "xxx" cannot find the corresponding database column name!'}>
+**現象**: 単体テストでは問題ありませんが、サーバーを起動してデバッグする際にこの例外が発生します。
 
-MyBatis Plus 3.1.1 以降のバージョンで発生する問題：
+**原因**: 3.1.1 以降のバージョンでは、フィールドキャッシュの最適化が行われており、元のクラス名（className）の代わりに `.class` をキーとして使用しています。しかし、dev-tools を使用している場合、`.class` が異なるクラスローダーでロードされる可能性があり、その結果、プロパティが見つからない状況が発生します。
 
-現象：単体テストでは問題ありませんが、サーバーを起動してデバッグするとこの例外が発生します。
+**解決策**: dev-tools プラグインを削除してください。これにより、異なるクラスローダーで `.class` がロードされるのを防ぎ、この例外問題を解決できます。
 
-原因：3.1.1 バージョン以降、フィールドキャッシュの最適化が行われ、クラス名（className）の代わりに `.class` をキーとして使用するようになりました。しかし、dev-tools を使用している場合、`.class` が異なるクラスローダーでロードされる可能性があり、その結果、プロパティが見つからない状況が発生します。
+## カラム "create_time" を結果セットから取得しようとした際のエラー。原因: java.sql.SQLFeatureNotSupportedException
 
-解決策：dev-tools プラグインを削除します。これにより、異なるクラスローダーで `.class` をロードすることを避け、この例外問題を解決できます。
+MyBatis Plus 3.1.1 以降のバージョンで発生する問題です：
 
-</Accordion>
+**現象**: Druid データソースを統合している環境で、3.1.1 以降のバージョンにアップグレードした後、エラー `java.sql.SQLFeatureNotSupportedException` が発生します。3.1.0 以前のバージョンではこの問題は発生しません。
 
+**原因**: MyBatis Plus 3.1.1 以降のバージョンでは、新しいバージョンの JDBC が採用され、新しい日付型（例: `LocalDateTime`）の処理方法がアップグレードされました。しかし、Druid は 1.1.21 より前のバージョンではこの機能をサポートしておらず、この例外が発生します。詳細については、[関連する Issue](https://github.com/baomidou/mybatis-plus/issues/1245) を参照してください。
 
-<Accordion client:load title={'Error attempting to get column "create_time" from result set. Cause: java.sql.SQLFeatureNotSupportedException'}>
+**解決策**:
+1.  Druid データソースを 1.1.21 以降のバージョンにアップグレードすることで、この問題を解決できます。
+2.  Druid データソースをアップグレードできない場合は、MyBatis Plus のバージョンを 3.1.0 以前に維持することを選択できます。
+3.  最新の MyBatis Plus バージョンを引き続き使用する場合は、この例外を回避するために、新しいバージョンの JDBC と互換性のある他のデータソースへの変更を検討できます。
 
-MyBatis Plus 3.1.1 以降のバージョンで発生する問題：
+## MyBatis Plus を 3.1.1 以降にアップグレード後、新しい日付型がマッピングできないエラー
 
-現象：Druid データソースを統合する際、3.1.1 バージョン以降にアップグレードすると、java.sql.SQLFeatureNotSupportedException エラーが発生します。3.1.0 バージョン以前ではこの問題は発生しませんでした。
+MyBatis Plus を 3.1.0 以下のバージョンから上位バージョンにアップグレードし、新しい日付型（LocalDateTime など）がマッピングできないエラーが発生した場合、以下の理由が考えられます：
 
-原因：MyBatis Plus 3.1.1 バージョン以降は新しい JDBC を採用し、新しい日付型（LocalDateTime など）の処理方法がアップグレードされました。しかし、Druid 1.1.21 バージョン以前はこの機能をサポートしていないため、この例外が発生します。詳細については [関連する質問](https://github.com/baomidou/mybatis-plus/issues/1245) を参照してください。
+MP_3.1.0 およびそれ以前のバージョンは MyBatis 3.5.0 に依存しています。一方、MP_3.1.1 では MyBatis の依存関係が 3.5.1 にアップグレードされました。MyBatis 3.5.1 では、新しい日付型には JDBC 4.2 API をサポートする JDBC ドライバが必要です。
 
-解決策：
-1. Druid データソースを 1.1.21 バージョン以上にアップグレードして、この問題を解決します。
-2. Druid データソースをアップグレードできない場合は、MyBatis Plus のバージョンを 3.1.0 以前に維持することを選択できます。
-3. 最新の MyBatis Plus バージョンを引き続き使用する場合は、この例外を避けるために、新しい JDBC と互換性のある他のデータソースに切り替えることを検討してください。
-
-</Accordion>
-
-
-<Accordion client:load title={'MyBatis Plus を 3.1.1 以降にアップグレードした後、新しい日付型がマッピングできないエラー'}>
-
-MyBatis Plus を 3.1.0 以前のバージョンから上位バージョンにアップグレードし、新しい日付型（LocalDateTime など）がマッピングできないエラーが発生した場合、以下の理由が考えられます：
-
-MP_3.1.0 以前のバージョンは MyBatis 3.5.0 に依存しています。MP_3.1.1 は MyBatis の依存関係を 3.5.1 にアップグレードしましたが、MyBatis 3.5.1 では、新しい日付型には JDBC 4.2 API をサポートする JDBC ドライバが必要です。
-
-JDBC ドライバのバージョンが JDBC 4.2 API をサポートしていない場合、新しい日付型がマッピングできないエラーが発生します。
+お使いの JDBC ドライバのバージョンが JDBC 4.2 API をサポートしていない場合、新しい日付型がマッピングできないエラーが発生します。
 
 [MyBatis 公式ブログ](blog.mybatis.org) の内容を参照：
 ```text
@@ -510,44 +461,35 @@ There is one backward incompatible changes since 3.5.0.
 ```
 
 解決策：
-- JDBC ドライバを JDBC 4.2 API をサポートするバージョンにアップグレードします。
-- JDBC ドライバをアップグレードできない場合は、MyBatis Plus のバージョンを 3.1.0 以前にロールバックすることを検討してください。
+- JDBC ドライバを JDBC 4.2 API をサポートするバージョンにアップグレードしてください。
+- JDBC ドライバをアップグレードできない場合は、MyBatis Plus のバージョンを 3.1.0 またはそれ以前のバージョンにロールバックすることを検討してください。
 
-</Accordion>
+## "mybatis-plus.configuration.incomplete-result-maps[0].assistant.configuration.mapped-statements[0].parameter-map.parameter-mappings[0]" 配下のプロパティを org.apache.ibatis.mapping.ParameterMapping にバインドできませんでした
 
+Spring Boot バージョンを 2.2.0 からより新しいバージョンにアップグレードする際にこの問題が発生した場合、以下の理由が考えられます。
 
-<Accordion client:load title={'Failed to bind properties under "mybatis-plus.configuration.incomplete-result-maps[0].assistant.configuration.mapped-statements[0].parameter-map.parameter-mappings[0]" to org.apache.ibatis.mapping.ParameterMapping'}>
+**現象**: ローカル環境での起動時には問題ありませんが、war パッケージにビルドしてサーバーにデプロイするとこの問題が発生します。
 
-Spring Boot のバージョンを 2.2.0 から上位バージョンにアップグレードする際にこの問題が発生した場合、以下の理由が考えられます：
+**原因**: Spring Boot 2.2.0 にはコンストラクタインジェクションの問題が存在し、MyBatis のプライベートコンストラクタがプロパティを正しくバインドできないため、MyBatis に依存するフレームワーク（MyBatis Plus など）でエラーが発生します。詳細については [関連 issue](https://github.com/spring-projects/spring-boot/issues/18670) を参照してください。この問題は Spring Boot 2.2.1 で修正されました。
 
-現象：ローカルで起動する際は問題ありませんが、war パッケージにビルドしてサーバーにデプロイすると、この問題が発生します。
+**解決策**:
+1. Spring Boot を 2.1.x バージョンにダウングレードするか、2.2.1 以降のバージョンにアップグレードしてください。より良い安定性と修正を確保するために、Spring Boot 2.2.2 への直接アップグレードを推奨します。
 
-原因：Spring Boot 2.2.0 にはコンストラクタインジェクションの問題があり、MyBatis のプライベートコンストラクタが正しくプロパティをバインドできないため、MyBatis に依存するフレームワーク（MyBatis Plus など）でエラーが発生します。詳細については [関連 issue](https://github.com/spring-projects/spring-boot/issues/18670) を参照してください。この問題は Spring Boot 2.2.1 で修正されました。
+## 分離パッケージデプロイ時の ClassNotFoundException
 
-解決策：
-1. Spring Boot を 2.1.x バージョンにダウングレードするか、2.2.1 バージョン以上にアップグレードします。より良い安定性と修正を得るために、Spring Boot 2.2.2 バージョンに直接アップグレードすることをお勧めします。
+現象：開発ツール内での実行では問題ありませんが、プロジェクトをパッケージ化してサーバーにデプロイした後、Lambda 式を実行すると ClassNotFoundException が発生します。
 
-</Accordion>
-
-
-<Accordion client:load title={'ビルドを分離してデプロイすると ClassNotFoundException が発生する'}>
-
-現象：開発ツールで実行する際は問題ありませんが、プロジェクトをビルドしてサーバーにデプロイした後、Lambda 式を実行すると ClassNotFoundException が発生します。
-
-MyBatis Plus 3.3.2 以前のバージョンで、ビルドを分離してデプロイした際に ClassNotFoundException が発生する場合、逆シリアライズ操作を実行する際にクラスローダーでエラーが発生している可能性があります。
+MyBatis-Plus 3.3.2 より前のバージョンでは、分離パッケージデプロイ時に ClassNotFoundException の問題が発生する場合、逆シリアル化操作の実行中にクラスローダーでエラーが発生している可能性があります。
 
 解決策：
-1. `spring-boot-maven-plugin` プラグインを削除してビルドするか、
-2. MyBatis Plus 3.3.2 バージョンにアップグレードします。例として [分離ビルド](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-assembly) を参照してください。
+1. `spring-boot-maven-plugin` プラグインを除去してパッケージ化する、または
+2. MyBatis-Plus 3.3.2 バージョンにアップグレードする。操作については、サンプル [分離パッケージ](https://gitee.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-assembly) を参照してください。
 
-</Accordion>
+## MyBatis 内部ログ記録の有効化
 
+MyBatis 内部のログ記録を有効にするには、以下の2つの方法があります：
 
-<Accordion client:load title={'MyBatis 内部ログを有効にする'}>
-
-MyBatis 内部ログを有効にするには、以下の2つの方法があります：
-
-**方式一：**
+**方法一：**
 `application.yml` または `application.properties` ファイルに以下の設定を追加します：
 
 ```yaml
@@ -557,10 +499,10 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl 
 ```
 
-これにより、MyBatis の組み込み StdOutImpl ログ実装を使用してログをコンソールに出力します。
+これにより、MyBatis 組み込みの StdOutImpl ログ記録実装を使用して、ログがコンソールに出力されます。
 
-**方式二：**
-`application.yml` または `application.properties` ファイルにログレベル設定を追加して、特定のパッケージのログレベルを指定します。例：
+**方法二：**
+`application.yml` または `application.properties` ファイルにログレベル設定を追加し、特定のパッケージのログレベルを指定します。例：
 
 ```yaml
 logging:
@@ -568,17 +510,13 @@ logging:
     com.baomidou.example.mapper: debug
 ```
 
-これにより、com.baomidou.example.mapper パッケージのログレベルが debug に設定されます。必要に応じてレベルを調整できます。
+これにより、com.baomidou.example.mapper パッケージ以下のログレベルが debug に指定されます。必要に応じてレベルを調整できます。
 
+上記の設定により、MyBatis 内部のログ記録を有効にし、必要に応じてログレベルを調整することができます。
 
-上記の設定により、MyBatis 内部ログを有効にし、必要に応じてログレベルを調整できます。
+## update 時にフィールドをインクリメントする方法
 
-</Accordion>
-
-
-<Accordion client:load title={'update 時にフィールドをインクリメントする方法'}>
-
-更新操作時にフィールドをインクリメントしたい場合、MyBatis Plus が提供する `Wrapper` を使用して更新できます。以下は実行可能な解決策です：
+更新操作時に特定のフィールドをインクリメントしたい場合、MyBatis Plus が提供する `Wrapper` を使用して更新を行うことができます。以下に実現可能なソリューションを示します：
 
 ```java
 UpdateWrapper<Entity> wrapper = new UpdateWrapper<>();
@@ -592,14 +530,11 @@ wrapper.setSql("column = column + 1");
 baseMapper.update(null, wrapper);
 ```
 
-これにより、更新時にフィールドをインクリメントできます。`setSql` メソッドで直接 SQL 更新文を指定する必要があることに注意してください。
+この方法で、更新時にフィールドをインクリメントすることができます。`setSql` メソッド内で直接 SQL 更新文を指定する必要があることに注意してください。
 
-</Accordion>
+## データベースキーワードのグローバル処理方法
 
-
-<Accordion client:load title={'データベースキーワードをグローバルに処理する方法'}>
-
-データベースキーワードをグローバルに処理したい場合、MyBatis Plus が提供するグローバル設定を使用できます。以下は設定例です（MySQL の場合）：
+データベースキーワードをグローバルに処理したい場合は、MyBatis Plusが提供するグローバル設定を使用できます。以下は設定例です（MySQLの場合）：
 
 ```yaml
 mybatis-plus:
@@ -608,20 +543,17 @@ mybatis-plus:
       column-format: "`%s`"
 ```
 
-この設定により、MyBatis Plus は SQL 文を生成する際に、データベースフィールド名をバッククォート（``）で囲み、データベースキーワードとの競合を防ぎます。
+この設定により、MyBatis PlusはSQL文を生成する際、データベースフィールド名をバッククォート（``）で囲み、データベースキーワードとの衝突を防ぎます。
 
-注意点：
-- `@TableField` アノテーションを使用し、グローバルフォーマットを維持したい場合は、パラメータ `keepGlobalFormat=true` を設定する必要があります。
-- `@TableField` アノテーションで直接固定形式のデータベースキーワードを指定することもできます。例：`@TableField("'status'")`。
+以下の点に注意してください：
+- `@TableField`アノテーションを使用しており、グローバルな書式設定を維持したい場合は、パラメータ`keepGlobalFormat=true`を設定する必要があります。
+- `@TableField`アノテーション内で固定形式のデータベースキーワードを直接指定することもできます。例：`@TableField("'status'")`
 
-上記の設定により、データベースキーワードをグローバルに処理し、生成される SQL 文がキーワードの影響を受けないようにできます。
+上記の設定により、データベースキーワードをグローバルに処理し、生成されるSQL文がキーワードの影響を受けないようにすることができます。
 
-</Accordion>
+## XML でデータベースの種類に基づいて異なる SQL フラグメントを選択する方法
 
-
-<Accordion client:load title={'XML でデータベースタイプに基づいて異なる SQL フラグメントを選択する方法'}>
-
-XML でデータベースタイプに基づいて異なる SQL フラグメントを選択したい場合、MyBatis Plus が提供する `database-id` パラメータを使用できます。以下は設定例です（MySQL の場合）：
+XML でデータベースの種類に基づいて異なる SQL フラグメントを選択したい場合、MyBatis Plus が提供する `database-id` パラメータを使用できます。以下は設定例です（MySQL を例として）：
 
 ```yaml
 mybatis-plus:
@@ -629,9 +561,9 @@ mybatis-plus:
     database-id: mysql
 ```
 
-この設定により、MyBatis Plus は SQL 文を実行する際に、`database-id` パラメータに基づいて異なる SQL フラグメントを選択します。
+このように設定すると、MyBatis Plus は SQL 文を実行する際に、`database-id` パラメータに基づいて異なる SQL フラグメントを選択します。
 
-XML では、2通りの書き方で判断を実施できます：
+XML では以下の異なる書き方で判別できます：
 
 1. 変数 `_databaseId` を使用：
 
@@ -661,111 +593,99 @@ from user
 </select>
 ```
 
-上記の設定により、異なるデータベースタイプに基づいて異なる SQL フラグメントを選択できます。
+上記の設定により、異なるデータベースの種類に基づいて異なる SQL フラグメントを選択できます。
 
-</Accordion>
+## MyBatis Plus が複合主キーをサポートせず、一意な ID を強制する理由について
 
+MyBatis Plus が複合主キーをサポートせず、一意な ID の使用を強制する理由は、以下の考慮事項によるものです：
 
-<Accordion client:load title={'MyBatis Plus が複合主キーをサポートせず、一意の ID を強制する理由'}>
+1.  **テーブル間の相互依存性の増加**：複合主キーを使用すると、テーブル間の関係がより複雑になり、保守と管理の難易度が増加します。
 
-MyBatis Plus が複合主キーをサポートせず、一意の ID を強制する理由は以下の通りです：
+2.  **データの複雑な制約、ルールの増加**：複合主キーはデータの制約とルールを増加させます。例えば、一意性の制約が必要となりますが、これは完全に複合インデックスを使用して実現できます。
 
-1. テーブル間の相互依存性が増加：複合主キーを使用すると、テーブル間の関係がより複雑になり、メンテナンスと管理の難易度が増加します。
+3.  **データ更新の制限の増加**：データを更新する際、すべての複合主キーの値を更新する必要があり、更新操作の制限と複雑さが増加します。
 
-2. データの複雑な制約やルールが増加：複合主キーはデータの制約やルールを増加させます。例えば、一意性の制約が必要ですが、これは完全に結合インデックスで実現できます。
+4.  **深刻なデータ冗長性と更新異常の問題**：複合主キーは、データの冗長性と更新異常の問題を引き起こす可能性があります。特に大規模なシステムでは、更新異常が発生する場合があります。
 
-3. データ更新の制限が増加：データを更新する際に、すべての複合主キーの値を更新する必要があり、更新操作の制限と複雑さが増加します。
+5.  **パフォーマンスの問題**：複合主キーを使用する場合、特定の ID をクエリする際にインデックスを使用できず、パフォーマンスの低下を招きます。
 
-4. 深刻なデータ冗長性と更新異常の問題：複合主キーはデータ冗長性と更新異常の問題を引き起こす可能性があり、特に大規模システムでは更新異常が発生する可能性があります。
+以上をまとめると、複合主キーを使用することで 1 つの ID フィールドを省くことはできますが、この方法の欠点は利点を上回ります。そのため、このような方法は推奨しません。MyBatis Plus は、データ管理の単純性、保守性、およびパフォーマンスを保証するために、一意な ID の使用を堅持しています。
 
-5. パフォーマンスの問題：複合主キーを使用する場合、特定の ID をクエリする際にインデックスを使用できないため、パフォーマンスが低下します。
+## プロジェクト起動速度の低下
+- デフォルトのSnowflake ID初期化が原因
 
-結論として、複合主キーを使用すると ID フィールドを1つ省略できますが、この方法の欠点は利点を上回るため、推奨されません。MyBatis Plus はデータ管理のシンプルさ、保守性、パフォーマンスを確保するために、一意の ID を使用し続けています。
-
-</Accordion>
-
-
-<Accordion client:load title={'プロジェクトの起動が遅い'}>
-- デフォルトの Snowflake ID の初期化が原因です。
-
-  1. ローカルホスト名を確認
-  2. システムの hosts ファイルを編集し、ローカルホスト名を hosts ファイルに書き込む
+  1. ローカルマシンのホスト名を確認
+  2. システムのhostsファイルを編集し、ローカルマシンのホスト名をhostsファイルに書き込む
 
   ```properties
-  # 例：ホスト名が nieqiurong-PC の場合、hosts ファイルに以下のように設定します
+  # 例: ホスト名がnieqiurong-PCの場合、hostsファイルに以下のように設定します
   127.0.0.1       localhost nieqiurong-PC
   ```
 
 - データベース接続プールの初期化を確認
 
-  Linux システムで hikari を使用する際に、起動が遅くなる問題に遭遇しました
+  Hikariを使用した場合、Linuxシステムで起動が遅くなる事例があります
 
-  解決策: 
+  解決策:
 
-  Java 起動コマンドで -Djava.security.egd=file:/dev/urandom を指定し、乱数取得方式を /dev/random から /dev/urandom に変更します
+  Java起動コマンドで -Djava.security.egd=file:/dev/urandom を指定し、乱数取得方法を /dev/random から /dev/urandom に変更します
 
   例: java -Djava.security.egd=file:/dev/urandom -jar xxxx.jar
-</Accordion>
 
-<Accordion client:load title={'3.5.7+ バージョンで Db.saveBatch の戻り値が常に false になる'}>
+## 3.5.7+ バージョンにおける Db.saveBatch の戻り値が常に false になる問題
 
-- 原因：ドライバ設定の非互換性
-> 解決策：ドライバ接続から `rewriteBatchedStatements=true` 設定を削除
-</Accordion>
+- 原因：ドライバーの設定に互換性がないため
+> 解決策：ドライバー接続から `rewriteBatchedStatements=true` 設定を削除してください
 
-<Accordion client:load title={'Page または List が返す結果セットが null または一部の null 要素を含む'}>
-- 原因：mybatis のデフォルトでは、返される行のすべての列が空の場合（プロパティが自動マッピングできない場合も含む）、デフォルトで null を返します
-> 解決策：returnInstanceForEmptyRow を true に設定
+## PageまたはListが返す結果セットがnull、または一部のnull要素を含む場合
+- 原因：MyBatisはデフォルトでは、返される行のすべての列が空の場合（属性が自動マッピングできない場合を含む）、デフォルトでnullを返します
+> 解決策：returnInstanceForEmptyRow を true に設定します
 ```yaml
 mybatis-plus:
     configuration:
         return-instance-for-empty-row: true
 ```
-</Accordion>
 
-<Accordion client:load title={'戻り値が Map または List<Map> の場合、null 値に対応する key が Map に追加されない'}>
+## 戻り値が Map または List&lt;Map&gt; の場合、null 値に対応する key が Map に追加されない
 
-- 原因：mybatis のデフォルトでは、null が返される場合、put メソッドが呼び出されません
-> 解決策：callSettersOnNulls を true に設定
+- 原因：MyBatis はデフォルトでは、null が返される場合に put メソッドを呼び出しません
+> 解決策：callSettersOnNulls を true に設定します
 ```yaml
 mybatis-plus:
     configuration:
         call-setters-on-nulls: true
 ```
-</Accordion>
 
-<Accordion client:load title={'BaseMapper メソッドをオーバーライドする方法'}>
-インターフェースメソッドのオーバーライドは、default メソッドと抽象インターフェースメソッドを区別する必要があります。オーバーライドするメソッドは、最終的に呼び出される実際のメソッドに基づく必要があります。
+## BaseMapperメソッドの書き換え方法
+インターフェースメソッドの書き換えを行う場合は、defaultメソッドと抽象インターフェースメソッドを区別してください。書き換えるメソッドは、最終的に呼び出される実際のメソッドに準拠する必要があります。
 
-抽象インターフェースメソッド：XML で直接このメソッドをオーバーライドすることで完了できます
+抽象インターフェースメソッド: XMLで直接このメソッドを書き換えることで完了します
 
-default メソッド：実際に呼び出されるメソッドを直接オーバーライドするか、元の default を実際のインターフェースメソッドとしてオーバーライドし、XML またはアノテーション方式で実行文をオーバーライドします。
+defaultメソッド: 実際に呼び出されるメソッドを直接書き換えるか、元のdefaultメソッドを実際のインターフェースメソッドとして書き換えた後、XMLまたはアノテーション方式で実行文を書き換えます。
 
 ```java
-// 方式一: BaseMapper の selectPage メソッドをアノテーション方式でオーバーライド（低バージョンではインターフェースメソッドである可能性があります。ここでは新バージョンの default を例としています）
+// 方式一: アノテーション方式によるBaseMapperのselectPageメソッドの書き換え（低バージョンではインターフェースメソッドの場合があります。ここでは新版のdefaultを例とします）
 @Override
 @Select("select * from h2user")
 <P extends IPage<H2User>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<H2User> queryWrapper);
 
-// 方式二: BaseMapper の selectPage メソッドを XML 方式でオーバーライド（低バージョンではインターフェースメソッドである可能性があります。ここでは新バージョンの default を例としています）
+// 方式二: XML方式によるBaseMapperのselectPageメソッドの書き換え（低バージョンではインターフェースメソッドの場合があります。ここでは新版のdefaultを例とします）
 @Override
 <P extends IPage<H2User>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<H2User> queryWrapper);
-// ここで、XML 内で selectPage のクエリ文をオーバーライドします
+// ここでXML内でselectPageのクエリ文を自分で書き換えます
 
-// 方式三: BaseMapper の selectPage メソッドをオーバーライド
+// 方式三: BaseMapperのselectPageメソッドの書き換え
 @Override
 default <P extends IPage<User>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<User> queryWrapper) {
-	return xxxx(); //実際に呼び出される、独自に定義した実際のインターフェースメソッド
+	return xxxx(); //実際に呼び出される自分で定義した実際のインターフェースメソッド
 }
 ```
 
-</Accordion>
-
-<Accordion client:load title={'Kotlin でインターフェースの default メソッドを呼び出す際に Invalid bound statement (not found) が発生する'}>
+## Kotlinでインターフェースのdefaultメソッドを呼び出すと Invalid bound statement (not found) が発生する
 
 - 原因：https://blog.jetbrains.com/kotlin/2020/07/kotlin-1-4-m3-generating-default-methods-in-interfaces/
 
-> 解決策：コンパイルプラグインのコンパイルパラメータ -Xjvm-default=all を設定
+> 解決策：コンパイルプラグインのコンパイルパラメータに `-Xjvm-default=all` を設定する
 
 ```xml
 <plugin>
@@ -789,19 +709,17 @@ compileKotlin {
 }
 ```
 
-</Accordion>
+## Encountered unexpected token: "\n\n\n" 或 Could not set parameters for mapping
 
-<Accordion client:load title={'Encountered unexpected token: "\n\n\n" <ST_SEMICOLON>'}>
-
-- 原因：`jsqlParser` 4.9 から、連続する改行はステートメントの終了と見なされるようになりました。
+- 原因：jsqlParser4.9では、連続した改行はステートメントの終了と見なされ、Encountered unexpected token解析エラーがスローされます。5.0以降では、連続した`\n\n`に遭遇すると、後続のステートメントが切り捨てられ、mybatis層でCould not set parameters for mappingエラーが発生します。
 
   参考リンク: https://github.com/JSQLParser/JSqlParser/issues/1988
 
-  MyBatis-Plus はバージョン 3.5.3.2 から、フレームワーク内蔵の SQL 注入文に対して改行処理を行うようになりましたが、プロジェクト内で独自に記述した SQL 文については、開発者が自ら改行処理を行う必要があります。
+  mybatis-plusはバージョン3.5.3.2以降、フレームワーク内で組み込み注入されるSQLの改行処理に対応していますが、プロジェクト内で独自に記述されたステートメントについては、自身で処理する必要があります。
 
-- 注意: 3.5.10 と 3.5.10.1 バージョンではプロジェクト内の改行に対応しましたが、単一行コメント (`--` または `#`) の処理はサポートされていません。3.5.11 バージョン以降はこの処理は行われません。
+- 注意: バージョン3.5.10および3.5.10.1では、プロジェクト内の改行状況を処理しますが、プロジェクト内で単行コメント（`--` または `#` のようなステートメント）を使用している場合の処理はサポートされていません。バージョン3.5.11以降ではこの処理は行われなくなります。連続した改行を含むステートメントを処理する必要がある場合は、以下の方法で対応できます。
 
-方法1: 
+方法一:
 ```java
 static {
     JsqlParserGlobal.setParserMultiFunc((sql)-> {
@@ -814,7 +732,7 @@ static {
     });
 }
 
-// 如果jsqlParser低于5.0，请把如下方法复制到自己工程里，代码来源JsqlParser5.0版本。
+// jsqlParserが5.0未満の場合、以下のメソッドを自身のプロジェクトにコピーしてください。コードはJsqlParser5.0バージョンに由来します。
 public static String sanitizeSingleSql(String sqlStr) {
         Pattern SQL_DELIMITER_SPLIT = Pattern.compile("((?:'[^']*+'|[^\\n])*+)");
         StringBuilder builder = new StringBuilder();
@@ -830,35 +748,32 @@ public static String sanitizeSingleSql(String sqlStr) {
 }
 ```
 
-方法2: MyBatis の改行削除機能を有効にします (汎用性はあまり高くない可能性があり、単一行コメント `--` や `#` は処理できません)。
+方法二: mybatisの改行除去ステートメントを有効にする（汎用性はそれほど高くなく、単行コメント `--` または `#` のようなものを処理できません）
 ```yaml
 mybatis-plus:
     configuration:
         shrink-whitespaces-in-sql: true
 ```
-</Accordion>
 
-<Accordion client:load title={'コードジェネレーターで XXXRepository を生成するように設定する方法'}>
+## コードジェネレータで XXXRepository を生成するための設定方法
 
-メンテナンスされなくなるため、使用しないことをお勧めします。生成する必要がある場合は、以下の手順に従って `Service` を `Repository` に変換してください。
+今後は Service と Repository のメンテナンスを行わないため、継続して使用することは推奨しません。生成が必要な場合は、以下の手順に従って service を repository に変換してください。
 
 ```java
 AutoGenerator generator = new AutoGenerator(DATA_SOURCE_CONFIG);
 generator.packageInfo(new PackageConfig.Builder()
-    //-- 変換開始 ----
+    //-- 変換開始----
     .service("repository")
     .serviceImpl("repository.impl")
-    //-- 変換終了 ----
+    //-- 変換終了----
     .build());
 generator.strategy(
     new StrategyConfig.Builder()
-        //-- 変換開始 ----
+        //-- 変換開始----
         .serviceBuilder().convertServiceFileName(entityName -> "I" + entityName + "Repository")
         .superServiceClass(IRepository.class).convertServiceImplFileName(entityName -> entityName + "Repository")
         .superServiceImplClass(CrudRepository.class)
-        //-- 変換終了 ----
+        //-- 変換終了----
         .build());
 generator.execute();
 ```
-
-</Accordion>

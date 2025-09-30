@@ -8,7 +8,7 @@ sidebar:
 
 import LastedDependency from '@/components/LastedDependency.astro';
 
-The brand-new MyBatis-Plus code generator allows you to quickly generate desired code through builder pattern, efficiently and elegantly. Follow the code below to see it in action.
+The brand new MyBatis-Plus code generator allows you to quickly generate the code you want through the builder pattern. It's fast and elegant. Take a look at the code below to see it in action.
 
 ```java
 <!-- CodeGenerator.java -->
@@ -40,36 +40,36 @@ FastAutoGenerator.create("url", "username", "password")
 <LastedDependency groupId="com.baomidou" artifactId="mybatis-plus-generator" />
 
 :::note
-The new code generator was added in version 3.5.1 and is not backward compatible! If you're using a version below 3.5.1, please refer to [Code Generator](/guides/code-generator/) for configuration and usage.
+The new code generator was added in version 3.5.1 and is not compatible with older versions! If you are using a version below 3.5.1, please refer to the [Code Generator](/guides/code-generator/) for configuration and usage.
 :::
 
-Since the code generator uses template engines, please manually include your preferred template engine. MyBatis-Plus Generator supports the following template engines:
+Since the code generator uses a template engine, please introduce your preferred template engine yourself. MyBatis-Plus Generator supports the following template engines:
 
 - VelocityTemplateEngine(Default)
 - FreemarkerTemplateEngine
 - BeetlTemplateEngine
 - EnjoyTemplateEngine
 
-If you wish to use or adapt other template engines, you can extend `AbstractTemplateEngine` and implement custom solutions by referring to other template engine implementations.
+If you want to use or adapt other template engines, you can extend `AbstractTemplateEngine` yourself and implement customizations by referring to other template engine implementations.
 
 ## Generation Methods
 
 The code generator currently supports two generation methods:
 
 1. **DefaultQuery (Metadata Query)**
-   - **Advantages:** Reads database metadata information through generic interfaces, offering better database compatibility.
-   - **Disadvantages:** Relies on database driver implementations.
-   - **Note:** Default method, some type handling may not be ideal.
+   - **Advantages:** Reads database metadata information based on common interfaces, offering good database generality.
+   - **Disadvantages:** Relies on database vendor driver implementations.
+   - **Note:** This is the default method. Some type handling might not be ideal.
 
 2. **SQLQuery (SQL Query)**
-   - **Advantages:** Requires writing specific queries for tables, primary keys, and fields according to the database.
-   - **Disadvantages:** Poor compatibility, may face issues across different versions of the same database (e.g., H2 database only supports 1.X versions).
+   - **Advantages:** Requires writing corresponding queries for tables, primary keys, fields, etc., specific to the database.
+   - **Disadvantages:** Not very generic; compatibility issues might exist between different versions of the same database vendor (e.g., H2 database only supports version 1.X).
    - **Note:** Will not be maintained in the future.
 
-For known databases (without version compatibility issues), continue using the SQL query method as before. Example code:
+If you are using a known database (without version compatibility issues), you can continue using the original SQL query method. Example code is as follows:
 
 ```java
-// MYSQL example - Switching to SQL query method requires specifying dbQuery and typeConvert
+// MYSQL Example: Switch to SQL query mode, requires specifying dbQuery and typeConvert for generation
 FastAutoGenerator.create("url", "username", "password")
                 .dataSourceConfig(builder ->
                         builder.databaseQueryClass(SQLQuery.class)
@@ -79,25 +79,25 @@ FastAutoGenerator.create("url", "username", "password")
                 // Other Config ...
 ```
 
-Current issues with metadata query:
+The metadata query currently has the following issues:
 
-1. Does not support generating tables using NotLike approach.
+1. Does not support generating tables in reverse using the NotLike method.
 2. Unable to read table comments. Solutions:
-   - Add `remarks=true&useInformationSchema=true` to MySQL connection properties.
-   - Add `remarks=true` or `remarksReporting=true` (for certain driver versions) to Oracle connection properties.
-   - SqlServer: Not supported by driver.
-3. Poor handling of some PostgreSQL types (e.g., json, jsonb, uuid, xml, money). Solutions:
-   - Convert to custom types with custom TypeHandlers.
-   - Extend typeConvertHandler (typeName retrieval added in version 3.5.3.3).
+   - Add properties `remarks=true&useInformationSchema=true` to the MySQL connection string.
+   - Add property `remarks=true` or `remarksReporting=true` (for some driver versions) to the Oracle connection string.
+   - SqlServer: Not supported by the driver.
+3. Suboptimal handling of some PostgreSQL types (e.g., json, jsonb, uuid, xml, money types). Solutions:
+   - Convert them to custom types and handle them with a custom TypeHandler.
+   - Extend the typeConvertHandler to handle them (typeName acquisition was added in version 3.5.3.3).
 4. MySQL tinyint field conversion issues:
-   - When field length is 1, cannot convert to Boolean. Add `&tinyInt1isBit=true` to database connection.
-   - When field length > 1, defaults to Byte. To convert to Integer, use:
+   - When the field length is 1, it cannot be converted to a Boolean field. It is recommended to add `&tinyInt1isBit=true` when specifying the database connection.
+   - When the field length is greater than 1, it defaults to Byte. If you want to convert it to Integer, you can use the following code:
 
         ```java
         FastAutoGenerator.create("url", "username", "password")
                 .dataSourceConfig(builder ->
                         builder.typeConvertHandler((globalConfig, typeRegistry, metaInfo) -> {
-                            // Maintain backward compatibility with Integer conversion
+                            // Compatible with older versions converting to Integer
                             if (JdbcType.TINYINT == metaInfo.getJdbcType()) {
                                 return DbColumnType.INTEGER;
                             }
@@ -112,7 +112,7 @@ You can use the code generator in the following two ways.
 
 ### Quick Generation
 
-Add generator code directly in the main method of CodeGenerator, configure accordingly, and run to generate code.
+Add the generator code directly to the main method in CodeGenerator, configure it accordingly, and then run it directly to generate the code.
 
 ```java
 <!-- CodeGenerator.java -->
@@ -135,41 +135,41 @@ public static void main(String[] args) {
                     })
             )
             .packageConfig(builder ->
-                    builder.parent("com.baomidou.mybatisplus.samples.generator") // Set parent package
-                            .moduleName("system") // Set parent module name
-                            .pathInfo(Collections.singletonMap(OutputFile.xml, "D://")) // Set mapperXml output path
+                    builder.parent("com.baomidou.mybatisplus.samples.generator") // Set parent package name
+                            .moduleName("system") // Set parent package module name
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, "D://")) // Set mapperXml generation path
             )
             .strategyConfig(builder ->
-                    builder.addInclude("t_simple") // Set tables to generate
-                            .addTablePrefix("t_", "c_") // Set table prefix filters
+                    builder.addInclude("t_simple") // Set table names to generate
+                            .addTablePrefix("t_", "c_") // Set filter table prefixes
             )
-            .templateEngine(new FreemarkerTemplateEngine()) // Use Freemarker template engine (default is Velocity)
+            .templateEngine(new FreemarkerTemplateEngine()) // Use Freemarker engine template, default is Velocity engine template
             .execute();
 }
 ```
 
 ### Interactive Generation
 
-Interactive generation prompts for inputs during runtime. After completing configurations, it automatically generates the code.
+In interactive generation, after running, you will be prompted to input the corresponding content. Once the configuration input is complete, the relevant code will be automatically generated.
 
 ```java
 <!-- CodeGenerator.java -->
 
 public static void main(String[] args) {
     FastAutoGenerator.create("url", "username", "password")
-            // Global config
-            .globalConfig((scanner, builder) -> builder.author(scanner.apply("Enter author name?")))
-            // Package config
-            .packageConfig((scanner, builder) -> builder.parent(scanner.apply("Enter package name?")))
-            // Strategy config
-            .strategyConfig((scanner, builder) -> builder.addInclude(getTables(scanner.apply("Enter table names (comma-separated)? Enter 'all' for all tables")))
+            // Global configuration
+            .globalConfig((scanner, builder) -> builder.author(scanner.apply("Please enter the author name?")))
+            // Package configuration
+            .packageConfig((scanner, builder) -> builder.parent(scanner.apply("Please enter the package name?")))
+            // Strategy configuration
+            .strategyConfig((scanner, builder) -> builder.addInclude(getTables(scanner.apply("Please enter the table names, separated by commas? Enter 'all' for all tables")))
                     .entityBuilder()
                     .enableLombok()
                     .addTableFills(
                             new Column("create_time", FieldFill.INSERT)
                     )
                     .build())
-            // Use Freemarker template engine (default is Velocity)
+            // Use Freemarker engine template, default is Velocity engine template
             .templateEngine(new FreemarkerTemplateEngine())
             .execute();
 }
@@ -180,16 +180,16 @@ protected static List<String> getTables(String tables) {
 }
 ```
 
-For more examples, check the test package samples:
+If you need more examples, please check the samples in the test package.
 
 - [H2CodeGeneratorTest](https://github.com/baomidou/generator/blob/develop/mybatis-plus-generator/src/test/java/com/baomidou/mybatisplus/generator/samples/H2CodeGeneratorTest.java)
 - [FastAutoGeneratorTest](https://github.com/baomidou/generator/blob/develop/mybatis-plus-generator/src/test/java/com/baomidou/mybatisplus/generator/samples/FastAutoGeneratorTest.java)
 
 ## Configuration
 
-Refer to [Code Generator Configuration](/reference/new-code-generator-configuration/).
+Please proceed to [Code Generator Configuration](/reference/new-code-generator-configuration/) for details.
 
 ## Resources
 
-- [👉 Source Code](https://github.com/baomidou/mybatis-plus): Welcome to read and contribute.
-- [👉 Video Tutorials](https://space.bilibili.com/483260422): Welcome to follow, like, comment, and share.
+- [👉 Source Code](https://github.com/baomidou/mybatis-plus): Welcome to read the source code and contribute.
+- [👉 Video Tutorial Details](https://space.bilibili.com/483260422): Welcome to follow, like, coin, and comment.

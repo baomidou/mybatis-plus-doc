@@ -3,21 +3,20 @@ title: アノテーション設定
 sidebar:
   order: 2
 ---
-
 import { LinkCard } from '@astrojs/starlight/components';
 import Badge from "@/components/Badge.astro";
 
-本文では MyBatisPlus のアノテーションの使用方法と属性について詳しく説明し、ソースコードへのリンクを提供して理解を深めます。以下のリンクからアノテーションクラスのソースコードを確認できます。
+本文では、MyBatisPlus アノテーションの使用方法と属性について詳細に説明し、より深く理解するためのソースコードリンクを提供します。以下のリンクからアノテーションクラスのソースコードを確認できます。
 
 <LinkCard
-  title="MyBatis-Plus Annotation ソースコード"
-  description="ソースコードには比較的詳細なコメントが含まれており、ソースコードを確認して機能を理解することができます。"
+  title="MyBatis-Plus アノテーション ソースコード"
+  description="ソースコードには比較的完全なコメントが含まれており、ソースコードを確認して機能を理解することができます。"
   href="https://github.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation"
 />
 
 ## @TableName
 
-このアノテーションは、エンティティクラスが対応するデータベーステーブル名を指定するために使用されます。エンティティクラス名がデータベーステーブル名と一致しない場合、またはエンティティクラス名がデータベーステーブル名のキャメルケース表記でない場合、このアノテーションを使用してテーブル名を明示的に指定する必要があります。
+このアノテーションは、エンティティクラスが対応するデータベーステーブル名を指定するために使用されます。エンティティクラス名とデータベーステーブル名が一致しない場合、またはエンティティクラス名がデータベーステーブル名のキャメルケース表記ではない場合、このアノテーションを使用して明示的にテーブル名を指定する必要があります。
 
 ```java {1}
 @TableName("sys_user")
@@ -32,72 +31,72 @@ public class User {
 ### value
 
 <p>
-    **型：** `String` <br/>
+    **タイプ：** `String` <br/>
     **デフォルト値：** `""`
 </p>
 
-エンティティクラスが対応するデータベーステーブル名を指定します。エンティティクラス名とテーブル名が一致しない場合、この属性を使用して正しいテーブル名を指定します。
+エンティティクラスに対応するデータベーステーブル名を指定します。エンティティクラス名とテーブル名が一致しない場合、この属性を使用して正しいテーブル名を指定します。
 
 ### schema
 
 <p>
-    **型：** `String` <br/>
+    **タイプ：** `String` <br/>
     **デフォルト値：** `""`
 </p>
 
-データベースの Schema 名を指定します。通常、データベースが Schema を使用してテーブルを整理していない場合、この属性は記入する必要はありません。
+データベースのスキーマ名を指定します。通常、データベースがスキーマを使用してテーブルを整理していない場合、このプロパティは空のままにしておくことができます。
 
 ### keepGlobalPrefix
 
 <p>
-    **型：** `boolean` <br/>
+    **タイプ：** `boolean` <br/>
     **デフォルト値：** `false`
 </p>
 
-グローバル設定で tablePrefix が設定されている場合、この属性はグローバルのテーブルプレフィックスを使用し続けるかどうかを決定します。true に設定すると、アノテーションでテーブル名を指定した場合でも、グローバルのテーブルプレフィックスが自動的に追加されます。
+グローバル設定で tablePrefix が設定されている場合、このプロパティはグローバルのテーブルプレフィックスを維持するかどうかを決定します。true に設定すると、アノテーションでテーブル名が指定されている場合でも、自動的にグローバルのテーブルプレフィックスが付加されます。
 
 ### resultMap
 
 <p>
-    **型：** `String` <br/>
+    **タイプ：** `String` <br/>
     **デフォルト値：** `""`
 </p>
 
-XML で定義された ResultMap の ID を指定し、クエリ結果を特定の型のエンティティクラスオブジェクトにマッピングするために使用されます。
+XML で定義された ResultMap の ID を指定します。この ResultMap は、クエリ結果を特定の型のエンティティクラスオブジェクトにマッピングするために使用されます。
 
 ### autoResultMap
 
 <p>
-    **型：** `boolean` <br/>
+    **タイプ：** `boolean` <br/>
     **デフォルト値：** `false`
 </p>
 
-resultMap を自動的に構築するかどうかを指定します。resultMap が既に設定されている場合、この属性は有効になりません。
+ResultMap を自動的に構築するかどうかを設定します。すでに resultMap が設定されている場合、この属性は適用されません。
 
 :::note
-MyBatis-Plus は自動的に resultMap を構築し、MyBatis に注入します。ただし、一度注入が完了すると、生成された内容は静的となり、XML 設定の内容と同様になります。resultMap に関連する操作を使用する際は、typeHandler の処理に注意してください。
+MyBatis-Plus は自動的に resultMap を構築し、MyBatis に注入します。ただし、注入が完了すると、生成される内容は静的なものとなり、XML 設定での内容と同様になります。resultMap に関連する操作を使用する際は、typeHandler の処理に注意してください。
 
-MyBatis は typeHandler を以下の 2 つの場所でのみ定義することをサポートしています：
+MyBatis が typeHandler の記述をサポートしているのは、以下の2箇所のみです：
 
-- resultMap 内で定義し、クエリ結果のマッピングに作用します。
-- insert および update 文の `#{property}` 内の property の後ろで定義し（例：`#{property,typehandler=xxx.xxx.xxx}`）、現在設定された値にのみ作用します。
+- resultMap 内で定義し、クエリ結果のマッピングに作用させる。
+- insert および update 文の `#{property}` 内の property の後ろに定義します（例：`#{property,typehandler=xxx.xxx.xxx}`）。これは、設定された現在の値にのみ作用します。
 
-上記の 2 つの typeHandler を直接指定する形式以外に、MyBatis にはカスタム typeHandler パッケージをグローバルにスキャンする設定もあります。原理はプロパティの型に基づいて対応する typeHandler を見つけて使用することです。
+上記2つの typeHandler を直接指定する形式以外に、MyBatis にはカスタム typeHandler パッケージをグローバルにスキャンする設定があります。これは、プロパティの型に基づいて対応する typeHandler を検索し使用するという仕組みです。
 :::
 
 ### excludeProperty
 
 <p>
-    **型：** `String[]` <br/>
+    **タイプ：** `String[]` <br/>
     **デフォルト値：** `{}` <br/>
-    **追加時期：** <Badge text="@since 3.3.1" vertical="middle"/>
+    **追加バージョン：** <Badge text="@since 3.3.1" vertical="middle"/>
 </p>
 
 マッピング時に除外するプロパティ名を指定します。これらのプロパティは生成される SQL 文に含まれません。
 
 ## @TableId
 
-このアノテーションは、エンティティクラス内のプライマリキーフィールドをマークするために使用されます。プライマリキーフィールド名が id である場合、このアノテーションは省略できます。
+このアノテーションは、エンティティクラス内の主キーフィールドをマークするために使用されます。主キーフィールドの名前が id の場合、このアノテーションは省略できます。
 
 ```java {3}
 @TableName("sys_user")
@@ -113,43 +112,43 @@ public class User {
 ### value
 
 <p>
-    **型：** `String` <br/>
+    **タイプ：** `String` <br/>
     **デフォルト値：** `""`
 </p>
 
-データベーステーブルのプライマリキーフィールド名を指定します。設定しない場合、MyBatis-Plus はエンティティクラス内のフィールド名をデータベーステーブルのプライマリキーフィールド名として使用します。
+データベーステーブルの主キーフィールド名を指定します。設定しない場合、MyBatis-Plusはエンティティクラスのフィールド名をデータベーステーブルの主キーフィールド名として使用します。
 
 ### type
 
 <p>
-    **型：** `Enum` <br/>
+    **タイプ：** `Enum` <br/>
     **デフォルト値：** `IdType.NONE`
 </p>
 
-プライマリキーの生成戦略を指定します。
+主キーの生成戦略を指定します。
 
 **IdType 列挙型の定義**
 
-- `IdType.AUTO`：データベースの自動インクリメント ID をプライマリキーとして使用します。
-- `IdType.NONE`：特定の生成戦略がなく、グローバル設定に IdType 関連の設定がある場合、グローバル設定に従います。
-- `IdType.INPUT`：データ挿入前に、ユーザーが自らプライマリキーの値を設定します。
-- `IdType.ASSIGN_ID`：ID を自動割り当てします。`Long`、`Integer`、`String` 型のプライマリキーに適用されます。デフォルトでは `IdentifierGenerator` の `nextId` を通じて Snowflake アルゴリズムを使用して実装されます。<Badge text="@since 3.3.0"/>
-- `IdType.ASSIGN_UUID`：UUID を自動割り当てします。`String` 型のプライマリキーに適用されます。デフォルトの実装は `IdentifierGenerator` の `nextUUID` メソッドです。<Badge text="@since 3.3.0"/>
+- `IdType.AUTO`：データベースの自動増分IDを主キーとして使用します。
+- `IdType.NONE`：特定の生成戦略はありません。グローバル設定にIdType関連の設定がある場合は、グローバル設定に従います。
+- `IdType.INPUT`：データ挿入前に、ユーザーが自身で主キーの値を設定します。
+- `IdType.ASSIGN_ID`：`ID`を自動的に割り当てます。`Long`、`Integer`、`String` タイプの主キーに適用されます。デフォルトでは、雪花アルゴリズムを利用し、`IdentifierGenerator` の `nextId` メソッドを通じて実装されます。<Badge text="@since 3.3.0"/>
+- `IdType.ASSIGN_UUID`：`UUID`を自動的に割り当てます。`String` タイプの主キーに適用されます。デフォルトの実装は `IdentifierGenerator` の `nextUUID` メソッドです。<Badge text="@since 3.3.0"/>
 
 :::note
-非推奨の ID タイプ（`ID_WORKER`、`UUID`、`ID_WORKER_STR` など）の使用は避け、代わりに `ASSIGN_ID` または `ASSIGN_UUID` を使用してください。これらの新しい戦略は、より優れた柔軟性と互換性を提供します。
+非推奨となったIDタイプ（`ID_WORKER`、`UUID`、`ID_WORKER_STR`など）は使用を避け、代わりに `ASSIGN_ID` または `ASSIGN_UUID` を使用してください。これらの新しい戦略は、より優れた柔軟性と互換性を提供します。
 :::
 
 ## @TableField
 
-このアノテーションは、エンティティクラス内の非プライマリキーフィールドをマークするために使用され、MyBatis-Plus にエンティティクラスのフィールドをデータベーステーブルのフィールドにマッピングする方法を指示します。エンティティクラスのフィールド名がキャメルケース命名規則に従い、データベーステーブルのフィールド名と一致する場合、このアノテーションは省略できます。
+このアノテーションは、エンティティクラス内の非主キーフィールドをマークするために使用されます。MyBatis-Plusに対して、エンティティクラスのフィールドをデータベーステーブルのフィールドにどのようにマッピングするかを指示します。エンティティクラスのフィールド名がキャメルケースの命名規則に従っており、かつデータベーステーブルのフィールド名と一致する場合、このアノテーションは省略できます。
 
 ```java {5}
 @TableName("sys_user")
 public class User {
     @TableId
     private Long id;
-    @TableField("nickname") // データベースフィールド "nickname" へのマッピング
+    @TableField("nickname") // データベースフィールド "nickname" にマッピング
     private String name;
     private Integer age;
     private String email;
@@ -159,15 +158,15 @@ public class User {
 ### value
 
 <p>
-    **型：** `String`<br/>
-    **デフォルト値：** `""`
+    **タイプ:** `String`<br/>
+    **デフォルト値:** `""`
 </p>
 データベース内のフィールド名を指定します。エンティティクラスのフィールド名とデータベースのフィールド名が異なる場合、この属性を使用して正しいデータベースフィールド名を指定します。
 
 ### exist
 
 <p>
-    **型：** `boolean`<br/>
+    **タイプ：** `boolean`<br/>
     **デフォルト値：** `true`
 </p>
 このフィールドがデータベーステーブルに存在するかどうかを示します。false に設定すると、MyBatis-Plus は SQL 生成時にこのフィールドを無視します。
@@ -175,27 +174,27 @@ public class User {
 ### condition
 
 <p>
-    **型：** `String`<br/>
+    **タイプ：** `String`<br/>
     **デフォルト値：** `""`
 </p>
-エンティティクエリ（EntityQuery）実行時に、フィールドの条件式を指定します。これにより、WHERE 句でのフィールドの比較方法をカスタマイズできます。この項目に値がある場合はその値が優先され、値がない場合はグローバルの `%s=#{%s}` が使用されます。
+エンティティクエリ（EntityQuery）を実行する際に、フィールドの条件式を指定します。これにより、WHERE 句におけるフィールドの比較方法をカスタマイズできます。この項目に値が設定されている場合は設定された値が使用され、値がない場合はグローバルなデフォルト値 `%s=#{%s}` が使用されます。
 
-書き方の詳細については [SqlCondition](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java) を参照してください。
+詳細な記述方法は [SqlCondition](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/SqlCondition.java) を参照してください。
 
 :::note[EntityQuery の説明]
-EntityQuery とは、クエリ条件の構築時に、SQL フラグメントを手動で記述するのではなく、エンティティクラスのフィールドを直接使用してクエリ条件を設定することを指します。
+EntityQuery とは、クエリ条件を構築する際に、SQL フラグメントを手動で記述するのではなく、エンティティクラスのフィールドを直接使用してクエリ条件を設定することを指します。
 :::
 
-**使用例の説明**
+**サンプル説明**
 
-User エンティティクラスがあり、id、name、age の 3 つのフィールドがあるとします。年齢が 18 歳以上のユーザーを検索したい場合、QueryWrapper を使用してこのクエリを構築し、User エンティティクラスのインスタンスを直接渡すことができます：
+id、name、age の3つのフィールドを持つ User エンティティクラスがあると仮定します。年齢が18歳より大きいすべてのユーザーを検索したい場合、QueryWrapper を使用してこのクエリを構築し、User エンティティクラスのインスタンスを直接渡すことができます：
 
 ```java
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.SqlCondition;
 
-// エンティティクラスの定義
+// エンティティクラス定義
 @TableName("sys_user")
 public class User {
     @TableId
@@ -203,7 +202,7 @@ public class User {
 
     private String name;
 
-    @TableField(condition = "%s > #{%s}") // age フィールドのカスタム条件式
+    @TableField(condition = "%s > #{%s}") // age フィールドの条件式をカスタマイズ
     private Integer age;
 
     private String email;
@@ -215,7 +214,7 @@ public List<User> findUserAgeOver18() {
     User queryEntity = new User();
     queryEntity.setAge(18); // age フィールドの値を設定
 
-    // User インスタンスを渡して QueryWrapper インスタンスを作成
+    // QueryWrapper インスタンスを作成し、User インスタンスを渡す
     QueryWrapper<User> queryWrapper = new QueryWrapper<>(queryEntity);
 
     // クエリを実行
@@ -225,7 +224,7 @@ public List<User> findUserAgeOver18() {
 }
 ```
 
-この例では、`@TableField(condition = "%s > #{%s}")` アノテーションを使用して age フィールドにカスタム条件式を設定しています。クエリを構築する際、User インスタンスを作成し、age フィールドの値を 18 に設定します。その後、このインスタンスを使用して QueryWrapper を作成し、MyBatis-Plus はエンティティクラス上のアノテーションに基づいて自動的に対応する SQL クエリ条件を生成します。
+この例では、`@TableField(condition = "%s > #{%s}")` アノテーションを使用して age フィールドにカスタムの条件式を設定しています。クエリを構築する際に、User インスタンスを作成し、age フィールドの値を18に設定しました。その後、このインスタンスを使用して QueryWrapper を作成すると、MyBatis-Plus はエンティティクラスのアノテーションに基づいて適切な SQL クエリ条件を自動生成します。
 
 findUserAgeOver18 メソッドを実行すると、MyBatis-Plus は以下のような SQL 文を生成します：
 
@@ -233,19 +232,19 @@ findUserAgeOver18 メソッドを実行すると、MyBatis-Plus は以下のよ�
 SELECT * FROM sys_user WHERE age > 18;
 ```
 
-このように、condition 属性を使用することで、クエリ時のフィールドの動作をカスタマイズし、クエリをより柔軟かつ特定の要件に合わせることができ、同時に SQL フラグメントを手動で記述する煩雑さを避けることができます。
+この方法により、condition プロパティはクエリ時のフィールドの動作をカスタマイズすることができ、特定のニーズに合わせたより柔軟なクエリを可能にし、SQL フラグメントを手動で記述する煩わしさを回避できます。
 
 ### update
 
 <p>
-    **型：** `String`<br/>
-    **デフォルト値：** `""`
+    **タイプ:** `String`<br/>
+    **デフォルト値:** `""`
 </p>
-更新操作実行時の、SET 句におけるフィールドの式を指定します。この属性は el 属性よりも優先順位が高く、フィールドの更新ロジックをカスタマイズすることができます。
+更新操作を実行する際に、SET句におけるフィールドの式を指定します。この属性はel属性よりも優先度が高く、フィールドの更新ロジックをカスタマイズすることができます。
 
-**使用例の説明**
+**サンプル説明**
 
-User エンティティクラスがあり、その中に version フィールドがあるとします。ユーザー情報を更新するたびに、version フィールドの値を自動的に 1 増加させたい場合、@TableField アノテーションの update 属性を使用してこの機能を実装できます：
+Userエンティティクラスにversionフィールドが含まれており、ユーザー情報を更新するたびにversionフィールドの値を自動的に1増加させたい場合を想定します。この機能を実現するために、@TableFieldアノテーションのupdate属性を使用できます：
 
 ```java
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -266,9 +265,9 @@ public class User {
 }
 ```
 
-この例では、`@TableField(update="%s+1")` アノテーションは、更新操作時に version フィールドに対して `version = version + 1` という式を使用するよう MyBatis-Plus に指示します。これにより、ユーザー情報を更新するたびに、version フィールドの値が自動的に 1 増加します。
+この例では、`@TableField(update="%s+1")`アノテーションがMyBatis-Plusに、更新操作を実行する際にversionフィールドに対して`version = version + 1`の式を使用するように指示します。これにより、ユーザー情報を更新するたびに、versionフィールドの値が自動的に1増加します。
 
-以下のような更新操作を実行すると：
+以下の更新操作を実行した場合：
 
 ```java
 User user = new User();
@@ -280,7 +279,7 @@ user.setEmail("updated@example.com");
 userMapper.updateById(user);
 ```
 
-MyBatis-Plus は以下のような SQL 文を自動的に生成します：
+MyBatis-Plusは以下のようなSQL文を自動生成します：
 
 ```sql
 UPDATE sys_user
@@ -288,29 +287,29 @@ SET name = 'Updated Name', age = 30, email = 'updated@example.com', version = ve
 WHERE id = 1;
 ```
 
-このように、update 属性を使用することで、フィールドの更新時の動作をカスタマイズし、更新操作をより柔軟かつ特定の要件に合わせることができ、同時に SQL フラグメントを手動で記述する煩雑さを避けることができます。
+この方法により、update属性を使用して更新時のフィールドの動作をカスタマイズでき、更新操作をより柔軟に、特定の要件に合わせて調整することができます。また、SQLフラグメントを手動で記述する煩雑さを回避できます。
 
 ### insertStrategy
 
 <p>
-    **型：** `Enum`<br/>
+    **タイプ：** `Enum`<br/>
     **デフォルト値：** `FieldStrategy.DEFAULT`
 </p>
 
-新しいレコードを挿入する際に、フィールドの値をどのように処理するかを定義します。この属性により、フィールドを INSERT 文に含めるかどうか、およびどのような条件で含めるかを制御できます。
+新しいレコードを挿入する際に、フィールドの値をどのように処理するかを定義します。このプロパティを使用して、フィールドを INSERT 文に含めるかどうか、およびどのような条件下で含めるかを制御できます。
 
-**[FieldStrategy](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldStrategy.java) 列挙型の定義**
+**[FieldStrategy](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldStrategy.java) 列挙型定義**
 
-- FieldStrategy.DEFAULT：グローバル設定の戦略に従います。グローバル設定が指定されていない場合、デフォルトの動作はフィールド値が NULL でない場合にのみ、そのフィールドを挿入します。
-- FieldStrategy.ALWAYS：フィールド値が NULL であるかどうかに関係なく、常にそのフィールドを挿入します。
+- FieldStrategy.DEFAULT：グローバル設定の戦略に従います。グローバル設定で指定されていない場合、デフォルトの動作はフィールド値が NULL でない場合にのみそのフィールドを挿入します。
+- FieldStrategy.ALWAYS：フィールド値が NULL かどうかに関わらず、常にそのフィールドを挿入します。
 - FieldStrategy.NOT_NULL：フィールド値が NULL でない場合にのみ、そのフィールドを挿入します。
 - FieldStrategy.NOT_EMPTY：フィールド値が空でない（文字列型の場合）または NULL でない（その他の型の場合）場合にのみ、そのフィールドを挿入します。
 - FieldStrategy.NEVER：フィールド値が NULL でない場合でも、そのフィールドを挿入しません。
-- FieldStrategy.IGNORED：判定を無視します。効果は"ALWAYS" と同じです。 <Badge text="@Deprecated" type="error"/>
+- FieldStrategy.IGNORED： 判定を無視し、効果は "ALWAYS" と同じです <Badge text="@Deprecated" type="error"/>
 
-**使用例の説明**
+**サンプル説明**
 
-User エンティティクラスがあり、その中に nickname フィールドがあるとします。新しいユーザーを挿入する際に、nickname が空でない場合にのみそのフィールドを挿入したい場合、@TableField アノテーションの insertStrategy 属性を使用してこの機能を実装できます：
+User エンティティクラスに nickname フィールドが含まれており、新しいユーザーを挿入する際に、nickname が空でない場合にのみそのフィールドを挿入したいとします。この機能を実現するには、@TableField アノテーションの insertStrategy プロパティを使用できます：
 
 ```java
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -330,9 +329,9 @@ public class User {
 }
 ```
 
-この例では、`@TableField(insertStrategy = FieldStrategy.NOT_EMPTY)` アノテーションは、新しいユーザーを挿入する際に、nickname フィールドが空でない場合にのみ、そのフィールドを INSERT 文に含めるよう MyBatis-Plus に指示します。
+この例では、`@TableField(insertStrategy = FieldStrategy.NOT_EMPTY)` アノテーションが MyBatis-Plus に、新しいユーザーを挿入する際に nickname フィールドが空でない場合にのみ INSERT 文に含めるように指示します。
 
-以下のような挿入操作を実行すると：
+以下の挿入操作を実行した場合：
 
 ```java
 User user = new User();
@@ -343,26 +342,26 @@ user.setEmail("john.doe@example.com");
 userMapper.insert(user);
 ```
 
-MyBatis-Plus は以下のような SQL 文を自動的に生成します：
+MyBatis-Plus は自動的におおよそ以下のような SQL 文を生成します：
 
 ```sql
 INSERT INTO sys_user (nickname, age, email)
 VALUES ('John Doe', 25, 'john.doe@example.com');
 ```
 
-nickname フィールドが空の場合、生成される SQL には nickname フィールドが含まれません：
+nickname フィールドが空の場合、生成される SQL は nickname フィールドを含みません：
 
 ```sql
 INSERT INTO sys_user (age, email)
 VALUES (25, 'john.doe@example.com');
 ```
 
-これは以下の MyBatis のカスタム XML 設定と同等の効果があります：
+この効果は、以下のような MyBatis のカスタム XML 設定と同等です：
 
 ```xml
 <mapper namespace="com.example.mapper.UserMapper">
 
-    <!-- ユーザーの挿入 -->
+    <!-- ユーザーを挿入 -->
     <insert id="insertUser" parameterType="com.example.entity.User">
         INSERT INTO sys_user (
             <if test="nickname != null and nickname != ''">
@@ -382,21 +381,21 @@ VALUES (25, 'john.doe@example.com');
 </mapper>
 ```
 
-このように、insertStrategy 属性を使用することで、フィールドの挿入時の動作をカスタマイズし、挿入操作をより柔軟かつ特定の要件に合わせることができ、同時に SQL フラグメントを手動で記述する煩雑さを避けることができます。
+この方法により、insertStrategy プロパティは挿入時のフィールドの動作をカスタマイズできるようにし、挿入操作をより柔軟にし、特定の要件に合わせることができます。同時に、手動で SQL フラグメントを記述する煩雑さを回避できます。
 
 ### updateStrategy
 
 <p>
-    **型：** `Enum`<br/>
-    **デフォルト値：** `FieldStrategy.DEFAULT`
+    **タイプ:** `Enum`<br/>
+    **デフォルト値:** `FieldStrategy.DEFAULT`
 </p>
-レコードの更新時に、フィールドの値をどのように処理するかを定義します。この属性により、フィールドを UPDATE 文の SET 句に含めるかどうか、およびどのような条件で含めるかを制御できます。
+レコード更新時に、フィールドの値をどのように処理するかを定義します。このプロパティを使用して、UPDATE 文の SET 句にフィールドを含めるかどうか、またどのような条件で含めるかを制御できます。
 
-insertStrategy 属性を参照して、FieldStrategy 列挙型の詳細情報を確認してください。
+FieldStrategy 列挙型の詳細については、insertStrategy プロパティを参照してください。
 
-**使用例の説明**
+**サンプル説明**
 
-User エンティティクラスがあり、その中に nickname フィールドがあるとします。ユーザー情報を更新する際に、nickname フィールドの値が NULL であるかどうかに関係なく常に更新したい場合、@TableField アノテーションの updateStrategy 属性を使用してこの機能を実装できます：
+User エンティティクラスに nickname フィールドが含まれており、ユーザー情報を更新する際に、値が空かどうかに関係なく常に nickname フィールドを更新したいとします。この機能を実現するには、@TableField アノテーションの updateStrategy プロパティを使用します：
 
 ```java
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -407,7 +406,7 @@ public class User {
     @TableId
     private Long id;
 
-    @TableField(updateStrategy = FieldStrategy.ALWAYS) // nickname を常に更新、値のチェックを無視
+    @TableField(updateStrategy = FieldStrategy.ALWAYS) // 常に nickname を更新し、値のチェックを無視します
     private String nickname;
 
     private Integer age;
@@ -416,9 +415,9 @@ public class User {
 }
 ```
 
-この例では、`@TableField(updateStrategy = FieldStrategy.ALWAYS)` アノテーションは、ユーザー情報を更新する際に、nickname フィールドを常に UPDATE 文の SET 句に含め、値のチェックを無視するよう MyBatis-Plus に指示します。
+この例では、`@TableField(updateStrategy = FieldStrategy.ALWAYS)` アノテーションが MyBatis-Plus に、ユーザー情報を更新する際に常に nickname フィールドを UPDATE 文の SET 句に含め、その値のチェックを無視するように指示します。
 
-以下のような更新操作を実行すると：
+以下の更新操作を実行した場合：
 
 ```java
 User user = new User();
@@ -430,7 +429,7 @@ user.setEmail("updated@example.com");
 userMapper.updateById(user);
 ```
 
-MyBatis-Plus は以下のような SQL 文を自動的に生成します：
+MyBatis-Plus は自動的におおよそ以下のような SQL 文を生成します：
 
 ```sql
 UPDATE sys_user
@@ -438,23 +437,23 @@ SET nickname = 'Updated Nickname', age = 30, email = 'updated@example.com'
 WHERE id = 1;
 ```
 
-nickname フィールドの値に関係なく、生成される SQL には常に nickname フィールドが含まれます。つまり、nickname フィールドの値が空の場合でも、nickname フィールドを NULL に更新します。
+nickname フィールドの値が空かどうかに関係なく、生成される SQL には nickname フィールドが含まれます。つまり、nickname フィールドの値が空の場合でも、生成される SQL は nickname フィールドを NULL に更新します。
 
-このように、updateStrategy 属性を使用することで、フィールドの更新時の動作をカスタマイズし、更新操作をより柔軟かつ特定の要件に合わせることができ、SQL フラグメントを手動で記述する煩雑さを避けることができます。
+このように、updateStrategy プロパティを使用することで、更新時のフィールドの動作をカスタマイズでき、更新操作をより柔軟にし、特定の要件に合わせることができます。同時に、手動で SQL フラグメントを記述する煩わしさを回避できます。
 
 ### whereStrategy
 
 <p>
-    **型：** `Enum`<br/>
-    **デフォルト値：** `FieldStrategy.DEFAULT`
+    **タイプ:** `Enum`<br/>
+    **デフォルト値:** `FieldStrategy.DEFAULT`
 </p>
-更新文の WHERE 句を生成する際に、フィールドの値をどのように処理するかを定義します。この属性により、フィールドを WHERE 句に含めるかどうか、およびどのような条件で含めるかを制御できます。
+更新ステートメントの WHERE 句を生成する際に、フィールドの値をどのように処理するかを定義します。このプロパティにより、フィールドを WHERE 句に含めるかどうか、またどのような条件下で含めるかを制御できます。
 
-insertStrategy と updateStrategy 属性を参照して、FieldStrategy 列挙型の詳細情報を確認してください。
+FieldStrategy 列挙型の詳細については、insertStrategy および updateStrategy プロパティを参照してください。
 
-**使用例の説明**
+**例による説明**
 
-User エンティティクラスがあり、その中に nickname フィールドがあるとします。ユーザー情報を更新する際に、nickname フィールドが空でない場合にのみ、それを WHERE 句の条件として使用できます。@TableField アノテーションの whereStrategy 属性を使用してこの機能を実装できます：
+User エンティティクラスに nickname フィールドが含まれており、ユーザー情報を更新する際に、nickname フィールドが空でない場合のみ WHERE 句の条件として使用したいとします。この機能を実現するには、@TableField アノテーションの whereStrategy プロパティを使用します：
 
 ```java
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -474,9 +473,9 @@ public class User {
 }
 ```
 
-この例では、`@TableField(whereStrategy = FieldStrategy.NOT_EMPTY)` アノテーションは、whereEntity を使用して更新文の WHERE 句を生成する際に、nickname フィールドが空でない場合にのみ、それを WHERE 句に含めるよう MyBatis-Plus に指示します。
+この例では、`@TableField(whereStrategy = FieldStrategy.NOT_EMPTY)` アノテーションが MyBatis-Plus に、whereEntity を使用して更新ステートメントの WHERE 句を生成する際に、nickname フィールドが空でない場合のみ WHERE 句に含めるように指示します。
 
-以下のような更新操作を実行すると：
+以下の更新操作を実行する場合：
 
 ```java
 User user = new User();
@@ -491,7 +490,7 @@ UpdateWrapper<User> updateWrapper = new UpdateWrapper<>(whereEntity);
 userMapper.update(user, updateWrapper);
 ```
 
-MyBatis-Plus は以下のような SQL 文を自動的に生成します：
+MyBatis-Plus は自動的に以下のような SQL ステートメントを生成します：
 
 ```sql
 UPDATE sys_user
@@ -507,12 +506,12 @@ SET email = 'john.doe@example.com'
 WHERE age = 30;
 ```
 
-これは以下の MyBatis のカスタム XML 設定と同等の効果があります：
+この効果は、以下の MyBatis のカスタム XML 設定と同等です：
 
 ```xml
 <mapper namespace="com.example.mapper.UserMapper">
 
-    <!-- ユーザー情報の更新 -->
+    <!-- ユーザー情報を更新 -->
     <update id="updateUser" parameterType="com.example.entity.User">
         UPDATE sys_user
         SET email = #{email}
@@ -527,33 +526,33 @@ WHERE age = 30;
 </mapper>
 ```
 
-このように、whereStrategy 属性を使用することで、フィールドの WHERE 句での動作をカスタマイズし、更新操作をより柔軟かつ特定の要件に合わせることができ、SQL フラグメントを手動で記述する煩雑さを避けることができます。insertStrategy と updateStrategy 属性を参照して、FieldStrategy 列挙型の詳細情報を確認してください。
+このように、whereStrategy プロパティを使用することで、WHERE 句におけるフィールドの動作をカスタマイズでき、更新操作をより柔軟に、特定の要件に合わせて行うことができます。同時に、手動で SQL フラグメントを記述する煩雑さを回避できます。FieldStrategy 列挙型の詳細については、insertStrategy および updateStrategy プロパティを参照してください。
 
 ### fill
 
 <p>
-    **型：** `Enum`<br/>
-    **デフォルト値：** `FieldFill.DEFAULT`
+    **タイプ:** `Enum`<br/>
+    **デフォルト値:** `FieldFill.DEFAULT`
 </p>
-フィールドの自動補完戦略です。この属性は、データベース操作（挿入、更新など）を実行する際に、フィールドの値をどのように自動補完するかを指定するために使用されます。FieldFill 列挙型を使用することで、フィールドの補完動作を柔軟に制御できます。
+フィールド自動フィル戦略。このプロパティは、データベース操作（挿入、更新など）を実行する際に、フィールドの値をどのように自動的に埋めるかを指定するために使用されます。FieldFill 列挙型を使用することで、フィールドのフィル動作を柔軟に制御できます。
 
 :::note
-この機能を使用するには、[自動フィールド補完](/ja/guides/auto-fill-field)機能と併せて使用する必要があります。
+この機能は、[自動フィルフィールド](/guides/auto-fill-field)機能と組み合わせて使用する必要があります。
 :::
 
-**[FieldFill](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldFill.java) 列挙型の定義**
+**[FieldFill](https://github.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-annotation/src/main/java/com/baomidou/mybatisplus/annotation/FieldFill.java) 列挙型定義**
 
-- `FieldFill.DEFAULT`：デフォルトでは補完を行わず、データベースのデフォルト値または手動設定に依存します。
+- `FieldFill.DEFAULT`：デフォルトではフィルを行わず、データベースのデフォルト値または手動設定に依存します。
 
-- `FieldFill.INSERT`：挿入操作時にフィールド値を自動的に補完します。
+- `FieldFill.INSERT`：挿入操作時にフィールド値を自動的に埋めます。
 
-- `FieldFill.UPDATE`：更新操作時にフィールド値を自動的に補完します。
+- `FieldFill.UPDATE`：更新操作時にフィールド値を自動的に埋めます。
 
-- `FieldFill.INSERT_UPDATE`：挿入と更新の両方の操作時にフィールド値を自動的に補完します。
+- `FieldFill.INSERT_UPDATE`：挿入操作と更新操作の両方でフィールド値を自動的に埋めます。
 
-**使用例の説明**
+**サンプル説明**
 
-User エンティティクラスがあり、その中に createTime と updateTime フィールドがあるとします。ユーザーの作成時に自動的に作成時間を補完、ユーザー情報の更新時に自動的に更新時間を補完したい場合：
+User エンティティクラスがあり、createTime フィールドと updateTime フィールドが含まれていると仮定します。ユーザー作成時に作成日時を自動的に埋め、ユーザー情報更新時に更新日時を自動的に埋めたいとします。
 
 ```java
 import com.baomidou.mybatisplus.annotation.FieldFill;
@@ -563,7 +562,7 @@ import java.time.LocalDateTime;
 
 @TableName("user")
 public class User {
-    // その他のフィールド...
+    // 他のフィールド...
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
@@ -575,27 +574,27 @@ public class User {
 }
 ```
 
-この例では、createTime フィールドは挿入操作時に現在時刻が自動的に補完され、updateTime フィールドは更新操作時に現在時刻が自動的に補完されます。これにより、これらの時間フィールドの値をデータベース操作のたびに手動で設定する必要がなくなります。
+このサンプルでは、createTime フィールドは挿入操作時に現在時刻が自動的に埋められ、updateTime フィールドは更新操作時に現在時刻が自動的に埋められます。これにより、データベース操作のたびにこれらの時刻フィールドの値を手動で設定する必要がなくなります。
 
-**注意点**：自動補完機能を正常に動作させるためには、MyBatis-Plus の設定で適切な自動補完ハンドラーを設定し、エンティティクラスに対応する Mapper インターフェースで適切な挿入および更新メソッドを定義する必要があります。
+**ご注意ください**、自動フィル機能を正常に動作させるには、MyBatis-Plus の設定で対応する自動フィルハンドラを設定する必要があり、エンティティクラスに対応する Mapper インターフェースで対応する挿入メソッドと更新メソッドが定義されていることを確認する必要があります。
 
 ### select
 
 <p>
-    **型：** `boolean`<br/>
-    **デフォルト値：** `true`
+    **タイプ:** `boolean`<br/>
+    **デフォルト値:** `true`
 </p>
-クエリ操作実行時に、そのフィールドを SELECT 文に含めるべきかどうかを指示します。この属性により、クエリ結果に含めるフィールドをより細かく制御でき、データアクセスの制御をより詳細に行うことができます。
+クエリ操作を実行する際に、このフィールドを SELECT 文に含めるかどうかを指定します。この属性により、クエリ結果に含まれるフィールドを制御し、よりきめ細かいデータアクセス制御を提供できます。
 
 **詳細説明**
 
-- select 属性が true（デフォルト値）に設定されている場合、そのフィールドはクエリ結果に含まれます。
+- select 属性が true（デフォルト値）に設定されている場合、このフィールドはクエリ結果に含まれます。
 
-- select 属性が false に設定されている場合、そのフィールドはデータベーステーブルに存在していても、クエリ結果には含まれません。これは、機密データの保護やクエリパフォーマンスの最適化に役立ちます。
+- select 属性が false に設定されている場合、このフィールドがデータベーステーブルに存在していても、クエリ結果には含まれません。これは、機密データを保護したり、クエリのパフォーマンスを最適化したりする場合に有用です。
 
-**使用例の説明**
+**使用例**
 
-User エンティティクラスがあり、その中に password フィールドがあるとします。ユーザー情報をクエリする際に、ユーザーのプライバシーを保護するために password フィールドを除外したい場合：
+User エンティティクラスに password フィールドが含まれており、ユーザーのプライバシーを保護するためにユーザー情報をクエリする際にパスワードフィールドを除外したいとします。
 
 ```java
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -612,35 +611,35 @@ public class User {
 }
 ```
 
-この例では、クエリ操作を実行する際に、password フィールドは SELECT 文に含まれないため、クエリ結果にも表示されません。これにより、データベースにパスワード情報が保存されていても、通常のクエリでは漏洩することはありません。
+この例では、クエリ操作を実行する際、password フィールドは SELECT 文に含まれないため、クエリ結果には現れません。このようにして、データベースにパスワード情報が保存されていても、通常のクエリで漏洩することはありません。
 
-@TableField アノテーションの select 属性は、MyBatis-Plus が生成するクエリ文にのみ影響を与え、他のフレームワークや手動で記述された SQL 文には影響しないという点に注意してください。また、select = false と設定されたフィールドを使用する場合、カスタムクエリや他の方法でそのフィールドにアクセスする際には、データの安全性および整合性に特に注意する必要があります。
+@TableField アノテーションの select 属性は、MyBatis-Plus が生成するクエリ文にのみ影響し、他のフレームワークや手動で記述された SQL 文には影響しないことに注意してください。さらに、select = false を使用したフィールドの場合、カスタムクエリや他の方法でそのフィールドにアクセスする際には、データのセキュリティと完全性に特に注意する必要があります。
 
 ### keepGlobalFormat
 
 <p>
-    **型：** `boolean`<br/>
+    **タイプ：** `boolean`<br/>
     **デフォルト値：** `false`
 </p>
-フィールドを処理する際に、グローバルな DbConfig に定義された columnFormat 規則を適用するかどうかを示します。この属性は、データベース操作時にフィールドの値に対してグローバルなカラムフォーマット規則を適用するかどうかを制御するために使用されます。
+フィールド処理時に、グローバル DbConfig で定義された columnFormat ルールを保持するかどうかを示します。このプロパティは、データベース操作においてフィールド値にグローバルな列フォーマットルールを適用するかどうかを制御するために使用されます。
 
 ### jdbcType
 
 <p>
-    **型：** `JdbcType`<br/>
+    **タイプ：** `JdbcType`<br/>
     **デフォルト値：** `JdbcType.UNDEFINED`
 </p>
-JDBC タイプで、フィールドのデータベースでのデータ型を指定するために使用されます。この属性により、フィールドのデータ型をデータベースと互換性のある形で明示的に設定でき、特に特殊な型やカスタム型を処理する際に役立ちます。
+JDBCタイプ。フィールドのデータベースにおけるデータ型を指定するために使用されます。このプロパティを使用すると、フィールドのデータベース型を明示的に設定でき、特に特殊な型やカスタム型を扱う場合にデータベースとの互換性を確保できます。
 
 **詳細説明**
 
-- jdbcType 属性が JdbcType.UNDEFINED（デフォルト値）に設定されている場合、MyBatis-Plus はフィールドの Java 型に基づいて自動的に JDBC 型を推論します。
+- jdbcType プロパティが JdbcType.UNDEFINED（デフォルト値）に設定されている場合、MyBatis-Plus はフィールドの Java 型に基づいてその JDBC 型を自動的に推論します。
 
-- jdbcType 属性が特定の JdbcType 列挙値に設定されている場合、そのフィールドは指定された JDBC 型を使用してデータベース操作を行います。これは型マッピングの問題を解決したり、データベースの型を正確に制御する必要がある場合に使用できます。
+- jdbcType プロパティが特定の JdbcType 列挙値に設定されている場合、そのフィールドは指定された JDBC 型を使用してデータベース操作が実行されます。これは、型マッピングの問題を解決するため、またはデータベース型を精密に制御する必要がある場合に使用できます。
 
-**使用例の説明**
+**例示**
 
-CustomType エンティティクラスがあり、その中にカスタム型 MyCustomType のフィールドがあり、データベースで特定の JDBC 型として保存したい場合：
+カスタム型 `MyCustomType` のフィールドを含む CustomType エンティティクラスがあると仮定します。このフィールドを特定の JDBC 型でデータベースに保存したい場合、以下のように設定します。
 
 ```java
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -649,7 +648,7 @@ import org.apache.ibatis.type.JdbcType;
 
 @TableName("custom_type")
 public class CustomType {
-    // その他のフィールド...
+    // 他のフィールド...
 
     @TableField(value = "my_custom_field", jdbcType = JdbcType.VARCHAR)
     private MyCustomType myCustomField;
@@ -658,27 +657,27 @@ public class CustomType {
 }
 ```
 
-この例では、myCustomField フィールドは VARCHAR JDBC 型を使用してデータベース操作を行います。これにより、MyCustomType がカスタム型であっても、VARCHAR 型としてデータベースに保存されます。
+この例では、`myCustomField` フィールドは VARCHAR JDBC 型を使用してデータベース操作が行われます。これにより、`MyCustomType` がカスタム型であったとしても、VARCHAR 型に変換されてデータベースに保存されます。
 
-**注意点**：jdbcType 属性は特定の状況でのみ設定する必要があります。例えば、Java 型とデータベース型の間のマッピング関係が不明確な場合などです。ほとんどの場合、MyBatis-Plus は型マッピングを自動的に処理できるため、jdbcType を明示的に設定する必要はありません。また、jdbcType 属性は MyBatis-Plus が生成する SQL 文にのみ影響を与え、他のフレームワークや手動で記述した SQL 文には影響を与えません。
+**ご注意ください**、jdbcType プロパティは、Java 型とデータベース型の間に不明確なマッピング関係が存在する場合など、特定の状況でのみ設定する必要があります。ほとんどの場合、MyBatis-Plus は型マッピングを自動的に処理するため、jdbcType を明示的に設定する必要はありません。また、jdbcType プロパティは MyBatis-Plus が生成する SQL ステートメントにのみ影響し、他のフレームワークや手動で記述された SQL ステートメントには影響しません。
 
 ### typeHandler
 
 <p>
-    **型：** `Class<? extends TypeHandler>`<br/>
+    **タイプ：** `Class<? extends TypeHandler>`<br/>
     **デフォルト値：** `UnknownTypeHandler.class`
 </p>
-型ハンドラーで、データベース操作時に特定のフィールドの値をどのように処理するかを指定します。この属性により、フィールド値の変換ロジックをカスタマイズして、特定のデータ型やビジネス要件に対応できます。
+型ハンドラは、データベース操作において特定のフィールドの値をどのように処理するかを指定するために使用されます。このプロパティを使用すると、特定のデータ型やビジネスニーズに合わせて、フィールド値の変換ロジックをカスタマイズできます。
 
 **詳細説明**
 
-- typeHandler 属性が設定されていない（つまり、デフォルト値の UnknownTypeHandler.class を使用した）場合、MyBatis-Plus はデフォルトの型ハンドラーを使用してフィールド値を処理します。
+- typeHandler プロパティが設定されていない場合（つまりデフォルト値の UnknownTypeHandler.class を使用する場合）、MyBatis-Plus はデフォルトの型ハンドラを使用してフィールド値を処理します。
 
-- typeHandler 属性が特定の TypeHandler のサブクラスに設定されている場合、そのフィールドは指定された型ハンドラーを使用してデータベース操作を行います。これはカスタム型、特殊なデータフォーマット、または非標準のデータベース型を処理するために使用できます。
+- typeHandler プロパティが特定の TypeHandler サブクラスに設定されている場合、そのフィールドは指定された型ハンドラを使用してデータベース操作が行われます。これは、カスタムタイプ、特殊なデータ形式、または非標準のデータベースタイプを処理するために使用できます。
 
-**使用例の説明**
+**使用例**
 
-User エンティティクラスがあり、その中に birthDate フィールドがあり、カスタムの型ハンドラーを使用して日付を特定のフォーマットでデータベースに保存したい場合：
+User エンティティクラスに birthDate フィールドがあり、特定の形式でデータベースに日付を保存するカスタムの型ハンドラを使用して日付形式を処理したいと仮定します。
 
 ```java
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -688,7 +687,7 @@ import java.time.LocalDate;
 
 @TableName("user")
 public class User {
-    // その他のフィールド...
+    // 他のフィールド...
 
     @TableField(value = "birth_date", typeHandler = CustomDateTypeHandler.class)
     private LocalDate birthDate;
@@ -697,9 +696,9 @@ public class User {
 }
 ```
 
-この例では、birthDate フィールドは CustomDateTypeHandler 型ハンドラーを使用してデータベース操作を行います。これにより、クエリ時にデータベースの日付値を LocalDate オブジェクトに変換する場合も、更新時に LocalDate オブジェクトの日付値をデータベースの特定の日付フォーマットに変換する場合も、CustomDateTypeHandler を使用して処理されます。
+この例では、birthDate フィールドは CustomDateTypeHandler 型ハンドラを使用してデータベース操作が行われます。これにより、クエリ時にデータベースの日付値を LocalDate オブジェクトに変換する場合でも、更新時に LocalDate オブジェクトの日付値をデータベースの特定の日付形式に変換する場合でも、CustomDateTypeHandler を使用して処理されます。
 
-CustomDateTypeHandler は以下のように実装できます：
+CustomDateTypeHandler は次のように実装される可能性があります：
 
 ```java
 import org.apache.ibatis.type.BaseTypeHandler;
@@ -725,29 +724,29 @@ public class CustomDateTypeHandler extends BaseTypeHandler<LocalDate> {
         return (dateString != null) ? LocalDate.parse(dateString, FORMATTER) : null;
     }
 
-    // その他の必要なメソッドを実装...
+    // 他の必要なメソッドを実装...
 }
 ```
 
-このカスタム型ハンドラーでは、DateTimeFormatter を定義して日付のフォーマットを指定し、setNonNullParameter と getNullableResult メソッドで日付値の変換ロジックを実装しています。
+このカスタム型ハンドラでは、日付の形式を指定する DateTimeFormatter を定義し、setNonNullParameter および getNullableResult メソッドで日付値の変換ロジックを実装しています。
 
-**注意点**：カスタム型ハンドラーを有効にするためには、それが MyBatis-Plus の設定で正しく登録され、実行時にロードできることを確認する必要があります。また、カスタム型ハンドラーの使用は慎重に行い、その正確性とパフォーマンスを確保する必要があります。詳細については、[タイプハンドラー](/ja/guides/type-handler)の内容を参照してください。
+**ご注意ください**、カスタム型ハンドラを有効にするには、MyBatis-Plus の設定で正しく登録され、実行時にロードできることを確認する必要があります。また、カスタム型ハンドラの使用は慎重に行い、正確性とパフォーマンスを確保してください。詳細については、[フィールド型ハンドラ](/guides/type-handler) の内容を参照してください。
 
 ### numericScale
 
 <p>
-    **型：** `String`<br/>
-    **デフォルト値：** `""`
+    **タイプ:** `String`<br/>
+    **デフォルト値:** `""`
 </p>
-小数点以下の桁数を指定します。この属性は update 操作時のみ有効です。数値型フィールドの更新時の小数精度を制御するために使用されます。
+小数点以下に保持する桁数を指定します。この属性は update 操作を実行する場合にのみ有効です。数値型フィールドの更新時の小数点精度を制御するために使用されます。
 
 **詳細説明**
 
-- numericScale 属性が空文字列（デフォルト値）に設定されている場合、フィールドの小数精度はデータベースのデフォルト設定またはフィールド定義時の設定に従います。
-- numericScale 属性が特定の数値（例えば "2"）に設定されている場合、そのフィールドは update 操作時に指定された小数桁数で処理されます。
+- numericScale 属性が空の文字列（デフォルト値）に設定されている場合、フィールドの小数点精度はデータベースのデフォルト設定、またはフィールド定義時の設定に従います。
+- numericScale 属性が特定の数値（例: "2"）に設定されている場合、そのフィールドは update 操作実行時に指定された小数点桁数で処理されます。
 
-**使用例の説明**
-Product エンティティクラスがあり、その中に price フィールドがあり、更新時に小数点以下 2 桁を保持したい場合：
+**例による説明**
+Product エンティティクラスに price フィールドが含まれており、価格を更新する際に小数点以下2桁を保持することを保証したいと仮定します。
 
 ```java
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -764,58 +763,59 @@ public class Product {
 }
 ```
 
-この例では、price フィールドは update 操作時に小数点以下 2 桁を保持することが保証されます。これは、価格を更新する際、その価格の小数桁数に関係なく、2 桁にフォーマットされることを意味します。
+この例では、price フィールドは update 操作実行時に小数点以下2桁を保持することが保証されます。これは、価格を更新する際に、渡された価格値の小数点以下の桁数に関係なく、常に2桁の小数にフォーマットされることを意味します。
 
-**注意点**：numericScale 属性を有効にするためには、データベースが指定された小数桁数をサポートしていることを確認し、update 操作時に数値型フィールドの値が正しく処理されることを確認する必要があります。また、numericScale 属性は MyBatis-Plus が生成する SQL 文にのみ影響を与え、他のフレームワークや手動で記述した SQL 文には影響を与えません。
+**ご注意ください**、numericScale 属性を有効にするには、データベースが指定された小数点桁数をサポートしていること、および update 操作実行時に渡される数値型フィールド値が正しく処理されることを確認する必要があります。さらに、numericScale 属性は MyBatis-Plus が生成する SQL ステートメントにのみ影響し、他のフレームワークや手動で記述された SQL ステートメントには影響しません。
 
 :::note[numericScale、jdbcType、typeHandler に関する説明]
 
 - numericScale 属性は update 操作時のみ有効です。
-- jdbcType と typeHandler 属性は、@TableName の autoResultMap = true と一緒に使用しない限り、update 操作時のみ有効です。
-- typeHandler については、フィールドの型と設定された値の型が equals 関係にある場合、typeHandler が MyBatis にロードされていることを確認するだけでよく、アノテーションを使用する必要はありません。
+- jdbcType 属性および typeHandler 属性は、@TableName の autoResultMap = true と一緒に使用しない場合、同様に update 操作時のみ有効です。
+- typeHandler については、フィールドの型と設定される値の型が equals 関係にある場合、typeHandler が MyBatis にロードされていることを確認するだけでよく、アノテーションを使用する必要はありません。
 
 :::
+
 ## @Version
 
-このアノテーションは、エンティティクラス内のフィールドを楽観ロックのバージョン番号フィールドとしてマークするために使用されます。楽観ロックは並行制御メカニズムの一つで、複数のトランザクションが互いに干渉することなく同時に進行できると仮定し、トランザクションのコミット時にのみ競合をチェックします。エンティティクラスで `@Version` アノテーションを使用することで、MyBatis-Plus は更新操作時に自動的にバージョン番号をチェックし、更新プロセス中にデータが他のトランザクションによって変更されていないことを確認します。
+このアノテーションは、エンティティクラス内のフィールドを楽観的ロックのバージョン番号フィールドとしてマークするために使用されます。楽観的ロックは、複数のトランザクションが互いに干渉することなく同時に進行できると仮定し、トランザクションのコミット時にのみ競合がないかをチェックする並行性制御メカニズムです。エンティティクラスで`@Version`アノテーションを使用することで、MyBatis-Plusは更新操作時に自動的にバージョン番号をチェックし、更新プロセス中にデータが他のトランザクションによって変更されていないことを保証します。
 
 ```java
 @TableName("sys_user")
 public class User {
     @TableId
     private Long id;
-    @TableField("nickname") // データベースフィールド "nickname" へのマッピング
+    @TableField("nickname") // データベースフィールド "nickname" にマッピング
     private String name;
     private Integer age;
     private String email;
-    @Version // 楽観ロックのバージョン番号フィールドとしてマーク
+    @Version // 楽観的ロックのバージョン番号フィールドとしてマーク
     private Integer version;
 }
 ```
 
-上記の例では、version フィールドが楽観ロックのバージョン番号としてマークされています。更新操作を実行する際、MyBatis-Plus はこのフィールドの値がデータベース内の値と一致するかどうかをチェックします。一致しない場合、データが読み取られた後に他のトランザクションによって変更されたことを意味し、この場合は楽観ロックの例外がスローされ、開発者に適切な処理を促します。
+上記の例では、versionフィールドが楽観的ロックのバージョン番号としてマークされています。更新操作を実行する際、MyBatis-Plusはこのフィールドの値がデータベース内の値と一致するかどうかをチェックします。一致しない場合、データ読み取り後に他のトランザクションがデータを変更したことを意味し、この時点で楽観的ロック例外がスローされ、開発者に適切な処理を行うよう通知します。
 
-@Version アノテーションを使用することで、並行更新時のデータの不整合問題を効果的に防ぎ、システムの並行性能とデータの整合性を向上させることができます。開発者はバージョン番号チェックのコードを手動で記述する必要がなく、MyBatis-Plus が自動的にこのプロセスを処理します。
+@Versionアノテーションを使用することで、同時更新時のデータ不整合問題を効果的に防止し、システムの並行性能とデータ完全性を向上させることができます。開発者はバージョン番号チェックのコードを手動で記述する必要がなく、MyBatis-Plusがこのプロセスを自動的に処理します。
 
 ## @EnumValue
 
-このアノテーションは、列挙型クラス内のフィールドをマークし、データベースに保存される列挙値を指定するために使用されます。エンティティクラスの特定のフィールドが列挙型である場合、@EnumValue アノテーションを使用することで、MyBatis-Plus にデータベースに保存する列挙値のどの属性を使用するかを指示することができます。
+このアノテーションは、列挙型クラス内のフィールドをマークし、データベースに保存する列挙値を指定するために使用されます。エンティティクラスのフィールドが列挙型である場合、`@EnumValue` アノテーションを使用することで、MyBatis-Plusにデータベースに保存する列挙値のどのプロパティかを指示することができます。
 
 ```java
 @TableName("sys_user")
 public class User {
     @TableId
     private Long id;
-    @TableField("nickname") // データベースフィールド "nickname" へのマッピング
+    @TableField("nickname") // データベースフィールド "nickname" にマッピング
     private String name;
     private Integer age;
     private String email;
-    private Gender gender; // Gender は列挙型
+    private Gender gender; // Gender が列挙型であると仮定
 }
 
 public enum Gender {
-    MALE("M", "男性"),
-    FEMALE("F", "女性");
+    MALE("M", "男"),
+    FEMALE("F", "女");
 
     private String code;
     private String description;
@@ -825,27 +825,27 @@ public enum Gender {
         this.description = description;
     }
 
-    @EnumValue // データベースに保存される列挙値として code を指定
+    @EnumValue // データベースに保存する列挙値を code に指定
     public String getCode() {
         return code;
     }
 }
 ```
 
-上記の例では、Gender 列挙型の code フィールドが @EnumValue としてマークされており、これはデータベースに User エンティティクラスの gender フィールドを保存する際に、Gender 列挙型の code 値が保存され、列挙定数自体は保存されないことを意味します。
+上記の例では、`Gender` 列挙型クラスの `code` フィールドが `@EnumValue` でマークされています。これは、`User` エンティティクラスの `gender` フィールドをデータベースに保存する際に、列挙定数自体ではなく、`Gender` 列挙型の `code` の値が保存されることを意味します。
 
-@EnumValue アノテーションを使用することで、列挙型のデータベースでの保存方法を柔軟に制御でき、データベース内のデータをよりコンパクトで扱いやすいものにすることができます。同時に、データベースからの列挙値の読み取り時の変換プロセスも簡素化されます。これは、MyBatis-Plus が @EnumValue アノテーションの設定に基づいて、データベース内の値を対応する列挙インスタンスに自動的に変換するためです。
+`@EnumValue` アノテーションを使用することで、列挙型がデータベースに保存される方法を柔軟に制御でき、データベース内のデータをよりコンパクトで扱いやすくすることができます。同時に、データベースから列挙値を読み取る際の変換プロセスも簡素化されます。MyBatis-Plus は `@EnumValue` アノテーションの設定に基づいて、データベースの値を自動的に対応する列挙インスタンスに変換するためです。
 
 ## @TableLogic
 
-このアノテーションは、エンティティクラス内のフィールドを論理削除フィールドとしてマークするために使用されます。論理削除はデータ管理戦略の一つで、実際にはレコードをデータベースから物理的に削除せず、代わりにレコードに削除済みのマークを付けます。@TableLogic アノテーションを使用することで、MyBatis-Plus は検索、更新、削除操作時に論理削除フィールドの値を自動的に処理します。
+このアノテーションは、エンティティクラスのフィールドを論理削除フィールドとしてマークするために使用されます。論理削除は、データベースから実際にレコードを削除するのではなく、レコードに削除済み状態であることをマークするデータ管理戦略です。`@TableLogic`アノテーションを使用することで、MyBatis-Plusはクエリ、更新、削除操作において論理削除フィールドの値を自動的に処理します。
 
 ```java
 @TableName("sys_user")
 public class User {
     @TableId
     private Long id;
-    @TableField("nickname") // データベースフィールド "nickname" へのマッピング
+    @TableField("nickname") // データベースフィールド "nickname" にマッピング
     private String name;
     private Integer age;
     private String email;
@@ -854,39 +854,38 @@ public class User {
 }
 ```
 
-上記の例では、deleted フィールドが論理削除フィールドとしてマークされています。@TableLogic アノテーションの value 属性は論理未削除の値（この例では 0）を指定し、delval 属性は論理削除済みの値（この例では 1）を指定します。
+上記の例では、deletedフィールドが論理削除フィールドとしてマークされています。@TableLogicアノテーションのvalue属性は論理的に未削除の値を指定し（この例では0）、delval属性は論理削除の値を指定します（この例では1）。
 
-クエリ操作を実行する際、MyBatis-Plus は論理的に削除されたレコードを自動的にフィルタリングし、未削除のレコードのみを返します。更新操作を実行する際、更新操作が論理削除フィールドの値を論理的な削除値に変更する場合、MyBatis-Plus はそのレコードを論理的に削除済みとしてマークします。削除操作を実行する際、MyBatis-Plus は論理削除フィールドの値を論理的な削除値に更新し、レコードを物理的に削除することはありません。
+クエリ操作を実行する際、MyBatis-Plusは論理削除としてマークされたレコードを自動的にフィルタリングし、削除されていないレコードのみを返します。更新操作を実行する際、更新操作によって論理削除フィールドの値が論理削除値に変更される場合、MyBatis-Plusは自動的にそのレコードを削除済みとしてマークします。削除操作を実行する際、MyBatis-Plusは物理的にレコードを削除するのではなく、論理削除フィールドの値を論理削除値に自動的に更新します。
 
-@TableLogic アノテーションを使用することで、データの論理削除を実装でき、データの完全性とトレーサビリティの維持に役立ちます。同時に、物理削除操作によって引き起こされる可能性のあるデータ損失のリスクを回避します。開発者は論理削除のコードを手動で記述する必要がなく、MyBatis-Plus がこのプロセスを自動的に処理します。
-
+@TableLogicアノテーションを使用することで、データの論理削除を実現でき、データの完全性とトレーサビリティを維持するのに役立ちます。同時に、物理削除操作がもたらす可能性のあるデータ損失リスクを回避できます。開発者は論理削除のコードを手動で記述する必要がなく、MyBatis-Plusがこのプロセスを自動的に処理します。
 
 ## @KeySequence
 
-このアノテーションは、Oracle データベースにおけるシーケンス（Sequence）の名前を指定するために使用され、エンティティクラスでプライマリキーの値を生成できるようにします。Oracle データベースでは、プライマリキーは通常、他のデータベースのような自動インクリメントフィールドではなく、シーケンスを使用して生成されます。@KeySequence アノテーションは MyBatis-Plus に対して、特定のシーケンスを使用してプライマリキーを生成するよう指示します。
+このアノテーションは、Oracleデータベースにおけるシーケンス（Sequence）の名前を指定し、エンティティクラスで主キー値を生成するために使用されます。Oracleデータベースでは、主キーは通常、他のデータベースのように自動増分フィールドを使用するのではなく、シーケンスを通じて生成されます。@KeySequenceアノテーションは、MyBatis-Plusに特定のシーケンスを使用して主キーを生成するように指示します。
 
 ```java
 @TableName("sys_user")
-@KeySequence("SEQ_USER_ID") // シーケンス名を "SEQ_USER_ID" として指定
+@KeySequence("SEQ_USER_ID") // シーケンス名を "SEQ_USER_ID" に指定
 public class User {
-    @TableId(type = IdType.INPUT) // シーケンスを使用してプライマリキーを生成
+    @TableId(type = IdType.INPUT) // シーケンスを使用して主キーを生成
     private Long id;
-    @TableField("nickname") // データベースフィールド "nickname" へのマッピング
+    @TableField("nickname") // データベースフィールド "nickname" にマッピング
     private String name;
     private Integer age;
     private String email;
 }
 ```
 
-上記の例では、@KeySequence アノテーションがエンティティクラス User に適用され、シーケンス名として "SEQ_USER_ID" が指定されています。これは、新しいレコードを挿入する際に、MyBatis-Plus がこのシーケンスを使用して id フィールドの値を生成することを意味します。
+上記の例では、@KeySequenceアノテーションがエンティティクラスUserに適用され、シーケンス名が"SEQ_USER_ID"に指定されています。これは、新しいレコードを挿入する際に、MyBatis-Plusがこのシーケンスを使用してidフィールドの値を生成することを意味します。
 
-@KeySequence アノテーションの value 属性はシーケンスの名前を指定するために使用され、dbType 属性はデータベースの種類を指定するために使用されます。dbType が指定されていない場合、MyBatis-Plus は注入された IKeyGenerator の実装を使用します。複数の IKeyGenerator 実装がある場合は、dbType を指定する必要があります。
+@KeySequenceアノテーションのvalue属性はシーケンスの名前を指定するために使用され、dbType属性はデータベースのタイプを指定するために使用されます。dbTypeが指定されていない場合、MyBatis-Plusは注入されたIKeyGenerator実装をデフォルトで使用します。複数のIKeyGenerator実装がある場合は、dbTypeを指定する必要があります。
 
-@KeySequence アノテーションを使用することで、Oracle データベースでプライマリキーの値が正しく生成されることを保証し、同時にプライマリキー生成の設定プロセスを簡素化できます。開発者はシーケンス値を取得するコードを手動で記述する必要がなく、MyBatis-Plus がこのプロセスを自動的に処理します。
+@KeySequenceアノテーションを使用することで、Oracleデータベースで主キー値が正しく生成されることを保証し、同時に主キー生成の設定プロセスを簡素化します。開発者はシーケンス値を取得するコードを手動で記述する必要がなく、MyBatis-Plusがこのプロセスを自動的に処理します。
 
 ## @InterceptorIgnore
 
-このアノテーションは、`Mapper` の特定の `method`（メソッドにアノテーションを付ける場合）または全ての `method`（Mapper にアノテーションを付ける場合）の実行時に、特定のプラグイン（マルチテナントなど）を無視するかどうかを指定するために使用されます。
+このアノテーションは、`Mapper`の特定の`method`（`method`にアノテーションを付与）またはすべての`method`（`Mapper`にアノテーションを付与）の実行時に、特定のプラグイン（マルチテナントなど）を無視するかどうかを指定するために使用されます。
 
 ```java
 // @InterceptorIgnore(tenantLine = "1") // マルチテナントインターセプターを無視
@@ -897,15 +896,15 @@ public interface UserMapper extends BaseMapper<User> {
 }
 ```
 
-上記の例では、`selectUsers` メソッドの実行時にマルチテナントインターセプターが無視されます。
+上記の例では、`selectUsers`メソッドの実行時に、マルチテナントインターセプターが無視されます。
 
-MyBatis-Plus が提供するプラグインは、アノテーション内にそれぞれ対応する属性があります。例えば、マルチテナントプラグインの場合は `tenantLine` 属性があり、属性の値が "1"、"yes"、"on" の場合、対応するプラグインが無視され、属性の値が "0"、"false"、"off" または空の場合、プラグインは通常通り実行されます。
+MyBatis-Plusが提供するプラグインには、アノテーション内に対応する属性があります。例えば、マルチテナントプラグインは`tenantLine`属性に対応します。属性の値が"1"、"yes"、"on"の場合、対応するプラグインは無視されます。属性の値が"0"、"false"、"off"または空の場合、プラグインは正常に実行されます。
 
-プラグインの使用方法の詳細については[プラグイン](/ja/plugins)を参照してください。
+プラグインの使用方法の詳細については、[プラグイン主体](/plugins)を参照してください。
 
 ## @OrderBy
 
-このアノテーションは、エンティティクラス中のフィールドを実行クエリ操作時のデフォルトソート方式を指定するために使用されます。エンティティのフィールドに @OrderBy アノテーションを付与することで、明示的にソート条件を指定していない場合でも、MyBatis-Plus はアノテーションで定義された順序に従って結果を返します。
+このアノテーションは、エンティティクラスのフィールドに対してクエリ実行時のデフォルトの並び順を指定するために使用されます。エンティティクラスのフィールドに `@OrderBy` アノテーションを使用することで、クエリ実行時に明示的なソート条件が指定されていない場合、MyBatis-Plus がアノテーションで定義されたソートルールに従って結果を返すことを保証します。
 
 ```java
 @TableName("sys_user")
@@ -914,17 +913,16 @@ public class User {
     private Long id;
     @TableField("nickname") // データベースフィールド "nickname" にマッピング
     private String name;
-    @OrderBy(asc = false, sort = 10) // デフォルトソートを降順に指定し、優先度を 10 に設定
+    @OrderBy(asc = false, sort = 10) // デフォルトのソートを降順、優先度を10として指定
     private Integer age;
     private String email;
 }
 ```
 
-上記の例では、age フィールドが @OrderBy としてマークされ、asc 属性が false に設定され、降順をデフォルトソートとし、sort 属性が 10 に設定され、このソートルールの優先度を表します。
+上記の例では、`age` フィールドが `@OrderBy` でマークされ、`asc` 属性が `false` に設定されています。これはデフォルトのソートが降順であることを意味します。`sort` 属性は `10` に設定されており、このソートルールの優先度を示しています。
 
-@OrderBy アノテーションの asc 属性は、ソートが昇順か降順かを指定します。true に設定すると、昇順ソートを意味します。false に設定すると、降順ソートを意味します。sort 属性は、ソートルールの優先度を指定し、数字が小さいほど優先度が高く、最初に適用されます。
+`@OrderBy` アノテーションの `asc` 属性は、ソートが昇順かどうかを指定するために使用されます。`true` に設定すると昇順ソートを、`false` に設定すると降順ソートを意味します。`sort` 属性はソートルールの優先度を指定するために使用され、数字が小さいほど優先度が高く、つまり先に適用されます。
 
-注意：@OrderBy アノテーションのソートルール優先度は、Wrapper 条件クエリオブジェクトで明示的に指定されたソート条件によって上書きされます。Wrapper 条件クエリオブジェクトでソート条件が指定されている場合、@OrderBy アノテーションで定義されたデフォルトソートは上書きされます。
+注意点として、`@OrderBy` アノテーションのソートルールの優先度は、クエリ時に Wrapper 条件クエリオブジェクトを介して明示的に指定されたソート条件よりも低くなります。Wrapper でソート条件が指定された場合、`@OrderBy` アノテーションで定義されたデフォルトのソートは上書きされます。
 
-@OrderBy アノテーションを使用すると、コードを簡素化し、毎回ソート条件を明示的に指定する必要を回避してデフォルトのソート方式を提供し、コードの読みやすさとメンテナンス性を向上させることができます。
-
+`@OrderBy` アノテーションを使用することで、コードを簡素化し、毎回のクエリで明示的にソート条件を指定する手間を省くことができます。同時に、デフォルトのソート方法を提供することで、コードの可読性と保守性の向上に役立ちます。

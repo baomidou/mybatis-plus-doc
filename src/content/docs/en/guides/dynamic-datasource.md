@@ -1,31 +1,31 @@
 ---
-title: Multi-DataSource Support
+title: Multiple Data Source Support
 sidebar:
   order: 14
 ---
 
-As project scales expand, a single data source can no longer meet complex business requirements, giving rise to multi-data-source (dynamic data source) solutions. This document introduces two MyBatis-Plus multi-data-source extension plugins: the open-source ecosystem's `dynamic-datasource` and the enterprise-grade ecosystem's `mybatis-mate`.
+As project scale expands, a single data source can no longer meet complex business requirements, leading to the emergence of multiple data sources (dynamic data sources). This document introduces two MyBatis-Plus multi-data source extension plugins: the open-source ecosystem's `dynamic-datasource` and the enterprise ecosystem's `mybatis-mate`.
 
 ## dynamic-datasource
 
-`dynamic-datasource` is an open-source Spring Boot multi-data-source starter that provides rich features, including data source grouping, sensitive information encryption, independent schema initialization, and more.
+`dynamic-datasource` is an open-source Spring Boot multi-data source starter that provides rich features including data source grouping, sensitive information encryption, independent schema initialization, and more.
 
 ### Features
 
-- **Data Source Grouping**: Suitable for various scenarios like read-write separation and one-master-multiple-slaves.
-- **Sensitive Information Encryption**: Encrypts database configuration using `ENC()`.
-- **Independent Initialization**: Supports independent schema and database initialization for each data source.
-- **Custom Annotations**: Supports custom annotations by extending `DS`.
-- **Simplified Integration**: Offers quick integration with connection pools like Druid and HikariCP.
-- **Component Integration**: Provides integration solutions for components like Mybatis-Plus and Quartz.
-- **Dynamic Data Sources**: Supports adding or removing data sources dynamically after project startup.
-- **Distributed Transactions**: Offers a distributed transaction solution based on Seata.
+- **Data Source Grouping**: Suitable for various scenarios like read-write separation, one master with multiple slaves, etc.
+- **Sensitive Information Encryption**: Encrypt database configuration information using `ENC()`.
+- **Independent Initialization**: Supports independent schema and database initialization for each database.
+- **Custom Annotations**: Supports custom annotations that need to inherit from `DS`.
+- **Simplified Integration**: Provides quick integration with connection pools like Druid and HikariCP.
+- **Component Integration**: Supports integration solutions for components like Mybatis-Plus and Quartz.
+- **Dynamic Data Sources**: Supports dynamically adding or removing data sources after project startup.
+- **Distributed Transactions**: Provides distributed transaction solutions based on Seata.
 
 ### Conventions
 
 - This framework focuses on data source switching and does not restrict specific operations.
-- In configuration files, the prefix before an underscore `_` in a data source name represents the group name.
-- Data source switching can use either the group name or the specific data source name.
+- In configuration files, the prefix before the underscore `_` in data source names represents the group name.
+- Data source switching can use either group names or specific data source names.
 - The default data source name is `master`, which can be modified via `spring.datasource.dynamic.primary`.
 - Method-level annotations take precedence over class-level annotations.
 
@@ -94,18 +94,18 @@ public class UserServiceImpl implements UserService {
 }
 ```
 
-For more tutorials, refer to the [Dynamic-Datasource Official Website](https://github.com/baomidou/dynamic-datasource)
+For more usage tutorials, please refer to the [Dynamic-Datasource Official Website](https://github.com/baomidou/dynamic-datasource)
 
 ## mybatis-mate
 
-`mybatis-mate` is a paid enterprise component for MyBatis-Plus, featuring many advanced capabilities, including a multi-data-source extension component that provides efficient and simple multi-data-source support.
+`mybatis-mate` is a paid enterprise component for MyBatis-Plus that includes many useful advanced features, including a multi-data source extension component that provides efficient and simple multi-data source support.
 
 ### Features
 
-- **`@Sharding` Annotation**: Supports data source switching via annotations.
-- **Configuration**: Offers flexible data source configuration.
-- **Dynamic Loading/Unloading**: Supports dynamic loading and unloading of data sources.
-- **Multi-DataSource Transactions**: Supports JTA Atomikos distributed transactions.
+- **`@Sharding` Annotation**: Supports switching data sources through annotations.
+- **Configuration**: Supports flexible data source configuration.
+- **Dynamic Loading/Unloading**: Supports dynamically loading and unloading data sources.
+- **Multi-Data Source Transactions**: Supports JTA Atomikos distributed transactions.
 
 ### Usage
 
@@ -140,17 +140,17 @@ public interface UserMapper extends BaseMapper<User> {
 }
 ```
 
-3. **Switch to a Specific Database Node**:
+3. **Switch to Specific Database Node**:
 
 ```java
 // Switch to mysql slave node2
 ShardingKey.change("mysqlnode2");
 ```
 
-For more examples, refer to:
+For more usage examples, please refer to:
 
-- Dynamic Loading/Unloading of Multi-Data Sources: 👉 [mybatis-mate-sharding-dynamic](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding-dynamic)
+- Dynamic Loading/Unloading of Multiple Data Sources: 👉 [mybatis-mate-sharding-dynamic](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding-dynamic)
 
-- Multi-DataSource Transactions (JTA Atomikos): 👉 [mybatis-mate-sharding-jta-atomikos](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding-jta-atomikos)
+- Multi-Data Source Transactions (jta atomikos): 👉 [mybatis-mate-sharding-jta-atomikos](https://gitee.com/baomidou/mybatis-mate-examples/tree/master/mybatis-mate-sharding-jta-atomikos)
 
-Through the above introduction, we can see that both `dynamic-datasource` and `mybatis-mate` provide powerful multi-data-source support. Developers can choose the appropriate plugin based on project requirements to achieve flexible data source management.
+Through the above introduction, we can see that both `dynamic-datasource` and `mybatis-mate` provide powerful multi-data source support. Developers can choose the appropriate plugin based on project requirements to achieve flexible data source management.

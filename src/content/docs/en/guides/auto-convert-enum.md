@@ -1,12 +1,11 @@
 ---
-title: Auto-mapping Enums
+title: Auto-Mapping Enums
 sidebar:
   order: 8
 ---
 
-In addition to MyBatis's `EnumOrdinalTypeHandler` (based on enum constant ordinal) and `EnumTypeHandler` (based on enum constant name),  
-we provide a more flexible enum handler: `MybatisEnumTypeHandler` (based on enum constant properties).  
-Simply declare the enum to enable auto-mapping.  
+In addition to MyBatis's built-in `EnumOrdinalTypeHandler` (based on enum constant ordinal) and `EnumTypeHandler` (based on enum constant name), we provide a more flexible enum processor: `MybatisEnumTypeHandler` (based on enum constant properties).  
+Simply declare your enums to enable automatic enum mapping.  
 Undeclared enums will be mapped according to MyBatis's `defaultEnumTypeHandler`, which defaults to `EnumTypeHandler`.
 
 ```java
@@ -19,22 +18,22 @@ public class User {
 
 ## Enum Declaration
 
-Declare the enum to use `MybatisEnumTypeHandler` (based on enum constant properties) for mapping.
+Declare that the enum should be mapped using `MybatisEnumTypeHandler` (based on enum constant properties).
 
 ### Method 1: Annotation Marking
 
-Use the `@EnumValue` annotation on enum properties to specify the actual value stored in the database. Supports any field in the enum class, such as ordinal or code.
+Use the `@EnumValue` annotation on the enum field to specify the actual value stored in the database. Supports any field in the enum class, such as ordinal or code.
 
 ```java
 
 @Getter
 @AllArgsConstructor
 public enum GradeEnum {
-    PRIMARY(1, "Primary School"),
-    SECONDARY(2, "Secondary School"),
-    HIGH(3, "High School");
+    PRIMARY(1, "小学"),
+    SECONDARY(2, "中学"),
+    HIGH(3, "高中");
 
-    @EnumValue // Marks the value stored in the database as 'code'
+    @EnumValue // Marks the code as the value stored in the database
     private final int code;
     // Other properties...
 }
@@ -49,9 +48,9 @@ Implement the `IEnum` interface and override the `getValue` method to specify th
 @Getter
 @AllArgsConstructor
 public enum AgeEnum implements IEnum<Integer> {
-    ONE(1, "One year old"),
-    TWO(2, "Two years old"),
-    THREE(3, "Three years old");
+    ONE(1, "一岁"),
+    TWO(2, "二岁"),
+    THREE(3, "三岁");
 
     private final int value;
     private final String desc;
@@ -65,12 +64,12 @@ public enum AgeEnum implements IEnum<Integer> {
 
 ## Undeclared Enums
 
-Undeclared enums will use MyBatis's `defaultEnumTypeHandler`, which defaults to `EnumTypeHandler`.  
-You can modify the global configuration to change this, but it will not affect enums declared using the above methods.
+Undeclared enums will be mapped using MyBatis's `defaultEnumTypeHandler`, which defaults to `EnumTypeHandler`.  
+You can modify this via global configuration, but this won't affect enums declared using the methods above.
 
-### Modifying the Global `defaultEnumTypeHandler`
+### Modifying the Global defaultEnumTypeHandler
 
-Configure in the YML file:
+Configure in YML file:
 
 ```yml
 mybatis-plus:
@@ -100,11 +99,11 @@ public class MybatisPlusAutoConfiguration {
 
 Or other methods.
 
-## Extra Reference: How to Serialize Enum Values for Frontend Responses
+## Additional Reference: Serializing Enum Values for Frontend Responses
 
 ### Jackson
 
-#### 1. Override the `toString` Method
+#### Method 1: Override toString Method
 
 ##### Spring Boot
 
@@ -123,15 +122,15 @@ ObjectMapper objectMapper = new ObjectMapper();
 objectMapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
 ```
 
-Override the `toString` method in the enum. Choose either of the above two approaches.
+Override the toString method in your enum class. Choose either of the above configuration methods.
 
-#### 2. Annotation Processing
+#### Method 2: Annotation Processing
 
 ```java
 public enum GradeEnum {
-    PRIMARY(1, "Primary School"),
-    SECONDORY(2, "Secondary School"),
-    HIGH(3, "High School");
+    PRIMARY(1, "小学"),
+    SECONDORY(2, "中学"),
+    HIGH(3, "高中");
 
     GradeEnum(int code, String descp) {
         this.code = code;
@@ -139,23 +138,23 @@ public enum GradeEnum {
     }
 
     @EnumValue
-    @JsonValue // Marks the JSON response value
+    @JsonValue // Marks the field for JSON serialization
     private final int code;
 }
 ```
 
 ### Fastjson
 
-#### 1. Override the `toString` Method
+#### Method 1: Override toString Method
 
-##### Global Approach
+##### Global Configuration
 
 ```java
 FastJsonConfig config = new FastJsonConfig();
 config.setSerializerFeatures(SerializerFeature.WriteEnumUsingToString);
 ```
 
-##### Local Approach
+##### Local Configuration
 
 ```java
 
@@ -163,6 +162,6 @@ config.setSerializerFeatures(SerializerFeature.WriteEnumUsingToString);
 private UserStatus status;
 ```
 
-Override the `toString` method in the enum. Choose either of the above two approaches.
+Override the toString method in your enum class. Choose either of the above configuration methods.
 
-By following these steps, you can elegantly use enum properties in MyBatis-Plus and easily serialize enum values into the format required by the frontend.
+By following these steps, you can elegantly use enum properties in MyBatis-Plus and easily serialize enum values into the format required by your frontend.

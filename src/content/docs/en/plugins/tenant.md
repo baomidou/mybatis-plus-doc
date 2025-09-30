@@ -12,11 +12,11 @@ To better understand how to use `TenantLineInnerInterceptor`, you can refer to t
 
 ## Property Introduction
 
-The key property of `TenantLineInnerInterceptor` is `tenantLineHandler`, which is an instance of the `TenantLineHandler` interface and is used to handle tenant-related logic.
+The key property of `TenantLineInnerInterceptor` is `tenantLineHandler`, which is an instance of the `TenantLineHandler` interface used to handle tenant-related logic.
 
 | Property Name | Type | Default Value | Description |
 | :-: | :-: | :-: | :-: |
-| tenantLineHandler | TenantLineHandler |  | Tenant handler (TenantId row-level) |
+| tenantLineHandler | TenantLineHandler |  | Tenant Handler (TenantId Row Level) |
 
 The `TenantLineHandler` interface defines the following methods:
 
@@ -24,38 +24,38 @@ The `TenantLineHandler` interface defines the following methods:
 public interface TenantLineHandler {
 
     /**
-     * Gets the tenant ID value expression (supports only a single ID value)
+     * Get the tenant ID value expression. Only supports a single ID value.
      *
      * @return Tenant ID value expression
      */
     Expression getTenantId();
 
     /**
-     * Gets the tenant column name
-     * Default column name: tenant_id
+     * Get the tenant field name.
+     * Default field name is: tenant_id
      *
-     * @return Tenant column name
+     * @return Tenant field name
      */
     default String getTenantIdColumn() {
         return "tenant_id";
     }
 
     /**
-     * Determines whether to ignore appending multi-tenant conditions based on the table name
-     * By default, all tables are parsed and multi-tenant conditions are appended
+     * Determine whether to ignore adding the multi-tenant condition based on the table name.
+     * By default, all tables are parsed and the multi-tenant condition is added.
      *
      * @param tableName Table name
-     * @return Whether to ignore (true: ignore, false: parse and append multi-tenant conditions)
+     * @return Whether to ignore. true: ignore, false: need to parse and add multi-tenant condition
      */
     default boolean ignoreTable(String tableName) {
         return false;
     }
 
     /**
-     * Ignores the logic for inserting tenant fields
+     * Ignore the logic for inserting the tenant field.
      *
-     * @param columns        Inserted columns
-     * @param tenantIdColumn Tenant ID column
+     * @param columns        Insert fields
+     * @param tenantIdColumn Tenant ID field
      * @return
      */
     default boolean ignoreInsert(List<Column> columns, String tenantIdColumn) {
@@ -68,7 +68,7 @@ public interface TenantLineHandler {
 
 ### Step 1: Implement the Tenant Handler
 
-Implement the `TenantLineHandler` interface to create a tenant handler. In this example, we assume each tenant has a unique `tenantId`, and we retrieve the current tenant's `tenantId` from the request header.
+Implement the `TenantLineHandler` interface to create a tenant handler. In this example, we assume each tenant has a unique `tenantId`, and we obtain the current tenant's `tenantId` from the request header.
 
 ```java
 @Component
@@ -76,9 +76,9 @@ public class CustomTenantHandler implements TenantLineHandler {
 
     @Override
     public Expression getTenantId() {
-        // Assume there is a tenant context to retrieve the current user's tenant
+        // Assume there is a tenant context from which the current user's tenant can be obtained
          Long tenantId = TenantContextHolder.getCurrentTenantId();
-        // Return the tenant ID expression (LongValue is the JSQLParser class representing bigint type)
+        // Return the tenant ID expression. LongValue is the class representing the bigint type in JSQLParser
         return new LongValue(tenantId);;
     }
 
@@ -89,7 +89,7 @@ public class CustomTenantHandler implements TenantLineHandler {
 
     @Override
     public boolean ignoreTable(String tableName) {
-        // Return whether to ignore the table based on requirements
+        // Return whether to ignore this table based on your needs
         return false;
     }
 
@@ -98,7 +98,7 @@ public class CustomTenantHandler implements TenantLineHandler {
 
 ### Step 2: Inject the Tenant Handler into the Plugin
 
-Inject the custom tenant handler into `TenantLineInnerInterceptor`:
+Inject your custom tenant handler into the `TenantLineInnerInterceptor`:
 
 ```java
 @Configuration
@@ -119,17 +119,17 @@ public class MybatisPlusConfig {
 }
 ```
 
-With the above steps, you have successfully configured the multi-tenant plugin in a Spring Boot project and implemented a simple tenant handler. Your application will now automatically handle multi-tenant data isolation based on the current request's tenant ID.
+By following the steps above, you have successfully configured the multi-tenant plugin in your Spring Boot project and implemented a simple tenant handler. Your application will now automatically handle multi-tenant data isolation based on the current request's tenant ID.
 
-Note that in real-world applications, the method of obtaining the tenant ID may vary depending on your architecture and business requirements. Additionally, ensure security considerations when handling tenant IDs to avoid potential risks.
+Please note that in practice, the method for obtaining the tenant ID may vary depending on your application architecture and business requirements. Additionally, ensure security considerations are taken into account when handling tenant IDs to avoid potential security risks.
 
 ## Local SQL Parsing Cache
 
-To improve performance, MyBatis-Plus supports local caching of SQL parsing. You can configure the cache handler as follows:
+To improve performance, MyBatis-Plus supports local caching of SQL parsing. You can set the cache handling class as follows:
 
 ```java
 static {
-    // Default supports serialization: FstSerialCaffeineJsqlParseCache, JdkSerialCaffeineJsqlParseCache
+    // Default supports serialization FstSerialCaffeineJsqlParseCache, JdkSerialCaffeineJsqlParseCache
     JsqlParserGlobal.setJsqlParseCache(new JdkSerialCaffeineJsqlParseCache(
       (cache) -> cache.maximumSize(1024)
       .expireAfterWrite(5, TimeUnit.SECONDS))
@@ -137,18 +137,18 @@ static {
 }
 ```
 
-## Automatically Adding Tenant Fields During Insert
+## Automatically Adding Tenant Field on Insert
 
-> By default, insert SQL requires tenant condition checks. Therefore, it must be used with the [Auto-Fill Field](https://baomidou.com/guides/auto-fill-field/) feature to populate tenant fields; otherwise, tenant fields will not be automatically saved to the database.
+> By default, insert SQL requires tenant condition checking. Therefore, it needs to be used in conjunction with the [Automatic Field Population](https://baomidou.com/guides/auto-fill-field/) feature to populate the tenant field; otherwise, the tenant field will not be automatically saved to the database.
 
 ## Notes
 
 :::note[Note]
 
 - Multi-tenancy is not equivalent to permission filtering; tenants are completely isolated from each other.
-- After enabling multi-tenancy, all executed method SQL will be processed.
-- Custom SQL must follow the standard format, especially when involving multiple tables. Each table must have an alias, particularly for `inner join`, which must be written in the standard `inner join` format.
+- After enabling multi-tenancy, the SQL for all executed methods will be processed.
+- Custom SQL must be written according to the specification. In particular, every table involved, especially in `inner join` clauses, must be given an alias, and standard `inner join` syntax must be used.
 
 :::
 
-With the above configuration and usage, you can implement multi-tenant data isolation in MyBatis-Plus applications, ensuring data security for each tenant.
+Through the above configuration and usage methods, you can implement multi-tenant data isolation in your MyBatis-Plus application, ensuring data security for each tenant.
