@@ -75,6 +75,57 @@ export const sidebar = [
 ];
 
 export const head = [
+  // SEO Meta Tags
+  {
+    tag: "meta",
+    attrs: {
+      name: "keywords",
+      content: "MyBatis-Plus,MyBatis,ORM,Java,Spring Boot,数据库,持久层框架,代码生成器,分页插件",
+    },
+  },
+  {
+    tag: "meta",
+    attrs: {
+      name: "author",
+      content: "Baomidou",
+    },
+  },
+  {
+    tag: "meta",
+    attrs: {
+      property: "og:type",
+      content: "website",
+    },
+  },
+  {
+    tag: "meta",
+    attrs: {
+      property: "og:site_name",
+      content: "MyBatis-Plus",
+    },
+  },
+  {
+    tag: "meta",
+    attrs: {
+      property: "og:image",
+      content: "https://baomidou.com/images/logo/baomidou.webp",
+    },
+  },
+  {
+    tag: "meta",
+    attrs: {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+  },
+  {
+    tag: "meta",
+    attrs: {
+      name: "twitter:image",
+      content: "https://baomidou.com/images/logo/baomidou.webp",
+    },
+  },
+  // Analytics
   {
     tag: "script",
     attrs: {

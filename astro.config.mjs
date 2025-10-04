@@ -2,6 +2,7 @@ import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import tailwind from "@astrojs/tailwind";
 import svelte from "@astrojs/svelte";
+import sitemap from "@astrojs/sitemap";
 import { sidebar, head, locales } from "./doc.config.mjs";
 
 // https://astro.build/config
@@ -36,6 +37,16 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     svelte(),
+    sitemap({
+      i18n: {
+        defaultLocale: "zh-CN",
+        locales: {
+          "zh-CN": "zh-CN",
+          en: "en",
+          ja: "ja",
+        },
+      },
+    }),
   ],
   vite: {
     build: {
