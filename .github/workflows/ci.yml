@@ -29,7 +29,7 @@ jobs:
           username: ${{ secrets.ECS_USERNAME }}
           password: ${{ secrets.ECS_PASSWORD }}
           source: './dist/*'
-          target: '/root/mybatis-plus-doc/'
+          target: '/var/www/mybatis-plus-doc/'
           # rm: true
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
