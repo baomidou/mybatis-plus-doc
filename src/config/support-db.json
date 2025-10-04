@@ -21,12 +21,12 @@
     },
     {
         "name": "OceanBase",
-        "logo": "/images/db/oceanbase.png",
+        "logo": "/images/db/oceanbase.webp",
         "url": "https://www.oceanbase.com/"
     },
     {
         "name": "GaussDB",
-        "logo": "/images/db/gauss.png",
+        "logo": "/images/db/gauss.webp",
         "url": "https://www.huawei.com/en/cloud/gaussdb"
     },
     {
@@ -46,7 +46,7 @@
     },
     {
         "name": "DB2",
-        "logo": "/images/db/db2.png",
+        "logo": "/images/db/db2.webp",
         "url": "https://www.ibm.com/analytics/db2"
     },
     {
@@ -71,12 +71,12 @@
     },
     {
         "name": "Firebird",
-        "logo": "/images/db/firebird.png",
+        "logo": "/images/db/firebird.webp",
         "url": "https://firebirdsql.org/"
     },
     {
         "name": "Cubird",
-        "logo": "/images/db/cubird.png",
+        "logo": "/images/db/cubird.webp",
         "url": "https://www.cubrid.org/"
     },
     {
@@ -96,27 +96,27 @@
     },
     {
         "name": "RedShift",
-        "logo": "/images/db/redshift.png",
+        "logo": "/images/db/redshift.webp",
         "url": "https://aws.amazon.com/redshift/"
     },
     {
         "name": "Derby",
-        "logo": "/images/db/Derby.png",
+        "logo": "/images/db/Derby.webp",
         "url": "https://db.apache.org/derby/"
     },
     {
         "name": "DuckDB",
-        "logo": "/images/db/DuckDB.png",
+        "logo": "/images/db/DuckDB.webp",
         "url": "https://duckdb.org/"
     },
     {
         "name": "Vastbase",
-        "logo": "/images/db/Vastbase.png",
+        "logo": "/images/db/Vastbase.webp",
         "url": "https://www.vastdata.com.cn/"
     },
     {
         "name": "GoldenDB",
-        "logo": "/images/db/GoldenDB.png",
+        "logo": "/images/db/GoldenDB.webp",
         "url": "https://www.goldendb.com/"
     },
     {
@@ -126,7 +126,7 @@
     },
     {
         "name": "人大金仓",
-        "logo": "/images/db/kingbase.png",
+        "logo": "/images/db/kingbase.webp",
         "url": "https://www.kingbase.com.cn/"
     },
     {
@@ -141,22 +141,22 @@
     },
     {
         "name": "神州通用",
-        "logo": "/images/db/shenzhoutongyong.png",
+        "logo": "/images/db/shenzhoutongyong.webp",
         "url": "http://shentongdata.com/index.php"
     },
     {
         "name": "虚谷",
-        "logo": "/images/db/xugu.png",
+        "logo": "/images/db/xugu.webp",
         "url": "https://www.xugudb.com/"
     },
     {
         "name": "优炫",
-        "logo": "/images/db/youxuan.png",
+        "logo": "/images/db/youxuan.webp",
         "url": "https://www.uxsino.com/"
     },
     {
         "name": "星瑞格",
-        "logo": "/images/db/xingruige.png",
+        "logo": "/images/db/xingruige.webp",
         "url": "http://www.sinoregal.cn/"
     }
 ]

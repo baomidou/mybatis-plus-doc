@@ -7,7 +7,7 @@ sidebar:
   hidden: true
 ---
 
-<img align="center" src="/images/content/springboot.png"/>
+<img align="center" src="/images/content/springboot.webp"/>
 
 ### Product Introduction
 

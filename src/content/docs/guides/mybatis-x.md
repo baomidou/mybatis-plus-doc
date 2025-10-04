@@ -85,7 +85,7 @@ MybatisX 提供了灵活的模板配置选项，允许开发者根据需要自�
 
 如需重置模板到默认设置，右键点击 MybatisX 目录，选择 `Restore Default Extensions`。
 
-![代码生成模板配置示例](/images/content/mybatisx-template-setting.jpg)
+![代码生成模板配置示例](/images/content/mybatisx-template-setting.webp)
 
 ### 自定义模板内容
 

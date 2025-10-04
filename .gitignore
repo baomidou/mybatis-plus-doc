@@ -5,6 +5,7 @@ dist/
 .idea/
 .vscode/
 .trea/
+.claude/
 
 # generated types
 .astro/

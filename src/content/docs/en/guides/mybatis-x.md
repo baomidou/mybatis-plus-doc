@@ -85,7 +85,7 @@ You can find the default provided templates in the `Scratches and Consoles -> Ex
 
 To reset templates to default settings, right-click the MyBatisX directory and select `Restore Default Extensions`.
 
-![Code Generation Template Configuration Demo](/images/content/mybatisx-template-setting.jpg)
+![Code Generation Template Configuration Demo](/images/content/mybatisx-template-setting.webp)
 
 ### Custom Template Content
 

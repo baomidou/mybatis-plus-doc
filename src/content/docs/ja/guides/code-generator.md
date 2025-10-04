@@ -282,7 +282,7 @@ entity2.java.vm
 
 ## フィールドその他情報のクエリ注入
 
-![relationship](/images/content/custom-fields.png)
+![relationship](/images/content/custom-fields.webp)
 
 ```java
 new DataSourceConfig().setDbQuery(new MySqlQuery() {

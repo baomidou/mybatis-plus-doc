@@ -1,12 +1,12 @@
 [
     {
         "name": "D.Yang",
-        "logo": "/images/link/dyang.png",
+        "logo": "/images/link/dyang.webp",
         "url": "https://dyang.top/?form=mp"
     },
     {
         "name": "爱组搭",
-        "logo": "/images/link/aizuda.png",
+        "logo": "/images/link/aizuda.webp",
         "url": "http://aizuda.com/?from=mp"
     },
     {
@@ -16,7 +16,7 @@
     },
     {
         "name": "Layui-Vue",
-        "logo": "/images/link/layui-vue.png",
+        "logo": "/images/link/layui-vue.webp",
         "url": "http://www.layui-vue.com/?form=mp"
     },
     {
@@ -31,32 +31,32 @@
     },
     {
         "name": "Sa-Token",
-        "logo": "/images/link/sa-token.png",
+        "logo": "/images/link/sa-token.webp",
         "url": "https://sa-token.cc/?form=mp"
     },
     {
         "name": "RuleGo",
-        "logo": "/images/link/rulego.png",
+        "logo": "/images/link/rulego.webp",
         "url": "https://rulego.cc/?form=mp"
     },
     {
         "name": "NanCheung",
-        "logo": "/images/link/nan-cheung.jpg",
+        "logo": "/images/link/nan-cheung.webp",
         "url": "https://blog.nancheung.com/?form=mp"
     },
     {
         "name": "ApiDocs",
-        "logo": "/images/link/api-docs.png",
+        "logo": "/images/link/api-docs.webp",
         "url": "https://apidocs.cn/?form=mp"
     },
     {
         "name": "BeanSearcher",
-        "logo": "/images/link/bean-searcher.png",
+        "logo": "/images/link/bean-searcher.webp",
         "url": "https://bs.zhxu.cn/?form=mp"
     },
     {
         "name": "FlowLong",
-        "logo": "/images/link/flowlong.png",
+        "logo": "/images/link/flowlong.webp",
         "url": "https://aizuda.com/?form=mp"
     }
 ]

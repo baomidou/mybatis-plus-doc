@@ -85,7 +85,7 @@ MybatisX は柔軟なテンプレート設定オプションを提供してお�
 
 テンプレートをデフォルト設定にリセットする必要がある場合は、MybatisX ディレクトリを右クリックし、`デフォルトの拡張機能を復元` を選択します。
 
-![コード生成テンプレート設定の例](/images/content/mybatisx-template-setting.jpg)
+![コード生成テンプレート設定の例](/images/content/mybatisx-template-setting.webp)
 
 ### カスタムテンプレート内容
 

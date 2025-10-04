@@ -282,7 +282,7 @@ Custom property injection abc=$!{cfg.abc}
 
 ## Field Additional Information Query Injection
 
-![relationship](/images/content/custom-fields.png)
+![relationship](/images/content/custom-fields.webp)
 
 ```java
 new DataSourceConfig().setDbQuery(new MySqlQuery() {
