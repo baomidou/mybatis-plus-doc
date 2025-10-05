@@ -19,39 +19,44 @@ const {
   
   <!-- Google Adsense 竖向广告 -->
   {showGoogle && (
-    <div class="xl:block hidden google-ads-sidebar">
-      <div class="google-ads-container">
-        <ins class="adsbygoogle google-ads"
-             style="display:inline-block;width:100%;height:300px"
-             data-ad-client="ca-pub-4147143076931995"
-             data-ad-slot="1866407052"></ins>
-        <script is:inline>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+    <div class="w-full xl:flex-1">
+      <div class="w-full p-4 text-sm leading-6">
+        <div class="google-ads-frame">
+          <ins class="adsbygoogle"
+               style="display:block;width:100%;"
+               data-ad-client="ca-pub-4147143076931995"
+               data-ad-slot="1866407052"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script is:inline>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
       </div>
     </div>
   )}
 </div>
 
 <style>
-  .google-ads-container {
-    display: flex;
-    justify-content: center;
-    padding: 1rem;
-    margin-top: 0.5rem;
-  }
-  
-  .google-ads {
-    border-radius: 0.5rem;
-    border: 1px solid #e5e7eb;
-    background-color: #f9fafb;
+  .google-ads-frame {
     width: 100%;
     max-width: 100%;
+    min-height: 0;
+    margin: 0 auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background-color: #f9fafb;
+    overflow: hidden;
+  }
+
+  .google-ads-frame .adsbygoogle {
+    display: block;
+    width: 100%;
   }
 
   /* 大屏幕下限制最大宽度，与 WWAD 保持一致 */
   @media (min-width: 1280px) {
-    .google-ads {
+    .google-ads-frame {
       max-width: 12rem; /* 约 192px，与 WWAD 的 xl:max-w-[12rem] 一致 */
     }
   }

@@ -23,7 +23,7 @@ jobs:
       - name: Build project
         run: npm install && npm run build
       - name: Deploy to ECS
-        uses: appleboy/scp-action@v0.1.7
+        uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.ECS_HOST }}
           username: ${{ secrets.ECS_USERNAME }}

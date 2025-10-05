@@ -11,7 +11,7 @@ import Ads from "@/components/Ads.astro";
 </div>
 
 <div class="ad">
-  <Ads />
+  <Ads showGoogle={true}/>
 </div>
 
 <script lang="js" is:inline>
@@ -19,11 +19,16 @@ import Ads from "@/components/Ads.astro";
     const toc = document.querySelector(".toc");
     const ad = document.querySelector(".ad");
 
+    if (!toc || !ad) {
+      return;
+    }
+
     function adjustLayout() {
       const windowHeight = window.innerHeight;
       const adHeight = ad.offsetHeight;
+      const available = Math.max(windowHeight - adHeight - 64, 0);
 
-      toc.style.maxHeight = `${windowHeight - adHeight - 64}px`;
+      toc.style.maxHeight = `${available}px`;
       if (toc.offsetHeight + adHeight > windowHeight) {
         ad.classList.add("fixed-ad");
       } else {
@@ -48,12 +53,12 @@ import Ads from "@/components/Ads.astro";
 
     // 监测内容变化时重新布局（包括 Google Adsense 加载）
     const observer = new MutationObserver(startHeightCheck);
-    observer.observe(ad, { childList: true, subtree: true });
+    observer.observe(ad, { childList: true, subtree: true, attributes: true });
     
     // 等待 Google Adsense 加载完成后重新计算布局
     if (window.adsbygoogle) {
       const checkAdsLoaded = setInterval(() => {
-        const googleAds = document.querySelector('.google-ads');
+        const googleAds = ad.querySelector('.adsbygoogle');
         if (googleAds && googleAds.offsetHeight > 0) {
           clearInterval(checkAdsLoaded);
           setTimeout(adjustLayout, 500); // 延迟一点确保完全加载

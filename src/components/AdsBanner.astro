@@ -17,13 +17,14 @@ const {
     
     <!-- Google Adsense 横幅广告 -->
     {showGoogle && (
-        <div class="container mx-auto">
-            <div class="google-banner-ads-container">
-                <!-- 固定横向广告 -->
-                <ins class="adsbygoogle google-banner-ads"
-                     style="display:inline-block;width:100%;height:120px"
+        <div class="container mx-auto py-6 text-sm leading-6">
+            <div class="google-ads-banner-frame">
+                <ins class="adsbygoogle"
+                     style="display:block;width:100%;"
                      data-ad-client="ca-pub-4147143076931995"
-                     data-ad-slot="6574899324"></ins>
+                     data-ad-slot="6574899324"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
                 <script is:inline>
                      (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
@@ -33,42 +34,21 @@ const {
 </div>
 
 <style>
-  .google-banner-ads-container {
+  .google-ads-banner-frame {
     display: flex;
+    align-items: center;
     justify-content: center;
-    padding: 1rem 0;
-    margin: 1rem 0;
     width: 100%;
-  }
-  
-  .google-banner-ads {
-    border-radius: 0.5rem;
+    min-height: 0;
+    padding: 1rem;
     border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
     background-color: #f9fafb;
+    overflow: hidden;
+  }
+
+  .google-banner-frame .adsbygoogle {
+    display: block;
     width: 100%;
-    max-width: 100%;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  }
-  
-  /* 移动端适配 */
-  @media (max-width: 768px) {
-    .google-banner-ads-container {
-      padding: 0.5rem;
-    }
-    
-    .google-banner-ads {
-      width: 100% !important;
-      max-width: 100% !important;
-      height: auto !important;
-      min-height: 50px;
-    }
-  }
-  
-  /* 平板适配 */
-  @media (max-width: 900px) and (min-width: 769px) {
-    .google-banner-ads {
-      width: 100% !important;
-      height: 120px !important;
-    }
   }
 </style>
