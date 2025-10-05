@@ -23,17 +23,21 @@ const { showGoogle = false } = Astro.props;
   <!-- Google Adsense 竖向广告 -->
   {
     showGoogle && (
-      <div class="google-ads-frame">
-        <ins
-          class="adsbygoogle"
-          data-ad-client="ca-pub-4147143076931995"
-          data-ad-slot="1866407052"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        />
-        <script is:inline>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+      <div class="w-full xl:flex-1">
+        <div class="w-full p-4 text-sm leading-6">
+          <div class="google-ads-frame">
+            <ins
+              class="adsbygoogle"
+              data-ad-client="ca-pub-4147143076931995"
+              data-ad-slot="1866407052"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            />
+            <script is:inline>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
+        </div>
       </div>
     )
   }
@@ -45,16 +49,14 @@ const { showGoogle = false } = Astro.props;
     min-height: 0;
     margin: 0 auto;
     padding: 0;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
     background-color: transparent;
     overflow: hidden;
     box-sizing: border-box;
   }
 
   .google-ads-frame .adsbygoogle {
-    display: block;
+    display: inline-block;
     width: 192px;
-    height: 300px;
+    height: 600px;
   }
 </style>
