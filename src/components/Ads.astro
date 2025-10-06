@@ -12,7 +12,7 @@ const { showGoogle = false } = Astro.props;
   <div class="w-full xl:flex-1">
     <div class="w-full p-4 text-sm leading-6">
       <div
-        class="wwads-cn wwads-horizontal xl:wwads-vertical max-w-full xl:max-w-[12rem]"
+        class="wwads-cn wwads-horizontal xl:wwads-vertical max-w-full xl:max-w-[200px]"
         data-id="135"
         style="min-height: 0; margin-top: 0; border-width: 1px; border-radius: 0.5rem"
       >
@@ -25,13 +25,12 @@ const { showGoogle = false } = Astro.props;
     showGoogle && (
       <div class="w-full xl:flex-1">
         <div class="w-full p-4 text-sm leading-6">
-          <div class="google-ads-frame">
+          <div class="google-ads-frame not-content">
             <ins
               class="adsbygoogle"
+              style="display:inline-block;width:200px;height:200px"
               data-ad-client="ca-pub-4147143076931995"
               data-ad-slot="1866407052"
-              data-ad-format="auto"
-              data-full-width-responsive="true"
             />
             <script is:inline>
               (adsbygoogle = window.adsbygoogle || []).push({});
@@ -56,7 +55,7 @@ const { showGoogle = false } = Astro.props;
 
   .google-ads-frame .adsbygoogle {
     display: inline-block;
-    width: 192px;
-    height: 600px;
+    width: 200px;
+    height: 200px;
   }
 </style>
