@@ -3,6 +3,21 @@ title: 更新日志
 description: 版本更新日志
 ---
 
+## [v3.5.16] 2026.1.11
+- fix: 修复`Jackson3TypeHandler`自定义`ObjectMapper`无效
+- fix: 处理代码生成器`PackageConfig`指定模块为空时拼接错误
+- feat: 升级`SpringBoot3`至3.5.9
+- feat: 升级`JUnit`单元测试
+- feat: 升级`fastjson`至2.0.60
+- feat: 升级`jackson`至2.20.1
+- feat: 升级`gson`至2.13.2
+- feat: 升级`postgresql`至42.7.8
+- feat: 升级`h2database`至2.4.240
+- feat: 升级`mysql-connector-j`至9.5.0
+- feat: 升级`sqlite-jdbc`至3.51.1.0
+- feat: 升级`jaybird`至5.0.10.java8
+- feat: 升级`mybatis-spring`4.0.0
+
 ## [v3.5.15] 2025.11.30
 - fix: 修复`Enjoy`模板生成xml错误
 - feat: 调整代码生成器元数据构建
