@@ -4,6 +4,7 @@ sidebar:
   order: 1
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 import LastedDependency from '@/components/LastedDependency.astro';
 
 We'll demonstrate the powerful features of MyBatis-Plus through a simple Demo. Before we begin, we assume you already have:
@@ -109,6 +110,9 @@ The configuration above contains the standard database connection settings for a
 
 Add the `@MapperScan` annotation to the Spring Boot application class to scan the Mapper package:
 
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
+
 ```java {2}
 <!-- Application.java -->
 
@@ -123,9 +127,30 @@ public class Application {
 }
 ```
 
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin {2}
+// Application.kt
+
+@SpringBootApplication
+@MapperScan("com.baomidou.mybatisplus.samples.quickstart.mapper")
+class Application
+
+fun main(args: Array<String>) {
+    runApplication<Application>(*args)
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## Coding
 
 Create the entity class `User.java`:
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 <!-- User.java -->
@@ -140,11 +165,32 @@ public class User {
 }
 ```
 
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+// User.kt
+
+@TableName("`user`")
+data class User(
+    var id: Long? = null,
+    var name: String? = null,
+    var age: Int? = null,
+    var email: String? = null,
+)
+```
+
+</TabItem>
+</Tabs>
+
 :::note
-The code above uses [Lombok](https://projectlombok.org/) for code generation. If you prefer not to use it, please generate the Getter/Setter methods manually.
+The Java version uses [Lombok](https://projectlombok.org/) for code generation. If you prefer not to use it, please generate the Getter/Setter methods manually. The Kotlin version uses a `data class`, so Lombok is not needed.
 :::
 
 Create the Mapper interface `UserMapper.java`:
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 public interface UserMapper extends BaseMapper<User> {
@@ -152,9 +198,22 @@ public interface UserMapper extends BaseMapper<User> {
 }
 ```
 
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+interface UserMapper : BaseMapper<User>
+```
+
+</TabItem>
+</Tabs>
+
 ## Start Using
 
 Add a test class for functionality testing:
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 @SpringBootTest
@@ -173,6 +232,30 @@ public class SampleTest {
 
 }
 ```
+
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+@SpringBootTest
+class SampleTest {
+
+    @Autowired
+    lateinit var userMapper: UserMapper
+
+    @Test
+    fun testSelect() {
+        println("----- selectAll method test ------")
+        val userList = userMapper.selectList(null)
+        Assert.isTrue(userList.size == 5, "")
+        userList.forEach { println(it) }
+    }
+
+}
+```
+
+</TabItem>
+</Tabs>
 
 :::tip
 The parameter for the `selectList()` method in UserMapper is MP's built-in conditional wrapper `Wrapper`, so passing `null` means no conditions are applied.

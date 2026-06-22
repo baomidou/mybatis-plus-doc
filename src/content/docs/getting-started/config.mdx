@@ -4,6 +4,8 @@ sidebar:
   order: 3
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 集成 MyBatis-Plus 非常的简单，我们仅需要一些简单的配置即可使用 MyBatis-Plus 的强大功能！
 
 :::tip
@@ -13,6 +15,9 @@ sidebar:
 ## Spring Boot 工程
 
 - 配置 MapperScan 注解
+
+  <Tabs syncKey="code-lang">
+  <TabItem label="Java">
 
   ```java {2}
   @SpringBootApplication
@@ -25,6 +30,22 @@ sidebar:
 
   }
   ```
+
+  </TabItem>
+  <TabItem label="Kotlin">
+
+  ```kotlin {2}
+  @SpringBootApplication
+  @MapperScan("com.baomidou.mybatisplus.samples.quickstart.mapper")
+  class Application
+
+  fun main(args: Array<String>) {
+      runApplication<Application>(*args)
+  }
+  ```
+
+  </TabItem>
+  </Tabs>
 
 ## Spring 工程
 
