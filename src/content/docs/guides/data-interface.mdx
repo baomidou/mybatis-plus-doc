@@ -6,11 +6,30 @@ sidebar:
 
 本文详细介绍了 MyBatis-Plus 进行持久化操作的各种方法，包括插入、更新、删除、查询和分页等。通过本文，您可以了解到 MyBatis-Plus 提供的各种方法是如何进行数据操作的，以及它们对应的 SQL 语句。
 
+## Repository Interface
+
+在版本 `v3.5.9` 之后的版本重构 `service` 模块抽象为 `repository` 建议使用 `IRepository` 避免语义层面混乱，使用上与接口 `IService` 用法一致。
+
+遵循 `Controller（表现层） -> Service（业务逻辑层） -> Repository（逻辑数据访问层） -> Mapper（物理数据访问层）` 的分层架构，虽然初期会多一些代码量，
+但它带来的职责清晰、易于维护、方便测试和扩展性强等好处，对于构建健壮的企业级应用至关重要。
+
+```java
+public class UserRepository extends CrudRepository<UserMapper, User> implements IRepository<User> {
+  // TODO
+}
+```
+
+:::tip
+如果想 `架构更加简单一点` 追求简洁也可以合并 `Service（业务逻辑层） Repository（逻辑数据访问层）` 这两层统一为 `Service（业务逻辑数据处理层）` 需要注意的是无论何种架构分层 `Mapper（物理数据访问层）` 都不建议编写任何业务逻辑数据处理代码。
+:::
+
 ## Service Interface
 
-[IService](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/service/IService.java) 是 MyBatis-Plus 提供的一个通用 Service 层接口，它封装了常见的 CRUD 操作，包括插入、删除、查询和分页等。通过继承 IService 接口，可以快速实现对数据库的基本操作，同时保持代码的简洁性和可维护性。
+IService 是 MyBatis-Plus 提供的一个通用 Service 层接口，它封装了常见的 CRUD 操作，包括插入、删除、查询和分页等。通过继承 IService 接口，可以快速实现对数据库的基本操作，同时保持代码的简洁性和可维护性。
 
 IService 接口中的方法命名遵循了一定的规范，如 get 用于查询单行，remove 用于删除，list 用于查询集合，page 用于分页查询，这样可以避免与 Mapper 层的方法混淆。
+
+- 在版本 `3.5.9` 之后的版本建议使用 `IRepository` 逻辑上没有区别，只是语义上更加清晰。
 
 :::tip
 
@@ -623,14 +642,10 @@ Collection<T> listByMap(Map<String, Object> columnMap);
 List<Map<String, Object>> listMaps();
 // 查询列表
 List<Map<String, Object>> listMaps(Wrapper<T> queryWrapper);
-// 查询全部记录
-List<Object> listObjs();
-// 查询全部记录
-<V> List<V> listObjs(Function<? super Object, V> mapper);
-// 根据 Wrapper 条件，查询全部记录
-List<Object> listObjs(Wrapper<T> queryWrapper);
-// 根据 Wrapper 条件，查询全部记录
+// 根据 Wrapper 条件，查询全部记录。注意： 只返回第一个字段的值
 <V> List<V> listObjs(Wrapper<T> queryWrapper, Function<? super Object, V> mapper);
+
+... 等方法
 ```
 
 <p>
@@ -751,26 +766,9 @@ SELECT * FROM user WHERE age > 25
 **示例（listObjs）：**
 
 ```java
-// 查询所有用户，并将结果转换为 String 列表
-List<String> userNames = userService.listObjs(obj -> ((User) obj).getName()); // 调用 listObjs 方法
-for (String userName : userNames) {
-    System.out.println("User Name: " + userName);
-}
-```
-
-生成的 SQL:
-
-```sql
-SELECT * FROM user
-```
-
-**示例（listObjs QueryWrapper 形式）：**
-
-```java
-// 假设有一个 QueryWrapper 对象，设置查询条件为 age > 25，并将结果转换为 String 列表
-QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-queryWrapper.gt("age", 25);
-List<String> userNames = userService.listObjs(queryWrapper, obj -> ((User) obj).getName()); // 调用 listObjs 方法
+// 设置查询条件为 age > 25，并将结果转换为 String 列表
+List<String> userNames = userService.listObjs(Wrappers.<SysUser>lambdaQuery().select(SysUser::getName)
+.gt(SysUser::getAge, 25), obj -> (String) obj);
 for (String userName : userNames) {
     System.out.println("User Name: " + userName);
 }
@@ -1281,8 +1279,9 @@ SELECT * FROM user WHERE age > 25
 **示例（selectByMap）：**
 
 ```java
-// 假设有一个 columnMap，设置查询条件为 age > 30，查询满足条件的用户
+// 假设有一个 columnMap，设置查询条件为 age = 30，查询满足条件的用户
 Map<String, Object> columnMap = new HashMap<>();
+// key 为字段名 value 为字段等于查询内容
 columnMap.put("age", 30);
 List<User> users = userMapper.selectByMap(columnMap); // 调用 selectByMap 方法
 for (User u : users) {
@@ -1293,7 +1292,7 @@ for (User u : users) {
 生成的 SQL:
 
 ```sql
-SELECT * FROM user WHERE age > 30
+SELECT * FROM user WHERE age = 30
 ```
 
 **示例（selectMaps）：**
