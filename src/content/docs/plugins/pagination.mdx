@@ -42,6 +42,10 @@ public class MybatisPlusConfig {
 }
 ```
 
+:::tip
+注意：排序 `OrderItem` 对象 `column` 属性允许前端传入，相关内容一定要做 `白名单验证` 避免 `SQL` 注入风险。
+:::
+
 ## 属性介绍
 
 `PaginationInnerInterceptor` 提供了以下属性来定制分页行为：
