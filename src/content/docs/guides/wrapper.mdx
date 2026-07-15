@@ -5,6 +5,7 @@ sidebar:
 ---
 
 import Badge from "@/components/Badge.astro";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
 
 MyBatis-Plus 提供了一套强大的条件构造器（Wrapper），用于构建复杂的数据库查询条件。Wrapper 类允许开发者以链式调用的方式构造查询条件，无需编写繁琐的 SQL 语句，从而提高开发效率并减少 SQL 注入的风险。
 
@@ -2839,7 +2840,7 @@ class User {
 
 **注意**：上述代码中的`@TableId`和`@TableField`注解是为了展示MyBatis-Plus的使用，并非必须。所有成员变量都应定义为可空类型，并赋予初始值`null`，以便在类似Java中的`updateSelective`场景中使用。
 
-不推荐使用`data class`或全参数构造方法，因为这可能导致在创建空对象时需要提供不必要的`null`值。
+不推荐使用`data class`或全参数构造方法，因为这可能导致在创建空对象时需要提供不必要的`null`值。若所有属性均为可空的`var`且带有默认值（如快速开始教程中的示例），Kotlin 会生成无参构造方法，此时使用`data class`也是可行的；该建议主要针对没有默认值的全参数构造方法。
 
 ### 使用注解查询
 
@@ -2862,33 +2863,59 @@ List<MysqlData> getAll(Wrapper ew);
 
 ### Kotlin中使用Wrapper
 
-Kotlin支持`QueryWrapper`和`UpdateWrapper`，但不支持`LambdaQueryWrapper`和`LambdaUpdateWrapper`。如果需要使用Lambda风格的Wrapper，可以使用`KtQueryWrapper`和`KtUpdateWrapper`。
+Kotlin中可以使用全部的Wrapper：
 
-参考示例：
+- `QueryWrapper`和`UpdateWrapper`（字符串列名）在所有版本中均可使用。
+- `KtQueryWrapper`和`KtUpdateWrapper`基于`KProperty`属性引用（如`User::name`），是Kotlin专属的Lambda风格Wrapper，在所有版本中均可使用。
+- 自`3.5.17`起，`LambdaQueryWrapper`和`LambdaUpdateWrapper`同样支持Kotlin，Kotlin属性引用（`User::name`）与Java getter方法引用均可正确解析；在更早的版本中，Kotlin下请使用`KtQueryWrapper`/`KtUpdateWrapper`。
+
+`KtQueryWrapper`/`KtUpdateWrapper`参考示例（所有版本可用）：
 
 ```kotlin
 val queryWrapper = KtQueryWrapper(User()).eq(User::name, "sss").eq(User::roleId, "sss2")
-userMapper!!.selectList(queryWrapper)
+userMapper.selectList(queryWrapper)
 
 val updateConditionWrapper = KtUpdateWrapper(User()).eq(User::name, "sss").eq(User::roleId, "sss2")
 val updateRecord = User()
 updateRecord.name = "newName"
-userMapper!!.update(updateRecord, updateConditionWrapper)
+userMapper.update(updateRecord, updateConditionWrapper)
 
-val updateRecord = User()
-updateRecord.id = 2
-updateRecord.name = "haha"
-userMapper.updateById(updateRecord)
+val newRecord = User()
+newRecord.id = 2
+newRecord.name = "haha"
+userMapper.updateById(newRecord)
 ```
+
+`LambdaQueryWrapper`/`LambdaUpdateWrapper`参考示例（`3.5.17`+）：
+
+```kotlin
+val users = userMapper.selectList(LambdaQueryWrapper(User::class.java).eq(User::name, "sss"))
+
+userMapper.update(
+    null,
+    LambdaUpdateWrapper(User::class.java).set(User::name, "newName").eq(User::roleId, "sss2")
+)
+```
+
+:::note
+- 在低于`3.5.17`的版本中，Kotlin下使用`LambdaQueryWrapper`等Lambda风格Wrapper会在运行时抛出类似`Error parsing property name 'xxx$lambda$0'. Didn't start with 'is', 'get' or 'set'.`的异常。
+- MyBatis-Plus `3.5.17`使用Kotlin `2.4.0`编译，Kotlin项目需使用`2.3`及以上版本的Kotlin编译器才能读取其Kotlin元数据。
+- 使用`-Xsam-conversions=class`编译选项构建的Kotlin代码中，Java getter方法引用仍无法解析。
+:::
+
+完整可运行示例参见 [mybatis-plus-sample-kotlin](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-kotlin)。
 
 ### 链式调用与Lambda式调用
 
-MyBatis-Plus提供了两种风格的链式调用：普通链式调用和Lambda式链式调用。需要注意的是，Lambda式链式调用不支持Kotlin。
+MyBatis-Plus提供了两种风格的链式调用：普通链式调用和Lambda式链式调用。自`3.5.17`起，Lambda式链式调用同样支持Kotlin；在更早的版本中，Kotlin下可使用`KtQueryChainWrapper`和`KtUpdateChainWrapper`。
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 // 普通链式调用
 UpdateChainWrapper<T> update();
-// Lambda式链式调用（不支持Kotlin）
+// Lambda式链式调用
 LambdaUpdateChainWrapper<T> lambdaUpdate();
 
 // 等价示例：
@@ -2899,5 +2926,23 @@ lambdaQuery().eq(Entity::getId, value).one();
 update().eq("id", value).remove();
 lambdaUpdate().eq(Entity::getId, value).remove();
 ```
+
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+// 普通链式调用
+QueryChainWrapper(userMapper).eq("name", "Jack").list()
+
+// Lambda式链式调用（3.5.17+）
+LambdaQueryChainWrapper(userMapper).eq(User::name, "Jack").one()
+LambdaUpdateChainWrapper(userMapper).set(User::name, "newName").eq(User::name, "Jack").update()
+
+// KProperty风格链式调用（所有版本可用）
+KtQueryChainWrapper(userMapper, User::class.java).eq(User::name, "Jack").one()
+```
+
+</TabItem>
+</Tabs>
 
 通过遵循这些最佳实践，我们可以确保Kotlin中的持久化对象定义既清晰又易于维护，同时充分利用MyBatis-Plus提供的功能。

@@ -4,6 +4,8 @@ sidebar:
   order: 3
 ---
 
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+
 本文详细介绍了 MyBatis-Plus 进行持久化操作的各种方法，包括插入、更新、删除、查询和分页等。通过本文，您可以了解到 MyBatis-Plus 提供的各种方法是如何进行数据操作的，以及它们对应的 SQL 语句。
 
 ## Repository Interface
@@ -1449,7 +1451,7 @@ int logicDeleteByIdWithFill(T entity);
 
 ## Chain
 
-Chain 是 Mybatis-Plus 提供的一种链式编程风格，它允许开发者以更加简洁和直观的方式编写数据库操作代码。Chain 分为 `query` 和 `update` 两大类，分别用于查询和更新操作。每类又分为普通链式和 lambda 链式两种风格，其中 lambda 链式提供了类型安全的查询条件构造，但不支持 Kotlin。
+Chain 是 Mybatis-Plus 提供的一种链式编程风格，它允许开发者以更加简洁和直观的方式编写数据库操作代码。Chain 分为 `query` 和 `update` 两大类，分别用于查询和更新操作。每类又分为普通链式和 lambda 链式两种风格，其中 lambda 链式提供了类型安全的查询条件构造，自 `3.5.17` 起同样支持 Kotlin（更早版本的 Kotlin 下可使用 `KtQueryChainWrapper`/`KtUpdateChainWrapper`）。
 
 ### 使用步骤
 
@@ -1460,11 +1462,14 @@ Chain 是 Mybatis-Plus 提供的一种链式编程风格，它允许开发者以
 ```java
 // 链式查询 普通
 QueryChainWrapper<T> query();
-// 链式查询 lambda 式。注意：不支持 Kotlin
+// 链式查询 lambda 式（自 3.5.17 起支持 Kotlin）
 LambdaQueryChainWrapper<T> lambdaQuery();
 ```
 
 **示例**:
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 // 普通链式查询示例
@@ -1474,6 +1479,20 @@ query().eq("name", "John").list(); // 查询 name 为 "John" 的所有记录
 lambdaQuery().eq(User::getAge, 30).one(); // 查询年龄为 30 的单条记录
 ```
 
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+// 普通链式查询示例
+query().eq("name", "John").list() // 查询 name 为 "John" 的所有记录
+
+// lambda 链式查询示例（3.5.17+）
+lambdaQuery().eq(User::age, 30).one() // 查询年龄为 30 的单条记录
+```
+
+</TabItem>
+</Tabs>
+
 #### update
 
 提供链式更新操作，可以连续调用方法来构建更新条件。
@@ -1481,11 +1500,14 @@ lambdaQuery().eq(User::getAge, 30).one(); // 查询年龄为 30 的单条记录
 ```java
 // 链式更改 普通
 UpdateChainWrapper<T> update();
-// 链式更改 lambda 式。注意：不支持 Kotlin
+// 链式更改 lambda 式（自 3.5.17 起支持 Kotlin）
 LambdaUpdateChainWrapper<T> lambdaUpdate();
 ```
 
 **示例**:
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 // 普通链式更新示例
@@ -1496,6 +1518,20 @@ User updateUser = new User();
 updateUser.setEmail("new.email@example.com");
 lambdaUpdate().set(User::getEmail, updateUser.getEmail()).eq(User::getId, 1).update(); // 更新 ID 为 1 的用户的邮箱
 ```
+
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+// 普通链式更新示例
+update().set("status", "inactive").eq("name", "John").update() // 将 name 为 "John" 的记录 status 更新为 "inactive"
+
+// lambda 链式更新示例（3.5.17+）
+lambdaUpdate().set(User::email, "new.email@example.com").eq(User::id, 1).update() // 更新 ID 为 1 的用户的邮箱
+```
+
+</TabItem>
+</Tabs>
 
 ### 使用提示
 

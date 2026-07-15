@@ -4,6 +4,7 @@ sidebar:
   order: 4
 ---
 import Badge from "@/components/Badge.astro";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
 
 MyBatis-Plus provides a powerful set of conditional constructors (Wrapper) for building complex database query conditions. The Wrapper classes allow developers to construct query conditions using a chainable method call approach, eliminating the need to write verbose SQL statements. This improves development efficiency and reduces the risk of SQL injection.
 
@@ -2783,7 +2784,7 @@ class User {
 
 **Note**: The `@TableId` and `@TableField` annotations in the code above are used to demonstrate MyBatis-Plus usage and are not mandatory. All member variables should be defined as nullable types with initial values of `null` to support scenarios like Java's `updateSelective` operations.
 
-Avoid using `data class` or full-parameter constructors, as they may require you to provide unnecessary `null` values when creating empty objects.
+Avoid using `data class` or full-parameter constructors, as they may require you to provide unnecessary `null` values when creating empty objects. If all properties are nullable `var`s with default values (as in the Quick Start tutorial), Kotlin generates a no-argument constructor and a `data class` works fine; this recommendation mainly targets full-parameter constructors without defaults.
 
 ### Using Annotations for Queries
 
@@ -2806,33 +2807,59 @@ List<MysqlData> getAll(Wrapper ew);
 
 ### Using Wrapper in Kotlin
 
-Kotlin supports `QueryWrapper` and `UpdateWrapper`, but does not support `LambdaQueryWrapper` and `LambdaUpdateWrapper`. If you need to use Lambda-style Wrappers, you can use `KtQueryWrapper` and `KtUpdateWrapper`.
+All Wrappers can be used in Kotlin:
 
-Reference example:
+- `QueryWrapper` and `UpdateWrapper` (string column names) work in all versions.
+- `KtQueryWrapper` and `KtUpdateWrapper` are the Kotlin-specific Lambda-style Wrappers based on `KProperty` property references (such as `User::name`) and work in all versions.
+- Since `3.5.17`, `LambdaQueryWrapper` and `LambdaUpdateWrapper` also support Kotlin — both Kotlin property references (`User::name`) and Java getter method references resolve correctly. On earlier versions, use `KtQueryWrapper`/`KtUpdateWrapper` from Kotlin.
+
+`KtQueryWrapper`/`KtUpdateWrapper` reference example (all versions):
 
 ```kotlin
 val queryWrapper = KtQueryWrapper(User()).eq(User::name, "sss").eq(User::roleId, "sss2")
-userMapper!!.selectList(queryWrapper)
+userMapper.selectList(queryWrapper)
 
 val updateConditionWrapper = KtUpdateWrapper(User()).eq(User::name, "sss").eq(User::roleId, "sss2")
 val updateRecord = User()
 updateRecord.name = "newName"
-userMapper!!.update(updateRecord, updateConditionWrapper)
+userMapper.update(updateRecord, updateConditionWrapper)
 
-val updateRecord = User()
-updateRecord.id = 2
-updateRecord.name = "haha"
-userMapper.updateById(updateRecord)
+val newRecord = User()
+newRecord.id = 2
+newRecord.name = "haha"
+userMapper.updateById(newRecord)
 ```
+
+`LambdaQueryWrapper`/`LambdaUpdateWrapper` reference example (`3.5.17`+):
+
+```kotlin
+val users = userMapper.selectList(LambdaQueryWrapper(User::class.java).eq(User::name, "sss"))
+
+userMapper.update(
+    null,
+    LambdaUpdateWrapper(User::class.java).set(User::name, "newName").eq(User::roleId, "sss2")
+)
+```
+
+:::note
+- On versions below `3.5.17`, using `LambdaQueryWrapper` and other Lambda-style Wrappers from Kotlin fails at runtime with an exception like `Error parsing property name 'xxx$lambda$0'. Didn't start with 'is', 'get' or 'set'.`
+- MyBatis-Plus `3.5.17` is compiled with Kotlin `2.4.0`; Kotlin projects need a Kotlin compiler of version `2.3` or above to read its Kotlin metadata.
+- In Kotlin code compiled with the `-Xsam-conversions=class` option, Java getter method references still cannot be resolved.
+:::
+
+See [mybatis-plus-sample-kotlin](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-kotlin) for a complete runnable example.
 
 ### Chained Calls and Lambda Calls
 
-MyBatis-Plus provides two styles of chained calls: regular chained calls and lambda chained calls. Note that lambda chained calls do not support Kotlin.
+MyBatis-Plus provides two styles of chained calls: regular chained calls and lambda chained calls. Since `3.5.17`, lambda chained calls also support Kotlin; on earlier versions, `KtQueryChainWrapper` and `KtUpdateChainWrapper` can be used from Kotlin.
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 // Regular chained call
 UpdateChainWrapper<T> update();
-// Lambda chained call (does not support Kotlin)
+// Lambda chained call
 LambdaUpdateChainWrapper<T> lambdaUpdate();
 
 // Equivalent examples:
@@ -2843,5 +2870,23 @@ lambdaQuery().eq(Entity::getId, value).one();
 update().eq("id", value).remove();
 lambdaUpdate().eq(Entity::getId, value).remove();
 ```
+
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+// Regular chained call
+QueryChainWrapper(userMapper).eq("name", "Jack").list()
+
+// Lambda chained call (3.5.17+)
+LambdaQueryChainWrapper(userMapper).eq(User::name, "Jack").one()
+LambdaUpdateChainWrapper(userMapper).set(User::name, "newName").eq(User::name, "Jack").update()
+
+// KProperty-style chained call (all versions)
+KtQueryChainWrapper(userMapper, User::class.java).eq(User::name, "Jack").one()
+```
+
+</TabItem>
+</Tabs>
 
 By following these best practices, you can ensure that your persistence object definitions in Kotlin are both clear and maintainable, while fully leveraging the capabilities provided by MyBatis-Plus.
