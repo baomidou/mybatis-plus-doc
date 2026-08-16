@@ -37,7 +37,7 @@
 - [Dynamic-Datasource](https://gitee.com/baomidou/dynamic-datasource-spring-boot-starter) - 基于 SpringBoot 的多数据源组件，功能强悍，支持 Seata 分布式事务。
 - [Shuan](https://gitee.com/baomidou/shaun) - 基于 Pac4J-JWT 的 WEB 安全组件, 快速集成。
 - [Kisso](https://github.com/baomidou/kisso) - 基于 Cookie 的单点登录组件。
-- [Lock4j](https://gitee.com/baomidou/lock4j) - 基于 SpringBoot 同时支持 RedisTemplate、Redission、Zookeeper 的分布式锁组件。
+- [Lock4j](https://gitee.com/baomidou/lock4j) - 基于 SpringBoot 同时支持 RedisTemplate、Redisson、Zookeeper 的分布式锁组件。
 - [Kaptcha](https://gitee.com/baomidou/kaptcha-spring-boot-starter) - 基于 SpringBoot 和 Google Kaptcha 的简单验证码组件，简单验证码就选它。
 - [FlowLong](https://gitee.com/aizuda/flowlong) - 真正的国产工作流引擎，为中国特色审批匠心打造。
 - [SnailJob](https://gitee.com/aizuda/snail-job) - 分布式任务重试和调度平台。
