@@ -4,6 +4,8 @@ sidebar:
   order: 3
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 MyBatis-Plus の統合は非常に簡単で、いくつかの簡単な設定だけで MyBatis-Plus の強力な機能を使用できます！
 
 :::tip
@@ -13,6 +15,9 @@ MyBatis-Plus の統合は非常に簡単で、いくつかの簡単な設定だ�
 ## Spring Boot プロジェクト
 
 - MapperScan アノテーションの設定
+
+  <Tabs syncKey="code-lang">
+  <TabItem label="Java">
 
   ```java {2}
   @SpringBootApplication
@@ -25,6 +30,22 @@ MyBatis-Plus の統合は非常に簡単で、いくつかの簡単な設定だ�
 
   }
   ```
+
+  </TabItem>
+  <TabItem label="Kotlin">
+
+  ```kotlin {2}
+  @SpringBootApplication
+  @MapperScan("com.baomidou.mybatisplus.samples.quickstart.mapper")
+  class Application
+
+  fun main(args: Array<String>) {
+      runApplication<Application>(*args)
+  }
+  ```
+
+  </TabItem>
+  </Tabs>
 
 ## Spring プロジェクト
 

@@ -1,0 +1,89 @@
+---
+// ABOUTME: Client script that keeps every Java/Kotlin code tab group on a page in
+// ABOUTME: sync and remembers the chosen language across pages via localStorage.
+---
+
+<script>
+  // Starlight 0.21.5 has no native `syncKey`, so we synchronise the Java/Kotlin
+  // code selectors ourselves. If Starlight is ever upgraded to a version with
+  // native synced tabs, this component (and the syncKey attributes in the docs)
+  // can be removed to avoid double-handling.
+  (function () {
+    const KEY = "code-lang";
+    const LANGS = ["Java", "Kotlin"];
+    let syncing = false;
+
+    // A `<starlight-tabs>` is a code-language selector when every one of its own
+    // tab labels is Java or Kotlin. This distinguishes it from other tab groups
+    // such as the Maven/Gradle dependency tabs.
+    function isCodeLangGroup(group: Element) {
+      const tabs = group.querySelectorAll(':scope > .tablist-wrapper [role="tab"]');
+      if (tabs.length === 0) return false;
+      return Array.prototype.every.call(tabs, (tab) =>
+        LANGS.includes(tab.textContent.trim())
+      );
+    }
+
+    // Activate `lang` in every code-language group except the one the user just
+    // clicked, reusing Starlight's own tab switching by clicking the anchor.
+    function applyLang(lang: string, exceptGroup: Element | null) {
+      document.querySelectorAll("starlight-tabs").forEach((group) => {
+        if (group === exceptGroup || !isCodeLangGroup(group)) return;
+        const target = Array.prototype.find.call(
+          group.querySelectorAll(':scope > .tablist-wrapper [role="tab"]'),
+          (tab) => tab.textContent.trim() === lang
+        );
+        if (target && target.getAttribute("aria-selected") !== "true") {
+          // Starlight's switchTab() ends with `newTab.focus()`, which scrolls
+          // that tab into view. That is correct for the tab the user actually
+          // clicked, but for the groups we mirror it would jump the page to
+          // whichever group we happen to sync last, so suppress it here.
+          target.focus = noop;
+          target.click();
+          delete target.focus;
+        }
+      });
+    }
+
+    function noop() {}
+
+    function init() {
+      const stored = localStorage.getItem(KEY);
+      if (stored && LANGS.includes(stored)) {
+        syncing = true;
+        applyLang(stored, null);
+        syncing = false;
+      }
+    }
+
+    document.addEventListener("click", (event) => {
+      if (syncing) return;
+      const tab =
+        event.target instanceof Element && event.target.closest('a[role="tab"]');
+      if (!tab) return;
+      const group = tab.closest("starlight-tabs");
+      if (!group || !isCodeLangGroup(group)) return;
+      const lang = tab.textContent.trim();
+      if (!LANGS.includes(lang)) return;
+      localStorage.setItem(KEY, lang);
+      // The Java and Kotlin panels are rarely the same height, so switching the
+      // groups above this one shifts it up or down under the pointer. Keep the
+      // clicked tab visually anchored by scrolling by the same amount.
+      const before = tab.getBoundingClientRect().top;
+      syncing = true;
+      applyLang(lang, group);
+      syncing = false;
+      const shift = tab.getBoundingClientRect().top - before;
+      if (shift) window.scrollBy({ top: shift, behavior: "instant" });
+    });
+
+    // Wait until Starlight's <starlight-tabs> element is defined (and its
+    // existing instances upgraded with click handlers) before applying the
+    // stored preference, otherwise the programmatic clicks have no effect.
+    if (window.customElements) {
+      customElements.whenDefined("starlight-tabs").then(init);
+    } else {
+      window.addEventListener("load", init);
+    }
+  })();
+</script>
