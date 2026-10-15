@@ -78,4 +78,42 @@ public class User {
 - **方法三**：使用 `update` 方法，并使用 `UpdateWrapper.setSql("column=value")`。
 - **方法四**：使用 Sql 注入器注入 `com.baomidou.mybatisplus.extension.injector.methods.LogicDeleteByIdWithFill` 并使用（3.5.0版本已废弃，推荐使用deleteById）。
 
+### 3. 逻辑删除后，唯一索引冲突怎么办？
+
+逻辑删除只更新删除标记，记录仍然保留在表中，数据库的唯一索引也仍然生效。例如，`username` 上有唯一索引时，即使旧记录已经逻辑删除，再次插入相同用户名仍会发生唯一键冲突。
+
+如果业务允许删除后复用用户名，可以将唯一索引改为 `(username, deleted)`，同时为已删除记录设置不同的删除标记。仅使用 `0/1` 标记并不能支持反复删除、重新注册：已有 `(alice, 1)` 时，再把新的 `(alice, 0)` 更新为 `(alice, 1)`，仍会发生冲突。
+
+下面以 MySQL 为例，使用非零、自增的主键 `id` 作为已删除值，`0` 作为未删除值：
+
+```sql
+CREATE TABLE sys_user (
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(64) NOT NULL,
+    deleted BIGINT NOT NULL DEFAULT 0,
+    UNIQUE KEY uk_username_deleted (username, deleted)
+);
+```
+
+在实体类中，将 `deleted` 声明为 `Long`，并指定逻辑删除值：
+
+```java
+@TableLogic(value = "0", delval = "id")
+private Long deleted;
+```
+
+这里的 `id` 是数据库主键列名，需要与实际表结构一致；不是字符串常量，也不是实体属性名。主键必须唯一且不为 `0`，以免与未删除标记混淆。使用 MyBatis-Plus 的逻辑删除方法时，生成的更新语句相当于：
+
+```sql
+UPDATE sys_user SET deleted = id WHERE id = 1 AND deleted = 0;
+```
+
+同名记录可以依次保留为 `(alice, 1)`、`(alice, 2)`，而当前未删除记录为 `(alice, 0)`。联合唯一索引仍然阻止同时存在两条未删除的同名记录。已有表需要同步调整原来的 `username` 单列唯一索引；仅新增联合索引不会解除原索引的限制。
+
+:::note[删除标记的选择]
+
+如果使用前文的 `UNIX_TIMESTAMP()` 作为已删除值，需要注意其秒级精度：同一用户名的多条记录在同一秒内被逻辑删除，仍可能产生相同的删除标记。应根据业务场景保证同一业务唯一键下的删除标记不重复。
+
+:::
+
 通过以上步骤，你可以轻松地在 MyBatis-Plus 中实现逻辑删除功能，提高数据管理的灵活性和安全性。
