@@ -32,3 +32,6 @@ translation-plugin/cache/
 translation-plugin/logs/
 translation-plugin/temp/
 *.log
+
+/pnpm-lock.yaml
+/pnpm-workspace.yaml
