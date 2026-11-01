@@ -78,4 +78,48 @@ public class User {
 - **方法三**：使用 `update` 方法，并使用 `UpdateWrapper.setSql("column=value")`。
 - **方法四**：使用 Sql 注入器注入 `com.baomidou.mybatisplus.extension.injector.methods.LogicDeleteByIdWithFill` 并使用（3.5.0版本已废弃，推荐使用deleteById）。
 
+### 3. 逻辑删除与唯一索引冲突怎么办？
+
+表上有唯一索引（如用户名、手机号）时，记录被逻辑删除后仍然留在表中，再次插入相同的值会报唯一约束冲突。
+
+直接把唯一索引改成 `(username, deleted)` 并不能解决问题：`deleted` 只有 0、1 两个值时，同一个用户名只能存在一条已删除记录，第二次删除同名记录时就会冲突。
+
+推荐的做法是让**已删除的值各不相同**、未删除的值固定，并把逻辑删除字段加入唯一索引：
+
+```sql
+CREATE TABLE user
+(
+    id       BIGINT      NOT NULL PRIMARY KEY,
+    username VARCHAR(64) NOT NULL,
+    deleted  BIGINT      NOT NULL DEFAULT 0 COMMENT '0 未删除，删除时写入主键值',
+    UNIQUE KEY uk_username_deleted (username, deleted)
+);
+```
+
+```java
+public class User {
+    private Long id;
+    private String username;
+
+    @TableLogic(value = "0", delval = "id")
+    private Long deleted;
+}
+```
+
+删除时生成的 SQL 如下，每条已删除记录的 `deleted` 都等于自己的主键，互不冲突；未删除记录的 `deleted` 都是 0，唯一约束照常生效：
+
+```sql
+UPDATE user SET deleted=id WHERE id=? AND deleted=0
+```
+
+如果希望同时记录删除时间，也可以把已删除值设为时间戳函数，例如 MySQL 的 `@TableLogic(value = "0", delval = "UNIX_TIMESTAMP()")`。但同一秒内删除两条相同用户名的记录时仍会冲突，对唯一性要求严格的场景推荐使用主键值。
+
+:::caution[注意]
+
+- **逻辑删除字段请使用数值类型**（如 `Long`）。只有非字符串类型的字段，`delval` 才会原样拼接到 SQL 中，`id`、`UNIX_TIMESTAMP()` 这类写法才能生效；字符串类型的字段会被加上单引号，变成普通字符串常量。
+- **未删除值不要使用 `null`**。未删除值为 `null` 时，查询条件是 `deleted IS NULL`，而 MySQL、PostgreSQL 等数据库的唯一索引允许存在多个 `NULL`，未删除的记录之间将不再受唯一约束。
+- `delval` 中的函数是数据库方言相关的，请按实际使用的数据库调整写法。
+
+:::
+
 通过以上步骤，你可以轻松地在 MyBatis-Plus 中实现逻辑删除功能，提高数据管理的灵活性和安全性。
