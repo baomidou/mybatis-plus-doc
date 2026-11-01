@@ -5,7 +5,7 @@ sidebar:
   order: 4
 ---
 
-import { Steps, LinkCard } from '@astrojs/starlight/components';
+import { Steps, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
 import LastedDependency from '@/components/LastedDependency.astro';
 
 自动导入 MyBatis-Plus 测试所需相关配置，通过 `@MybatisPlusTest` 注解快速配置测试类。
@@ -28,6 +28,9 @@ import LastedDependency from '@/components/LastedDependency.astro';
 
     2. 编写测试用例
 
+        <Tabs syncKey="code-lang">
+        <TabItem label="Java">
+
         ```java
         import org.junit.jupiter.api.Test;
         import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +51,31 @@ import LastedDependency from '@/components/LastedDependency.astro';
             }
         }
         ```
+
+        </TabItem>
+        <TabItem label="Kotlin">
+
+        ```kotlin
+        import org.junit.jupiter.api.Test
+        import org.springframework.beans.factory.annotation.Autowired
+        import org.assertj.core.api.Assertions.assertThat
+
+        @MybatisPlusTest
+        class MybatisPlusSampleTest {
+
+            @Autowired
+            lateinit var sampleMapper: SampleMapper
+
+            @Test
+            fun testInsert() {
+                val sample = Sample()
+                sampleMapper.insert(sample)
+                assertThat(sample.id).isNotNull()
+            }
+        }
+        ```
+
+        </TabItem>
+        </Tabs>
 
 </Steps>

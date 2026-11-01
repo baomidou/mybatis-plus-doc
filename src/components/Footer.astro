@@ -1,6 +1,7 @@
 ---
 import type { Props } from '@astrojs/starlight/props';
 import Default from "@astrojs/starlight/components/Footer.astro";
+import CodeLangSync from "./CodeLangSync.astro";
 
 const yearText = new Date().getFullYear().toString();
 ---
@@ -8,6 +9,8 @@ const yearText = new Date().getFullYear().toString();
 <Default {...Astro.props}>
     <slot/>
 </Default>
+
+<CodeLangSync />
 
 <div class="not-content">
     <div class="text-center mt-20">

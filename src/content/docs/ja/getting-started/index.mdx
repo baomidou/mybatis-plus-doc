@@ -4,6 +4,7 @@ sidebar:
   order: 1
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 import LastedDependency from '@/components/LastedDependency.astro';
 
 このシンプルなデモを通じて、MyBatis-Plusの強力な機能について説明します。その前に、以下の前提条件を満たしていることを想定しています：
@@ -109,6 +110,9 @@ spring:
 
 Spring Boot起動クラスに `@MapperScan` アノテーションを追加し、Mapperフォルダをスキャンします：
 
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
+
 ```java {2}
 <!-- Application.java -->
 
@@ -123,9 +127,30 @@ public class Application {
 }
 ```
 
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin {2}
+// Application.kt
+
+@SpringBootApplication
+@MapperScan("com.baomidou.mybatisplus.samples.quickstart.mapper")
+class Application
+
+fun main(args: Array<String>) {
+    runApplication<Application>(*args)
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## コーディング
 
 エンティティクラス `User.java` を作成します：
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 <!-- User.java -->
@@ -140,11 +165,32 @@ public class User {
 }
 ```
 
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+// User.kt
+
+@TableName("`user`")
+data class User(
+    var id: Long? = null,
+    var name: String,
+    var age: Int,
+    var email: String,
+)
+```
+
+</TabItem>
+</Tabs>
+
 :::note
-上記のコードでは、コード生成に [Lombok](https://projectlombok.org/) を使用しています。慣れていない場合は、関連するGetter/Setterメソッドを自行で生成してください。
+Java 版本ではコード生成に [Lombok](https://projectlombok.org/) を使用しています。慣れていない場合は、関連するGetter/Setterメソッドを自行で生成してください。Kotlin 版本では `data class` を使用するため、Lombok は不要です。
 :::
 
 Mapperインターフェースクラス `UserMapper.java` を作成します：
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 public interface UserMapper extends BaseMapper<User> {
@@ -152,9 +198,22 @@ public interface UserMapper extends BaseMapper<User> {
 }
 ```
 
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+interface UserMapper : BaseMapper<User>
+```
+
+</TabItem>
+</Tabs>
+
 ## 使用方法
 
 テストクラスを追加して、機能テストを実行します：
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 @SpringBootTest
@@ -173,6 +232,30 @@ public class SampleTest {
 
 }
 ```
+
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+@SpringBootTest
+class SampleTest {
+
+    @Autowired
+    lateinit var userMapper: UserMapper
+
+    @Test
+    fun testSelect() {
+        println("----- selectAll method test ------")
+        val userList = userMapper.selectList(null)
+        Assert.isTrue(userList.size == 5, "")
+        userList.forEach { println(it) }
+    }
+
+}
+```
+
+</TabItem>
+</Tabs>
 
 :::tip
 UserMapperの `selectList()` メソッドのパラメータは、MP組み込みの条件ラッパー `Wrapper` であるため、何も記述しないと条件なしとなります

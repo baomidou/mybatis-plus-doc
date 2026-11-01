@@ -5,6 +5,7 @@ sidebar:
   order: 1
 ---
 
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 import LastedDependency from '@/components/LastedDependency.astro';
 
 我们将通过一个简单的 Demo 来阐述 MyBatis-Plus 的强大功能，在此之前，我们假设您已经：
@@ -110,6 +111,9 @@ spring:
 
 在 Spring Boot 启动类中添加 `@MapperScan` 注解，扫描 Mapper 文件夹：
 
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
+
 ```java {2}
 <!-- Application.java -->
 
@@ -124,9 +128,30 @@ public class Application {
 }
 ```
 
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin {2}
+// Application.kt
+
+@SpringBootApplication
+@MapperScan("com.baomidou.mybatisplus.samples.quickstart.mapper")
+class Application
+
+fun main(args: Array<String>) {
+    runApplication<Application>(*args)
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## 编码
 
 编写实体类 `User.java`：
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 <!-- User.java -->
@@ -141,12 +166,33 @@ public class User {
 }
 ```
 
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+// User.kt
+
+@TableName("`user`")
+data class User(
+    var id: Long? = null,
+    var name: String,
+    var age: Int,
+    var email: String,
+)
+```
+
+</TabItem>
+</Tabs>
+
 :::note
-上面的代码中使用了 [Lombok](https://projectlombok.org/) 进行代码生成，如果您不习惯，请自行生成相关 Getter/Setter 方法。
+Java 版本使用了 [Lombok](https://projectlombok.org/) 进行代码生成，如果您不习惯，请自行生成相关 Getter/Setter 方法。Kotlin 版本使用 `data class`，无需 Lombok。
 :::
 
 
 编写 Mapper 接口类 `UserMapper.java`：
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 public interface UserMapper extends BaseMapper<User> {
@@ -154,9 +200,22 @@ public interface UserMapper extends BaseMapper<User> {
 }
 ```
 
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+interface UserMapper : BaseMapper<User>
+```
+
+</TabItem>
+</Tabs>
+
 ## 开始使用
 
 添加测试类，进行功能测试：
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 @SpringBootTest
@@ -175,6 +234,30 @@ public class SampleTest {
 
 }
 ```
+
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+@SpringBootTest
+class SampleTest {
+
+    @Autowired
+    lateinit var userMapper: UserMapper
+
+    @Test
+    fun testSelect() {
+        println("----- selectAll method test ------")
+        val userList = userMapper.selectList(null)
+        Assert.isTrue(userList.size == 5, "")
+        userList.forEach { println(it) }
+    }
+
+}
+```
+
+</TabItem>
+</Tabs>
 
 :::tip
 UserMapper 中的 `selectList()` 方法的参数为 MP 内置的条件封装器 `Wrapper`，所以不填写就是无任何条件
