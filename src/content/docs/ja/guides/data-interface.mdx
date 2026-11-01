@@ -3,6 +3,9 @@ title: 永続化レイヤーインターフェース
 sidebar:
   order: 3
 ---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+
 本文では、MyBatis-Plus を使用した永続化操作の各種メソッドについて詳しく説明します。挿入、更新、削除、検索、ページネーションなどを含みます。本稿を通じて、MyBatis-Plus が提供する各種メソッドがどのようにデータ操作を行うか、およびそれらに対応する SQL 文について理解することができます。
 
 ## Service インターフェース
@@ -1441,7 +1444,7 @@ int logicDeleteByIdWithFill(T entity);
 
 ## Chain
 
-Chain は MyBatis-Plus が提供するチェーンプログラミングスタイルであり、開発者がより簡潔で直感的な方法でデータベース操作コードを記述できるようにします。Chain は `query` と `update` の 2 つのカテゴリに分かれており、それぞれ検索操作と更新操作に使用されます。各カテゴリはさらに、通常のチェーンスタイルとラムダチェーンスタイルの 2 つのスタイルに分かれており、ラムダチェーンスタイルは型安全な検索条件構築を提供しますが、Kotlin には対応していません。
+Chain は MyBatis-Plus が提供するチェーンプログラミングスタイルであり、開発者がより簡潔で直感的な方法でデータベース操作コードを記述できるようにします。Chain は `query` と `update` の 2 つのカテゴリに分かれており、それぞれ検索操作と更新操作に使用されます。各カテゴリはさらに、通常のチェーンスタイルとラムダチェーンスタイルの 2 つのスタイルに分かれており、ラムダチェーンスタイルは型安全な検索条件構築を提供し、`3.5.17` 以降は Kotlin にも対応しています（それより前のバージョンでは、Kotlin から `KtQueryChainWrapper`/`KtUpdateChainWrapper` を使用できます）。
 
 ### 使用手順
 
@@ -1452,11 +1455,14 @@ Chain は MyBatis-Plus が提供するチェーンプログラミングスタイ
 ```java
 // 链式查询 普通
 QueryChainWrapper<T> query();
-// 链式查询 lambda 式。注意：不支持 Kotlin
+// 链式查询 lambda 式（3.5.17 以降 Kotlin に対応）
 LambdaQueryChainWrapper<T> lambdaQuery();
 ```
 
 **使用例**:
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 // 通常のチェーン式クエリの例
@@ -1466,6 +1472,20 @@ query().eq("name", "John").list(); // name が "John" であるすべてのレ�
 lambdaQuery().eq(User::getAge, 30).one(); // 年齢が 30 の単一レコードを検索
 ```
 
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+// 通常のチェーン式クエリの例
+query().eq("name", "John").list() // name が "John" であるすべてのレコードを検索
+
+// lambda チェーン式クエリの例（3.5.17+）
+lambdaQuery().eq(User::age, 30).one() // 年齢が 30 の単一レコードを検索
+```
+
+</TabItem>
+</Tabs>
+
 #### update
 
 チェーン式の更新操作を提供し、メソッドを連続して呼び出すことで更新条件を構築できます。
@@ -1473,11 +1493,14 @@ lambdaQuery().eq(User::getAge, 30).one(); // 年齢が 30 の単一レコード�
 ```java
 // 链式更改 普通
 UpdateChainWrapper<T> update();
-// 链式更改 lambda 式。注意：不支持 Kotlin
+// 链式更改 lambda 式（3.5.17 以降 Kotlin に対応）
 LambdaUpdateChainWrapper<T> lambdaUpdate();
 ```
 
 **使用例**:
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 // 通常のチェーン式更新の例
@@ -1488,6 +1511,20 @@ User updateUser = new User();
 updateUser.setEmail("new.email@example.com");
 lambdaUpdate().set(User::getEmail, updateUser.getEmail()).eq(User::getId, 1).update(); // ID が 1 のユーザーのメールアドレスを更新
 ```
+
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+// 通常のチェーン式更新の例
+update().set("status", "inactive").eq("name", "John").update() // name が "John" のレコードの status を "inactive" に更新
+
+// lambda チェーン式更新の例（3.5.17+）
+lambdaUpdate().set(User::email, "new.email@example.com").eq(User::id, 1).update() // ID が 1 のユーザーのメールアドレスを更新
+```
+
+</TabItem>
+</Tabs>
 
 ### 使用上のヒント
 

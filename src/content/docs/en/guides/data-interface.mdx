@@ -3,6 +3,9 @@ title: Persistence Layer Interface
 sidebar:
   order: 3
 ---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+
 This document provides a comprehensive overview of various persistence operations using MyBatis-Plus, including insertion, update, deletion, query, and pagination. Through this guide, you will learn how the different methods provided by MyBatis-Plus perform data operations and see the corresponding SQL statements they generate.
 
 ## Service Interface
@@ -1442,7 +1445,7 @@ By using these optional components, you can further extend MyBatis-Plus's capabi
 
 ## Chain
 
-Chain is a chain programming style provided by MyBatis-Plus that allows you to write database operation code in a more concise and intuitive way. Chain is divided into two main categories: `query` and `update`, used for query and update operations respectively. Each category is further divided into regular chain style and lambda chain style. The lambda chain style provides type-safe query condition construction but does not support Kotlin.
+Chain is a chain programming style provided by MyBatis-Plus that allows you to write database operation code in a more concise and intuitive way. Chain is divided into two main categories: `query` and `update`, used for query and update operations respectively. Each category is further divided into regular chain style and lambda chain style. The lambda chain style provides type-safe query condition construction and, since `3.5.17`, also supports Kotlin (on earlier versions, `KtQueryChainWrapper`/`KtUpdateChainWrapper` can be used from Kotlin).
 
 ### Usage Steps
 
@@ -1453,11 +1456,14 @@ Provides chain-style query operations, allowing you to chain method calls to bui
 ```java
 // Chain-style query (standard)
 QueryChainWrapper<T> query();
-// Chain-style query (lambda). Note: Kotlin is not supported
+// Chain-style query (lambda; supports Kotlin since 3.5.17)
 LambdaQueryChainWrapper<T> lambdaQuery();
 ```
 
 **Example**:
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 // Standard chain-style query example
@@ -1467,6 +1473,20 @@ query().eq("name", "John").list(); // Query all records where name equals "John"
 lambdaQuery().eq(User::getAge, 30).one(); // Query a single record where age equals 30
 ```
 
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+// Standard chain-style query example
+query().eq("name", "John").list() // Query all records where name equals "John"
+
+// Lambda chain-style query example (3.5.17+)
+lambdaQuery().eq(User::age, 30).one() // Query a single record where age equals 30
+```
+
+</TabItem>
+</Tabs>
+
 #### update
 
 Provides chain-style update operations, allowing you to chain method calls to build update conditions.
@@ -1474,11 +1494,14 @@ Provides chain-style update operations, allowing you to chain method calls to bu
 ```java
 // Chain-style update (standard)
 UpdateChainWrapper<T> update();
-// Chain-style update (lambda). Note: Kotlin is not supported
+// Chain-style update (lambda; supports Kotlin since 3.5.17)
 LambdaUpdateChainWrapper<T> lambdaUpdate();
 ```
 
 **Example**:
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 // Standard chain-style update example
@@ -1489,6 +1512,20 @@ User updateUser = new User();
 updateUser.setEmail("new.email@example.com");
 lambdaUpdate().set(User::getEmail, updateUser.getEmail()).eq(User::getId, 1).update(); // Update the email for the user with ID 1
 ```
+
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+// Standard chain-style update example
+update().set("status", "inactive").eq("name", "John").update() // Update the status to "inactive" for records where name equals "John"
+
+// Lambda chain-style update example (3.5.17+)
+lambdaUpdate().set(User::email, "new.email@example.com").eq(User::id, 1).update() // Update the email for the user with ID 1
+```
+
+</TabItem>
+</Tabs>
 
 ### Usage Tips
 

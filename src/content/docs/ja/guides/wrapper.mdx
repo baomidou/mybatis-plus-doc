@@ -4,6 +4,7 @@ sidebar:
   order: 4
 ---
 import Badge from "@/components/Badge.astro";
+import { Tabs, TabItem } from "@astrojs/starlight/components";
 
 MyBatis-Plusは、複雑なデータベースクエリ条件を構築するための強力な条件構築器（Wrapper）を提供しています。Wrapperクラスを使用することで、開発者はチェーン呼び出し方式でクエリ条件を構築でき、煩雑なSQL文を記述する必要がなくなり、開発効率が向上し、SQLインジェクションのリスクを低減できます。
 
@@ -2783,7 +2784,7 @@ class User {
 
 **注意**：上記のコードにおける`@TableId`および`@TableField`アノテーションは、MyBatis-Plusの使用方法を示すためのものであり、必須ではありません。すべてのメンバ変数は、Javaにおける`updateSelective`のようなシナリオで使用できるように、nullable型として定義し、初期値として`null`を設定する必要があります。
 
-`data class`や全パラメータコンストラクタの使用は推奨されません。これは、空のオブジェクトを作成する際に不必要な`null`値を提供しなければならない可能性があるためです。
+`data class`や全パラメータコンストラクタの使用は推奨されません。これは、空のオブジェクトを作成する際に不必要な`null`値を提供しなければならない可能性があるためです。すべてのプロパティがデフォルト値付きのnullableな`var`である場合（クイックスタートチュートリアルの例のように）、Kotlinは引数なしコンストラクタを生成するため、`data class`の使用も問題ありません。この推奨事項は、主にデフォルト値のない全パラメータコンストラクタを対象としています。
 
 ### アノテーションを使用したクエリ
 
@@ -2806,33 +2807,59 @@ List<MysqlData> getAll(Wrapper ew);
 
 ### KotlinでのWrapper使用
 
-Kotlinは`QueryWrapper`と`UpdateWrapper`をサポートしていますが、`LambdaQueryWrapper`と`LambdaUpdateWrapper`はサポートしていません。LambdaスタイルのWrapperを使用する必要がある場合は、`KtQueryWrapper`と`KtUpdateWrapper`を使用できます。
+Kotlinではすべての Wrapper を使用できます：
 
-参考例：
+- `QueryWrapper`と`UpdateWrapper`（文字列カラム名）はすべてのバージョンで使用可能です。
+- `KtQueryWrapper`と`KtUpdateWrapper`は`KProperty`プロパティ参照（`User::name`など）に基づくKotlin専用のLambdaスタイルWrapperで、すべてのバージョンで使用可能です。
+- `3.5.17`以降、`LambdaQueryWrapper`と`LambdaUpdateWrapper`もKotlinをサポートし、Kotlinプロパティ参照（`User::name`）とJavaのgetterメソッド参照の両方が正しく解決されます。それより前のバージョンでは、Kotlinから`KtQueryWrapper`/`KtUpdateWrapper`を使用してください。
+
+`KtQueryWrapper`/`KtUpdateWrapper`の参考例（すべてのバージョンで使用可能）：
 
 ```kotlin
 val queryWrapper = KtQueryWrapper(User()).eq(User::name, "sss").eq(User::roleId, "sss2")
-userMapper!!.selectList(queryWrapper)
+userMapper.selectList(queryWrapper)
 
 val updateConditionWrapper = KtUpdateWrapper(User()).eq(User::name, "sss").eq(User::roleId, "sss2")
 val updateRecord = User()
 updateRecord.name = "newName"
-userMapper!!.update(updateRecord, updateConditionWrapper)
+userMapper.update(updateRecord, updateConditionWrapper)
 
-val updateRecord = User()
-updateRecord.id = 2
-updateRecord.name = "haha"
-userMapper.updateById(updateRecord)
+val newRecord = User()
+newRecord.id = 2
+newRecord.name = "haha"
+userMapper.updateById(newRecord)
 ```
+
+`LambdaQueryWrapper`/`LambdaUpdateWrapper`の参考例（`3.5.17`+）：
+
+```kotlin
+val users = userMapper.selectList(LambdaQueryWrapper(User::class.java).eq(User::name, "sss"))
+
+userMapper.update(
+    null,
+    LambdaUpdateWrapper(User::class.java).set(User::name, "newName").eq(User::roleId, "sss2")
+)
+```
+
+:::note
+- `3.5.17`より前のバージョンでは、Kotlinから`LambdaQueryWrapper`などのLambdaスタイルWrapperを使用すると、実行時に`Error parsing property name 'xxx$lambda$0'. Didn't start with 'is', 'get' or 'set'.`のような例外が発生します。
+- MyBatis-Plus `3.5.17`はKotlin `2.4.0`でコンパイルされており、そのKotlinメタデータを読み取るには`2.3`以上のKotlinコンパイラが必要です。
+- `-Xsam-conversions=class`オプションでコンパイルされたKotlinコードでは、Javaのgetterメソッド参照は引き続き解決できません。
+:::
+
+完全な実行可能サンプルは [mybatis-plus-sample-kotlin](https://github.com/baomidou/mybatis-plus-samples/tree/master/mybatis-plus-sample-kotlin) を参照してください。
 
 ### チェーンメソッド呼び出しとラムダ式呼び出し
 
-MyBatis-Plusは2種類のチェーンメソッド呼び出しスタイルを提供しています：通常のチェーンメソッド呼び出しとラムダ式チェーンメソッド呼び出しです。注意点として、ラムダ式チェーンメソッド呼び出しはKotlinではサポートされていません。
+MyBatis-Plusは2種類のチェーンメソッド呼び出しスタイルを提供しています：通常のチェーンメソッド呼び出しとラムダ式チェーンメソッド呼び出しです。`3.5.17`以降、ラムダ式チェーンメソッド呼び出しもKotlinをサポートしています。それより前のバージョンでは、Kotlinから`KtQueryChainWrapper`と`KtUpdateChainWrapper`を使用できます。
+
+<Tabs syncKey="code-lang">
+<TabItem label="Java">
 
 ```java
 // 通常のチェーンメソッド呼び出し
 UpdateChainWrapper<T> update();
-// ラムダ式チェーンメソッド呼び出し（Kotlinではサポートされていません）
+// ラムダ式チェーンメソッド呼び出し
 LambdaUpdateChainWrapper<T> lambdaUpdate();
 
 // 同等の例：
@@ -2843,5 +2870,23 @@ lambdaQuery().eq(Entity::getId, value).one();
 update().eq("id", value).remove();
 lambdaUpdate().eq(Entity::getId, value).remove();
 ```
+
+</TabItem>
+<TabItem label="Kotlin">
+
+```kotlin
+// 通常のチェーンメソッド呼び出し
+QueryChainWrapper(userMapper).eq("name", "Jack").list()
+
+// ラムダ式チェーンメソッド呼び出し（3.5.17+）
+LambdaQueryChainWrapper(userMapper).eq(User::name, "Jack").one()
+LambdaUpdateChainWrapper(userMapper).set(User::name, "newName").eq(User::name, "Jack").update()
+
+// KPropertyスタイルのチェーンメソッド呼び出し（すべてのバージョンで使用可能）
+KtQueryChainWrapper(userMapper, User::class.java).eq(User::name, "Jack").one()
+```
+
+</TabItem>
+</Tabs>
 
 これらのベストプラクティスに従うことで、Kotlinにおける永続化オブジェクトの定義を明確かつ保守しやすい状態に保ちながら、MyBatis-Plusが提供する機能を十分に活用することができます。
