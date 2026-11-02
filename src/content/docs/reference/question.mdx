@@ -214,24 +214,37 @@ JavaScript 无法处理 Java 的长整型 Long 导致精度丢失，具体表现
 
 ## 插入或更新的字段有 空字符串 或者 `null`
 
-FieldStrategy 有三种策略：
+插入、更新时是否带上某个字段，以及 Wrapper 根据实体生成 where 条件时是否带上某个字段，由 [FieldStrategy](/reference/annotation/#insertstrategy) 决定：
 
-- IGNORED：忽略
-- NOT_NULL：非 NULL，默认策略
-- NOT_EMPTY：非空
+- ALWAYS：总是加入 SQL，不做判断
+- NOT_NULL：非 NULL 才加入 SQL，全局默认策略
+- NOT_EMPTY：非空才加入 SQL（只对字符串类型生效，其他类型等同于 NOT_NULL）
+- DEFAULT：跟随全局配置，只用于注解
+- NEVER：不加入 SQL
+
+:::note
+`FieldStrategy.IGNORED` 已在 `3.5.11` 版本移除，请改用效果相同的 `FieldStrategy.ALWAYS`。
+:::
 
 当用户有更新字段为 空字符串 或者 `null` 的需求时，需要对 `FieldStrategy` 策略进行调整：
 
 - 方式一：调整全局的验证策略
 
-  注入配置 GlobalConfiguration 属性 fieldStrategy
+  通过 [insertStrategy](/reference/#insertstrategy)、[updateStrategy](/reference/#updatestrategy)、[whereStrategy](/reference/#wherestrategy) 配置：
+
+  ```yaml
+  mybatis-plus:
+    global-config:
+      db-config:
+        update-strategy: ALWAYS
+  ```
 
 - 方式二：调整字段验证注解
 
-  根据具体情况，在需要更新的字段中调整验证注解，如验证非空：
+  根据具体情况，在需要更新的字段上调整对应的策略，如更新时总是带上该字段（可以把字段更新为 `null`）：
 
   ```java
-  @TableField(strategy=FieldStrategy.NOT_EMPTY)
+  @TableField(updateStrategy = FieldStrategy.ALWAYS)
   ```
 
 - 方式三：使用 `UpdateWrapper` (3.x)
