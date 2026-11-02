@@ -715,7 +715,7 @@ mybatis-plus:
 - FieldStrategy.NOT_NULL：仅在字段值不为 NULL 时插入该字段。
 - FieldStrategy.NOT_EMPTY：仅在字段值不为空（对于字符串类型）或不为 NULL（对于其他类型）时插入该字段。
 - FieldStrategy.NEVER：从不插入该字段，即使字段值不为 NULL。
-- FieldStrategy.IGNORED： 忽略判断，效果等同于”ALWAYS” <Badge text="@Deprecated" type="error"/>
+- ~~FieldStrategy.IGNORED~~：已在 `3.5.11` 版本移除，请改用效果相同的 `FieldStrategy.ALWAYS`。
 
 **配置示例**：
 
@@ -739,7 +739,7 @@ mybatis-plus:
 mybatis-plus:
   global-config:
     db-config:
-      update-strategy: IGNORED
+      update-strategy: ALWAYS
 ```
 
 ### whereStrategy
