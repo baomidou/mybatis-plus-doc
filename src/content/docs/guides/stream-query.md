@@ -6,7 +6,7 @@ sidebar:
 
 MyBatis-Plus 从 `3.5.4` 版本开始支持流式查询，这是 MyBatis 的原生功能，通过 `ResultHandler` 接口实现结果集的流式查询。这种查询方式适用于数据跑批或处理大数据的业务场景。
 
-在 `BaseMapper` 中，新增了多个重载方法，包括 `selectList`, `selectByMap`, `selectBatchIds`, `selectMaps`, `selectObjs`，这些方法可以与流式查询结合使用。
+在 `BaseMapper` 中，新增了多个重载方法，包括 `selectList`, `selectByMap`, `selectByIds`, `selectMaps`, `selectObjs`，这些方法可以与流式查询结合使用。
 
 需要注意的是，在低版本的 MyBatis-Plus 中，如果自定义 `ResultHandler` 结合分页查询，可能会出现错误。在这种情况下，需要手动关闭 count 查询。具体问题和解决方案可以参考 GitHub 上的相关 issue。
 

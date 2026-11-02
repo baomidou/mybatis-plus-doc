@@ -1008,8 +1008,8 @@ INSERT INTO user (name, email) VALUES (?, ?)
 ```java
 // 根据 entity 条件，删除记录
 int delete(@Param(Constants.WRAPPER) Wrapper<T> wrapper);
-// 删除（根据ID 批量删除）
-int deleteBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
+// 删除（根据ID或实体 批量删除）
+int deleteByIds(@Param(Constants.COLL) Collection<?> idList);
 // 根据 ID 删除
 int deleteById(Serializable id);
 // 根据 columnMap 条件，删除记录
@@ -1023,7 +1023,7 @@ int deleteByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
     |                    类型                    |  参数名   |                 描述                 |
     | :----------------------------------------: | :-------: | :----------------------------------: |
     |             Wrapper&#60;T&#62;             |  wrapper  |  实体对象封装操作类（可以为 null）   |
-    | Collection&#60;? extends Serializable&#62; |  idList   | 主键 ID 列表(不能为 null 以及 empty) |
+    |           Collection&#60;?&#62;            |  idList   | 主键 ID 列表或实体列表(不能为 null 以及 empty) |
     |                Serializable                |    id     |               主键 ID                |
     |        Map&#60;String, Object&#62;         | columnMap |           表字段 map 对象            |
 </p>
@@ -1048,12 +1048,12 @@ if (rows > 0) {
 DELETE FROM user WHERE age > 25
 ```
 
-**示例（deleteBatchIds）：**
+**示例（deleteByIds）：**
 
 ```java
 // 假设有一组 ID 列表，批量删除用户
 List<Integer> ids = Arrays.asList(1, 2, 3);
-int rows = userMapper.deleteBatchIds(ids); // 调用 deleteBatchIds 方法
+int rows = userMapper.deleteByIds(ids); // 调用 deleteByIds 方法
 if (rows > 0) {
     System.out.println("Users deleted successfully.");
 } else {
@@ -1181,7 +1181,7 @@ T selectById(Serializable id);
 T selectOne(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
 // 查询（根据ID 批量查询）
-List<T> selectBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
+List<T> selectByIds(@Param(Constants.COLL) Collection<? extends Serializable> idList);
 // 根据 entity 条件，查询全部记录
 List<T> selectList(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 // 查询（根据 columnMap 条件）
@@ -1189,14 +1189,14 @@ List<T> selectByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
 // 根据 Wrapper 条件，查询全部记录
 List<Map<String, Object>> selectMaps(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 // 根据 Wrapper 条件，查询全部记录。注意： 只返回第一个字段的值
-List<Object> selectObjs(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+<E> List<E> selectObjs(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
 // 根据 entity 条件，查询全部记录（并翻页）
-IPage<T> selectPage(IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+<P extends IPage<T>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 // 根据 Wrapper 条件，查询全部记录（并翻页）
-IPage<Map<String, Object>> selectMapsPage(IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+<P extends IPage<Map<String, Object>>> P selectMapsPage(P page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 // 根据 Wrapper 条件，查询总记录数
-Integer selectCount(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+Long selectCount(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 ```
 
 <p>
@@ -1243,12 +1243,12 @@ System.out.println("User: " + user);
 SELECT * FROM user WHERE age > 25
 ```
 
-**示例（selectBatchIds）：**
+**示例（selectByIds）：**
 
 ```java
 // 假设有一组 ID 列表，批量查询用户
 List<Integer> ids = Arrays.asList(1, 2, 3);
-List<User> users = userMapper.selectBatchIds(ids); // 调用 selectBatchIds 方法
+List<User> users = userMapper.selectByIds(ids); // 调用 selectByIds 方法
 for (User u : users) {
     System.out.println("User: " + u);
 }
@@ -1359,7 +1359,7 @@ SELECT * FROM user WHERE age > 25 LIMIT 10 OFFSET 0
 
 ```java
 // 假设要进行分页查询，每页显示10条记录，查询第1页，查询条件为 age > 25，并将结果映射为 Map
-IPage<Map<String, Object>> = new Page<>(1, 10);
+IPage<Map<String, Object>> page = new Page<>(1, 10);
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.gt("age", 25);
 IPage<Map<String, Object>> userPageMaps = userMapper.selectMapsPage(page, queryWrapper); // 调用 selectMapsPage 方法
@@ -1383,7 +1383,7 @@ SELECT * FROM user WHERE age > 25 LIMIT 10 OFFSET 0
 // 假设有一个 QueryWrapper 对象，设置查询条件为 age > 25，查询总记录数
 QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 queryWrapper.gt("age", 25);
-Integer totalUsers = userMapper.selectCount(queryWrapper); // 调用 selectCount 方法
+Long totalUsers = userMapper.selectCount(queryWrapper); // 调用 selectCount 方法
 System.out.println("Total users (age > 25): " + totalUsers);
 ```
 
